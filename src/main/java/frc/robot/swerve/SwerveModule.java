@@ -13,13 +13,11 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.RobotConfig;
 import frc.robot.utils.Vector2;
 
 public class SwerveModule {
 
     // Update both of these for MK4i L3
-    private static final double ticksPerRotationSteer = RobotConfig.ticksPerRotationSteer;
     // private static final double ticksPerRotationDrive = RobotConfig.ticksPerRotationDrive;
     // Ticks to Rotations for Phoenix V6 (hacky.. fix later)
     private static final double conversionFactor = 1 / 2048;
@@ -116,7 +114,7 @@ public class SwerveModule {
         motorPos.refresh(); // refresh value before using
 
         double pos = motorPos.getValue() - cancoderOffset;
-        pos = pos / 360.0 * ticksPerRotationSteer;
+        pos = pos / 360.0;
         steer.setPosition(pos * conversionFactor); // internal sensor must be set to pos, idk if this works
         steer.setControl(new PositionDutyCycle(pos * conversionFactor));
     }
@@ -136,7 +134,7 @@ public class SwerveModule {
      * @param angle Angle in Radians.
      */
     public void rotateToRad(double angle) {
-        rotate((angle - Math.PI / 2) / (2 * Math.PI) * ticksPerRotationSteer);
+        rotate((angle - Math.PI / 2) / (2 * Math.PI));
     }
 
     /**
@@ -151,12 +149,12 @@ public class SwerveModule {
             motorPos = steerPos;
 
         // The number of full rotations the motor has made
-        int numRot = (int) Math.floor(motorPos / ticksPerRotationSteer);
+        int numRot = (int) Math.floor(motorPos);
 
         // The target motor position dictated by the joystick, in motor ticks
-        double joystickTarget = numRot * ticksPerRotationSteer + toAngle;
-        double joystickTargetPlus = joystickTarget + ticksPerRotationSteer;
-        double joystickTargetMinus = joystickTarget - ticksPerRotationSteer;
+        double joystickTarget = numRot + toAngle;
+        double joystickTargetPlus = joystickTarget + 1;
+        double joystickTargetMinus = joystickTarget - 1;
 
         // The true destination for the motor to rotate to
         double destination;
@@ -175,12 +173,12 @@ public class SwerveModule {
         // If the target position is farther than a quarter rotation away from the
         // current position, invert its direction instead of rotating it the full
         // distance
-        if (Math.abs(destination - motorPos) > ticksPerRotationSteer / 4.0) {
+        if (Math.abs(destination - motorPos) > 1 / 4.0) {
             inverted = true;
             if (destination > motorPos)
-                destination -= ticksPerRotationSteer / 2.0;
+                destination -= 1 / 2.0;
             else
-                destination += ticksPerRotationSteer / 2.0;
+                destination += 1 / 2.0;
         } else {
             inverted = false;
         }

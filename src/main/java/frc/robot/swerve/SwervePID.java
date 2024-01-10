@@ -2,29 +2,31 @@ package frc.robot.swerve;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.RobotConfig;
 import frc.robot.sensors.Pigeon;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.RMath;
 import frc.robot.utils.Vector2;
 
+import static frc.robot.Tuning.*;
+import static frc.robot.Constants.*;
+
 public class SwervePID {
 
     public static PIDController xPID, yPID, rotPID;
 
-    public static double moveP = RobotConfig.moveP;
-    public static double moveI = RobotConfig.moveI;
-    public static double moveD = RobotConfig.moveD;
-    public static double moveDead = RobotConfig.moveDead;
-    public static double moveVelDead = RobotConfig.moveVelDead;
-    public static double moveSpeedMax = RobotConfig.moveSpeedMax;
+    public static double moveP = MOVEP;
+    public static double moveI = MOVEI;
+    public static double moveD = MOVED;
+    public static double moveDead = MOVEDEAD;
+    public static double moveVelDead = MOVEVELDEAD;
+    public static double moveSpeedMax = MOVEMAXSPEED;
 
-    public static double rotP = RobotConfig.rotP;
-    public static double rotI = RobotConfig.rotI;
-    public static double rotD = RobotConfig.rotD;
-    public static double rotDead = RobotConfig.rotDead;
-    public static double rotVelDead = RobotConfig.rotVelDead;
-    public static double rotSpeedMax = RobotConfig.rotSpeedMax;
+    public static double rotP = ROTP;
+    public static double rotI = ROTI;
+    public static double rotD = ROTD;
+    public static double rotDead = ROTDEAD;
+    public static double rotVelDead = ROTVELDEAD;
+    public static double rotSpeedMax = ROTMAXSPEED;
 
     public static void init() {
         xPID = new PIDController(moveP, moveI, moveD, moveDead, moveVelDead, moveSpeedMax);

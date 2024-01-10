@@ -2,9 +2,9 @@ package frc.robot.swerve;
 
 import com.ctre.phoenix6.controls.NeutralOut;
 
-import frc.robot.RobotConfig;
 import frc.robot.sensors.Pigeon;
 import frc.robot.utils.Vector2;
+import static frc.robot.Constants.*;
 
 public class SwerveManager {
     
@@ -12,10 +12,10 @@ public class SwerveManager {
 
     public static void init() {
         mods = new SwerveModule[] {
-            new SwerveModule(RobotConfig.driveID0, RobotConfig.steerID0, RobotConfig.cancoderOffset0, RobotConfig.swerveModX0, RobotConfig.swerveModY0),
-            new SwerveModule(RobotConfig.driveID1, RobotConfig.steerID1, RobotConfig.cancoderOffset1, RobotConfig.swerveModX1, RobotConfig.swerveModY1),
-            new SwerveModule(RobotConfig.driveID2, RobotConfig.steerID2, RobotConfig.cancoderOffset2, RobotConfig.swerveModX2, RobotConfig.swerveModY2),
-            new SwerveModule(RobotConfig.driveID3, RobotConfig.steerID3, RobotConfig.cancoderOffset3, RobotConfig.swerveModX3, RobotConfig.swerveModY3)
+            new SwerveModule(DRIVEID0, STEERID0, MODOFFSET0, SWERVEMODX0, SWERVEMODY0),
+            new SwerveModule(DRIVEID1, STEERID1, MODOFFSET1, SWERVEMODX1, SWERVEMODY1),
+            new SwerveModule(DRIVEID2, STEERID2, MODOFFSET2, SWERVEMODX2, SWERVEMODY2),
+            new SwerveModule(DRIVEID3, STEERID3, MODOFFSET3, SWERVEMODX3, SWERVEMODY3)
         };
     }
 

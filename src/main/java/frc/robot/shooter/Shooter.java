@@ -10,14 +10,11 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import frc.robot.RobotConfig;
-
 // Couple notes about the shooter:
 // includes the pivot, flywheel, and handoff.
 // Pivot is referenced in radians, with theta=0 straight forward,
 // theta=pi/2 straight up, and theta=-pi/2 straight down.
 public class Shooter {
-
     // Different modes of the shooter
     private static enum ShooterMode {
         STOPPED,
