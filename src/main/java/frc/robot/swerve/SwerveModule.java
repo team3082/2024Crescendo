@@ -117,7 +117,7 @@ public class SwerveModule {
 
         double pos = motorPos.getValue() - cancoderOffset;
         pos = pos / 360.0 * ticksPerRotationSteer;
-        // SET ENCODER POS HERE
+        steer.setPosition(pos * conversionFactor); // internal sensor must be set to pos, idk if this works
         steer.setControl(new PositionDutyCycle(pos * conversionFactor));
     }
 
