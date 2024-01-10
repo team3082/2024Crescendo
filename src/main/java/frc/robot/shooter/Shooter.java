@@ -1,15 +1,16 @@
 package frc.robot.shooter;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import frc.robot.RobotConfig;
 
 // Couple notes about the shooter:
 // includes the pivot, flywheel, and handoff.
@@ -33,7 +34,7 @@ public class Shooter {
     }
     
     public static TalonFX pivot;
-    public static CANcoder pivotCoder;
+    public static CANCoder pivotCoder;
     
     public static TalonFX flywheel;
     
@@ -57,18 +58,18 @@ public class Shooter {
 
     public static void init() {
 
-        pivotCoder = new CANcoder(11);
-        pivotCoder.getConfigurator().apply(new CANcoderConfiguration());
-        CANcoderConfiguration canConfig = new CANcoderConfiguration();
-        canConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-        canConfig.MagnetSensor.MagnetOffset = 0;
-        // SET PIVOTCODER TO RADIANS HERE, configFeedbackCoefficient DOESNT EXIST ANYMORE???????
-        pivotCoder.getConfigurator().apply(canConfig);
+        // CANCoder is using Phoenix V5 because of some useful features
+        // that were removed in V6. Ignore the warnings, not much
+        // we can do about it.
+        pivotCoder = new CANCoder(10);
+        pivotCoder.configFactoryDefault();
 
-        double newPos = pivotCoder.getAbsolutePosition().refresh().getValue() - 0; // INSERT OFFSET HERE
+        // Make the CANCoder report in radians
+        pivotCoder.configFeedbackCoefficient(2 * Math.PI / 4096.0, "rad", SensorTimeBase.PerSecond);
+        double newPos = pivotCoder.getAbsolutePosition() - 0; // change to offset facing out
         pivotCoder.setPosition(newPos);
 
-        pivot = new TalonFX(0);
+        pivot = new TalonFX(9);
         pivot.getConfigurator().apply(new TalonFXConfiguration());
         TalonFXConfiguration pivotConfig = new TalonFXConfiguration();
         pivotConfig.Slot0.kP = 0;
@@ -81,7 +82,7 @@ public class Shooter {
         pivotConfig.Feedback.FeedbackRemoteSensorID = 10;
         pivot.getConfigurator().apply(pivotConfig);
 
-        flywheel = new TalonFX(0);
+        flywheel = new TalonFX(11);
         flywheel.getConfigurator().apply(new TalonFXConfiguration());
         TalonFXConfiguration wheelConfig = new TalonFXConfiguration();
         wheelConfig.Slot0.kP = 0;
@@ -93,7 +94,7 @@ public class Shooter {
         wheelConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         flywheel.getConfigurator().apply(wheelConfig);
 
-        handoff = new TalonSRX(0);
+        handoff = new TalonSRX(12);
         handoff.configFactoryDefault();
         handoff.config_kP(0, 0);
         handoff.config_kI(0, 0);
