@@ -8,7 +8,6 @@ import frc.robot.utils.RMath;
 import frc.robot.utils.Vector2;
 
 import static frc.robot.Tuning.*;
-import static frc.robot.Constants.*;
 
 public class SwervePID {
 

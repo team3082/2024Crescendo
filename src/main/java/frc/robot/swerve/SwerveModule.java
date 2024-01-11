@@ -17,11 +17,6 @@ import frc.robot.utils.Vector2;
 
 public class SwerveModule {
 
-    // Update both of these for MK4i L3
-    // private static final double ticksPerRotationDrive = RobotConfig.ticksPerRotationDrive;
-    // Ticks to Rotations for Phoenix V6 (hacky.. fix later)
-    private static final double conversionFactor = 1 / 2048;
-
     public TalonFX steer;
     public TalonFX drive;
     public CANcoder absEncoder;
@@ -54,9 +49,9 @@ public class SwerveModule {
         // Fix PID
         drive.getConfigurator().apply(new TalonFXConfiguration());
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
-        driveConfig.Slot0.kP = 0;
-        driveConfig.Slot0.kI = 0;
-        driveConfig.Slot0.kP = 0;
+        driveConfig.Slot0.kP = 0.5;
+        driveConfig.Slot0.kI = 0.01;
+        driveConfig.Slot0.kD = 0.1;
         driveConfig.Slot0.kV = 0;
         driveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Might need to change
         driveConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -66,9 +61,9 @@ public class SwerveModule {
         // Fix PID
         steer.getConfigurator().apply(new TalonFXConfiguration());
         TalonFXConfiguration steerConfig = new TalonFXConfiguration();
-        steerConfig.Slot0.kP = 0;
+        steerConfig.Slot0.kP = 0.2;
         steerConfig.Slot0.kI = 0;
-        steerConfig.Slot0.kP = 0;
+        steerConfig.Slot0.kD = 0.1;
         steerConfig.Slot0.kV = 0;
         steerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Might need to change
         steerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -115,8 +110,8 @@ public class SwerveModule {
 
         double pos = motorPos.getValue() - cancoderOffset;
         pos = pos / 360.0;
-        steer.setPosition(pos * conversionFactor); // internal sensor must be set to pos, idk if this works
-        steer.setControl(new PositionDutyCycle(pos * conversionFactor));
+        steer.setPosition(pos); // internal sensor must be set to pos, idk if this works
+        steer.setControl(new PositionDutyCycle(pos));
     }
 
     /**
@@ -183,7 +178,7 @@ public class SwerveModule {
             inverted = false;
         }
 
-        steer.setControl(new PositionDutyCycle(destination * conversionFactor));
+        steer.setControl(new PositionDutyCycle(destination));
 
         simSteerAng = destination;
     }
