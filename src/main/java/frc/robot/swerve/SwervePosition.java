@@ -3,6 +3,7 @@ package frc.robot.swerve;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.sensors.Pigeon;
+import frc.robot.sensors.VisionManager;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 
@@ -16,10 +17,20 @@ public class SwervePosition {
     private static Vector2 absVelocity;
     private static Vector2 lastAbsVelocity;
 
+    private static boolean correctWithVision = true;
+
     public static void init() {
         absVelocity     = new Vector2();
         lastAbsVelocity = new Vector2();
         position        = new Vector2();
+    }
+
+    public static void enableVision() {
+        correctWithVision = true;
+    }
+
+    public static void disableVision() {
+        correctWithVision = false;
     }
 
     public static void update() {
@@ -40,6 +51,14 @@ public class SwervePosition {
 
         // Integrate our velocity to find our position
         position = position.add(absVelocity.add(lastAbsVelocity).mul(0.5 * RTime.deltaTime()));
+
+        if (correctWithVision) {
+            try {
+                Vector2 visionPos = VisionManager.getPosition();
+                Vector2 posError = visionPos.sub(position);
+                position = position.add(posError.mul(VISION_CORRECTION_FACTOR));
+            } catch(Exception e) { }
+        }
     }
 
     public static final double correctionMultiplier = 0.1;
