@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.sensors.Pigeon;
+import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
@@ -39,13 +40,7 @@ public class Robot extends TimedRobot {
     SwervePID.init();
     Pigeon.setYaw(270);
     VisionManager.init();
-
-    try {
-      Thread.sleep(4000);
-    } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    Telemetry.init();
   }
 
   @Override
@@ -54,12 +49,7 @@ public class Robot extends TimedRobot {
     SwerveManager.update();
     RTime.updateAbsolute();
     SwervePosition.update();
-    try {
-      System.out.println(VisionManager.getPosition().toString());
-    } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    Telemetry.update(false);
   }
 
   @Override
