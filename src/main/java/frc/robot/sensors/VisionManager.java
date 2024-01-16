@@ -139,7 +139,7 @@ public class VisionManager {
 
     public static boolean isTagFriendly(int tagID) {
         // Alliance is now an optional, must bypass by checking if simulated.
-        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Red : DriverStation.getAlliance().get();
+        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
 
         switch (alliance) {
             case Red:

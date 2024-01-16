@@ -191,12 +191,12 @@ public class SwerveModule {
         return steerPos * Math.PI * 2 + Math.PI / 2;
         }
 
-    // Returns the drive velocity
+    // Returns the drive velocity in inches per second
     public double getDriveVelocity() {
         if (RobotBase.isSimulation()) {
-            return simDriveVel * 10 * (4 * Math.PI);
+            return simDriveVel * ((4 * Math.PI) / 6.12);
         }
-        return driveVel * 10 * (4 * Math.PI);
+        return driveVel * ((4 * Math.PI) / 6.12);
     }
 
 }
