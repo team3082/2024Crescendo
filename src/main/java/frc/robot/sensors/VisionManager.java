@@ -4,6 +4,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -18,10 +19,10 @@ public class VisionManager {
     private static PhotonCamera[] cameras = new PhotonCamera[camNum];
 
     // The offsets (positions) of the camera on the robot.
-    // Positive Y is forward and Positive X is right when looking from the front.
+    // +Y is forward and +X is right when looking from the front of the robot.
     private static Vector2[] offsets = new Vector2[camNum];
 
-    // PI/2 is straight forward
+    // PI / 2 is pointing straight forward
     private static double[] cameraRots = new double[camNum];
 
     // Positions of the apriltags, in inches.
@@ -54,16 +55,16 @@ public class VisionManager {
 
     public static void init() {
         cameras[0] = new PhotonCamera("AprilTag Vision");
-        offsets[0] = new Vector2(-11, 9);
+        offsets[0] = new Vector2(0, 0);
         cameraRots[0] = Math.PI / 2;
     }
 
     /**
-     * Returns an averaged robot position 
-     * based on the outputs of the cameras.
+     * Returns an averaged robot position based on the outputs of the cameras,
+     * in inches, with (0, 0) in the center of the field.
      * @return Vector2 representing the robot's position on the field.
      */
-    public static Vector2 getPosition() {
+    public static Vector2 getPosition() throws Exception {
 
         Vector2 posSum = new Vector2();
         int nTargets = 0;
@@ -90,12 +91,13 @@ public class VisionManager {
             Vector2 offset = new Vector2(-transform.getY(), transform.getX());
             // Convert to inches
             offset = offset.mul(39.3701);
+            // Compensate for the angle of the camera
             offset.y *= Math.cos(Math.toRadians(17.5));
-            // Point vector axes forward relative to robot.
+            // Point vector axes forward relative to robot
             offset = offset.rotate(Math.PI / 2 - cameraRots[0]);
-            // Compensate for the camera's position on the robot.
+            // Compensate for the camera's position on the robot
             offset = offset.add(offsets[0]);
-            // Make vector in field space instead of robot space.
+            // Make vector in field space instead of robot space
             offset = toFieldSpace(offset, Pigeon.getRotationRad(), id);
 
             // Adding pos to average it out
@@ -103,17 +105,54 @@ public class VisionManager {
             nTargets++;
         }
 
-        return posSum.div(nTargets);
+        // Only update if we actually saw any targets
+        if (nTargets > 0) {
+            return posSum.div(nTargets);
+        }
+
+        throw new Exception("No targets found!");
     }
 
     /**
-     * Returns the averaged rotation of the robot,
-     * in radians, gathered from the outputs of the cameras.
+     * Returns the averaged rotation of the robot in radians, with 0 pointing right.
      * @return Robot's rotation on the field in radians.
      */
-    public static double getRotation() {
-        double rotation = 0.0;
-        return rotation;
+    public static double getRotation() throws Exception {
+        double rotSum = 0;
+        int nTargets = 0;
+
+        for (int i = 0; i < camNum; i++) {
+
+            PhotonPipelineResult cameraResult = cameras[i].getLatestResult();
+            PhotonTrackedTarget target = cameraResult.getBestTarget();
+
+            if (target == null)
+                continue;
+
+            int id = target.getFiducialId();
+            if (id > 16 || id < 1) 
+                continue;
+
+            // We have a valid target
+            Rotation3d rot = target.getBestCameraToTarget().getRotation();
+
+            // 0 is straight forward
+            double tagRotation = rot.getZ();
+            // 0 is straight forward
+            double cameraRotation = (isTagFriendly(id) ? 0 : Math.PI) + (Math.PI / 2) - tagRotation;
+            // 0 is to the right
+            double robotRotation = cameraRotation - (cameraRots[i] - Math.PI / 2); 
+
+            rotSum += robotRotation;
+            nTargets++;
+        }
+
+        // Only update if we actually saw any targets
+        if (nTargets > 0) {
+            return rotSum / nTargets;
+        }
+
+        throw new Exception("No targets found!");
     }
 
     /**
@@ -137,8 +176,13 @@ public class VisionManager {
         return absolutePos;
     }
 
+    /**
+     * Check if a tag is "friendly" - whether or not
+     * the tag is on our alliance's side of the field.
+     * @param tagID The ID of the tag to check.
+     */
     public static boolean isTagFriendly(int tagID) {
-        // Alliance is now an optional, must bypass by checking if simulated.
+        // Alliance is now an optional and crashes the simulator if this isn't like this.
         Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
 
         switch (alliance) {
@@ -156,6 +200,26 @@ public class VisionManager {
         }
     }
 
+    /**
+     * Whether or not we have a valid target in sight.
+     */
+    public static boolean hasTarget() {
+
+        for (int i = 0; i < camNum; i++) {
+            PhotonPipelineResult cameraResult = cameras[i].getLatestResult();
+            PhotonTrackedTarget target = cameraResult.getBestTarget();
+
+            if (target != null && target.getPoseAmbiguity() < 0.2)
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the modified position of an apriltag dependant on our alliance.
+     * @param tagID The ID of the tag to check.
+     */
     public static Vector2 getTagPos(int tagID) {
         
         // LEAVE IT LIKE THIS SO WE DON'T FLIP APRIL TAG POSITIONS
