@@ -1,4 +1,4 @@
-package frc.robot.shooter;
+package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.CANCoder;
