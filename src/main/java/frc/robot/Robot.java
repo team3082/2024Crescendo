@@ -5,7 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.sensors.Pigeon;
+import frc.robot.sensors.Telemetry;
+import frc.robot.sensors.VisionManager;
 import frc.robot.swerve.SwerveManager;
+import frc.robot.swerve.SwervePID;
+import frc.robot.swerve.SwervePosition;
+import frc.robot.utils.RTime;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,11 +25,31 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   @Override
-  public void robotInit() {}
+  public void robotInit() {
+    // Blue
+    System.out.println(VisionManager.getTagPos(1).toString());
+    System.out.println(VisionManager.getTagPos(8).toString());
+    // Red
+    System.out.println(VisionManager.getTagPos(3).toString());
+    System.out.println(VisionManager.getTagPos(13).toString());
+
+    Pigeon.init();
+    Pigeon.zero();
+    SwerveManager.init();
+    SwervePosition.init();
+    SwervePID.init();
+    Pigeon.setYaw(270);
+    VisionManager.init();
+    Telemetry.init();
+  }
 
   @Override
   public void robotPeriodic() {
+    Pigeon.update();
     SwerveManager.update();
+    RTime.updateAbsolute();
+    SwervePosition.update();
+    Telemetry.update(false);
   }
 
   @Override
@@ -33,10 +59,15 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {}
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    SwervePosition.enableVision();
+  }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    RTime.update();
+    SwervePosition.update();
+  }
 
   @Override
   public void disabledInit() {}

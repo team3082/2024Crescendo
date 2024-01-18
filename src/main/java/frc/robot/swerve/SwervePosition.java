@@ -1,8 +1,13 @@
 package frc.robot.swerve;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.sensors.Pigeon;
+import frc.robot.sensors.VisionManager;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 
@@ -16,10 +21,20 @@ public class SwervePosition {
     private static Vector2 absVelocity;
     private static Vector2 lastAbsVelocity;
 
+    private static boolean correctWithVision = true;
+
     public static void init() {
         absVelocity     = new Vector2();
         lastAbsVelocity = new Vector2();
         position        = new Vector2();
+    }
+
+    public static void enableVision() {
+        correctWithVision = true;
+    }
+
+    public static void disableVision() {
+        correctWithVision = false;
     }
 
     public static void update() {
@@ -32,7 +47,8 @@ public class SwervePosition {
 
         // Flip the x component of our velocity if we're on the red alliance
         // I still don't know why, but we don't need to do this in simulation mode
-        if (DriverStation.getAlliance().get() == Alliance.Red)
+        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
+        if (alliance == Alliance.Red)
             vel.x *= -1;
         
         lastAbsVelocity = absVelocity; 
@@ -40,6 +56,14 @@ public class SwervePosition {
 
         // Integrate our velocity to find our position
         position = position.add(absVelocity.add(lastAbsVelocity).mul(0.5 * RTime.deltaTime()));
+
+        if (correctWithVision) {
+            try {
+                Vector2 visionPos = VisionManager.getPosition();
+                Vector2 posError = visionPos.sub(position);
+                position = position.add(posError.mul(VISION_CORRECTION_FACTOR));
+            } catch(Exception e) { }
+        }
     }
 
     public static final double correctionMultiplier = 0.1;
@@ -71,6 +95,13 @@ public class SwervePosition {
      */
     public static void setPosition(Vector2 newPosition){
         position = newPosition;
+    }
+
+    /**
+     * Return the current pose of the robot, adjusted for the rotation.
+     */
+    public static Pose2d getPose() {
+        return new Pose2d(new Translation2d(position.x, position.y), Rotation2d.fromRadians(Pigeon.getRotationRad()));
     }
 
 }

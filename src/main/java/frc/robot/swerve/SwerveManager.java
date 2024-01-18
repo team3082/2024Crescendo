@@ -2,6 +2,8 @@ package frc.robot.swerve;
 
 import com.ctre.phoenix6.controls.NeutralOut;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 import static frc.robot.Constants.*;
@@ -161,5 +163,14 @@ public class SwerveManager {
             mSwerveMod.rotateToRad(mSwerveMod.pos.atan2());
             mSwerveMod.drive.setControl(new NeutralOut());
         }
+    }
+
+    public static SwerveModuleState[] returnStates() {
+        return new SwerveModuleState[] {
+            new SwerveModuleState(mods[0].getDriveVelocity(), Rotation2d.fromRadians(mods[0].getSteerAngle())),
+            new SwerveModuleState(mods[1].getDriveVelocity(), Rotation2d.fromRadians(mods[1].getSteerAngle())),
+            new SwerveModuleState(mods[2].getDriveVelocity(), Rotation2d.fromRadians(mods[2].getSteerAngle())),
+            new SwerveModuleState(mods[3].getDriveVelocity(), Rotation2d.fromRadians(mods[3].getSteerAngle()))
+        };
     }
 }

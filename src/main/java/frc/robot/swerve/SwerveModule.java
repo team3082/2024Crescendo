@@ -12,6 +12,8 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.utils.Vector2;
 
@@ -191,12 +193,19 @@ public class SwerveModule {
         return steerPos * Math.PI * 2 + Math.PI / 2;
         }
 
-    // Returns the drive velocity
+    // Returns the drive velocity in inches per second
     public double getDriveVelocity() {
         if (RobotBase.isSimulation()) {
-            return simDriveVel * 10 * (4 * Math.PI);
+            return simDriveVel * ((4 * Math.PI) / 6.12);
         }
-        return driveVel * 10 * (4 * Math.PI);
+        return driveVel * ((4 * Math.PI) / 6.12);
     }
 
+    /**
+     * Returns a SwerveModuleState based on the velocity of the module
+     * (in meters per second), and the rotation of the module in radians.
+     */
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(getDriveVelocity() * 1 / 39.37, Rotation2d.fromRadians(getSteerAngle()));
+    }
 }
