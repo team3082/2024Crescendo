@@ -4,6 +4,7 @@ import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.swerve.SwerveManager;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector3;
 
@@ -22,7 +23,7 @@ public class Pigeon {
 
     public static void update() {
         if (RobotBase.isSimulation()) {
-            //simulatedRot += SwerveManager.getRotationalVelocity() * RTime.deltaTime();
+            simulatedRot += SwerveManager.getRotationalVelocity() * RTime.deltaTime();
         }
         deltaRot = (getRotationRad() - lastRot) / RTime.deltaTime();
         lastRot = getRotationRad();
