@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    OI.init();
     SwervePosition.enableVision();
   }
 
@@ -67,6 +68,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     RTime.update();
     SwervePosition.update();
+    OI.useInput();
   }
 
   @Override
