@@ -5,16 +5,17 @@ import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
-import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.RobotBase;
+import static frc.robot.Constants.MK4Constants;
+import static frc.robot.Constants.MK4DriveRatios;
 import frc.robot.utils.Vector2;
 
 public class SwerveModule {
@@ -26,11 +27,12 @@ public class SwerveModule {
     private boolean inverted;
 
     private final double cancoderOffset;
+    private final PositionVoltage anglePosition = new PositionVoltage(0);
     double steerPos;
     double drivePos;
     double driveVel;
 
-    private static final double simMaxTicksPerSecond = 40000;
+    private static final double simMaxRotsPerSecond = 400;
     private double simSteerAng;
     private double simDriveVel;
 
@@ -44,35 +46,36 @@ public class SwerveModule {
 
         absEncoder.getConfigurator().apply(new CANcoderConfiguration());
         CANcoderConfiguration canConfig = new CANcoderConfiguration();
-        canConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-        canConfig.MagnetSensor.MagnetOffset = 0;
+        canConfig.MagnetSensor.SensorDirection = MK4Constants.cancoderInvert;
         absEncoder.getConfigurator().apply(canConfig);
 
         // Fix PID
         drive.getConfigurator().apply(new TalonFXConfiguration());
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
-        driveConfig.Slot0.kP = 0.5;
-        driveConfig.Slot0.kI = 0.01;
-        driveConfig.Slot0.kD = 0.1;
+        driveConfig.Slot0.kP = 0;
+        driveConfig.Slot0.kI = 0;
+        driveConfig.Slot0.kD = 0;
         driveConfig.Slot0.kV = 0;
-        driveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Might need to change
+        driveConfig.MotorOutput.Inverted = MK4Constants.driveMotorInvert;
         driveConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         driveConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+        driveConfig.Feedback.SensorToMechanismRatio = MK4DriveRatios.L1;
         drive.getConfigurator().apply(driveConfig);
 
         // Fix PID
         steer.getConfigurator().apply(new TalonFXConfiguration());
         TalonFXConfiguration steerConfig = new TalonFXConfiguration();
-        steerConfig.Slot0.kP = 0.2;
+        steerConfig.Slot0.kP = 0;
         steerConfig.Slot0.kI = 0;
-        steerConfig.Slot0.kD = 0.1;
+        steerConfig.Slot0.kD = 0;
         steerConfig.Slot0.kV = 0;
-        steerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Might need to change
+        steerConfig.MotorOutput.Inverted = MK4Constants.angleMotorInvert;
         steerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         steerConfig.MotionMagic.MotionMagicAcceleration = 40000;
         steerConfig.MotionMagic.MotionMagicCruiseVelocity = 40000;
-        steerConfig.Feedback.FeedbackRemoteSensorID = absEncoder.getDeviceID();
-        steerConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+        steerConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+        steerConfig.Feedback.SensorToMechanismRatio = MK4Constants.angleGearRatio;
+        steerConfig.ClosedLoopGeneral.ContinuousWrap = true;
         steer.getConfigurator().apply(steerConfig);
 
         this.cancoderOffset = cancoderOffset;
@@ -103,6 +106,10 @@ public class SwerveModule {
         driveVel = driveV.getValue();
     }
 
+    public Rotation2d getAbsEncoder() {
+        return Rotation2d.fromRotations(absEncoder.getAbsolutePosition().refresh().getValue());
+    }
+
     /**
      * Reset the steer encoder to align the Falcon to the CANCoder.
      */
@@ -111,8 +118,7 @@ public class SwerveModule {
         motorPos.refresh(); // refresh value before using
 
         double pos = motorPos.getValue() - cancoderOffset;
-        pos = pos / 360.0;
-        steer.setPosition(pos); // internal sensor must be set to pos, idk if this works
+        steer.setPosition(pos);
         steer.setControl(new PositionDutyCycle(pos));
     }
 
@@ -123,7 +129,7 @@ public class SwerveModule {
     public void drive(double power) {
         drive.setControl(new DutyCycleOut(power * (inverted ? -1.0 : 1.0)));
 
-        simDriveVel = simMaxTicksPerSecond * power * (inverted ? -1.0 : 1.0);
+        simDriveVel = simMaxRotsPerSecond * power * (inverted ? -1.0 : 1.0);
     }
 
     /**
@@ -135,8 +141,8 @@ public class SwerveModule {
     }
 
     /**
-     * Rotate to an angle in motor ticks.
-     * @param toAngle Angle in ticks.
+     * Rotate to an angle in rotations.
+     * @param toAngle Angle in rotations.
      */
     public void rotate(double toAngle) {
         double motorPos;
@@ -148,7 +154,7 @@ public class SwerveModule {
         // The number of full rotations the motor has made
         int numRot = (int) Math.floor(motorPos);
 
-        // The target motor position dictated by the joystick, in motor ticks
+        // The target motor position dictated by the joystick, rotations
         double joystickTarget = numRot + toAngle;
         double joystickTargetPlus = joystickTarget + 1;
         double joystickTargetMinus = joystickTarget - 1;
@@ -180,7 +186,7 @@ public class SwerveModule {
             inverted = false;
         }
 
-        steer.setControl(new PositionDutyCycle(destination));
+        steer.setControl(anglePosition.withPosition(destination));
 
         simSteerAng = destination;
     }
@@ -190,15 +196,15 @@ public class SwerveModule {
         if (RobotBase.isSimulation()) {
             return simSteerAng * Math.PI * 2 + Math.PI / 2;
         }
-        return steerPos * Math.PI * 2 + Math.PI / 2;
+        return Rotation2d.fromRotations(steerPos).getRadians();
         }
 
     // Returns the drive velocity in inches per second
     public double getDriveVelocity() {
         if (RobotBase.isSimulation()) {
-            return simDriveVel * ((4 * Math.PI) / 6.12);
+            return simDriveVel * (MK4Constants.wheelDiameter * Math.PI);
         }
-        return driveVel * ((4 * Math.PI) / 6.12);
+        return driveVel * (MK4Constants.wheelDiameter * Math.PI);
     }
 
     /**
