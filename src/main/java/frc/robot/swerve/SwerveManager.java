@@ -1,7 +1,5 @@
 package frc.robot.swerve;
 
-import com.ctre.phoenix6.controls.NeutralOut;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.sensors.Pigeon;
@@ -24,12 +22,6 @@ public class SwerveManager {
     public static void resetSensors() {
         for (SwerveModule mod : mods) {
             mod.resetSteerSensor();
-        }
-    }
-
-    public static void update() {
-        for (SwerveModule module : mods) {
-            module.update();
         }
     }
 
@@ -98,7 +90,7 @@ public class SwerveManager {
      * @return the raw encoder position, in ticks
      */
     public static double getEncoderPos(int id){
-        return mods[id].drivePos;
+        return mods[id].drive.getSelectedSensorPosition();
     }
 
     /**
@@ -161,7 +153,7 @@ public class SwerveManager {
     public static void lockWheels(){
         for(SwerveModule mSwerveMod : mods){
             mSwerveMod.rotateToRad(mSwerveMod.pos.atan2());
-            mSwerveMod.drive.setControl(new NeutralOut());
+            mSwerveMod.drive.neutralOutput();
         }
     }
 

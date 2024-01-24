@@ -46,7 +46,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     Pigeon.update();
-    SwerveManager.update();
     RTime.updateAbsolute();
     SwervePosition.update();
     Telemetry.update(false);
