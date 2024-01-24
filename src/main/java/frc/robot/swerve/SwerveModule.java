@@ -27,7 +27,6 @@ public class SwerveModule {
     private boolean inverted;
 
     private final double cancoderOffset;
-    private final PositionVoltage anglePosition = new PositionVoltage(0);
     double steerPos;
     double drivePos;
     double driveVel;
@@ -186,7 +185,7 @@ public class SwerveModule {
             inverted = false;
         }
 
-        steer.setControl(anglePosition.withPosition(destination));
+        steer.setControl(new PositionDutyCycle(destination));
 
         simSteerAng = destination;
     }
