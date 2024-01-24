@@ -1,19 +1,20 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorTimeBase;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 
 // Couple notes about the shooter:
 // includes the pivot, flywheel, and handoff.
 // Pivot is referenced in radians, with theta=0 straight forward,
 // theta=pi/2 straight up, and theta=-pi/2 straight down.
+@SuppressWarnings("removal")
 public class Shooter {
     // Different modes of the shooter
     private static enum ShooterMode {
@@ -37,27 +38,23 @@ public class Shooter {
     
     public static TalonSRX handoff;
 
-    // falcon : wheel
+    // Falcon : Wheels
     static final double shooterRatio = 1;
 
-    // Needed for Phoenix v5; v6 uses rotations natively
-    // private static final double RPMToVel = 2048.0 * shooterRatio / 60.0 / 10.0;
-    // private static final double VelToRPM = 10.0 * 60.0 / 2048.0 / shooterRatio;
+    private static final double RPMToVel = 2048.0 * shooterRatio / 60.0 / 10.0;
+    private static final double VelToRPM = 10.0 * 60.0 / 2048.0 / shooterRatio;
 
     // Fire when our RPM is within this much of our target.
-    // private static final double shooterDeadband = 20.0;
+    private static final double shooterDeadband = 0;
 
-    // private static double targetSpeed;
-    // private static double targetAngle;
-    // private static double currentAngle;
+    private static double targetSpeed;
+    private static double targetAngle;
+    private static double currentAngle;
 
     public static ShooterMode shooterMode;
 
     public static void init() {
 
-        // CANCoder is using Phoenix V5 because of some useful features
-        // that were removed in V6. Ignore the warnings, not much
-        // we can do about it.
         pivotCoder = new CANCoder(10);
         pivotCoder.configFactoryDefault();
 
@@ -67,35 +64,52 @@ public class Shooter {
         pivotCoder.setPosition(newPos);
 
         pivot = new TalonFX(9);
-        pivot.getConfigurator().apply(new TalonFXConfiguration());
-        TalonFXConfiguration pivotConfig = new TalonFXConfiguration();
-        pivotConfig.Slot0.kP = 0;
-        pivotConfig.Slot0.kI = 0;
-        pivotConfig.Slot0.kP = 0;
-        pivotConfig.Slot0.kV = 0;
-        pivotConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Might need to change - want to be inverted
-        pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        pivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-        pivotConfig.Feedback.FeedbackRemoteSensorID = 10;
-        pivot.getConfigurator().apply(pivotConfig);
+        pivot.configFactoryDefault();
+        pivot.configRemoteFeedbackFilter(pivotCoder, 0);
+        pivot.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0,0,0);
+        pivot.setNeutralMode(NeutralMode.Brake);
+        pivot.configNominalOutputForward(0.01);
+        pivot.configNominalOutputReverse(0.01);
+        pivot.configNeutralDeadband(0.01);
+
+        // TUNE
+        pivot.config_kP(0, 0);
+        pivot.config_kI(0, 0);
+        pivot.config_kD(0, 0);
+        pivot.config_kF(0, 0);
+        pivot.configMotionCruiseVelocity(190);
+		pivot.configMotionAcceleration(300);
 
         flywheel = new TalonFX(11);
-        flywheel.getConfigurator().apply(new TalonFXConfiguration());
-        TalonFXConfiguration wheelConfig = new TalonFXConfiguration();
-        wheelConfig.Slot0.kP = 0;
-        wheelConfig.Slot0.kI = 0;
-        wheelConfig.Slot0.kP = 0;
-        wheelConfig.Slot0.kV = 0;
-        wheelConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 1000; // Change(?) - we want to rev up gently...
-        wheelConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Might need to change - want to be inverted
-        wheelConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-        flywheel.getConfigurator().apply(wheelConfig);
+        flywheel.configFactoryDefault();
+        flywheel.setNeutralMode(NeutralMode.Coast);
+        flywheel.configNominalOutputForward(0.00);
+        flywheel.configNominalOutputReverse(0.00);
+        flywheel.configNeutralDeadband(0.00);
+        // We want to rev up to the velocity pretty gently
+        flywheel.configClosedLoopPeriod(0, 1000);
+
+        // TUNE
+        flywheel.config_kP(0, 0);
+        flywheel.config_kI(0, 0);
+        flywheel.config_kD(0, 0);
+        flywheel.config_kF(0, 1023.0 / 20000.0);
 
         handoff = new TalonSRX(12);
         handoff.configFactoryDefault();
         handoff.config_kP(0, 0);
         handoff.config_kI(0, 0);
         handoff.config_kP(0, 0);
+
+        SupplyCurrentLimitConfiguration flywheelCurrentLimit = new SupplyCurrentLimitConfiguration(true, 40, 40, 0 );
+        flywheel.configSupplyCurrentLimit(flywheelCurrentLimit);
+        flywheel.configVoltageCompSaturation(12.2);
+        flywheel.enableVoltageCompensation(true);
+
+        SupplyCurrentLimitConfiguration pivotCurrentLimit = new SupplyCurrentLimitConfiguration(true, 40, 40, 0 );
+        pivot.configSupplyCurrentLimit(pivotCurrentLimit);
+        pivot.configVoltageCompSaturation(12.2);
+        pivot.enableVoltageCompensation(true);
 
         shooterMode = ShooterMode.STOPPED;
     }
@@ -105,7 +119,7 @@ public class Shooter {
      * @param vel Velocity to target.
      */
     public static void setVelocity(double vel) {
-        flywheel.setControl(new VelocityDutyCycle(vel));
+        flywheel.set(TalonFXControlMode.Velocity, vel);
     }
 
     /**
