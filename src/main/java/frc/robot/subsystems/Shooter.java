@@ -5,10 +5,10 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorTimeBase;
-import com.ctre.phoenix6.controls.VelocityDutyCycle;
+
+import static frc.robot.Constants.Shooter.*;
 
 // Couple notes about the shooter:
 // includes the pivot, flywheel, and handoff.
@@ -34,15 +34,10 @@ public class Shooter {
     public static TalonFX pivot;
     public static CANCoder pivotCoder;
     
-    public static TalonFX flywheel;
-    
-    public static TalonSRX handoff;
+    public static TalonFX topFlywheel, bottomFlywheel;
 
     // Falcon : Wheels
     static final double shooterRatio = 1;
-
-    private static final double RPMToVel = 2048.0 * shooterRatio / 60.0 / 10.0;
-    private static final double VelToRPM = 10.0 * 60.0 / 2048.0 / shooterRatio;
 
     // Fire when our RPM is within this much of our target.
     private static final double shooterDeadband = 0;
@@ -55,7 +50,7 @@ public class Shooter {
 
     public static void init() {
 
-        pivotCoder = new CANCoder(10);
+        pivotCoder = new CANCoder(FLYWHEELPIVOT_ID);
         pivotCoder.configFactoryDefault();
 
         // Make the CANCoder report in radians
@@ -63,7 +58,7 @@ public class Shooter {
         double newPos = pivotCoder.getAbsolutePosition() - 0; // change to offset facing out
         pivotCoder.setPosition(newPos);
 
-        pivot = new TalonFX(9);
+        pivot = new TalonFX(FLYWHEELPIVOT_ID);
         pivot.configFactoryDefault();
         pivot.configRemoteFeedbackFilter(pivotCoder, 0);
         pivot.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0,0,0);
@@ -80,36 +75,57 @@ public class Shooter {
         pivot.configMotionCruiseVelocity(190);
 		pivot.configMotionAcceleration(300);
 
-        flywheel = new TalonFX(11);
-        flywheel.configFactoryDefault();
-        flywheel.setNeutralMode(NeutralMode.Coast);
-        flywheel.configNominalOutputForward(0.00);
-        flywheel.configNominalOutputReverse(0.00);
-        flywheel.configNeutralDeadband(0.00);
+        topFlywheel = new TalonFX(TOPFLYWHEEL_ID);
+        topFlywheel.configFactoryDefault();
+        topFlywheel.setNeutralMode(NeutralMode.Coast);
+        topFlywheel.configNominalOutputForward(0.00);
+        topFlywheel.configNominalOutputReverse(0.00);
+        topFlywheel.configNeutralDeadband(0.00);
         // We want to rev up to the velocity pretty gently
-        flywheel.configClosedLoopPeriod(0, 1000);
+        topFlywheel.configClosedLoopPeriod(0, 1000);
 
         // TUNE
-        flywheel.config_kP(0, 0);
-        flywheel.config_kI(0, 0);
-        flywheel.config_kD(0, 0);
-        flywheel.config_kF(0, 1023.0 / 20000.0);
+        topFlywheel.config_kP(0, 0);
+        topFlywheel.config_kI(0, 0);
+        topFlywheel.config_kD(0, 0);
+        topFlywheel.config_kF(0, 1023.0 / 20000.0);
 
-        handoff = new TalonSRX(12);
-        handoff.configFactoryDefault();
-        handoff.config_kP(0, 0);
-        handoff.config_kI(0, 0);
-        handoff.config_kP(0, 0);
+        bottomFlywheel = new TalonFX(BOTTOMFLYWHEEL_ID);
+        bottomFlywheel.configFactoryDefault();
+        bottomFlywheel.setNeutralMode(NeutralMode.Coast);
+        bottomFlywheel.configNominalOutputForward(0.00);
+        bottomFlywheel.configNominalOutputReverse(0.00);
+        bottomFlywheel.configNeutralDeadband(0.00);
+        // We want to rev up to the velocity pretty gently
+        bottomFlywheel.configClosedLoopPeriod(0, 1000);
 
-        SupplyCurrentLimitConfiguration flywheelCurrentLimit = new SupplyCurrentLimitConfiguration(true, 40, 40, 0 );
-        flywheel.configSupplyCurrentLimit(flywheelCurrentLimit);
-        flywheel.configVoltageCompSaturation(12.2);
-        flywheel.enableVoltageCompensation(true);
+        // TUNE
+        bottomFlywheel.config_kP(0, 0);
+        bottomFlywheel.config_kI(0, 0);
+        bottomFlywheel.config_kD(0, 0);
+        bottomFlywheel.config_kF(0, 1023.0 / 20000.0);
 
-        SupplyCurrentLimitConfiguration pivotCurrentLimit = new SupplyCurrentLimitConfiguration(true, 40, 40, 0 );
+        bottomFlywheel.follow(topFlywheel);
+
+        SupplyCurrentLimitConfiguration flywheelCurrentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0);
+
+        topFlywheel.configSupplyCurrentLimit(flywheelCurrentLimit);
+        topFlywheel.configVoltageCompSaturation(12.2);
+        topFlywheel.enableVoltageCompensation(true);
+
+        bottomFlywheel.configSupplyCurrentLimit(flywheelCurrentLimit);
+        bottomFlywheel.configVoltageCompSaturation(12.2);
+        bottomFlywheel.enableVoltageCompensation(true);
+
+        SupplyCurrentLimitConfiguration pivotCurrentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0 );
         pivot.configSupplyCurrentLimit(pivotCurrentLimit);
         pivot.configVoltageCompSaturation(12.2);
         pivot.enableVoltageCompensation(true);
+
+        targetSpeed = 0;
+        targetAngle = 0;
+        // Change to reflect starting angle
+        currentAngle = 0;
 
         shooterMode = ShooterMode.STOPPED;
     }
@@ -119,7 +135,7 @@ public class Shooter {
      * @param vel Velocity to target.
      */
     public static void setVelocity(double vel) {
-        flywheel.set(TalonFXControlMode.Velocity, vel);
+        topFlywheel.set(TalonFXControlMode.Velocity, vel);
     }
 
     /**

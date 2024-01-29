@@ -4,7 +4,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.sensors.Pigeon;
 import frc.robot.utils.Vector2;
-import static frc.robot.Constants.*;
+import static frc.robot.Constants.Swerve.*;
 
 public class SwerveManager {
     
@@ -12,9 +12,13 @@ public class SwerveManager {
 
     public static void init() {
         mods = new SwerveModule[] {
+            // Back Right
             new SwerveModule(DRIVEID0, STEERID0, MODOFFSET0, SWERVEMODX0, SWERVEMODY0),
+            // Back Left
             new SwerveModule(DRIVEID1, STEERID1, MODOFFSET1, SWERVEMODX1, SWERVEMODY1),
+            // Front Left
             new SwerveModule(DRIVEID2, STEERID2, MODOFFSET2, SWERVEMODX2, SWERVEMODY2),
+            // Front Right
             new SwerveModule(DRIVEID3, STEERID3, MODOFFSET3, SWERVEMODX3, SWERVEMODY3)
         };
     }
