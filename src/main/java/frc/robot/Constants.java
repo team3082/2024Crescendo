@@ -38,6 +38,9 @@ public final class Constants {
         // Motor ID: Pivot
         public static final int INTAKEPIVOT_ID = 0;
 
+        // CAN ID: Beambreak
+        public static final int LASER_ID = 0;
+
         // CANCoder offset
         public static final double INTAKE_OFFSET = 0;
 
@@ -45,8 +48,18 @@ public final class Constants {
         public static final double intakeBeltRatio = 0;
         // Pivot gear ratio
         public static final double intakeGearRatio = 0;
-    }
 
+        public static final double HANDOFF_SPEED = 0.5;
+        public static final double INTAKE_HANDOFF_SPEED = 0.5;
+
+        //intake and note width in millimeters, used for lasercan detection
+        public static final int INTAKE_WIDTH_mm = 635;
+        public static final int NOTE_WIDTH_mm = 355;
+
+        public static final double INROBOT_INTAKE_ANGLE = 0.0;
+        public static final double SOURCE_INTAKE_ANGLE = 0.0;
+        public static final double GROUND_INTAKE_ANGLE = 0.0;
+    }
 
     public static final class Swerve {
 

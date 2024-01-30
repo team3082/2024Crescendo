@@ -16,8 +16,9 @@ import static frc.robot.Constants.Shooter.*;
 // theta=pi/2 straight up, and theta=-pi/2 straight down.
 @SuppressWarnings("removal")
 public class Shooter {
+
     // Different modes of the shooter
-    private static enum ShooterMode {
+    public static enum ShooterMode {
         STOPPED,
         REVVING,
         FIRING,
@@ -35,9 +36,6 @@ public class Shooter {
     public static CANCoder pivotCoder;
     
     public static TalonFX topFlywheel, bottomFlywheel;
-
-    // Falcon : Wheels
-    static final double shooterRatio = 1;
 
     // Fire when our RPM is within this much of our target.
     private static final double shooterDeadband = 0;
@@ -131,11 +129,21 @@ public class Shooter {
     }
 
     /**
+     * Get the current angle of the shooter, in radians.
+     * @return
+     */
+    public static double getShooterAngle() {
+        return pivotCoder.getPosition();
+    }
+
+    /**
      * Set the desired shooter velocity, in rotations per second.
      * @param vel Velocity to target.
      */
     public static void setVelocity(double vel) {
+        shooterMode = ShooterMode.REVVING;
         topFlywheel.set(TalonFXControlMode.Velocity, vel);
+        bottomFlywheel.set(TalonFXControlMode.Follower, topFlywheel.getDeviceID());
     }
 
     /**
@@ -149,6 +157,24 @@ public class Shooter {
 
     public static void update() {
 
+        switch (shooterMode) {
+
+            case REVVING:
+                setVelocity(targetSpeed);
+            break;
+
+            case FIRING:
+
+            break;
+
+            case EJECT:
+            
+            break;
+
+            case STOPPED:
+
+            break;
+        }
     }
 
     /**
@@ -159,5 +185,13 @@ public class Shooter {
      */
     public static void setShooterForDist(double ftPos) {
 
+    }
+
+    public static boolean revving() {
+        return shooterMode == ShooterMode.REVVING;
+    }
+
+    public static boolean firing() {
+        return shooterMode == ShooterMode.FIRING;
     }
 }

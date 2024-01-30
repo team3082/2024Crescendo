@@ -1,13 +1,13 @@
 package frc.robot.sensors;
 
-import com.ctre.phoenix6.configs.Pigeon2Configuration;
-import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix.sensors.Pigeon2;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector3;
 
+@SuppressWarnings("removal")
 public class Pigeon {
 
     public static Pigeon2 pigeon;
@@ -18,7 +18,7 @@ public class Pigeon {
 
     public static void init() {
         pigeon = new Pigeon2(0);
-        pigeon.getConfigurator().apply(new Pigeon2Configuration());
+        pigeon.configFactoryDefault();
     }
 
     public static void update() {
@@ -53,7 +53,7 @@ public class Pigeon {
      * @return Pitch in radians
      */
     public static double getPitchRad() {
-        return Math.PI * pigeon.getPitch().refresh().getValue() / 180;
+        return Math.PI * pigeon.getPitch() / 180;
     }
 
     /**
@@ -65,7 +65,7 @@ public class Pigeon {
         if (RobotBase.isSimulation()) {
             return simulatedRot;
         }
-        return Math.PI * pigeon.getYaw().refresh().getValue() / 180;
+        return Math.PI * pigeon.getYaw() / 180;
     }
 
     /**
@@ -75,7 +75,7 @@ public class Pigeon {
      * @return Roll in radians
      */
     public static double getRollRad() {
-        return Math.PI * pigeon.getRoll().refresh().getValue() / 180;
+        return Math.PI * pigeon.getRoll() / 180;
     }
 
     /**

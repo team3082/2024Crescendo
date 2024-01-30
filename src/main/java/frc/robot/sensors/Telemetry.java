@@ -2,7 +2,6 @@ package frc.robot.sensors;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -10,6 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
+import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 
 import edu.wpi.first.wpilibj.RobotBase;
@@ -18,6 +18,12 @@ import edu.wpi.first.wpilibj.RobotBase;
 public class Telemetry {
 
     static final double IN_TO_M = 1 / 39.37;
+
+    // Colors for logging
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_RESET = "\u001B[0m";
 
     /**
      * Message severity options
@@ -76,14 +82,51 @@ public class Telemetry {
     // SwervePosition
     private static final GenericEntry swervePos = pos.add("Swerve Position", SwervePosition.getPosition().toString()).getEntry();
 
-    // Public object attached to the wpilib data logger
-    public static DataLog FRClogger;
-
     public static void init() {
 
         // Input other misc values into Shuffleboard.
         pigeonTab.add("Pigeon", Pigeon.pigeon);
         robotTab.add("Field View", field);
+    }
+
+    /**
+     * Log a message to the console. Same as a print statement, however this has color, and it is prefixed with a timestamp.
+     * @param severity The severity of the message as a string. This changes the color of the message.
+     * @param subsystem The subsystem of which this message was derived from.
+     * @param message The message to send to the console.
+     */
+    public static void log(Severity severity, String subsystem, String message) {
+        String color;
+
+        switch (severity) {
+            case INFO:
+                color = ANSI_RESET;
+            break;
+            case DEBUG:
+                color = ANSI_GREEN;
+            break;
+            case WARNING:
+                color = ANSI_YELLOW;
+            break;
+            case CRITICAL:
+                color = ANSI_RED;
+            break;
+            default:
+                return;
+        }
+        String fullMessage = "[" + RTime.createTimestamp() + "]" + " [" + severity + "] " + "(" + subsystem + "):" + " " + message;
+        System.out.println(color + fullMessage + ANSI_RESET);
+    }
+
+    /**
+     * Log a message to the console. Same as a print statement, however this has color, and it is prefixed with a timestamp.
+     * The name of the class that called this function is automatically detected and printed as well.
+     * @param severity The severity of the message as a string. This changes the color of the message.
+     * @param message The message to send to the console.
+     */
+    public static void log(Severity severity, String message) {
+        String caller = Thread.currentThread().getStackTrace()[2].getClassName();
+        log(severity, caller, message);
     }
 
     /**
