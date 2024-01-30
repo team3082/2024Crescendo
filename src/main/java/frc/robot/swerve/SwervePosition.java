@@ -88,12 +88,28 @@ public class SwervePosition {
         return absVelocity;
     }
 
+    public static void updateAveragePosVision() {
+        try {
+            Vector2 visionPos = VisionManager.getPosition();
+            Vector2 adjustment = visionPos.sub(position).mul(correctionMultiplier);
+            position = position.add(adjustment);
+        } catch(Exception e) { }
+    }
+
+    public static void updateAverageRotVision() {
+        try {
+            double visionRot = VisionManager.getRotation();
+            double adjustment = (visionRot - Pigeon.getRotationRad()) * correctionMultiplier;
+            Pigeon.setYawRad(Pigeon.getRotationRad() + adjustment);
+        } catch(Exception e) { }
+    }
+
     /**
      * Recalibrates the SwervePosition based on a position on the field. Should only be used when vision is disabled,
      * otherwise it'll just be overwritten the next frame.
      * @param newPosition the new position to set the robot position to
      */
-    public static void setPosition(Vector2 newPosition){
+    public static void setPosition(Vector2 newPosition) {
         position = newPosition;
     }
 

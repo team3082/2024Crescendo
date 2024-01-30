@@ -58,8 +58,6 @@ public class SwerveModule {
 		drive.config_kP(0, 0.5, 30);
 		drive.config_kI(0, 0.01, 30);
 		drive.config_kD(0, 0.1, 30);
-        drive.configMotionCruiseVelocity(100, 30);
-		drive.configMotionAcceleration(400, 30);
         
         drive.setInverted(false);
         steer.setInverted(false);
@@ -89,7 +87,6 @@ public class SwerveModule {
         steer.setSelectedSensorPosition( pos );
         steer.set(TalonFXControlMode.MotionMagic, pos);
     }
-    
 
     public void drive(double power) {
         drive.set(TalonFXControlMode.PercentOutput, power * (inverted ? -1.0 : 1.0));
@@ -145,13 +142,10 @@ public class SwerveModule {
             inverted = false;
         }
 
-        //steer.set(TalonFXControlMode.MotionMagic, destination);
         steer.set(TalonFXControlMode.Position, destination);
 
         simSteerAng = destination;
-        
     }
-
 
     // Returns an angle in radians
     public double getSteerAngle() {
@@ -159,9 +153,7 @@ public class SwerveModule {
             return simSteerAng / ticksPerRotationSteer * Math.PI * 2 + Math.PI / 2;
         }
         return steer.getSelectedSensorPosition() / ticksPerRotationSteer * Math.PI * 2 + Math.PI / 2;
-        }
-
-    
+    }
 
     public double getDriveVelocity() {
         if (RobotBase.isSimulation()) {
