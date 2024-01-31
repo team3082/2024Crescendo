@@ -55,4 +55,15 @@ public class RMath {
     public static double clamp(double in, double min, double max){
         return Math.min(Math.max(in, min), max);
     }
+
+    public static double interpolate(double a, double b, double t){
+        return a + (b-a) * t;
+    }
+
+    public static double interpolateRotationRad(double a, double b, double t){
+        b = targetAngleAbsolute(a,b,Math.PI * 2);
+
+        return interpolate(a,b,t);
+
+    }
 }
