@@ -73,10 +73,10 @@ public final class Constants {
         public static final int STEERID2 = 2;
         public static final int STEERID3 = 4;
 
-        public static final double MODOFFSET0 = 105.117;
-        public static final double MODOFFSET1 = 46.406;
-        public static final double MODOFFSET2 = 358.330;
-        public static final double MODOFFSET3 = 308.145;
+        public static final double MODOFFSET0 = 1907.402;
+        public static final double MODOFFSET1 = -499.219 + 180;
+        public static final double MODOFFSET2 = 534.639 + 180;
+        public static final double MODOFFSET3 = -46.143;
 
         public static final double SWERVEMODX0 = 1;
         public static final double SWERVEMODX1 = -1;

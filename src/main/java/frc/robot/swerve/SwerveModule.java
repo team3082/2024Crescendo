@@ -43,12 +43,15 @@ public class SwerveModule {
 
         // Configure encoders/PID
         steer.configFactoryDefault();
-        steer.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
+       // steer.configRemoteFeedbackFilter(absEncoder, 0);
+       // steer.configSelectedFeedbackSensor(TalonFXFeedbackDevice.RemoteSensor0, 0, 30);
         steer.configNeutralDeadband(0.001, 30);
-        steer.config_kF(0, 0, 30);
+        steer.config_kF(0, 1023.0 / 20000.0, 30);
 		steer.config_kP(0, 0.2, 30);
 		steer.config_kI(0, 0.0, 30);
 		steer.config_kD(0, 0.1, 30);
+        //steer.configMotionCruiseVelocity(40000, 30);
+        //steer.configMotionAcceleration(40000, 30);
 
         drive.configFactoryDefault();
         drive.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
@@ -142,7 +145,7 @@ public class SwerveModule {
             inverted = false;
         }
 
-        steer.set(TalonFXControlMode.Position, destination);
+        steer.set(TalonFXControlMode.MotionMagic, destination);
 
         simSteerAng = destination;
     }
