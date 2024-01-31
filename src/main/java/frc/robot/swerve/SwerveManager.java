@@ -13,13 +13,13 @@ public class SwerveManager {
     public static void init() {
         mods = new SwerveModule[] {
             // Back Right
-            new SwerveModule(DRIVEID0, STEERID0, MODOFFSET0, SWERVEMODX0, SWERVEMODY0),
+            new SwerveModule(STEERID0, DRIVEID0, MODOFFSET0, SWERVEMODX0, SWERVEMODY0),
             // Back Left
-            new SwerveModule(DRIVEID1, STEERID1, MODOFFSET1, SWERVEMODX1, SWERVEMODY1),
+            new SwerveModule(STEERID1, DRIVEID1, MODOFFSET1, SWERVEMODX1, SWERVEMODY1),
             // Front Left
-            new SwerveModule(DRIVEID2, STEERID2, MODOFFSET2, SWERVEMODX2, SWERVEMODY2),
+            new SwerveModule(STEERID2, DRIVEID2, MODOFFSET2, SWERVEMODX2, SWERVEMODY2),
             // Front Right
-            new SwerveModule(DRIVEID3, STEERID3, MODOFFSET3, SWERVEMODX3, SWERVEMODY3)
+            new SwerveModule(STEERID3, DRIVEID3, MODOFFSET3, SWERVEMODX3, SWERVEMODY3)
         };
     }
 

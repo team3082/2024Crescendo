@@ -14,8 +14,7 @@ public class OI {
 
     static final int moveX     = LogitechF310.AXIS_LEFT_X;
     static final int moveY     = LogitechF310.AXIS_LEFT_Y;
-    // static final int rotateX   = LogitechF310.AXIS_RIGHT_X;
-    static final int rotateX   = 3;
+    static final int rotateX   = LogitechF310.AXIS_RIGHT_X;
     static final int boost     = LogitechF310.AXIS_RIGHT_TRIGGER;
     static final int zero      = LogitechF310.BUTTON_Y;
     static final int lock      = LogitechF310.BUTTON_X;
@@ -64,7 +63,7 @@ public class OI {
             }
         }
 
-        System.out.println("Rotate: " + rotate + " Drive: " + drive.toString());
+        // System.out.println("Rotate: " + rotate + " Drive: " + drive.toString());
 
         // Swerving and a steering! Zoom!
         SwerveManager.rotateAndDrive(rotate, drive);

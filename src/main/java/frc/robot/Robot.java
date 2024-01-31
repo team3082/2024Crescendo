@@ -26,21 +26,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // Blue
-    System.out.println(VisionManager.getTagPos(1).toString());
-    System.out.println(VisionManager.getTagPos(8).toString());
-    // Red
-    System.out.println(VisionManager.getTagPos(3).toString());
-    System.out.println(VisionManager.getTagPos(13).toString());
-
     Pigeon.init();
     Pigeon.zero();
     SwerveManager.init();
     SwervePosition.init();
     SwervePID.init();
     Pigeon.setYaw(270);
-    VisionManager.init();
-    Telemetry.init();
+    //VisionManager.init();
+    //Telemetry.init();
   }
 
   @Override
@@ -48,7 +41,7 @@ public class Robot extends TimedRobot {
     Pigeon.update();
     RTime.updateAbsolute();
     SwervePosition.update();
-    Telemetry.update(false);
+    //Telemetry.update(false);
   }
 
   @Override
@@ -75,7 +68,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    SwervePosition.updateAveragePosVision();
+    //SwervePosition.updateAveragePosVision();
   }
 
   @Override
