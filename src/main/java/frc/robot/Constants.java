@@ -151,5 +151,7 @@ public final class Constants {
             public static final SensorDirectionValue cancoderInvert = SensorDirectionValue.CounterClockwise_Positive;
 
         }
+
     }
+    public static final double METERSTOINCHES = 39.3701;
 }

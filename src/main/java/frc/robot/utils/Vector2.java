@@ -93,4 +93,8 @@ public class Vector2 {
         return String.format("(%.2f, %.2f)", x, y);
     }
 
+    public double dist(Vector2 v){
+        return this.sub(v).mag();
+    }
+
 }
