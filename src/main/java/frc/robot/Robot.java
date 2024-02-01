@@ -12,6 +12,8 @@ import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
+import frc.robot.utils.Vector2;
+import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -34,21 +36,30 @@ public class Robot extends TimedRobot {
     Pigeon.setYaw(270);
     //VisionManager.init();
     //Telemetry.init();
+    ChoreoTrajectoryGenerator.init();
+    SwervePosition.setPosition(new Vector2());
   }
 
   @Override
   public void robotPeriodic() {
     Pigeon.update();
     RTime.updateAbsolute();
-    SwervePosition.update();
     //Telemetry.update(false);
   }
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    RTime.init();
+    Pigeon.setYaw(270);
+    // Auto.bezierCurveAutoTest();
+    // Auto.trajFollowerTest();
+    // Auto.choreoTest();
+  }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    Auto.update();
+  }
 
   @Override
   public void teleopInit() {
