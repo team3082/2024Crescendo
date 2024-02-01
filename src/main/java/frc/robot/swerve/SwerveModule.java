@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -16,7 +17,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 @SuppressWarnings("removal")
 public class SwerveModule {
     
-    private static final double ticksPerRotationSteer = 2048 * (150 / 7);
+    private static final double ticksPerRotationSteer = 2048 * 150 / 7;
     private static final double ticksPerRotationDrive = 2048 * 6.12;
 
     public TalonFX steer;
@@ -43,15 +44,13 @@ public class SwerveModule {
 
         // Configure encoders/PID
         steer.configFactoryDefault();
-       // steer.configRemoteFeedbackFilter(absEncoder, 0);
-       // steer.configSelectedFeedbackSensor(TalonFXFeedbackDevice.RemoteSensor0, 0, 30);
         steer.configNeutralDeadband(0.001, 30);
-        steer.config_kF(0, 1023.0 / 20000.0, 30);
-		steer.config_kP(0, 0.2, 30);
+        steer.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
+		steer.config_kP(0, 0.4, 30);
 		steer.config_kI(0, 0.0, 30);
-		steer.config_kD(0, 0.1, 30);
-        //steer.configMotionCruiseVelocity(40000, 30);
-        //steer.configMotionAcceleration(40000, 30);
+		steer.config_kD(0, 0.2, 30);
+        steer.configMotionCruiseVelocity(40000, 30);
+        steer.configMotionAcceleration(40000, 30);
 
         drive.configFactoryDefault();
         drive.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
@@ -59,10 +58,10 @@ public class SwerveModule {
         drive.configNeutralDeadband(0.001, 30);
 		drive.config_kF(0, 0, 30);
 		drive.config_kP(0, 0.5, 30);
-		drive.config_kI(0, 0.01, 30);
-		drive.config_kD(0, 0.1, 30);
+		drive.config_kI(0, 0.02, 30);
+		drive.config_kD(0, 0.2, 30);
         
-        drive.setInverted(false);
+        drive.setInverted(true);
         steer.setInverted(true);
         drive.setNeutralMode(NeutralMode.Brake);
         steer.setNeutralMode(NeutralMode.Brake);
@@ -84,11 +83,9 @@ public class SwerveModule {
     }
 
     public void resetSteerSensor() {
-        // Align the falcon to the cancoder
         double pos = absEncoder.getAbsolutePosition() - cancoderOffset;
         pos = pos / 360.0 * ticksPerRotationSteer;
-        steer.setSelectedSensorPosition( pos );
-        steer.set(TalonFXControlMode.MotionMagic, pos);
+        steer.setSelectedSensorPosition(pos);
     }
 
     public void drive(double power) {
@@ -145,7 +142,7 @@ public class SwerveModule {
             inverted = false;
         }
 
-        steer.set(TalonFXControlMode.MotionMagic, destination);
+        steer.set(TalonFXControlMode.Position, destination);
 
         simSteerAng = destination;
     }
