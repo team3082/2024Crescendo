@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
     SwervePID.init();
     Pigeon.setYaw(270);
     //VisionManager.init();
-    //Telemetry.init();
+    Telemetry.init();
     ChoreoTrajectoryGenerator.init();
     SwervePosition.setPosition(new Vector2());
   }
@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
     Pigeon.update();
     RTime.updateAbsolute();
     RTime.update();
-    //Telemetry.update(false);
+    Telemetry.update(false);
   }
 
   @Override

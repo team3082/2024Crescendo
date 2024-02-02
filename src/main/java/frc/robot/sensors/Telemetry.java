@@ -85,7 +85,7 @@ public class Telemetry {
     public static void init() {
 
         // Input other misc values into Shuffleboard.
-        pigeonTab.add("Pigeon", Pigeon.pigeon);
+        // pigeonTab.add("Pigeon", Pigeon.pigeon);
         robotTab.add("Field View", field);
     }
 
@@ -187,5 +187,7 @@ public class Telemetry {
         SwervePID.rotPID.kI = rotI.getDouble(0);
         SwervePID.rotPID.kD = rotD.getDouble(0);
         SwervePID.rotPID.deadband = rotDeadBand.getDouble(0);
+
+
     }
 }

@@ -1,6 +1,8 @@
-package frc.robot.utils;
+package robot.utils;
 
 import org.junit.jupiter.api.Test;
+
+import frc.robot.utils.TrapezoidalController;
 
 import static org.junit.jupiter.api.Assertions.*;
 
