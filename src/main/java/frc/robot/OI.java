@@ -1,5 +1,7 @@
 package frc.robot;
 
+import static frc.robot.Tuning.YAWRATEFEEDBACKSTATUS;
+
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
 import frc.robot.sensors.Pigeon;
@@ -66,7 +68,24 @@ public class OI {
 
         // System.out.println("Rotate: " + rotate + " Drive: " + drive.toString());
 
+        //TODO experimental feature
+        switch(YAWRATEFEEDBACKSTATUS){
+            case 0:
+                SwerveManager.rotateAndDrive(rotate, drive);
+                return;
+            case 1:
+                if(rotate == 0){
+                    SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
+                }else{
+                    SwerveManager.rotateAndDrive(rotate, drive);
+                }
+                return;
+            case 2:
+                SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
+                return;
+        }
+
         // Swerving and a steering! Zoom!
-        SwerveManager.rotateAndDrive(rotate, drive);
+        // SwerveManager.rotateAndDrive(rotate, drive);
     }
 }

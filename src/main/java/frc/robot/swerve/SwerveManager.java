@@ -5,8 +5,9 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 import static frc.robot.Constants.Swerve.*;
+import static frc.robot.Tuning.KDYAW;
 
-public class SwerveManager {
+public final class SwerveManager {
     
     public static SwerveModule[] mods;
 
@@ -31,6 +32,17 @@ public class SwerveManager {
 
     public static void rotateAndDrive(SwerveInstruction si) {
         rotateAndDrive(si.rotation, si.movement);
+    }
+
+    /**
+     * Only call this method from OI
+     * @param rotSpeed
+     * @param move
+     */
+    public static void rotateAndDriveWithYawRateControl(double rotSpeed, Vector2 move){
+        double yawRate = Pigeon.getDeltaRotRad();
+        double correctedRotSpeed = rotSpeed + yawRate * KDYAW;
+        rotateAndDrive(correctedRotSpeed, move);
     }
 
     public static void rotateAndDrive(double rotSpeed, Vector2 move) {
