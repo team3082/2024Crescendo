@@ -32,4 +32,13 @@ public class Tuning {
     //Vision
 
     //NOTE CONTROL
+    public static final class Shooter{
+        public static final double FLYWHEELKD = 0.0;
+        public static final double FLYWHEELKF = 0.0;
+
+        public static final double PIVOTKP = 0.0;
+        public static final double PIVOTKI = 0.0;
+        public static final double PIVOTKD = 0.0;
+        public static final double PIVOTKF = 0.0;
+    }
 }
