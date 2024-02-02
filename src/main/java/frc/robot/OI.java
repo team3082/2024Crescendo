@@ -14,8 +14,7 @@ public class OI {
 
     static final int moveX     = LogitechF310.AXIS_LEFT_X;
     static final int moveY     = LogitechF310.AXIS_LEFT_Y;
-    // static final int rotateX   = LogitechF310.AXIS_RIGHT_X;
-    static final int rotateX   = 3;
+    static final int rotateX   = LogitechF310.AXIS_RIGHT_X;
     static final int boost     = LogitechF310.AXIS_RIGHT_TRIGGER;
     static final int zero      = LogitechF310.BUTTON_Y;
     static final int lock      = LogitechF310.BUTTON_X;
@@ -38,12 +37,13 @@ public class OI {
 
         if (driverStick.getRawButton(zero)) Pigeon.zero();
 
-        double kBoostCoefficient = 0.3;
+        double kBoostCoefficient = 0.6;
 
         if (driverStick.getRawAxis(boost) > .5) kBoostCoefficient = 1;
 
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
-        double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -0.5;
+        double rotate = driverStick.getRawAxis(rotateX) * -0.3;
+        
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
@@ -64,7 +64,7 @@ public class OI {
             }
         }
 
-        System.out.println("Rotate: " + rotate + " Drive: " + drive.toString());
+        // System.out.println("Rotate: " + rotate + " Drive: " + drive.toString());
 
         // Swerving and a steering! Zoom!
         SwerveManager.rotateAndDrive(rotate, drive);

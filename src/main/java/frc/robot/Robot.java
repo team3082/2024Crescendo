@@ -12,6 +12,8 @@ import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
+import frc.robot.utils.Vector2;
+import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -26,37 +28,45 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // Blue
-    System.out.println(VisionManager.getTagPos(1).toString());
-    System.out.println(VisionManager.getTagPos(8).toString());
-    // Red
-    System.out.println(VisionManager.getTagPos(3).toString());
-    System.out.println(VisionManager.getTagPos(13).toString());
-
+    try {
+      Thread.sleep(100);
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     Pigeon.init();
     Pigeon.zero();
     SwerveManager.init();
     SwervePosition.init();
     SwervePID.init();
     Pigeon.setYaw(270);
-    VisionManager.init();
+    //VisionManager.init();
     Telemetry.init();
+    ChoreoTrajectoryGenerator.init();
+    SwervePosition.setPosition(new Vector2());
   }
 
   @Override
   public void robotPeriodic() {
     Pigeon.update();
-    SwerveManager.update();
     RTime.updateAbsolute();
-    SwervePosition.update();
+    RTime.update();
     Telemetry.update(false);
   }
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    RTime.init();
+    Pigeon.setYaw(270);
+    // Auto.bezierCurveAutoTest();
+    // Auto.trajFollowerTest();
+    Auto.choreoTest();
+  }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    Auto.update();
+  }
 
   @Override
   public void teleopInit() {
@@ -75,7 +85,9 @@ public class Robot extends TimedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    //SwervePosition.updateAveragePosVision();
+  }
 
   @Override
   public void testInit() {}

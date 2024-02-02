@@ -2,14 +2,20 @@ package frc.robot.sensors;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
+import edu.wpi.first.wpilibj.util.Color8Bit;
+import frc.robot.Constants;
+import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
+import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 
 import edu.wpi.first.wpilibj.RobotBase;
@@ -18,6 +24,12 @@ import edu.wpi.first.wpilibj.RobotBase;
 public class Telemetry {
 
     static final double IN_TO_M = 1 / 39.37;
+
+    // Colors for logging
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_RESET = "\u001B[0m";
 
     /**
      * Message severity options
@@ -61,6 +73,32 @@ public class Telemetry {
     private static frc.robot.utils.Vector2 prevSimPos = new Vector2();
     private static Rotation2d prevSimRot = new Rotation2d();
 
+    // cool swerve visualization n stuff
+    private static Mechanism2d customField = new Mechanism2d(900, 500);
+    private static MechanismRoot2d fieldSwerveMod0Root = customField.getRoot("fieldSwerveMod0", 0, 0);
+    private static MechanismLigament2d fieldSwerveMod0 = fieldSwerveMod0Root.append(new MechanismLigament2d("fieldSwerveMod0", 0, 0));
+    private static MechanismRoot2d fieldSwerveMod1Root = customField.getRoot("fieldSwerveMod1", 0, 0);
+    private static MechanismLigament2d fieldSwerveMod1 = fieldSwerveMod1Root.append(new MechanismLigament2d("fieldSwerveMod1", 0, 0));
+    private static MechanismRoot2d fieldSwerveMod2Root = customField.getRoot("fieldSwerveMod2", 0, 0);
+    private static MechanismLigament2d fieldSwerveMod2 = fieldSwerveMod2Root.append(new MechanismLigament2d("fieldSwerveMod2", 0, 0));
+    private static MechanismRoot2d fieldSwerveMod3Root = customField.getRoot("fieldSwerveMod3", 0, 0);
+    private static MechanismLigament2d fieldSwerveMod3 = fieldSwerveMod3Root.append(new MechanismLigament2d("fieldSwerveMod3", 0, 0));
+    private static MechanismRoot2d fieldSwerveMovementRoot = customField.getRoot("Field Movement Vector", 0, 0);
+    private static MechanismLigament2d fieldSwerveMovement = fieldSwerveMovementRoot.append(new MechanismLigament2d("Field Movement Vector", 0, 0));
+    
+    // swerve states
+    private static Mechanism2d swerveMods = new Mechanism2d(40, 40);
+    private static MechanismRoot2d swerveMod0Root = swerveMods.getRoot("SwerveMod0", 0, 0);
+    private static MechanismLigament2d swerveMod0 = swerveMod0Root.append(new MechanismLigament2d("SwerveMod0", 0, 0));
+    private static MechanismRoot2d swerveMod1Root = swerveMods.getRoot("SwerveMod1", 0, 0);
+    private static MechanismLigament2d swerveMod1 = swerveMod1Root.append(new MechanismLigament2d("SwerveMod1", 0, 0));
+    private static MechanismRoot2d swerveMod2Root = swerveMods.getRoot("SwerveMod2", 0, 0);
+    private static MechanismLigament2d swerveMod2 = swerveMod2Root.append(new MechanismLigament2d("SwerveMod2", 0, 0));
+    private static MechanismRoot2d swerveMod3Root = swerveMods.getRoot("SwerveMod3", 0, 0);
+    private static MechanismLigament2d swerveMod3 = swerveMod3Root.append(new MechanismLigament2d("SwerveMod3", 0, 0));
+    private static MechanismRoot2d swerveMovementRoot = swerveMods.getRoot("Movement Vector", 0, 0);
+    private static MechanismLigament2d swerveMovement = swerveMovementRoot.append(new MechanismLigament2d("Movement Vector", 0, 0));
+
     // Move PID
     private static final GenericEntry moveP = moveTab.add("Move P", SwervePID.moveP).getEntry();
     private static final GenericEntry moveI = moveTab.add("Move I", SwervePID.moveI).getEntry();
@@ -76,14 +114,53 @@ public class Telemetry {
     // SwervePosition
     private static final GenericEntry swervePos = pos.add("Swerve Position", SwervePosition.getPosition().toString()).getEntry();
 
-    // Public object attached to the wpilib data logger
-    public static DataLog FRClogger;
-
     public static void init() {
 
         // Input other misc values into Shuffleboard.
-        pigeonTab.add("Pigeon", Pigeon.pigeon);
+        // pigeonTab.add("Pigeon", Pigeon.pigeon);
         robotTab.add("Field View", field);
+        robotTab.add("Custom Field", customField);
+        robotTab.add("Swerve", swerveMods);
+    }
+
+    /**
+     * Log a message to the console. Same as a print statement, however this has color, and it is prefixed with a timestamp.
+     * @param severity The severity of the message as a string. This changes the color of the message.
+     * @param subsystem The subsystem of which this message was derived from.
+     * @param message The message to send to the console.
+     */
+    public static void log(Severity severity, String subsystem, String message) {
+        String color;
+
+        switch (severity) {
+            case INFO:
+                color = ANSI_RESET;
+            break;
+            case DEBUG:
+                color = ANSI_GREEN;
+            break;
+            case WARNING:
+                color = ANSI_YELLOW;
+            break;
+            case CRITICAL:
+                color = ANSI_RED;
+            break;
+            default:
+                return;
+        }
+        String fullMessage = "[" + RTime.createTimestamp() + "]" + " [" + severity + "] " + "(" + subsystem + "):" + " " + message;
+        System.out.println(color + fullMessage + ANSI_RESET);
+    }
+
+    /**
+     * Log a message to the console. Same as a print statement, however this has color, and it is prefixed with a timestamp.
+     * The name of the class that called this function is automatically detected and printed as well.
+     * @param severity The severity of the message as a string. This changes the color of the message.
+     * @param message The message to send to the console.
+     */
+    public static void log(Severity severity, String message) {
+        String caller = Thread.currentThread().getStackTrace()[2].getClassName();
+        log(severity, caller, message);
     }
 
     /**
@@ -144,5 +221,59 @@ public class Telemetry {
         SwervePID.rotPID.kI = rotI.getDouble(0);
         SwervePID.rotPID.kD = rotD.getDouble(0);
         SwervePID.rotPID.deadband = rotDeadBand.getDouble(0);
+
+        // cool swerve visualization stuff that looks cool and i really like
+        double modDist = Math.sqrt(Math.pow(Constants.Swerve.SWERVEMODX0, 2) + Math.pow(Constants.Swerve.SWERVEMODY0, 2));
+        
+        fieldSwerveMod0Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + 3 * Math.PI / 4) + 450 + SwervePosition.getPosition().y,
+         modDist * Math.sin(Pigeon.getRotationRad() + 3 * Math.PI / 4) + 250 + -SwervePosition.getPosition().x);
+        fieldSwerveMod0.setAngle(Math.toDegrees(SwerveManager.mods[0].getSteerAngle() + Pigeon.getRotationRad()) - 180); 
+        fieldSwerveMod0.setLength(SwerveManager.mods[0].getDriveVelocity() / 30);
+
+        fieldSwerveMod1Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + 1 * Math.PI / 4) + 450 + SwervePosition.getPosition().y,
+         modDist * Math.sin(Pigeon.getRotationRad() + 1 * Math.PI / 4) + 250 + -SwervePosition.getPosition().x);
+        fieldSwerveMod1.setAngle(Math.toDegrees(SwerveManager.mods[1].getSteerAngle() + Pigeon.getRotationRad()) - 180);
+        fieldSwerveMod1.setLength(SwerveManager.mods[1].getDriveVelocity() / 30);
+
+        fieldSwerveMod2Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + -1 * Math.PI / 4) + 450 + SwervePosition.getPosition().y, 
+         modDist * Math.sin(Pigeon.getRotationRad() + -1 * Math.PI / 4) + 250 + -SwervePosition.getPosition().x);
+        fieldSwerveMod2.setAngle(Math.toDegrees(SwerveManager.mods[2].getSteerAngle() + Pigeon.getRotationRad()) - 180);
+        fieldSwerveMod2.setLength(SwerveManager.mods[2].getDriveVelocity() / 30);
+
+        fieldSwerveMod3Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + -3 * Math.PI / 4) + 450 + SwervePosition.getPosition().y, 
+         modDist * Math.sin(Pigeon.getRotationRad() + -3 * Math.PI / 4) + 250 + -SwervePosition.getPosition().x);
+        fieldSwerveMod3.setAngle(Math.toDegrees(SwerveManager.mods[3].getSteerAngle() + Pigeon.getRotationRad()) - 180);
+        fieldSwerveMod3.setLength(SwerveManager.mods[3].getDriveVelocity() / 30);
+
+        fieldSwerveMovementRoot.setPosition(450 + SwervePosition.getPosition().y, 250 + -SwervePosition.getPosition().x);
+        fieldSwerveMovement.setAngle(Math.toDegrees(SwerveManager.getRobotDriveVelocity().atan2() + Pigeon.getRotationRad()) - 180);
+        fieldSwerveMovement.setLength(SwerveManager.getRobotDriveVelocity().mag() / 30);
+        fieldSwerveMovement.setColor(new Color8Bit(255, 0, 0));
+
+
+        swerveMod0Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + 3 * Math.PI / 4) + 20,
+         modDist * Math.sin(Pigeon.getRotationRad() + 3 * Math.PI / 4) + 20);
+        swerveMod0.setAngle(Math.toDegrees(SwerveManager.mods[0].getSteerAngle() + Pigeon.getRotationRad()) - 180); 
+        swerveMod0.setLength(SwerveManager.mods[0].getDriveVelocity() / 60);
+
+        swerveMod1Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + 1 * Math.PI / 4) + 20,
+         modDist * Math.sin(Pigeon.getRotationRad() + 1 * Math.PI / 4) + 20);
+        swerveMod1.setAngle(Math.toDegrees(SwerveManager.mods[1].getSteerAngle() + Pigeon.getRotationRad()) - 180);
+        swerveMod1.setLength(SwerveManager.mods[1].getDriveVelocity() / 60);
+
+        swerveMod2Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + -1 * Math.PI / 4) + 20, 
+         modDist * Math.sin(Pigeon.getRotationRad() + -1 * Math.PI / 4) + 20);
+        swerveMod2.setAngle(Math.toDegrees(SwerveManager.mods[2].getSteerAngle() + Pigeon.getRotationRad()) - 180);
+        swerveMod2.setLength(SwerveManager.mods[2].getDriveVelocity() / 60);
+
+        swerveMod3Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + -3 * Math.PI / 4) + 20, 
+         modDist * Math.sin(Pigeon.getRotationRad() + -3 * Math.PI / 4) + 20);
+        swerveMod3.setAngle(Math.toDegrees(SwerveManager.mods[3].getSteerAngle() + Pigeon.getRotationRad()) - 180);
+        swerveMod3.setLength(SwerveManager.mods[3].getDriveVelocity() / 60);
+
+        swerveMovementRoot.setPosition(20, 20);
+        swerveMovement.setAngle(Math.toDegrees(SwerveManager.getRobotDriveVelocity().atan2() + Pigeon.getRotationRad()) - 180);
+        swerveMovement.setLength(SwerveManager.getRobotDriveVelocity().mag() / 60);
+        swerveMovement.setColor(new Color8Bit(255, 0, 0));
     }
 }
