@@ -3,9 +3,9 @@ package frc.robot.sensors;
 import com.ctre.phoenix.sensors.Pigeon2;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.lib.utils.RTime;
+import frc.lib.utils.Vector3;
 import frc.robot.swerve.SwerveManager;
-import frc.robot.utils.RTime;
-import frc.robot.utils.Vector3;
 
 @SuppressWarnings("removal")
 public class Pigeon {

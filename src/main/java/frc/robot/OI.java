@@ -2,12 +2,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
+import frc.lib.utils.RMath;
+import frc.lib.utils.Vector2;
 import frc.robot.sensors.Pigeon;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwerveModule;
 import frc.robot.swerve.SwervePID;
-import frc.robot.utils.Vector2;
-import frc.robot.utils.RMath;
 
 public class OI {
     public static Joystick driverStick;

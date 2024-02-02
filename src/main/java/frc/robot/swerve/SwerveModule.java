@@ -11,9 +11,8 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
-import frc.robot.utils.Vector2;
-
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.lib.utils.Vector2;
 
 @SuppressWarnings("removal")
 public class SwerveModule {

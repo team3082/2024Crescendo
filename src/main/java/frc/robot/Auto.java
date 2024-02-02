@@ -8,22 +8,22 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.lib.followers.PIDFollower;
+import frc.lib.followers.SwerveFollower;
+import frc.lib.swerve.SwerveState;
+import frc.lib.trajectories.BezierCurve;
+import frc.lib.trajectories.ChoreoTrajectoryGenerator;
+import frc.lib.trajectories.LinearSpline;
+import frc.lib.trajectories.QuinticHermite;
+import frc.lib.trajectories.SwerveTrajectory;
+import frc.lib.utils.RTime;
+import frc.lib.utils.Vector2;
 import frc.robot.autoframe.Autoframe;
 import frc.robot.autoframe.CurveAutoFrame;
 import frc.robot.autoframe.FollowBezierCurve;
 import frc.robot.autoframe.TrajectoryFollow;
 import frc.robot.sensors.Pigeon;
 import frc.robot.swerve.SwervePosition;
-import frc.robot.swerve.SwerveState;
-import frc.robot.utils.RTime;
-import frc.robot.utils.Vector2;
-import frc.robot.utils.followers.PIDFollower;
-import frc.robot.utils.followers.SwerveFollower;
-import frc.robot.utils.trajectories.BezierCurve;
-import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
-import frc.robot.utils.trajectories.LinearSpline;
-import frc.robot.utils.trajectories.QuinticHermite;
-import frc.robot.utils.trajectories.SwerveTrajectory;
 
 public class Auto {
     public static void bezierCurveAutoTest() {

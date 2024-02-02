@@ -5,15 +5,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.lib.trajectories.ChoreoTrajectoryGenerator;
+import frc.lib.utils.RTime;
+import frc.lib.utils.Vector2;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
-import frc.robot.utils.RTime;
-import frc.robot.utils.Vector2;
-import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to

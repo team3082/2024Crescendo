@@ -2,12 +2,13 @@ package frc.robot.autoframe;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
-import frc.robot.utils.PIDController;
-import frc.robot.utils.Vector2;
-import frc.robot.utils.trajectories.BezierCurve;
+
 import static frc.robot.Auto.movement;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.lib.control.PIDController;
+import frc.lib.trajectories.BezierCurve;
+import frc.lib.utils.Vector2;
 import frc.robot.Tuning;
 
 public class FollowBezierCurve extends Autoframe {
