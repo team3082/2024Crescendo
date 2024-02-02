@@ -1,8 +1,5 @@
 package frc.robot.autoframe;
 
-import java.util.Arrays;
-
-import edu.wpi.first.wpilibj.RobotBase;
 import frc.lib.followers.SwerveFollower;
 import frc.lib.swerve.SwerveInstruction;
 import frc.lib.swerve.SwerveState;

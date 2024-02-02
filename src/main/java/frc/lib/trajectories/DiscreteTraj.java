@@ -1,9 +1,6 @@
 package frc.lib.trajectories;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import frc.lib.swerve.TimedSwerveState;
 import frc.lib.swerve.SwerveState;
 

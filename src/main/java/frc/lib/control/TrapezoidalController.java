@@ -1,6 +1,5 @@
 package frc.lib.control;
 
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.lib.utils.RMath;
 import frc.lib.utils.RTime;
 

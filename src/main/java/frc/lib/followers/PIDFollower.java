@@ -1,11 +1,8 @@
 package frc.lib.followers;
 
 
-import java.util.Arrays;
-
 import frc.lib.swerve.SwerveInstruction;
 import frc.lib.swerve.SwerveState;
-import frc.lib.trajectories.SwerveTrajectory;
 import frc.lib.utils.RMath;
 import frc.lib.utils.Vector2;
 import frc.robot.Tuning;

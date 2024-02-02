@@ -2,7 +2,6 @@ package frc.lib.followers;
 
 import frc.lib.swerve.SwerveInstruction;
 import frc.lib.swerve.SwerveState;
-import frc.lib.trajectories.SwerveTrajectory;
 import frc.lib.utils.Vector2;
 import frc.robot.swerve.SwervePID;
 
@@ -40,7 +39,7 @@ public class PurePursuit extends SwerveFollower{
 
         //finding nearest point
         double currentT = findNearest(currentState.getPos(), 10000, lastT);
-        double lastT = currentT;
+        lastT = currentT;
 
         //checking if it should be braking
         double distToEnd = currentState.getPos().dist(endState.getPos());
