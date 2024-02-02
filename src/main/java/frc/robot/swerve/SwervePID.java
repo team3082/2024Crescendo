@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.sensors.Pigeon;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.RMath;
+import frc.robot.utils.RotationalPIDController;
 import frc.robot.utils.Vector2;
 
 import static frc.robot.Tuning.*;
@@ -30,7 +31,7 @@ public class SwervePID {
     public static void init() {
         xPID = new PIDController(moveP, moveI, moveD, moveDead, moveVelDead, moveSpeedMax);
         yPID = new PIDController(moveP, moveI, moveD, moveDead, moveVelDead, moveSpeedMax);
-        rotPID = new PIDController(rotP, rotI, rotD, rotDead, rotVelDead, rotSpeedMax);
+        rotPID = new RotationalPIDController(rotP, rotI, rotD, rotDead, rotVelDead, rotSpeedMax);
     }
 
     public static void setDestState(Vector2 dest, double destRot) {
