@@ -1,4 +1,4 @@
-package frc.robot.autoframe;
+package frc.robot.auto.autoframe;
 
 /**
  * An abstract class that all other Autoframes should inherit from.

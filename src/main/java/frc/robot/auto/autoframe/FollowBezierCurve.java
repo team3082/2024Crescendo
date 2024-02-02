@@ -1,11 +1,12 @@
-package frc.robot.autoframe;
+package frc.robot.auto.autoframe;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.BezierCurve;
-import static frc.robot.Auto.movement;
+
+import static frc.robot.auto.Auto.movement;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.Tuning;

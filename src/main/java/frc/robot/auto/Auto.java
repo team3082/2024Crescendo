@@ -1,13 +1,14 @@
-package frc.robot;
+package frc.robot.auto;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-import frc.robot.autoframe.Autoframe;
-import frc.robot.autoframe.CurveAutoFrame;
-import frc.robot.autoframe.FollowBezierCurve;
-import frc.robot.autoframe.TrajectoryFollow;
+
+import frc.robot.auto.autoframe.Autoframe;
+import frc.robot.auto.autoframe.CurveAutoFrame;
+import frc.robot.auto.autoframe.FollowBezierCurve;
+import frc.robot.auto.autoframe.TrajectoryFollow;
 import frc.robot.sensors.Pigeon;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.swerve.SwerveState;

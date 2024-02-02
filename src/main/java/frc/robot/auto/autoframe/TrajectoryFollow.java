@@ -1,4 +1,4 @@
-package frc.robot.autoframe;
+package frc.robot.auto.autoframe;
 
 import frc.robot.sensors.Pigeon;
 import frc.robot.swerve.SwerveInstruction;

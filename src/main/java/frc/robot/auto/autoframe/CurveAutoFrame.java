@@ -1,4 +1,4 @@
-package frc.robot.autoframe;
+package frc.robot.auto.autoframe;
 
 public class CurveAutoFrame {
     Autoframe autoFrame;
