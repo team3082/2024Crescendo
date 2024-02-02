@@ -1,8 +1,6 @@
 package frc.robot.utils.trajectories;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import frc.robot.swerve.SwerveState;
 

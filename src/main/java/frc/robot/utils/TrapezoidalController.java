@@ -1,7 +1,5 @@
 package frc.robot.utils;
 
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-
 public class TrapezoidalController {
 
     public final double maxAccel, maxVel, dt;

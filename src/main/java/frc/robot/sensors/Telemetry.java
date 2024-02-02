@@ -58,7 +58,6 @@ public class Telemetry {
     // This allows us to filter through only the ones we want to see,
     // and avoids any potential screwups.
     private static final ShuffleboardTab robotTab = Shuffleboard.getTab("SmartDashboard");
-    private static final ShuffleboardTab pigeonTab = Shuffleboard.getTab("Pigeon");
     private static final ShuffleboardTab moveTab = Shuffleboard.getTab("Move PID");
     private static final ShuffleboardTab rotTab = Shuffleboard.getTab("Rot PID");
     private static final ShuffleboardTab pos = Shuffleboard.getTab("Positions");
@@ -117,7 +116,6 @@ public class Telemetry {
     public static void init() {
 
         // Input other misc values into Shuffleboard.
-        // pigeonTab.add("Pigeon", Pigeon.pigeon);
         robotTab.add("Field View", field);
         robotTab.add("Custom Field", customField);
         robotTab.add("Swerve", swerveMods);

@@ -1,8 +1,5 @@
 package frc.robot.autoframe;
 
-import java.util.Arrays;
-
-import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.sensors.Pigeon;
 import frc.robot.swerve.SwerveInstruction;
 import frc.robot.swerve.SwerveManager;
