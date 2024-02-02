@@ -28,6 +28,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    try {
+      Thread.sleep(100);
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     Pigeon.init();
     Pigeon.zero();
     SwerveManager.init();
@@ -44,6 +50,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     Pigeon.update();
     RTime.updateAbsolute();
+    RTime.update();
     //Telemetry.update(false);
   }
 
@@ -53,7 +60,7 @@ public class Robot extends TimedRobot {
     Pigeon.setYaw(270);
     // Auto.bezierCurveAutoTest();
     // Auto.trajFollowerTest();
-    // Auto.choreoTest();
+    Auto.choreoTest();
   }
 
   @Override

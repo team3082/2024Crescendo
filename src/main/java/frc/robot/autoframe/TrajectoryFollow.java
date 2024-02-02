@@ -31,7 +31,7 @@ public class TrajectoryFollow extends Autoframe{
         double currentAng = Pigeon.getRotationRad();
         double currengAngVel = Pigeon.getDeltaRotRad();
         SwerveState currentState = new SwerveState(currentPos, currentAng, currentVel, currengAngVel);
-        System.out.println(Arrays.toString(currentState.toArray()));
+        // System.out.println(Arrays.toString(currentState.toArray()));
         SwerveInstruction instruction = controller.getInstruction(currentState, RTime.now() - tStart);
         instruction = new SwerveInstruction(instruction.rotation, new Vector2(-instruction.movement.y, instruction.movement.x));
         SwerveManager.rotateAndDrive(instruction);

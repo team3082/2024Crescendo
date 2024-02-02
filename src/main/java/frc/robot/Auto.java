@@ -57,11 +57,11 @@ public class Auto {
     }
 
     public static void choreoTest(){
-        Pigeon.setYaw(0);
         SwerveTrajectory traj = ChoreoTrajectoryGenerator.generateTrajectory("Circle.traj");
         PIDFollower controller = new PIDFollower();
         controller.setTrajectory(traj);
         SwervePosition.setPosition(traj.startState().getPos());
+        Pigeon.setYaw(traj.startState().theta);
         queueFrames(new TrajectoryFollow(controller));
 
     }

@@ -38,7 +38,8 @@ public class DiscreteTraj implements SwerveTrajectory{
         if(posa >= path.size() - 1){
             return endState();
         }
-        System.out.println(posa);
+        // System.out.println(posa);
+        System.out.println(t);
         SwerveState a = path.get(posa);
         SwerveState b = path.get(posa+1);
         double deltaT = t - path.get(posa).time;
