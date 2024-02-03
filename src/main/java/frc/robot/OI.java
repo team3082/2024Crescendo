@@ -1,5 +1,7 @@
 package frc.robot;
 
+import static frc.robot.Tuning.*;
+
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
 import frc.robot.sensors.Pigeon;
@@ -33,13 +35,16 @@ public class OI {
      * Because we used TimedRobot, this runs 50 times a second,
      * so this lives in the teleopPeriodic() function.
      */
-    public static void useInput() {
+    public static void userInput() {
 
         if (driverStick.getRawButton(zero)) Pigeon.zero();
 
-        double kBoostCoefficient = 0.6;
+        double boostStrength= driverStick.getRawAxis(boost);
+        if(boostStrength < 0.1) boostStrength = 0;
 
-        if (driverStick.getRawAxis(boost) > .5) kBoostCoefficient = 1;
+
+
+        double kBoostCoefficient = NORMALSPEED + boostStrength * (1-NORMALSPEED);
 
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = driverStick.getRawAxis(rotateX) * -0.3;
@@ -66,7 +71,24 @@ public class OI {
 
         // System.out.println("Rotate: " + rotate + " Drive: " + drive.toString());
 
+        //TODO experimental feature
+        switch(YAWRATEFEEDBACKSTATUS){
+            case 0:
+                SwerveManager.rotateAndDrive(rotate, drive);
+                return;
+            case 1:
+                if(rotate == 0){
+                    SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
+                }else{
+                    SwerveManager.rotateAndDrive(rotate, drive);
+                }
+                return;
+            case 2:
+                SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
+                return;
+        }
+
         // Swerving and a steering! Zoom!
-        SwerveManager.rotateAndDrive(rotate, drive);
+        // SwerveManager.rotateAndDrive(rotate, drive);
     }
 }

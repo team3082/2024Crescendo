@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     RTime.update();
     SwervePosition.update();
-    OI.useInput();
+    OI.userInput();
   }
 
   @Override
