@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     try {
-      Thread.sleep(100);
+      Thread.sleep(2000);
     } catch (InterruptedException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

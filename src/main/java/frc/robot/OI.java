@@ -1,6 +1,6 @@
 package frc.robot;
 
-import static frc.robot.Tuning.*;
+import static frc.robot.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
@@ -47,7 +47,7 @@ public class OI {
         double kBoostCoefficient = NORMALSPEED + boostStrength * (1-NORMALSPEED);
 
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
-        double rotate = driverStick.getRawAxis(rotateX) * -0.3;
+        double rotate = driverStick.getRawAxis(rotateX) * -ROTSPEED;
         
         
         if (drive.mag() < 0.125)

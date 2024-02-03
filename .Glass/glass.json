@@ -1,0 +1,38 @@
+{
+  "NetworkTables": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/SmartDashboard/Custom Field": "Mechanism2d",
+      "/Shuffleboard/SmartDashboard/Field View": "Field2d",
+      "/Shuffleboard/SmartDashboard/Swerve": "Mechanism2d"
+    },
+    "windows": {
+      "/Shuffleboard/SmartDashboard/Custom Field": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/Shuffleboard/SmartDashboard/Field View": {
+        "bottom": 544,
+        "builtin": "2024 Crescendo",
+        "height": 8.013679504394531,
+        "left": 46,
+        "right": 1088,
+        "top": 36,
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      },
+      "/Shuffleboard/SmartDashboard/Swerve": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "3082"
+  }
+}

@@ -31,12 +31,16 @@ public class Tuning {
 
     //Vision
 
-    //driver
-    public static final double KDYAW = 0.00;
-    /**0 for never on, 1 for only on with no rotation input, 2 for always on */
-    public static final int YAWRATEFEEDBACKSTATUS = 0;
+    public static final class OI{
+        //driver
+        public static final double KDYAW = 0.00;
+        /**0 for never on, 1 for only on with no rotation input, 2 for always on */
+        public static final int YAWRATEFEEDBACKSTATUS = 0;
 
-    public static final double NORMALSPEED = 0.6;
+        public static final double NORMALSPEED = 0.6;
+
+        public static final double ROTSPEED = 0.3;
+    }
 
     //NOTE CONTROL
     public static final class Shooter{

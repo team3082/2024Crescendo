@@ -5,7 +5,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 import static frc.robot.Constants.Swerve.*;
-import static frc.robot.Tuning.KDYAW;
+import static frc.robot.Tuning.OI.KDYAW;
 
 public final class SwerveManager {
     
