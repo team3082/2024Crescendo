@@ -36,5 +36,7 @@ public class Tuning {
     /**0 for never on, 1 for only on with no rotation input, 2 for always on */
     public static final int YAWRATEFEEDBACKSTATUS = 0;
 
+    public static final double NORMALSPEED = 0.6;
+
     //NOTE CONTROL
 }
