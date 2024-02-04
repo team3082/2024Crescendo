@@ -1,4 +1,11 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "window": {
+        "visible": false
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
@@ -7,11 +14,6 @@
       "/Shuffleboard/SmartDashboard/Swerve": "Mechanism2d"
     },
     "windows": {
-      "/Shuffleboard/SmartDashboard/Custom Field": {
-        "window": {
-          "visible": true
-        }
-      },
       "/Shuffleboard/SmartDashboard/Field View": {
         "window": {
           "visible": true
@@ -29,5 +31,8 @@
       "open": true
     },
     "visible": true
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }

@@ -23,12 +23,12 @@ public class PIDFollower extends SwerveFollower{
     }
 
     public PIDFollower(double[] maxIntAccum) {
-        this.kPpos = Tuning.SWERVE_TRL_P;
-        this.kIpos = Tuning.SWERVE_TRL_I;
-        this.kDpos = Tuning.SWERVE_TRL_D;
-        this.kProt = Tuning.SWERVE_ROT_P;
-        this.kIrot = Tuning.SWERVE_ROT_I;
-        this.kDrot = Tuning.SWERVE_ROT_D;
+        this.kPpos = Tuning.SWERVE_TRJ_PPOS;
+        this.kIpos = Tuning.SWERVE_TRJ_IPOS;
+        this.kDpos = Tuning.SWERVE_TRJ_DPOS;
+        this.kProt = Tuning.SWERVE_TRJ_PROT;
+        this.kIrot = Tuning.SWERVE_TRJ_IROT;
+        this.kDrot = Tuning.SWERVE_TRJ_DROT;
         this.maxIntAccum = maxIntAccum;
     }
 

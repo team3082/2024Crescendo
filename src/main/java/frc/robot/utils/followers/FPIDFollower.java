@@ -6,6 +6,9 @@ import java.util.function.Function;
 import frc.robot.swerve.SwerveInstruction;
 import frc.robot.swerve.SwerveState;
 import frc.robot.utils.Vector2;
+import frc.robot.utils.trajectories.SwerveTrajectory;
+
+import static frc.robot.Tuning.*;
 
 public class FPIDFollower extends PIDFollower{
 
@@ -27,6 +30,10 @@ public class FPIDFollower extends PIDFollower{
                 return new SwerveInstruction(rot,drive);
             }
         };
+    }
+
+    public FPIDFollower(){
+        this(new PIDFollower(), SWERVE_KVPOS, SWERVE_KVROT);
     }
 
 

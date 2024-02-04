@@ -21,10 +21,16 @@ public class Tuning {
      public static final double SWERVE_ROT_D = 0;
  
      // TODO Tune
-     // These are BS numbers rn
-     public static final double SWERVE_TRL_P = 0.02;
-     public static final double SWERVE_TRL_I = 0.00;
-     public static final double SWERVE_TRL_D = 0.002;
+     public static final double SWERVE_TRJ_PPOS = 0.2;
+     public static final double SWERVE_TRJ_IPOS = 0.00;
+     public static final double SWERVE_TRJ_DPOS = 0.02;
+
+     public static final double SWERVE_TRJ_PROT = 0.05;
+     public static final double SWERVE_TRJ_IROT = 0.0;
+     public static final double SWERVE_TRJ_DROT = 0.02;
+
+     public static final double SWERVE_KVPOS = 0.0;
+     public static final double SWERVE_KVROT = 0.0;
  
      public static final int CURVE_RESOLUTION= 3000;
     

@@ -23,7 +23,7 @@ public class FollowBezierCurve extends Autoframe {
 
     @Override
     public void start() {
-        this.trajectoryPID = new PIDController(Tuning.SWERVE_TRL_P, Tuning.SWERVE_TRL_I, Tuning.SWERVE_TRL_D, 1.0, 1.0, 1.0);
+        this.trajectoryPID = new PIDController(Tuning.SWERVE_TRJ_PPOS, Tuning.SWERVE_TRJ_IPOS, Tuning.SWERVE_TRJ_DPOS, 1.0, 1.0, 1.0);
         this.trajectoryPID.setDest(1.0);
         SwervePID.setDestRot(trajectory.rotEnd);
     }   
