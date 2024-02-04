@@ -7,10 +7,10 @@ import frc.robot.utils.Vector2;
 import frc.robot.utils.RMath;
 
 public class PIDFollower extends SwerveFollower{
-    double kPpos, kIpos,kDpos;
-    double kProt, kIrot, kDrot;
-    double[] intAccum = new double[3];
-    double[] maxIntAccum;
+    protected double kPpos, kIpos,kDpos;
+    protected double kProt, kIrot, kDrot;
+    protected double[] intAccum = new double[3];
+    protected double[] maxIntAccum;
 
     public PIDFollower(double kppos, double kipos, double kdpos, double kprot, double kirot, double kdrot, double[] maxIntAccum){
         this.kPpos = kppos;
