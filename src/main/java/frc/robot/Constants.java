@@ -17,6 +17,8 @@ public final class Constants {
         // CANCoder offset
         public static final double PIVOT_OFFSET = 0;
 
+        public static final double PIVOT_GEAR_RATIO = 0.0;//TODO find this
+
         // Falcon : Wheel(s)
         public static final double shooterBeltRatio = 1;
         // Pivot gear ratio

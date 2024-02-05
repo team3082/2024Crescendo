@@ -1,12 +1,10 @@
 package frc.robot.utils.followers;
 
-import java.util.function.DoubleSupplier;
 import java.util.function.Function;
 
 import frc.robot.swerve.SwerveInstruction;
 import frc.robot.swerve.SwerveState;
 import frc.robot.utils.Vector2;
-import frc.robot.utils.trajectories.SwerveTrajectory;
 
 import static frc.robot.Tuning.*;
 
