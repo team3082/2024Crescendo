@@ -14,7 +14,7 @@ final class Flywheels {
     
     static TalonFX topMotor, bottomMotor;
 
-    static void init(){
+    static void init() {
         topMotor = new TalonFX(TOPFLYWHEEL_ID);
         bottomMotor = new TalonFX(BOTTOMFLYWHEEL_ID);
 
@@ -44,11 +44,11 @@ final class Flywheels {
         bottomMotor.config_kF(0, FLYWHEELKF);
     }
 
-    static void setSpeakerScore(){}
+    static void setSpeakerScore() { }
 
-    static void setAmpScore(){}
+    static void setAmpScore() { }
 
-    static boolean atVel(){
+    static boolean atVel() {
         return false;
     }
 

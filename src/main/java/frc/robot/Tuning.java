@@ -32,12 +32,12 @@ public class Tuning {
      public static final double SWERVE_KVPOS = 0.0;
      public static final double SWERVE_KVROT = 0.0;
  
-     public static final int CURVE_RESOLUTION= 3000;
+     public static final int CURVE_RESOLUTION = 3000;
     
 
     //Vision
 
-    public static final class OI{
+    public static final class OI {
         //driver
         public static final double KDYAW = 0.00;
         /**0 for never on, 1 for only on with no rotation input, 2 for always on */
@@ -49,7 +49,7 @@ public class Tuning {
     }
 
     //NOTE CONTROL
-    public static final class Shooter{
+    public static final class Shooter {
         public static final double FLYWHEELKD = 0.0;
         public static final double FLYWHEELKF = 0.0;
 
@@ -58,12 +58,12 @@ public class Tuning {
         public static final double PIVOTKD = 0.0;
         public static final double PIVOTKF = 0.0;
 
-        public static final double PIVOT_CRUISE_VEL = 0.0;//ticks per 100ms
-        public static final double PIVOT_MAX_ACCEL = 0.0;//in ticks per 100ms per second
-        public static final int PIVOT_JERK_STRENGTH = 0; //[0,8], higher number means lower jerk 
+        public static final double PIVOT_CRUISE_VEL = 0.0; // Ticks per 100ms
+        public static final double PIVOT_MAX_ACCEL = 0.0; // In ticks per 100ms per second
+        public static final int PIVOT_JERK_STRENGTH = 0; // [0,8], higher number means lower jerk 
 
-        public static final double PIVOT_DEADBAND_POS = 0.0;//in motorticks
-        public static final double PIVOT_DEADBAND_VEL = 0.0;//in motor ticks per 100ms
+        public static final double PIVOT_DEADBAND_POS = 0.0; // In motorticks
+        public static final double PIVOT_DEADBAND_VEL = 0.0; // In motor ticks per 100ms
 
         public static final double PIVOT_AFF_SCALAR = 0.0;
     }

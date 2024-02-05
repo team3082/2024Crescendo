@@ -15,13 +15,13 @@ import com.ctre.phoenix.sensors.SensorTimeBase;
 
 @SuppressWarnings("removal")
 final class ShooterPivot {
+
     private static TalonFX motor;
     private static CANCoder absEncoder;
 
     private static double targetPos;
 
-
-    static void init(){
+    static void init() {
         absEncoder = new CANCoder(FLYWHEELPIVOT_ID);
         absEncoder.configFactoryDefault();
 
@@ -33,8 +33,6 @@ final class ShooterPivot {
         absEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
         absEncoder.configMagnetOffset(PIVOT_OFFSET);
 
-
-
         motor = new TalonFX(FLYWHEELPIVOT_ID);
         motor.configFactoryDefault();
         motor.configRemoteFeedbackFilter(absEncoder, 0);
@@ -43,9 +41,9 @@ final class ShooterPivot {
         motor.configNominalOutputReverse(0.01);
         motor.configNeutralDeadband(0.01);
         
-        //zeroing internal encoder
+        // Zero internal encoder
         motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor,0,0);
-        double absPosition = absEncoder.getAbsolutePosition() / 360; //in rotations of the pivot itself
+        double absPosition = absEncoder.getAbsolutePosition() / 360; // In rotations of the pivot itself
         motor.setSelectedSensorPosition(absPosition * 2048 * PIVOT_GEAR_RATIO, 0, 30);
 
         // TUNE
@@ -68,15 +66,15 @@ final class ShooterPivot {
      * pointed straight forward is 0(impossible to reach)
      * angled straight up is PI / 2
      */
-    private double getPosition(){
-        return motorTicksToArmRad(motor.getSelectedSensorPosition());
+    private double getPosition() {
+        return ticksToRad(motor.getSelectedSensorPosition());
     }
 
-    private static double motorTicksToArmRad(double motorPos){
+    private static double ticksToRad(double motorPos){
         return motorPos / 2048 / PIVOT_GEAR_RATIO * Math.PI * 2;
     }
 
-    private static double armRadToMotorTicks(double armPos){
+    private static double radToTicks(double armPos){
         return armPos * 2048 * PIVOT_GEAR_RATIO / Math.PI / 2;
     }
 
@@ -85,15 +83,14 @@ final class ShooterPivot {
      * @param pos
      */
     static void setPosition(double pos){
-        targetPos = armRadToMotorTicks(pos);
+        targetPos = radToTicks(pos);
     }
     
-    
-    static boolean atPos(){
+    static boolean atPos() {
         return false;
     }
     
-    static void update(){
+    static void update() {
         motor.set(ControlMode.MotionMagic, targetPos, DemandType.ArbitraryFeedForward, calcAFF(motor.getSelectedSensorPosition()));
     }
 
@@ -101,7 +98,7 @@ final class ShooterPivot {
      * @param motorPos position of the motor in ticks
      */
     private static double calcAFF(double motorPos){
-        return PIVOT_AFF_SCALAR * Math.cos(motorTicksToArmRad(motorPos));//doesn't account for the spring yet
+        return PIVOT_AFF_SCALAR * Math.cos(ticksToRad(motorPos)); // Doesn't account for the spring yet
     }
 
 }

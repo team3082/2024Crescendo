@@ -28,26 +28,26 @@ public final class Shooter {
 
     private ShooterState state;
     
-    public void init(){
+    public void init() {
         ShooterPivot.init();
         Flywheels.init();
     }
 
-    public void update(){
+    public void update() {
         ShooterPivot.update();
     }
 
-    public boolean canShoot(){
-        if (!(state == ShooterState.SPEAKER || state == ShooterState.AMP || state == ShooterState.TRAP)){
+    public boolean canShoot() {
+        if (!(state == ShooterState.SPEAKER || state == ShooterState.AMP || state == ShooterState.TRAP)) {
             return false;
         }
 
         return ShooterPivot.atPos() && Flywheels.atVel();
     }
 
-    public void shoot(){}
+    public void shoot() { }
 
-    public void stow(){
+    public void stow() {
         
     }
 }

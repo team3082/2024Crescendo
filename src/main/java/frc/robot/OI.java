@@ -69,8 +69,6 @@ public class OI {
             }
         }
 
-        // System.out.println("Rotate: " + rotate + " Drive: " + drive.toString());
-
         //TODO experimental feature
         switch(YAWRATEFEEDBACKSTATUS){
             case 0:

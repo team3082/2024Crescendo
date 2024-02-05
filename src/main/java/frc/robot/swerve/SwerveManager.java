@@ -39,7 +39,7 @@ public final class SwerveManager {
      * @param rotSpeed
      * @param move
      */
-    public static void rotateAndDriveWithYawRateControl(double rotSpeed, Vector2 move){
+    public static void rotateAndDriveWithYawRateControl(double rotSpeed, Vector2 move) {
         double yawRate = Pigeon.getDeltaRotRad();
         double correctedRotSpeed = rotSpeed + yawRate * KDYAW;
         rotateAndDrive(correctedRotSpeed, move);
