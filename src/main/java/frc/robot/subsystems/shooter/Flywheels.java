@@ -3,16 +3,21 @@ package frc.robot.subsystems.shooter;
 import static frc.robot.Tuning.Shooter.*;
 import static frc.robot.Constants.Shooter.*;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+
+import static frc.robot.utils.RMath.*;
 
 
 @SuppressWarnings("removal")
 final class Flywheels {
     
     static TalonFX topMotor, bottomMotor;
+
+    private static Mode mode = Mode.OFF;
 
     static void init() {
         topMotor = new TalonFX(TOPFLYWHEEL_ID);
@@ -44,13 +49,40 @@ final class Flywheels {
         bottomMotor.config_kF(0, FLYWHEELKF);
     }
 
-    static void setSpeakerScore() { }
+    static void setSpeakerScore() { 
+        topMotor.set(ControlMode.Velocity, SPEAKER_SPEED_BOTTOM);
+        bottomMotor.set(ControlMode.Velocity, SPEAKER_SPEED_BOTTOM);
+        mode = Mode.SPEAKER;
+    }
 
-    static void setAmpScore() { }
+    static void setAmpScore() {
+        topMotor.set(ControlMode.Velocity, AMP_SPEED_TOP);
+        bottomMotor.set(ControlMode.Velocity, AMP_SPEED_BOTTOM);
+        mode = Mode.AMP;
+    }
+
+    static void disable() {
+        topMotor.set(ControlMode.Disabled, 0.0);
+        bottomMotor.set(ControlMode.Disabled, 0.0);
+        mode = Mode.OFF;
+    }
 
     static boolean atVel() {
-        return false;
+        double top = topMotor.getSelectedSensorVelocity();
+        double bottom = bottomMotor.getSelectedSensorVelocity();
+        switch(mode){
+            case SPEAKER:
+                return (0 == deadband(top, SPEAKER_SPEED_TOP, SPEAKER_WHEEL_SPEED_DEADBAND)) && (0 == deadband(bottom, SPEAKER_SPEED_BOTTOM, SPEAKER_WHEEL_SPEED_DEADBAND)); 
+            case AMP:
+                return (0 == deadband(top, AMP_SPEED_TOP, AMP_WHEEL_SPEED_DEADBAND)) && (0 == deadband(bottom, AMP_SPEED_BOTTOM, AMP_WHEEL_SPEED_DEADBAND)); 
+            default:
+                return false;
+        }
     }
 
 
+
+    private static enum Mode{
+        AMP, SPEAKER, OFF;
+    }
 }

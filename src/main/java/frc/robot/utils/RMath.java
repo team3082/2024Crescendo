@@ -66,4 +66,14 @@ public class RMath {
         return interpolate(a,b,t);
 
     }
+
+    /**
+     * returns 0 if the value is within the deadband, otherwise it returns the input
+     * @param value the value recieved
+     * @param center the center of the deadband
+     * @param deadband the radius of the deadband
+     */
+    public static double deadband(double value, double center, double deadband){
+        return (deadband >= Math.abs(value - center)) ? 0.0 : value;
+    }
 }

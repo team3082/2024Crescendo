@@ -66,5 +66,14 @@ public class Tuning {
         public static final double PIVOT_DEADBAND_VEL = 0.0; // In motor ticks per 100ms
 
         public static final double PIVOT_AFF_SCALAR = 0.0;
+
+        public static final double SPEAKER_SPEED_TOP = 0.0; //in motorticks per 100ms
+        public static final double SPEAKER_SPEED_BOTTOM = 0.0;
+
+        public static final double AMP_SPEED_TOP = 0.0;
+        public static final double AMP_SPEED_BOTTOM = 0.0;
+
+        public static final double AMP_WHEEL_SPEED_DEADBAND = 0.0;
+        public static final double SPEAKER_WHEEL_SPEED_DEADBAND = 0.0;
     }
 }
