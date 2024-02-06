@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Constants;
+import frc.robot.Tuning;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -61,6 +62,8 @@ public class Telemetry {
     private static final ShuffleboardTab moveTab = Shuffleboard.getTab("Move PID");
     private static final ShuffleboardTab rotTab = Shuffleboard.getTab("Rot PID");
     private static final ShuffleboardTab pos = Shuffleboard.getTab("Positions");
+    private static final ShuffleboardTab shooter = Shuffleboard.getTab("Shooter");
+    // private static final ShuffleboardTab intake = Shuffleboard.getTab("Intake");
 
     // NetworkTable entries
     // If we want granular control over our values via Glass (e.g, tuning PID),
@@ -109,6 +112,12 @@ public class Telemetry {
     private static final GenericEntry rotI = rotTab.add("Rot I", SwervePID.rotI).getEntry();
     private static final GenericEntry rotD = rotTab.add("Rot D", SwervePID.rotD).getEntry();
     private static final GenericEntry rotDeadBand = rotTab.add("Rot Deadband", SwervePID.rotDead).getEntry();
+
+    // Shooter
+    private static final GenericEntry FLYWHEELKD = shooter.add("Flywheel kD", Tuning.Shooter.FLYWHEELKD).getEntry();
+    private static final GenericEntry FLYWHEELKF = shooter.add("Flywheel kF", Tuning.Shooter.FLYWHEELKF).getEntry();
+    private static final GenericEntry PIVOTAFF = shooter.add("Pivot AFF", Tuning.Shooter.PIVOT_AFF_SCALAR).getEntry();
+
 
     // SwervePosition
     private static final GenericEntry swervePos = pos.add("Swerve Position", SwervePosition.getPosition().toString()).getEntry();
@@ -219,6 +228,10 @@ public class Telemetry {
         SwervePID.rotPID.kI = rotI.getDouble(0);
         SwervePID.rotPID.kD = rotD.getDouble(0);
         SwervePID.rotPID.deadband = rotDeadBand.getDouble(0);
+
+        Tuning.Shooter.FLYWHEELKD = FLYWHEELKD.getDouble(0);
+        Tuning.Shooter.FLYWHEELKF = FLYWHEELKF.getDouble(0);
+        Tuning.Shooter.PIVOT_AFF_SCALAR = PIVOTAFF.getDouble(0);
 
         // cool swerve visualization stuff that looks cool and i really like
         double modDist = Math.sqrt(Math.pow(Constants.Swerve.SWERVEMODX0, 2) + Math.pow(Constants.Swerve.SWERVEMODY0, 2));
