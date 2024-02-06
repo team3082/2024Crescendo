@@ -62,19 +62,19 @@ final class ShooterPivot {
     }
 
     /**
-     * gets the position of the arm in radians
-     * pointed straight forward is 0(impossible to reach)
+     * Gets the position of the arm in radians.
+     * Pointed straight forward is 0 (impossible to reach),
      * angled straight up is PI / 2
      */
     private double getPosition() {
         return ticksToRad(motor.getSelectedSensorPosition());
     }
 
-    private static double ticksToRad(double motorPos){
+    private static double ticksToRad(double motorPos) {
         return motorPos / 2048 / PIVOT_GEAR_RATIO * Math.PI * 2;
     }
 
-    private static double radToTicks(double armPos){
+    private static double radToTicks(double armPos) {
         return armPos * 2048 * PIVOT_GEAR_RATIO / Math.PI / 2;
     }
 
@@ -82,7 +82,7 @@ final class ShooterPivot {
      * the position of the arm in radians
      * @param pos
      */
-    static void setPosition(double pos){
+    static void setPosition(double pos) {
         targetPos = radToTicks(pos);
     }
     

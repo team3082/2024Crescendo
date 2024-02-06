@@ -7,7 +7,7 @@ import frc.robot.utils.trajectories.SwerveTrajectory;
 public abstract class SwerveFollower {
     public SwerveTrajectory path;
 
-    public void setTrajectory(SwerveTrajectory traj){
+    public void setTrajectory(SwerveTrajectory traj) {
         this.path = traj;
     }
     

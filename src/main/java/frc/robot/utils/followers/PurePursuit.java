@@ -4,12 +4,11 @@ import frc.robot.swerve.SwerveInstruction;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwerveState;
 import frc.robot.utils.Vector2;
-import frc.robot.utils.trajectories.SwerveTrajectory;
 
 /**
  * currently assumes zero velocity at desired end point.
  */
-public class PurePursuit extends SwerveFollower{
+public class PurePursuit extends SwerveFollower {
     //maybe inches, maybe some random distance
     private final double lookAheadDist;
     //in/s
@@ -40,7 +39,7 @@ public class PurePursuit extends SwerveFollower{
 
         //finding nearest point
         double currentT = findNearest(currentState.getPos(), 10000, lastT);
-        double lastT = currentT;
+        lastT = currentT;
 
         //checking if it should be braking
         double distToEnd = currentState.getPos().dist(endState.getPos());

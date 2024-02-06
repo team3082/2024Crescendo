@@ -6,7 +6,7 @@ import frc.robot.swerve.SwerveState;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.RMath;
 
-public class PIDFollower extends SwerveFollower{
+public class PIDFollower extends SwerveFollower {
     protected double kPpos, kIpos,kDpos;
     protected double kProt, kIrot, kDrot;
     protected double[] intAccum = new double[3];

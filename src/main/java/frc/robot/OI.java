@@ -35,14 +35,12 @@ public class OI {
      * Because we used TimedRobot, this runs 50 times a second,
      * so this lives in the teleopPeriodic() function.
      */
-    public static void userInput() {
+    public static void driverInput() {
 
         if (driverStick.getRawButton(zero)) Pigeon.zero();
 
         double boostStrength= driverStick.getRawAxis(boost);
         if(boostStrength < 0.1) boostStrength = 0;
-
-
 
         double kBoostCoefficient = NORMALSPEED + boostStrength * (1-NORMALSPEED);
 
@@ -58,7 +56,7 @@ public class OI {
         if (Math.abs(rotate) < 0.005) {
             rotate = 0;
             int POV = driverStick.getPOV();
-            if(POV != -1) {
+            if (POV != -1) {
                 SwervePID.setDestRot(Math.PI / 2.0 - Math.toRadians(POV - 180));
             }
         }
@@ -70,20 +68,19 @@ public class OI {
         }
 
         //TODO experimental feature
-        switch(YAWRATEFEEDBACKSTATUS){
+        switch (YAWRATEFEEDBACKSTATUS) {
             case 0:
                 SwerveManager.rotateAndDrive(rotate, drive);
-                return;
+            return;
             case 1:
-                if(rotate == 0){
+                if (rotate == 0)
                     SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
-                }else{
+                else
                     SwerveManager.rotateAndDrive(rotate, drive);
-                }
-                return;
+            return;
             case 2:
                 SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
-                return;
+            return;
         }
 
         // Swerving and a steering! Zoom!

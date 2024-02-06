@@ -8,7 +8,7 @@ import frc.robot.utils.Vector2;
 
 import static frc.robot.Tuning.*;
 
-public class FPIDFollower extends PIDFollower{
+public class FPIDFollower extends PIDFollower {
 
     private final Function<SwerveState,SwerveInstruction> feedForward;
 
@@ -21,8 +21,8 @@ public class FPIDFollower extends PIDFollower{
         this.kPpos = f.kPpos;
         this.kProt = f.kProt;
         this.path = f.path;
-        this.feedForward = new Function<SwerveState,SwerveInstruction>(){
-            public SwerveInstruction apply(SwerveState state){
+        this.feedForward = new Function<SwerveState, SwerveInstruction>() {
+            public SwerveInstruction apply(SwerveState state) {
                 Vector2 drive = new Vector2(state.dx, state.dy).mul(kVtrans);
                 double rot = state.dtheta * kVrot;
                 return new SwerveInstruction(rot,drive);
@@ -36,7 +36,7 @@ public class FPIDFollower extends PIDFollower{
 
 
     @Override
-    public SwerveInstruction getInstruction(SwerveState currentState, double t){
+    public SwerveInstruction getInstruction(SwerveState currentState, double t) {
         SwerveState state = path.get(t);
         SwerveInstruction fF = feedForward.apply(state);
         SwerveInstruction pid = super.getInstruction(currentState, t);
