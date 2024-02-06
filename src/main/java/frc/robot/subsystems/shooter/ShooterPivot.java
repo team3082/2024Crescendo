@@ -11,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.SensorTimeBase;
 
 @SuppressWarnings("removal")
 final class ShooterPivot {
@@ -44,7 +43,7 @@ final class ShooterPivot {
         // Zero internal encoder
         motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor,0,0);
         double absPosition = absEncoder.getAbsolutePosition() / 360; // In rotations of the pivot itself
-        motor.setSelectedSensorPosition(absPosition * 2048 * PIVOT_GEAR_RATIO, 0, 30);
+        motor.setSelectedSensorPosition(absPosition * 2048 * shooterGearRatio, 0, 30);
 
         // TUNE
         motor.config_kP(0, PIVOTKP);
@@ -71,11 +70,11 @@ final class ShooterPivot {
     }
 
     private static double ticksToRad(double motorPos) {
-        return motorPos / 2048 / PIVOT_GEAR_RATIO * Math.PI * 2;
+        return motorPos / 2048 / shooterGearRatio * Math.PI * 2;
     }
 
     private static double radToTicks(double armPos) {
-        return armPos * 2048 * PIVOT_GEAR_RATIO / Math.PI / 2;
+        return armPos * 2048 * shooterGearRatio / Math.PI / 2;
     }
 
     /**

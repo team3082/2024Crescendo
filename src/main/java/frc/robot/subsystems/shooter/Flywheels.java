@@ -3,7 +3,6 @@ package frc.robot.subsystems.shooter;
 import static frc.robot.Tuning.Shooter.*;
 import static frc.robot.Constants.Shooter.*;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -12,11 +11,14 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
 import static frc.robot.utils.RMath.*;
 
-
 @SuppressWarnings("removal")
 final class Flywheels {
     
     static TalonFX topMotor, bottomMotor;
+
+    // Speeds in RPM
+    static double targetSpeakerTop, targetSpeakerBottom;
+    static double targetAmpTop, targetAmpBottom;
 
     private static Mode mode = Mode.OFF;
 
@@ -48,17 +50,24 @@ final class Flywheels {
         bottomMotor.config_kI(0, FLYWHEELKD);
         bottomMotor.config_kD(0, 0);
         bottomMotor.config_kF(0, FLYWHEELKF);
+
+        // Zero vars
+        targetSpeakerTop = 0;
+        targetSpeakerBottom = 0;
+
+        targetAmpTop = 0;
+        targetAmpBottom = 0;
     }
 
     static void setSpeakerScore() { 
-        topMotor.set(TalonFXControlMode.Velocity, SPEAKER_SPEED_BOTTOM);
-        bottomMotor.set(TalonFXControlMode.Velocity, SPEAKER_SPEED_BOTTOM);
+        topMotor.set(TalonFXControlMode.Velocity, targetSpeakerTop * RPMToVel);
+        bottomMotor.set(TalonFXControlMode.Velocity, targetSpeakerBottom * RPMToVel);
         mode = Mode.SPEAKER;
     }
 
     static void setAmpScore() {
-        topMotor.set(TalonFXControlMode.Velocity, AMP_SPEED_TOP);
-        bottomMotor.set(TalonFXControlMode.Velocity, AMP_SPEED_BOTTOM);
+        topMotor.set(TalonFXControlMode.Velocity, targetAmpTop * RPMToVel);
+        bottomMotor.set(TalonFXControlMode.Velocity, targetSpeakerBottom * RPMToVel);
         mode = Mode.AMP;
     }
 
