@@ -229,9 +229,9 @@ public class Telemetry {
         SwervePID.rotPID.kD = rotD.getDouble(0);
         SwervePID.rotPID.deadband = rotDeadBand.getDouble(0);
 
-        Tuning.Shooter.FLYWHEELKD = FLYWHEELKD.getDouble(0);
-        Tuning.Shooter.FLYWHEELKF = FLYWHEELKF.getDouble(0);
-        Tuning.Shooter.PIVOT_AFF_SCALAR = PIVOTAFF.getDouble(0);
+        // Tuning.Shooter.FLYWHEELKD = FLYWHEELKD.getDouble(0);
+        // Tuning.Shooter.FLYWHEELKF = FLYWHEELKF.getDouble(0);
+        // Tuning.Shooter.PIVOT_AFF_SCALAR = PIVOTAFF.getDouble(0);
 
         // cool swerve visualization stuff that looks cool and i really like
         double modDist = Math.sqrt(Math.pow(Constants.Swerve.SWERVEMODX0, 2) + Math.pow(Constants.Swerve.SWERVEMODY0, 2));

@@ -6,6 +6,7 @@ import static frc.robot.Constants.Shooter.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
@@ -50,20 +51,20 @@ final class Flywheels {
     }
 
     static void setSpeakerScore() { 
-        topMotor.set(ControlMode.Velocity, SPEAKER_SPEED_BOTTOM);
-        bottomMotor.set(ControlMode.Velocity, SPEAKER_SPEED_BOTTOM);
+        topMotor.set(TalonFXControlMode.Velocity, SPEAKER_SPEED_BOTTOM);
+        bottomMotor.set(TalonFXControlMode.Velocity, SPEAKER_SPEED_BOTTOM);
         mode = Mode.SPEAKER;
     }
 
     static void setAmpScore() {
-        topMotor.set(ControlMode.Velocity, AMP_SPEED_TOP);
-        bottomMotor.set(ControlMode.Velocity, AMP_SPEED_BOTTOM);
+        topMotor.set(TalonFXControlMode.Velocity, AMP_SPEED_TOP);
+        bottomMotor.set(TalonFXControlMode.Velocity, AMP_SPEED_BOTTOM);
         mode = Mode.AMP;
     }
 
     static void disable() {
-        topMotor.set(ControlMode.Disabled, 0.0);
-        bottomMotor.set(ControlMode.Disabled, 0.0);
+        topMotor.set(TalonFXControlMode.Velocity, 0.0);
+        bottomMotor.set(TalonFXControlMode.Velocity, 0.0);
         mode = Mode.OFF;
     }
 
@@ -82,7 +83,7 @@ final class Flywheels {
 
 
 
-    private static enum Mode{
+    private static enum Mode {
         AMP, SPEAKER, OFF;
     }
 }
