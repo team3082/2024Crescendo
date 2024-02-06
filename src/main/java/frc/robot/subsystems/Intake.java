@@ -4,6 +4,7 @@ import static frc.robot.Constants.Intake.*;
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -29,6 +30,8 @@ public class Intake {
 
     public static TalonFX pivotMotor;
 
+    public static CANCoder absEncoder;
+
     public static Beambreak beamSensor;
 
     public static IntakeMode intakeMode;
@@ -40,6 +43,9 @@ public class Intake {
         bottomBeltMotor = new CANSparkMax(BOTTOMINTAKE_ID, MotorType.kBrushless);
         pivotMotor = new TalonFX(INTAKEPIVOT_ID);
         beamSensor = new Beambreak(LASER_ID, 0);
+
+        absEncoder = new CANCoder(INTAKEPIVOT_ID);
+        absEncoder.configFactoryDefault();
 
         intakeMode = IntakeMode.STOPPED;
         targetPosition = IntakePosition.INROBOT;

@@ -19,7 +19,7 @@ import static frc.robot.Tuning.Shooter.*;
 public final class Shooter {
 
     // Different modes of the shooter
-    static enum ShooterState{
+    static enum ShooterState {
         SPEAKER,
         AMP,
         TRAP,
