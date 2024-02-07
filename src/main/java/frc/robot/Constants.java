@@ -5,6 +5,16 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 public final class Constants {
 
+    public static final class Climber {
+        public static final int RIGHTWINCH_ID = 16;
+        public static final int RIGHTHALL_ID = 1;
+
+        public static final int LEFTWINCH_ID = 17;
+        public static final int LEFTHALL_ID = 1;
+
+        public static final double INCHES_PER_ROTATION = 0.0;
+    }
+
     public static final class Shooter {
 
         // Talon IDs: Flywheel
@@ -16,8 +26,6 @@ public final class Constants {
 
         // CANCoder offset
         public static final double PIVOT_OFFSET = 0;
-
-        public static final double PIVOT_GEAR_RATIO = 0.0; //TODO find this
 
         // Falcon : Wheel(s)
         public static final double shooterBeltRatio = 1;
