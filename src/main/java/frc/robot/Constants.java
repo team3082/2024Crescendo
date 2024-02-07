@@ -3,6 +3,8 @@ package frc.robot;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import frc.robot.utils.Vector2;
+
 public final class Constants {
 
     public static final class Climber {
@@ -26,11 +28,14 @@ public final class Constants {
 
         // CANCoder offset
         public static final double PIVOT_OFFSET = 0;
+        
+        //COMposition
+        public static final Vector2 SHOOTER_COM_POS = new Vector2(0,0); //position of the com relative to the pivot point. the angle is what really matters
 
         // Falcon : Wheel(s)
         public static final double shooterBeltRatio = 1;
         // Pivot gear ratio
-        public static final double shooterGearRatio = 0;
+        public static final double shooterGearRatio = 50;
 
         // Converting from RPM to Phoenix native sensor units (1u/100ms)
         public static final double RPMToVel = 2048.0 * shooterBeltRatio / 60.0 / 10.0;

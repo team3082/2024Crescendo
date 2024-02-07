@@ -116,7 +116,8 @@ public class Telemetry {
     // Shooter
     private static final GenericEntry FLYWHEELKD = shooter.add("Flywheel kD", Tuning.Shooter.FLYWHEELKD).getEntry();
     private static final GenericEntry FLYWHEELKF = shooter.add("Flywheel kF", Tuning.Shooter.FLYWHEELKF).getEntry();
-    private static final GenericEntry PIVOTAFF = shooter.add("Pivot AFF", Tuning.Shooter.PIVOT_AFF_SCALAR).getEntry();
+    private static final GenericEntry PIVOTAFFGRAVITY = shooter.add("Pivot AFF Gravity", Tuning.Shooter.PIVOT_AFF_GRAVITY).getEntry();
+    private static final GenericEntry PIVOTAFFSPRING = shooter.add("Pivot AFF Spring", Tuning.Shooter.PIVOT_AFF_SPRING).getEntry();
 
 
     // SwervePosition

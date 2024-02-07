@@ -97,7 +97,9 @@ final class ShooterPivot {
      * @param motorPos position of the motor in ticks
      */
     private static double calcAFF(double motorPos){
-        return PIVOT_AFF_SCALAR * Math.cos(ticksToRad(motorPos)); // Doesn't account for the spring yet
+        double gravity = Math.cos(ticksToRad(motorPos) + SHOOTER_COM_POS.atan2());
+        double spring = 0.0; //TODO math
+        return PIVOT_AFF_GRAVITY * gravity + PIVOT_AFF_SPRING * spring; 
     }
 
 }

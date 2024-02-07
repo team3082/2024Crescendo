@@ -1,5 +1,7 @@
 package frc.robot.subsystems.shooter;
 
+import static frc.robot.Tuning.Shooter.*;
+
 // Couple notes about the shooter:
 // includes the pivot, flywheel, and handoff.
 // Pivot is referenced in radians, with theta=0 straight forward,
@@ -33,9 +35,23 @@ public final class Shooter {
         return ShooterPivot.atPos() && Flywheels.atVel();
     }
 
+
+    /**
+     * ejects the gamepiece if the drivetrain arm and wheels are at the proper position and velocity
+     */
     public void shoot() { }
 
+    /**
+     * Shoots the gamepiece regardless of whether or not the arm and wheels are ready
+     */
+    public void forceShoot() { }
+
+    /**
+     * lowers the arm and sets the flywheels to coast
+     */
     public void stow() {
-        
+        ShooterPivot.setPosition(SHOOTER_STOW_ANGLE);
+        Flywheels.disable();
+        state = ShooterState.STOW;
     }
 }

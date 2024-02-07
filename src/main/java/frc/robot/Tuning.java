@@ -65,8 +65,9 @@ public class Tuning {
         public static final double PIVOT_DEADBAND_POS = 0.0; // In motorticks
         public static final double PIVOT_DEADBAND_VEL = 0.0; // In motor ticks per 100ms
 
-        public static double PIVOT_AFF_SCALAR = 0.0;
-
+        public static double PIVOT_AFF_GRAVITY = 0.0;
+        public static double PIVOT_AFF_SPRING = 0.0;
+ 
         public static final double SPEAKER_SPEED_TOP = 0.0; //in motorticks per 100ms
         public static final double SPEAKER_SPEED_BOTTOM = 0.0;
 
@@ -75,5 +76,7 @@ public class Tuning {
 
         public static final double AMP_WHEEL_SPEED_DEADBAND = 0.0;
         public static final double SPEAKER_WHEEL_SPEED_DEADBAND = 0.0;
+
+        public static final double SHOOTER_STOW_ANGLE = 0.0;
     }
 }
