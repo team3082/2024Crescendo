@@ -72,8 +72,8 @@ final class Flywheels {
     }
 
     static void disable() {
-        topMotor.set(TalonFXControlMode.Velocity, 0.0);
-        bottomMotor.set(TalonFXControlMode.Velocity, 0.0);
+        topMotor.set(TalonFXControlMode.Disabled, 0.0);
+        bottomMotor.set(TalonFXControlMode.Disabled, 0.0);
         mode = Mode.OFF;
     }
 
