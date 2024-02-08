@@ -8,7 +8,7 @@ public class SetShooterAngle extends Autoframe {
 
     public SetShooterAngle(double angle) {
         this.angle = angle;
-        blocking = true;
+        blocking = false;
     }
 
     @Override
