@@ -4,50 +4,24 @@ import frc.robot.swerve.SwerveState;
 import frc.robot.utils.Vector2;
 import frc.robot.swerve.SwervePosition;;
 
-public class BezierCurve implements SwerveTrajectory {
+public class BezierCurve {
 
     public Vector2 a, b, c, d;
-    public double rotStart, rotEnd;
-    double maxRot;
-    Vector2 maxTrl;
+    double maxSpeed;
     double length;
     Vector2[] curvePoints;
 
-    public BezierCurve(Vector2 a, Vector2 b, Vector2 c, Vector2 d, double rotStart, double rotEnd, Vector2 maxTrl, double maxRot) {
+    public BezierCurve(Vector2 a, Vector2 b, Vector2 c, Vector2 d) {
         this.a = a;
         this.b = b;
         this.c = c;
         this.d = d;
-        this.rotStart = rotStart;
-        this.rotEnd = rotEnd;
-        this.maxTrl = maxTrl;
-        this.maxRot = maxRot;
 
         this.length = approxLength();
     }
 
-    // public BezierCurve(String PathFile) {}
-
-    public SwerveState get(double t) {
-        Vector2 robotPos = SwervePosition.getPosition();
-        double tClose = getClosestT(robotPos);
-        Vector2 txy = (getPoint(t));
-        Vector2 vectorTangent = getTangent(tClose);
-        Vector2 correctionVector2 = txy.sub(robotPos).norm().mul(0.1); // TODO make scale variable to robot distance from t
-        Vector2 movementVector = vectorTangent.add(correctionVector2).norm();
-        return new SwerveState(movementVector, this.rotEnd, this.maxTrl, this.maxRot);
-    }
-
     public double length() {
         return this.length;
-    }
-
-    public SwerveState startState() {
-        return new SwerveState(this.a, this.rotStart, new Vector2(0, 0), 0.0);
-    }
-
-    public SwerveState endState() {
-        return new SwerveState(this.c, this.rotEnd, new Vector2(0, 0), 0.0);
     }
 
     public Vector2 getPoint(double t) {
