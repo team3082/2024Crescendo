@@ -82,6 +82,10 @@ public class Intake {
         
     }
 
+    public static void setIntakePosition(IntakePosition position) {
+        targetPosition = position;
+    }
+
     public static void setIntakeVelocity(double vel) {
         topBeltMotor.set(vel);
         bottomBeltMotor.set(-vel);

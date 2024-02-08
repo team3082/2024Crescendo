@@ -18,8 +18,6 @@ public class SetShooterAngle extends Autoframe {
 
     @Override
     public void update() {
-        ShooterPivot.update();
-
         if (ShooterPivot.atPos()) {
             this.done = true;
         }
