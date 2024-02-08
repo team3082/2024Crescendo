@@ -79,6 +79,15 @@ public final class Flywheels {
         mode = Mode.AMP;
     }
 
+    static void setMode(Mode desiredMode) {
+        mode = desiredMode;
+    }
+
+    static void forceOut() {
+        topMotor.set(TalonFXControlMode.PercentOutput, 0.8);
+        bottomMotor.set(TalonFXControlMode.PercentOutput, -0.8);
+    }
+
     static void disable() {
         topMotor.set(TalonFXControlMode.Disabled, 0.0);
         bottomMotor.set(TalonFXControlMode.Disabled, 0.0);
