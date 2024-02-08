@@ -1,6 +1,8 @@
 package frc.robot.auto.autoframe;
 
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.shooter.Flywheels;
+import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.utils.RTime;
 
 public class SetShoot extends Autoframe{
@@ -13,18 +15,24 @@ public class SetShoot extends Autoframe{
 
     @Override
     public void start() {
-        Intake.setIntakeVelocity(0.5);
+        
     }
 
     @Override
     public void update() {
-        if (Intake.pieceGrabbed() == false) {
-            this.pieceIndexed = true;
-            this.indexTime = RTime.now();
-        }
-        else if (indexTime + 0.5 /*time after piece has left intake to ensure its shot*/ <= RTime.now()) {
-            Intake.setIntakeVelocity(0);
-            this.done = true;
+        if (Flywheels.atVel() && ShooterPivot.atPos()) {
+            if (Intake.pieceGrabbed()) {
+                Intake.setIntakeVelocity(0.5);
+            }
+            else if (Intake.pieceGrabbed() == false) {
+                this.pieceIndexed = true;
+                this.indexTime = RTime.now();
+
+                if (indexTime + 0.5 /*time after piece has left intake to ensure its shot*/ <= RTime.now()) {
+                    Intake.setIntakeVelocity(0);
+                    this.done = true;
+                }
+            }
         }
     }
 }
