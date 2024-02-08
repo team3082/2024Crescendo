@@ -76,6 +76,7 @@ public class Tuning {
 
         public static final double AMP_WHEEL_SPEED_DEADBAND = 0.0;
         public static final double SPEAKER_WHEEL_SPEED_DEADBAND = 0.0;
+        public static final double VELOCITY_WHEEL_SPEED_DEADBAND = 0.0;
 
         public static final double SHOOTER_STOW_ANGLE = 0.0;
     }

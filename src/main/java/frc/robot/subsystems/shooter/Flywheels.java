@@ -12,13 +12,14 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import static frc.robot.utils.RMath.*;
 
 @SuppressWarnings("removal")
-final class Flywheels {
+public final class Flywheels {
     
     static TalonFX topMotor, bottomMotor;
 
     // Speeds in RPM
     static double targetSpeakerTop, targetSpeakerBottom;
     static double targetAmpTop, targetAmpBottom;
+    private static double velocity;
 
     private static Mode mode = Mode.OFF;
 
@@ -59,6 +60,13 @@ final class Flywheels {
         targetAmpBottom = 0;
     }
 
+    public static void setVelocity(double newVelocity) {
+        velocity = newVelocity;
+        topMotor.set(TalonFXControlMode.Velocity, velocity * RPMToVel);
+        bottomMotor.set(TalonFXControlMode.Velocity, velocity * RPMToVel);
+        mode = Mode.VELOCITY;
+    }
+
     static void setSpeakerScore() { 
         topMotor.set(TalonFXControlMode.Velocity, targetSpeakerTop * RPMToVel);
         bottomMotor.set(TalonFXControlMode.Velocity, targetSpeakerBottom * RPMToVel);
@@ -77,7 +85,7 @@ final class Flywheels {
         mode = Mode.OFF;
     }
 
-    static boolean atVel() {
+    public static boolean atVel() {
         double top = topMotor.getSelectedSensorVelocity();
         double bottom = bottomMotor.getSelectedSensorVelocity();
         switch(mode){
@@ -85,6 +93,8 @@ final class Flywheels {
                 return (0 == deadband(top, SPEAKER_SPEED_TOP, SPEAKER_WHEEL_SPEED_DEADBAND)) && (0 == deadband(bottom, SPEAKER_SPEED_BOTTOM, SPEAKER_WHEEL_SPEED_DEADBAND)); 
             case AMP:
                 return (0 == deadband(top, AMP_SPEED_TOP, AMP_WHEEL_SPEED_DEADBAND)) && (0 == deadband(bottom, AMP_SPEED_BOTTOM, AMP_WHEEL_SPEED_DEADBAND)); 
+            case VELOCITY:
+                return (0 == deadband(top, velocity, AMP_WHEEL_SPEED_DEADBAND)) && (0 == deadband(bottom, velocity, AMP_WHEEL_SPEED_DEADBAND));
             default:
                 return false;
         }
@@ -93,6 +103,6 @@ final class Flywheels {
 
 
     private static enum Mode {
-        AMP, SPEAKER, OFF;
+        AMP, SPEAKER, VELOCITY, OFF;
     }
 }

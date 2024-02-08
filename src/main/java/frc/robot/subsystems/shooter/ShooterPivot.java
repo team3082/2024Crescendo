@@ -13,7 +13,7 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 
 @SuppressWarnings("removal")
-final class ShooterPivot {
+public final class ShooterPivot {
 
     private static TalonFX motor;
     private static CANCoder absEncoder;
@@ -81,15 +81,15 @@ final class ShooterPivot {
      * the position of the arm in radians
      * @param pos
      */
-    static void setPosition(double pos) {
+    public static void setPosition(double pos) {
         targetPos = radToTicks(pos);
     }
     
-    static boolean atPos() {
+    public static boolean atPos() {
         return false;
     }
     
-    static void update() {
+    public static void update() {
         motor.set(ControlMode.MotionMagic, targetPos, DemandType.ArbitraryFeedForward, calcAFF(motor.getSelectedSensorPosition()));
     }
 
