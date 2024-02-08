@@ -1,4 +1,4 @@
-package frc.robot.swerve;
+package frc.robot.utils.swerve;
 
 import frc.robot.utils.RMath;
 import frc.robot.utils.Vector2;

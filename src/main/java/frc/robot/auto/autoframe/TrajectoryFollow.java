@@ -1,13 +1,13 @@
 package frc.robot.auto.autoframe;
 
 import frc.robot.sensors.Pigeon;
-import frc.robot.swerve.SwerveInstruction;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
-import frc.robot.swerve.SwerveState;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.followers.SwerveFollower;
+import frc.robot.utils.swerve.SwerveInstruction;
+import frc.robot.utils.swerve.SwerveState;
 
 public class TrajectoryFollow extends Autoframe{
     public SwerveFollower controller;

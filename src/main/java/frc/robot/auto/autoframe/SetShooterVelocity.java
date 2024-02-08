@@ -1,6 +1,6 @@
 package frc.robot.auto.autoframe;
 
-import frc.robot.subsystems.shooter.Flywheels;
+import frc.robot.subsystems.note.Flywheels;
 
 public class SetShooterVelocity extends Autoframe {
 

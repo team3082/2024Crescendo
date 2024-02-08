@@ -1,6 +1,6 @@
 package frc.robot.auto.autoframe;
 
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.note.Intake;
 
 public class SetIntake extends Autoframe {
     public SetIntake() {

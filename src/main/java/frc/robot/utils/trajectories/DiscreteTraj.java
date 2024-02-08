@@ -2,7 +2,8 @@ package frc.robot.utils.trajectories;
 
 import java.util.ArrayList;
 
-import frc.robot.swerve.SwerveState;
+import frc.robot.utils.swerve.DiscreteSwerveState;
+import frc.robot.utils.swerve.SwerveState;
 
 public class DiscreteTraj implements SwerveTrajectory{
     protected ArrayList<DiscreteSwerveState> path;

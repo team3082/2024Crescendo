@@ -1,8 +1,6 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystems.note;
 
 import static frc.robot.Tuning.Shooter.*;
-
-import frc.robot.subsystems.Intake;
 
 // Couple notes about the shooter:
 // includes the pivot, flywheel, and handoff.

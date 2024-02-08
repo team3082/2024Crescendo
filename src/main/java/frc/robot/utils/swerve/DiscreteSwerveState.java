@@ -1,6 +1,4 @@
-package frc.robot.utils.trajectories;
-
-import frc.robot.swerve.SwerveState;
+package frc.robot.utils.swerve;
 
 public class DiscreteSwerveState extends SwerveState implements Comparable<Double>{
     public final double time;

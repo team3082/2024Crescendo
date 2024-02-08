@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystems.note;
 
 import static frc.robot.Tuning.Shooter.*;
 import static frc.robot.Constants.Shooter.*;

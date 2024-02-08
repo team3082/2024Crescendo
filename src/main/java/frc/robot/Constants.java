@@ -8,13 +8,17 @@ import frc.robot.utils.Vector2;
 public final class Constants {
 
     public static final class Climber {
-        public static final int RIGHTWINCH_ID = 16;
-        public static final int RIGHTHALL_ID = 1;
+        public static final int RIGHT_MOTOR_ID = 16;
+        public static final int RIGHT_HALL_ID = 1;
 
-        public static final int LEFTWINCH_ID = 17;
-        public static final int LEFTHALL_ID = 1;
+        public static final int LEFT_MOTOR_ID = 17;
+        public static final int LEFT_HALL_ID = 1;
+
+        public static final boolean LEFT_MOTOR_INVERTED = false;
+        public static final boolean RIGHT_MOTOR_INVERTED = false;
 
         public static final double INCHES_PER_ROTATION = 0.0;
+        public static final double TICKS_PER_INCH = 0.0;
     }
 
     public static final class Shooter {

@@ -1,6 +1,6 @@
 package frc.robot.auto.autoframe;
 
-import frc.robot.subsystems.shooter.ShooterPivot;
+import frc.robot.subsystems.note.ShooterPivot;
 
 public class SetShooterAngle extends Autoframe {
 

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystems.note;
 
 import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Tuning.Shooter.*;
@@ -65,7 +65,7 @@ public final class ShooterPivot {
      * Pointed straight forward is 0 (impossible to reach),
      * angled straight up is PI / 2
      */
-    private double getPosition() {
+    public double getPosition() {
         return ticksToRad(motor.getSelectedSensorPosition());
     }
 

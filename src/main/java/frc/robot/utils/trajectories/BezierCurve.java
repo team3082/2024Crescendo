@@ -1,7 +1,7 @@
 package frc.robot.utils.trajectories;
 
-import frc.robot.swerve.SwerveState;
 import frc.robot.utils.Vector2;
+import frc.robot.utils.swerve.SwerveState;
 import frc.robot.swerve.SwervePosition;;
 
 public class BezierCurve implements SwerveTrajectory {

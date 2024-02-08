@@ -1,7 +1,7 @@
 package frc.robot.utils.trajectories;
 
-import frc.robot.swerve.SwerveState;
 import frc.robot.utils.RMath;
+import frc.robot.utils.swerve.SwerveState;
 
 public class LinearSpline implements SwerveTrajectory{
 

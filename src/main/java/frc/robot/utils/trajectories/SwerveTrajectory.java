@@ -1,6 +1,6 @@
 package frc.robot.utils.trajectories;
 
-import frc.robot.swerve.SwerveState;
+import frc.robot.utils.swerve.SwerveState;
 
 public interface SwerveTrajectory{
     /**Getter function for state at a given point*/

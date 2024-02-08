@@ -80,4 +80,21 @@ public class Tuning {
 
         public static final double SHOOTER_STOW_ANGLE = 0.0;
     }
+
+    public static final class Climbers {
+        public static final double CLIMBER_KP = 0.0;
+        public static final double CLIMBER_KI = 0.0;
+        public static final double CLIMBER_KD = 0.0;
+        public static final double CLIMBER_KF = 0.0;
+
+        public static final double CLIMBER_CRUISE_VEL = 0.0;
+        public static final double CLIMBER_MAX_ACCEL = 0.0;
+        public static final int CLIMBER_JERK_STRENGTH = 1;
+
+        public static final double CLIMBER_AFF_LOADED = 0.0;//aff for when holding the robot
+        public static final double CLIMBER_AFF_UNLOADED = 0.0;//aff when not holding the robot
+
+        
+
+    }
 }

@@ -1,9 +1,9 @@
 package frc.robot.auto.autoframe;
 
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Intake.IntakePosition;
-import frc.robot.subsystems.shooter.Flywheels;
-import frc.robot.subsystems.shooter.ShooterPivot;
+import frc.robot.subsystems.note.Flywheels;
+import frc.robot.subsystems.note.Intake;
+import frc.robot.subsystems.note.ShooterPivot;
+import frc.robot.subsystems.note.Intake.IntakePosition;
 import frc.robot.utils.RTime;
 
 public class SetShoot extends Autoframe {
