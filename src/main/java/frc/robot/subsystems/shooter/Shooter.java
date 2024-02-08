@@ -44,6 +44,7 @@ public final class Shooter {
             break;
 
             case FIRING:
+                // Handoff still has the piece, so run that forwards.
                 Flywheels.setSpeakerScore();
             break;
 
