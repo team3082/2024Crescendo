@@ -8,6 +8,10 @@ import java.util.Queue;
 import frc.robot.auto.autoframe.Autoframe;
 import frc.robot.auto.autoframe.CurveAutoFrame;
 import frc.robot.auto.autoframe.FollowBezierCurve;
+import frc.robot.auto.autoframe.SetIntake;
+import frc.robot.auto.autoframe.SetShoot;
+import frc.robot.auto.autoframe.SetShooterAngle;
+import frc.robot.auto.autoframe.SetShooterVelocity;
 import frc.robot.auto.autoframe.TrajectoryFollow;
 import frc.robot.sensors.Pigeon;
 import frc.robot.swerve.SwervePosition;
@@ -65,15 +69,33 @@ public class Auto {
         // TODO test this
         SwervePosition.setPosition(new Vector2(105, -295));
         Autoframe[] Frames = new Autoframe[] {
+            new SetShooterAngle(0.0), // add angle
+            new SetShooterVelocity(0.0), // add velocity
+            new SetShoot(),
+
+            new SetIntake(),
+            new SetShooterAngle(0.0), // add angle
+            new SetShooterVelocity(0.0), // add velocity
             // go to second piece
             new FollowBezierCurve(new BezierCurve(new Vector2(105, -295), new Vector2(100, -260), new Vector2(101, -248.3), new Vector2(109, -223.5), 0.0, 0.0, new Vector2(1, 1), 1.0),
             new CurveAutoFrame[] {}),
+            new SetShoot(),
+
+            new SetIntake(),
+            new SetShooterAngle(0.0), // add angle
+            new SetShooterVelocity(0.0), // add velocity
             // go to third piece
             new FollowBezierCurve(new BezierCurve(new Vector2(109, -223.5), new Vector2(100, -250), new Vector2(65.8, -250.7), new Vector2(56.2, -222.6), 0.0, 0.0, new Vector2(1, 1), 1.0),
             new CurveAutoFrame[] {}),
+            new SetShoot(),
+
+            new SetIntake(),
+            new SetShooterAngle(0.0), // add angle
+            new SetShooterVelocity(0.0), // add velocity
             // go to fourth piece
             new FollowBezierCurve(new BezierCurve(new Vector2(56.2, -222.6), new Vector2(50.2, -262), new Vector2(18, -239), new Vector2(3.4, -223.7), 0.0, 0.0, new Vector2(1, 1), 1.0),
-            new CurveAutoFrame[] {})
+            new CurveAutoFrame[] {}),
+            new SetShoot()
         };
         queueFrames(Frames);
     }
