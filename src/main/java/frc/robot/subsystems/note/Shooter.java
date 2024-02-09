@@ -26,15 +26,15 @@ public final class Shooter {
 
     public static ShooterStatus shooterMode;
 
-    private ShooterState state;
+    private static ShooterState state;
     
-    public void init() {
+    public static void init() {
         ShooterPivot.init();
         Flywheels.init();
         shooterMode = ShooterStatus.DISABLED;
     }
 
-    public void update() {
+    public static void update() {
 
         switch (shooterMode) {
             case DISABLED:
@@ -62,7 +62,7 @@ public final class Shooter {
         ShooterPivot.update();
     }
 
-    public boolean canShoot() {
+    public static boolean canShoot() {
         if (!(state == ShooterState.SPEAKER || state == ShooterState.AMP || state == ShooterState.TRAP)) {
             return false;
         }
@@ -74,21 +74,21 @@ public final class Shooter {
     /**
      * ejects the gamepiece if the drivetrain arm and wheels are at the proper position and velocity
      */
-    public void shoot() { 
+    public static void shoot() { 
         if (canShoot()) shooterMode = ShooterStatus.FIRING;
     }
 
     /**
      * Shoots the gamepiece regardless of whether or not the arm and wheels are ready
      */
-    public void forceShoot() { 
+    public static void forceShoot() { 
         shooterMode = ShooterStatus.EJECT;
     }
 
     /**
      * lowers the arm and sets the flywheels to coast
      */
-    public void stow() {
+    public static void stow() {
         ShooterPivot.setPosition(SHOOTER_STOW_ANGLE);
         Flywheels.disable();
         state = ShooterState.STOW;

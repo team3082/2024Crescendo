@@ -24,11 +24,11 @@ public final class Constants {
     public static final class Shooter {
 
         // Talon IDs: Flywheel
-        public static final int TOPFLYWHEEL_ID = 0;
-        public static final int BOTTOMFLYWHEEL_ID = 0;
+        public static final int TOPFLYWHEEL_ID = 10;
+        public static final int BOTTOMFLYWHEEL_ID = 11;
 
         // Talon ID: Pivot
-        public static final int FLYWHEELPIVOT_ID = 0;
+        public static final int FLYWHEELPIVOT_ID = 9;
 
         // CANCoder offset
         public static final double PIVOT_OFFSET = 0;
