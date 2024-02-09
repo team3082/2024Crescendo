@@ -72,7 +72,7 @@ public class BezierCurve{
             l += curvePoint.point.sub(pPoint).mag();
             pPoint = curvePoint.point;
         }
-        return 0.0;
+        return l;
     }
 
     public double getClosestT(Vector2 robotPos) {

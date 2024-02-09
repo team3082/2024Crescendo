@@ -22,7 +22,7 @@ public class FollowBezierCurve extends Autoframe{
 
     @Override
     public void start() {
-        this.trajectoryPID = new PIDController(Tuning.MOVEP, Tuning.MOVEI, Tuning.MOVED, 1.0, 1.0, this.maxSpeed);
+        this.trajectoryPID = new PIDController(Tuning.MOVEP, Tuning.MOVEI, Tuning.MOVED, 0.0, 0.0, this.maxSpeed);
         this.trajectoryPID.setDest(this.trajectory.length());
     }   
 
@@ -53,10 +53,9 @@ public class FollowBezierCurve extends Autoframe{
             // SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), movementVector.rotate(Math.PI/2.0).mul(translationSpeed));
             if (RobotBase.isSimulation()) {
                 // Slow down if we are in simulation because we go zoom zoom
-                translationSpeed *= 0.05;
+                // translationSpeed *= 0.05;
                 Auto.movement = movementVector.mul(translationSpeed);
-                SwerveManager.rotateAndDrive(0.0, Auto.movement = movementVector.mul(translationSpeed));
-                System.out.println(movementVector);
+                SwerveManager.rotateAndDrive(0.0, movementVector.mul(translationSpeed));
             }
             else {
                 // Rotate our vector to be local to the field
