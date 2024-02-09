@@ -16,6 +16,7 @@ import frc.robot.Tuning;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
+import frc.robot.utils.AutoSelector;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 
@@ -129,6 +130,7 @@ public class Telemetry {
         robotTab.add("Field View", field);
         robotTab.add("Custom Field", customField);
         robotTab.add("Swerve", swerveMods);
+        robotTab.add("Auto Selector", AutoSelector.autoChooser);
     }
 
     /**

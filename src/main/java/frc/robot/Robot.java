@@ -12,6 +12,7 @@ import frc.robot.sensors.VisionManager;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
+import frc.robot.utils.AutoSelector;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
     Telemetry.init();
     ChoreoTrajectoryGenerator.init();
     SwervePosition.setPosition(new Vector2());
+    AutoSelector.setup();
   }
 
   @Override
@@ -59,9 +61,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     RTime.init();
     Pigeon.setYaw(270);
-    // Auto.bezierCurveAutoTest();
-    // Auto.trajFollowerTest();
-    Auto.choreoTest();
+    AutoSelector.run();
   }
 
   @Override

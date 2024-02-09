@@ -11,8 +11,6 @@ public class AutoSelector {
     // If you want to know what auto is running anywhere else in the code
     public static String selectedAuto;
 
-    public static String selectedPiece;
-
     public static final SendableChooser<String> autoChooser = new SendableChooser<>();
 
     /*
