@@ -12,6 +12,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 
+import edu.wpi.first.wpilibj.RobotBase;
+
 @SuppressWarnings("removal")
 public final class ShooterPivot {
 
@@ -20,7 +22,9 @@ public final class ShooterPivot {
 
     private static double targetPos;
 
-    static void init() {
+    public static double simAng;
+
+    public static void init() {
         absEncoder = new CANCoder(FLYWHEELPIVOT_ID);
         absEncoder.configFactoryDefault();
 
@@ -83,9 +87,13 @@ public final class ShooterPivot {
      */
     public static void setPosition(double pos) {
         targetPos = radToTicks(pos);
+        simAng = pos;
     }
     
     public static boolean atPos() {
+        if (RobotBase.isSimulation()) {
+            return true;
+        }
         return false;
     }
     

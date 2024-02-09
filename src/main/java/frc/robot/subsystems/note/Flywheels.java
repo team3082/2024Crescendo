@@ -21,9 +21,11 @@ public final class Flywheels {
     static double targetAmpTop, targetAmpBottom;
     private static double velocity;
 
+    public static double simVel;
+
     private static Mode mode = Mode.OFF;
 
-    static void init() {
+    public static void init() {
         topMotor = new TalonFX(TOPFLYWHEEL_ID);
         bottomMotor = new TalonFX(BOTTOMFLYWHEEL_ID);
 
@@ -65,6 +67,7 @@ public final class Flywheels {
         topMotor.set(TalonFXControlMode.Velocity, velocity * RPMToVel);
         bottomMotor.set(TalonFXControlMode.Velocity, velocity * RPMToVel);
         mode = Mode.VELOCITY;
+        simVel = newVelocity;
     }
 
     static void setSpeakerScore() { 
@@ -95,8 +98,8 @@ public final class Flywheels {
     }
 
     public static boolean atVel() {
-        double top = topMotor.getSelectedSensorVelocity();
-        double bottom = bottomMotor.getSelectedSensorVelocity();
+        double top = topMotor.getSelectedSensorVelocity() * VelToRPM;
+        double bottom = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
         switch(mode){
             case SPEAKER:
                 return (0 == deadband(top, SPEAKER_SPEED_TOP, SPEAKER_WHEEL_SPEED_DEADBAND)) && (0 == deadband(bottom, SPEAKER_SPEED_BOTTOM, SPEAKER_WHEEL_SPEED_DEADBAND)); 

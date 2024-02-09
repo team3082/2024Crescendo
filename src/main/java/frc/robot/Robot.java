@@ -9,10 +9,17 @@ import frc.robot.auto.Auto;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
+<<<<<<< HEAD
 import frc.robot.subsystems.note.Shooter;
+=======
+import frc.robot.subsystems.note.Flywheels;
+import frc.robot.subsystems.note.Intake;
+import frc.robot.subsystems.note.ShooterPivot;
+>>>>>>> 17b576cdb8146680c7a59c9560bf8812acd43b9a
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
+import frc.robot.utils.AutoSelector;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
@@ -46,7 +53,14 @@ public class Robot extends TimedRobot {
     Telemetry.init();
     ChoreoTrajectoryGenerator.init();
     SwervePosition.setPosition(new Vector2());
+<<<<<<< HEAD
     Shooter.init();
+=======
+    Flywheels.init();
+    ShooterPivot.init();
+    Intake.init();
+    AutoSelector.setup();
+>>>>>>> 17b576cdb8146680c7a59c9560bf8812acd43b9a
   }
 
   @Override
@@ -59,27 +73,28 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    OI.init();
     RTime.init();
     Pigeon.setYaw(270);
-    // Auto.bezierCurveAutoTest();
-    // Auto.trajFollowerTest();
-    Auto.choreoTest();
+    AutoSelector.run();
   }
 
   @Override
   public void autonomousPeriodic() {
     Auto.update();
+    SwervePosition.update();
+    // SwerveManager.rotateAndDrive(0.0, new Vector2(1.0, 0.0));
   }
 
   @Override
   public void teleopInit() {
     OI.init();
-    SwervePosition.enableVision();
+    // SwervePosition.enableVision();
   }
 
   @Override
   public void teleopPeriodic() {
-    RTime.update();
+    // RTime.update();
     SwervePosition.update();
     OI.driverInput();
   }

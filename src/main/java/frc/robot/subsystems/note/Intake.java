@@ -37,6 +37,8 @@ public class Intake {
     public static IntakeMode intakeMode;
     public static IntakePosition targetPosition;
 
+    public static double simAng;
+
     public static void init(){
 
         topBeltMotor = new CANSparkMax(TOPINTAKE_ID, MotorType.kBrushless);
@@ -89,6 +91,22 @@ public class Intake {
     public static void setIntakeVelocity(double vel) {
         topBeltMotor.set(vel);
         bottomBeltMotor.set(-vel);
+    }
+
+    public static double getIntakeAngleRad() {
+        switch (targetPosition) {
+            case INROBOT:
+                return INROBOT_INTAKE_ANGLE;
+
+            case GROUND:
+                return GROUND_INTAKE_ANGLE;
+
+            case SOURCE:
+                return SOURCE_INTAKE_ANGLE;
+            
+            default:
+                return 0.0;
+        }
     }
 
     public static boolean pieceGrabbed() {

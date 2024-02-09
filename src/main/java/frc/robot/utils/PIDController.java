@@ -85,6 +85,8 @@ public class PIDController implements Sendable {
         double error = dest - pos;
         output += kP * error;
 
+        // System.out.println("output P: " + output);
+
         if (prevError == Double.MAX_VALUE) 
             prevError = error;
 
@@ -92,13 +94,19 @@ public class PIDController implements Sendable {
         errorIntegral += RTime.deltaTime() * (prevError + error) / 2;
         output += kI * errorIntegral;
 
+        // System.out.println("output I: " + output);
+
         // Calculate derivative component based on mSec of the error
         errorDerivative = (error - prevError) / RTime.deltaTime();
         output += kD * errorDerivative;
         prevError = error;
+
+        // System.out.println("output D: " + output);
         
         // Clamp the output
         output = Math.max(Math.min(output, max), -max);
+
+        // System.out.println("output Final: " + output);
 
         return output;
     }
