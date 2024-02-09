@@ -1,7 +1,7 @@
 package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.auto;
+import frc.robot.auto.Auto;
 
 /**
  * Class for selecting autonomous routines.
@@ -35,8 +35,6 @@ public class AutoSelector {
     public static void run() {
 
         selectedAuto = autoChooser.getSelected();
-
-        Auto.scoringPiece = getSelected();
 
         switch(autoChooser.getSelected()) {
 
