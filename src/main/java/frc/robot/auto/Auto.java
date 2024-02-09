@@ -56,7 +56,7 @@ public class Auto {
         queueFrames(frames);
     }
 
-    public static void choreoTest(){
+    public static void choreoTest() {
         SwerveTrajectory traj = ChoreoTrajectoryGenerator.generateTrajectory("Circle.traj");
         PIDFollower controller = new PIDFollower();
         controller.setTrajectory(traj);
