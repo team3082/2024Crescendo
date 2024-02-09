@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Constants;
 import frc.robot.Tuning;
+import frc.robot.subsystems.note.Flywheels;
+import frc.robot.subsystems.note.Intake;
+import frc.robot.subsystems.note.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -75,6 +78,13 @@ public class Telemetry {
     private static frc.robot.utils.Vector2 prevSimPos = new Vector2();
     private static Rotation2d prevSimRot = new Rotation2d();
 
+    // mechanism visualization  
+    private static Mechanism2d subsystems = new Mechanism2d(60, 60);
+    private static MechanismRoot2d intakeRoot = subsystems.getRoot("Intake", 40, 10);
+    private static MechanismLigament2d intakePivot = intakeRoot.append(new MechanismLigament2d("Intake", 15, 0));
+    private static MechanismRoot2d shooterRoot = subsystems.getRoot("Shooter", 20, 10);
+    private static MechanismLigament2d shooterPivot = shooterRoot.append(new MechanismLigament2d("Shooter", 10, 180));
+
     // cool swerve visualization n stuff
     private static Mechanism2d customField = new Mechanism2d(900, 500);
     private static MechanismRoot2d fieldSwerveMod0Root = customField.getRoot("fieldSwerveMod0", 0, 0);
@@ -129,6 +139,7 @@ public class Telemetry {
         robotTab.add("Field View", field);
         robotTab.add("Custom Field", customField);
         robotTab.add("Swerve", swerveMods);
+        robotTab.add("Subsystems", subsystems);
     }
 
     /**
@@ -233,6 +244,12 @@ public class Telemetry {
         // Tuning.Shooter.FLYWHEELKD = FLYWHEELKD.getDouble(0);
         // Tuning.Shooter.FLYWHEELKF = FLYWHEELKF.getDouble(0);
         // Tuning.Shooter.PIVOT_AFF_SCALAR = PIVOTAFF.getDouble(0);
+
+        // shooter visualization
+        intakePivot.setAngle(Math.toDegrees(Intake.getIntakeAngleRad()));
+        shooterPivot.setAngle(180 - Math.toDegrees(ShooterPivot.simAng));
+        shooterPivot.setLength((Flywheels.simVel / 250) + 2);
+        shooterPivot.setColor(new Color8Bit(255, 0, 0));
 
         // cool swerve visualization stuff that looks cool and i really like
         double modDist = Math.sqrt(Math.pow(Constants.Swerve.SWERVEMODX0, 2) + Math.pow(Constants.Swerve.SWERVEMODY0, 2));

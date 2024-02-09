@@ -2,7 +2,7 @@ package frc.robot;
 
 public class Tuning {
     //Swerve
-    public static final double MOVEP = 1.5;
+    public static final double MOVEP = 2;
     public static final double MOVEI = 0.3;
     public static final double MOVED = 0.2;
     public static final double MOVEDEAD = 1.0;

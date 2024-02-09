@@ -78,31 +78,32 @@ public class Auto {
         SwervePosition.setPosition(curve1.a);
 
         Autoframe[] Frames = new Autoframe[] {
-            // new SetShooterAngle(0.0), // add angle
-            // new SetShooterVelocity(0.0), // add velocity
+            new RotateTo(2.5 * Math.PI / 2.0, 0.5),
+            new SetShooterAngle(Math.PI / 3), // add angle
+            new SetShooterVelocity(1000), // add velocity
             // new SetShoot(),
 
-            // new SetIntake(), // puts down intake until the piece is grabbed
-            // new SetShooterAngle(0.0), // add angle
-            // new SetShooterVelocity(0.0), // add velocity
+            new SetIntake(), // puts down intake until the piece is grabbed
+            new SetShooterAngle(Math.PI / 4), // add angle
+            new SetShooterVelocity(2000), // add velocity
             // go to second piece
-            new RotateTo(3.0 * Math.PI / 2.0, 0.5), // add angle
+            new RotateTo(2.5 * Math.PI / 2.0, 0.5), // add angle
             new FollowBezierCurve(curve1, 1.0),
             // new SetShoot(), // shoot current piece
 
-            // new SetIntake(), // puts down intake until the piece is grabbed
-            // new SetShooterAngle(0.0), // add angle
-            // new SetShooterVelocity(0.0), // add velocity
+            new SetIntake(), // puts down intake until the piece is grabbed
+            new SetShooterAngle(Math.PI / 5), // add angle
+            new SetShooterVelocity(3000), // add velocity
             // // go to third piece
-            new RotateTo(1.0 * Math.PI / 2.0, 0.5), // add angle
+            new RotateTo(3.0 * Math.PI / 2.0, 0.5), // add angle
             new FollowBezierCurve(curve2, 1.0),
             // new SetShoot(), // shoot current piece
 
-            // new SetIntake(), // puts down intake until the piece is grabbed
-            // new SetShooterAngle(0.0), // add angle
-            // new SetShooterVelocity(0.0), // add velocity
+            new SetIntake(), // puts down intake until the piece is grabbed
+            new SetShooterAngle(Math.PI / 6), // add angle
+            new SetShooterVelocity(4000), // add velocity
             // go to fourth piece
-            new RotateTo(3.0 * Math.PI / 2.0, 0.5), // add angle
+            new RotateTo(3.5 * Math.PI / 2.0, 0.5), // add angle
             new FollowBezierCurve(curve3, 1.0),
             // new SetShoot() // shoot current piece
         };

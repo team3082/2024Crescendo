@@ -50,12 +50,12 @@ public final class Constants {
     public static final class Intake {
 
         // Motor IDs: Belt motors
-        public static final int INDEXER_ID = 0;
-        public static final int TOPINTAKE_ID = 0;
-        public static final int BOTTOMINTAKE_ID = 0;
+        public static final int INDEXER_ID = 12;
+        public static final int TOPINTAKE_ID = 13;
+        public static final int BOTTOMINTAKE_ID = 14;
 
         // Motor ID: Pivot
-        public static final int INTAKEPIVOT_ID = 0;
+        public static final int INTAKEPIVOT_ID = 15;
 
         // CAN ID: Beambreak
         public static final int LASER_ID = 0;
@@ -75,9 +75,9 @@ public final class Constants {
         public static final int INTAKE_WIDTH_mm = 635;
         public static final int NOTE_WIDTH_mm = 355;
 
-        public static final double INROBOT_INTAKE_ANGLE = 0.0;
-        public static final double SOURCE_INTAKE_ANGLE = 0.0;
-        public static final double GROUND_INTAKE_ANGLE = 0.0;
+        public static final double INROBOT_INTAKE_ANGLE = Math.PI / 2;
+        public static final double SOURCE_INTAKE_ANGLE = Math.PI / 4;
+        public static final double GROUND_INTAKE_ANGLE = - Math.PI / 6;
     }
 
     public static final class Swerve {

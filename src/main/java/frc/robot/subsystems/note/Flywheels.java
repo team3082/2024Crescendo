@@ -21,9 +21,11 @@ public final class Flywheels {
     static double targetAmpTop, targetAmpBottom;
     private static double velocity;
 
+    public static double simVel;
+
     private static Mode mode = Mode.OFF;
 
-    static void init() {
+    public static void init() {
         topMotor = new TalonFX(TOPFLYWHEEL_ID);
         bottomMotor = new TalonFX(BOTTOMFLYWHEEL_ID);
 
@@ -65,6 +67,7 @@ public final class Flywheels {
         topMotor.set(TalonFXControlMode.Velocity, velocity * RPMToVel);
         bottomMotor.set(TalonFXControlMode.Velocity, velocity * RPMToVel);
         mode = Mode.VELOCITY;
+        simVel = newVelocity;
     }
 
     static void setSpeakerScore() { 
