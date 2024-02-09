@@ -9,13 +9,10 @@ import frc.robot.auto.Auto;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
-<<<<<<< HEAD
 import frc.robot.subsystems.note.Shooter;
-=======
 import frc.robot.subsystems.note.Flywheels;
 import frc.robot.subsystems.note.Intake;
 import frc.robot.subsystems.note.ShooterPivot;
->>>>>>> 17b576cdb8146680c7a59c9560bf8812acd43b9a
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -53,14 +50,11 @@ public class Robot extends TimedRobot {
     Telemetry.init();
     ChoreoTrajectoryGenerator.init();
     SwervePosition.setPosition(new Vector2());
-<<<<<<< HEAD
     Shooter.init();
-=======
     Flywheels.init();
     ShooterPivot.init();
     Intake.init();
     AutoSelector.setup();
->>>>>>> 17b576cdb8146680c7a59c9560bf8812acd43b9a
   }
 
   @Override
