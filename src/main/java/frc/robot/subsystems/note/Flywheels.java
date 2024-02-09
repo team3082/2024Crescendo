@@ -95,8 +95,8 @@ public final class Flywheels {
     }
 
     public static boolean atVel() {
-        double top = topMotor.getSelectedSensorVelocity();
-        double bottom = bottomMotor.getSelectedSensorVelocity();
+        double top = topMotor.getSelectedSensorVelocity() * velToRPM;
+        double bottom = bottomMotor.getSelectedSensorVelocity() * velToRPM;
         switch(mode){
             case SPEAKER:
                 return (0 == deadband(top, SPEAKER_SPEED_TOP, SPEAKER_WHEEL_SPEED_DEADBAND)) && (0 == deadband(bottom, SPEAKER_SPEED_BOTTOM, SPEAKER_WHEEL_SPEED_DEADBAND)); 
