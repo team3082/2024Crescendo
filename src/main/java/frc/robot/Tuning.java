@@ -33,6 +33,7 @@ public class Tuning {
      public static final double SWERVE_KVROT = 0.0;
  
      public static final int CURVE_RESOLUTION = 3000;
+     public static final double CURVE_DEADBAND = 0.1;
     
 
     //Vision
