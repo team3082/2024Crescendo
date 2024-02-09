@@ -1,6 +1,8 @@
 package frc.robot.utils.trajectories;
 
 import frc.robot.utils.Vector2;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Tuning;
 
 public class BezierCurve{
@@ -21,6 +23,13 @@ public class BezierCurve{
         this.b.x *= -1;
         this.c.x *= -1;
         this.d.x *= -1;
+
+        if (DriverStation.getAlliance().get() == Alliance.Red) {
+            this.a.y *= -1;
+            this.b.y *= -1;
+            this.c.y *= -1;
+            this.d.y *= -1;
+        }
 
         getEvenlySpacedPoints();
         this.length = approxLength();
@@ -66,12 +75,14 @@ public class BezierCurve{
     public double getLengthTraveled(Vector2 robotPos) {
         double l = 0.0;
         int n = (int) ((double) Tuning.CURVE_RESOLUTION * getClosestT(robotPos));
+        // System.out.println("n: " + n);
         Vector2 pPoint = this.curvePoints[0].point;
         for (int i = 0; i < n; i++) {
-            CurvePoint curvePoint = this.curvePoints[(int) ((double) i / (double) n)];
+            CurvePoint curvePoint = this.curvePoints[i];
             l += curvePoint.point.sub(pPoint).mag();
             pPoint = curvePoint.point;
         }
+        // System.out.println("length: " + l);
         return l;
     }
 

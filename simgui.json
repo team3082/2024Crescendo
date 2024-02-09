@@ -14,6 +14,11 @@
       "/Shuffleboard/SmartDashboard/Swerve": "Mechanism2d"
     },
     "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      },
       "/Shuffleboard/SmartDashboard/Custom Field": {
         "window": {
           "visible": true
@@ -31,13 +36,29 @@
       }
     }
   },
+  "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        "Move PID": {
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
   "NetworkTables Info": {
+    "Clients": {
+      "open": true
+    },
     "Server": {
+      "Publishers": {
+        "open": true
+      },
+      "Subscribers": {
+        "open": true
+      },
       "open": true
     },
     "visible": true
-  },
-  "NetworkTables View": {
-    "visible": false
   }
 }

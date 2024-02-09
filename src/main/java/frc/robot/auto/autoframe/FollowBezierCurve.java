@@ -23,7 +23,8 @@ public class FollowBezierCurve extends Autoframe{
     @Override
     public void start() {
         this.trajectoryPID = new PIDController(Tuning.MOVEP, Tuning.MOVEI, Tuning.MOVED, 0.0, 0.0, this.maxSpeed);
-        this.trajectoryPID.setDest(this.trajectory.length());
+        this.trajectoryPID.setDest(1.0);
+        // System.out.println("robot pos " + SwervePosition.getPosition() + " curve starting pos " + this.trajectory.a);
     }   
 
     @Override
@@ -33,6 +34,7 @@ public class FollowBezierCurve extends Autoframe{
 
         // get the closest point t on the Bezier Curve
         double t = this.trajectory.getClosestT(robotPos);
+        // System.out.println(t);
 
         // gets the length traveled on the curve for the PID Controller
         double lengthTraveled = this.trajectory.getLengthTraveled(robotPos);
@@ -42,10 +44,17 @@ public class FollowBezierCurve extends Autoframe{
 
         // Calculate our speed from where we are along the curve
         // (slow down closer we get to the finish)
-        double translationSpeed = this.trajectoryPID.updateOutput(lengthTraveled);
+        double translationSpeed = this.trajectoryPID.updateOutput(lengthTraveled / this.trajectory.length());
+        // System.out.println("translation speed: " + translationSpeed);
+        // System.out.println("t: " + t + " total length: " + this.trajectoryPID.getDest() + " length traveled: " + lengthTraveled);
+
+        System.out.println("Percent Complete: " + lengthTraveled / this.trajectory.length() * 100 + "%");
 
         // If we are within our deadband
-        if (t > (1 - Tuning.CURVE_DEADBAND)) {
+        if (((robotPos.x < (this.trajectory.d.x) + 1) && (robotPos.x > (this.trajectory.d.x) - 1)) 
+        && ((robotPos.y < (this.trajectory.d.y) + 1) && (robotPos.y > (this.trajectory.d.y) - 1))) {
+            
+                // System.out.println("robot pos " + SwervePosition.getPosition() + " curve ending pos " + this.trajectory.d);
             // Kill the drivetrain if we are in simulation
             SwerveManager.rotateAndDrive(0.0, new Vector2());
             this.done = true;
@@ -53,7 +62,7 @@ public class FollowBezierCurve extends Autoframe{
             // SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), movementVector.rotate(Math.PI/2.0).mul(translationSpeed));
             if (RobotBase.isSimulation()) {
                 // Slow down if we are in simulation because we go zoom zoom
-                // translationSpeed *= 0.05;
+                translationSpeed *= 0.4;
                 Auto.movement = movementVector.mul(translationSpeed);
                 SwerveManager.rotateAndDrive(0.0, movementVector.mul(translationSpeed));
             }

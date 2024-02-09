@@ -27,11 +27,14 @@ import frc.robot.utils.trajectories.SwerveTrajectory;
 
 public class Auto {
     public static void bezierCurveAutoTest() {
-        SwervePosition.setPosition(new Vector2(33, -149));
+        BezierCurve curve1 = new BezierCurve(new Vector2(33, -149), new Vector2(101.6, -106), new Vector2(-87.5, -67), new Vector2(-17, -26));
+        BezierCurve curve2 = new BezierCurve(new Vector2(-17, -26), new Vector2(-87.5, -67), new Vector2(101.6, -106), new Vector2(33, -149));
+
+        SwervePosition.setPosition(curve1.a);
 
         Autoframe[] Frames = new Autoframe[] {
-            new FollowBezierCurve(new BezierCurve(new Vector2(33, -149), new Vector2(101.6, -106), new Vector2(-87.5, -67), new Vector2(-17, -26)), 1.0),
-            new FollowBezierCurve(new BezierCurve(new Vector2(-17, -26), new Vector2(-87.5, -67), new Vector2(101.6, -106), new Vector2(33, -149)), 1.0)
+            new FollowBezierCurve(curve1, 1.0),
+            new FollowBezierCurve(curve2, 1.0)
         };
 
         queueFrames(Frames);

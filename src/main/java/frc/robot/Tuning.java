@@ -2,9 +2,9 @@ package frc.robot;
 
 public class Tuning {
     //Swerve
-    public static final double MOVEP = 1.0;
-    public static final double MOVEI = 0.1;
-    public static final double MOVED = 0.1;
+    public static final double MOVEP = 1.5;
+    public static final double MOVEI = 0.3;
+    public static final double MOVED = 0.2;
     public static final double MOVEDEAD = 0.0;
     public static final double MOVEVELDEAD = 0.0;
     public static final double MOVEMAXSPEED = 0.0;
@@ -33,7 +33,7 @@ public class Tuning {
      public static final double SWERVE_KVROT = 0.0;
  
      public static final int CURVE_RESOLUTION = 3000;
-     public static final double CURVE_DEADBAND = 0.1;
+     public static final double CURVE_DEADBAND = 0.001;
     
 
     //Vision
