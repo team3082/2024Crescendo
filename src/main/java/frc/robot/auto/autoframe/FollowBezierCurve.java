@@ -3,13 +3,14 @@ import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.BezierCurve;
-
 import static frc.robot.auto.Auto.movement;
+
+import static frc.robot.Tuning.MOVEDEAD;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.Tuning;
 
-public class FollowBezierCurve extends Autoframe {
+public class FollowBezierCurve extends Autoframe{
     public BezierCurve trajectory;
     PIDController trajectoryPID;
     double maxSpeed;
@@ -22,36 +23,58 @@ public class FollowBezierCurve extends Autoframe {
 
     @Override
     public void start() {
-        this.trajectoryPID = new PIDController(Tuning.SWERVE_TRJ_PPOS, Tuning.SWERVE_TRJ_IPOS, Tuning.SWERVE_TRJ_DPOS, 1.0, 1.0, 1.0);
+        this.trajectoryPID = new PIDController(Tuning.MOVEP, Tuning.MOVEI, Tuning.MOVED, 0.0, 0.0, this.maxSpeed);
         this.trajectoryPID.setDest(1.0);
+        // System.out.println("robot pos " + SwervePosition.getPosition() + " curve starting pos " + this.trajectory.a);
     }   
 
     @Override
     public void update() {
-        // Get our "T" from our current position on the field
-        double t = trajectory.getClosestT(SwervePosition.getPosition());
+        // get odometry position data
+        Vector2 robotPos = SwervePosition.getPosition();
 
-        // Derive our movement vector along the curve
-        Vector2 movementVector = trajectory.getTangent(t);
-        movementVector = movementVector.norm();
+        // get the closest point t on the Bezier Curve
+        double t = this.trajectory.getClosestT(robotPos);
+        // System.out.println(t);
 
-        // Determine our speed based on where we are on the curve
-        double translationSpeed = trajectoryPID.updateOutput(t);
+        // gets the length traveled on the curve for the PID Controller
+        double lengthTraveled = this.trajectory.getLengthTraveled(robotPos);
 
-        if (RobotBase.isSimulation()) {
-            // Slow our speed down if we're in simulation
-            // because it goes very very fast
-            translationSpeed *= 0.05;
-            movement = movementVector.mul(translationSpeed).mul(maxSpeed);
-        } else {
-            // Multiply our vector by a rotation matrix so we're local to the field
-            movement = movementVector.rotate(Math.PI / 2.0).mul(translationSpeed).mul(maxSpeed);
-        }
+        // Derive our movement vector from the curve
+        Vector2 movementVector = this.trajectory.getTangent(t, robotPos);
 
-        // If we are close to our endpoint, kill the drivetrain
-        if (t > 0.97) {
+        // Calculate our speed from where we are along the curve
+        // (slow down closer we get to the finish)
+        double translationSpeed = this.trajectoryPID.updateOutput(lengthTraveled / this.trajectory.length());
+        // System.out.println("translation speed: " + translationSpeed);
+        // System.out.println("t: " + t + " total length: " + this.trajectoryPID.getDest() + " length traveled: " + lengthTraveled);
+
+        System.out.println("Percent Complete: " + lengthTraveled / this.trajectory.length() * 100 + "%");
+
+        System.out.println("robot pos: " + robotPos + " end pos" + this.trajectory.d);
+        System.out.println("length remaining " + this.trajectory.d.sub(robotPos).mag() + " is done: " + (robotPos.sub(this.trajectory.d).mag() < 1.0));
+        // If we are within our deadband
+        if (robotPos.sub(this.trajectory.d).mag() < MOVEDEAD) {
+            // System.out.println("robot pos " + SwervePosition.getPosition() + " curve ending pos " + this.trajectory.d);
+            // Kill the drivetrain if we are in simulation
+            // SwerveManager.rotateAndDrive(0.0, new Vector2());
             movement = new Vector2();
             this.done = true;
+        }
+        else {
+            // SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), movementVector.rotate(Math.PI/2.0).mul(translationSpeed));
+            if (RobotBase.isSimulation()) {
+                // Slow down if we are in simulation because we go zoom zoom
+                translationSpeed *= 0.4;
+                movement = movementVector.mul(translationSpeed);
+                // SwerveManager.rotateAndDrive(0.0, movementVector.mul(translationSpeed));
+            }
+            else {
+                // Rotate our vector to be local to the field
+                // and scale for our current speed.
+                movement = movementVector.rotate(Math.PI / 2.0).mul(translationSpeed);
+                // SwerveManager.rotateAndDrive(0.0, movementVector.rotate(Math.PI / 2.0).mul(translationSpeed));
+            }
         }
     }
 }

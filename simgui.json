@@ -12,6 +12,7 @@
       "/Shuffleboard/SmartDashboard/Auto Selector": "String Chooser",
       "/Shuffleboard/SmartDashboard/Custom Field": "Mechanism2d",
       "/Shuffleboard/SmartDashboard/Field View": "Field2d",
+      "/Shuffleboard/SmartDashboard/Subsystems": "Mechanism2d",
       "/Shuffleboard/SmartDashboard/Swerve": "Mechanism2d"
     },
     "windows": {
@@ -39,13 +40,29 @@
       }
     }
   },
+  "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        "Move PID": {
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
   "NetworkTables Info": {
+    "Clients": {
+      "open": true
+    },
     "Server": {
+      "Publishers": {
+        "open": true
+      },
+      "Subscribers": {
+        "open": true
+      },
       "open": true
     },
     "visible": true
-  },
-  "NetworkTables View": {
-    "visible": false
   }
 }

@@ -27,11 +27,14 @@ import frc.robot.utils.trajectories.SwerveTrajectory;
 
 public class Auto {
     public static void bezierCurveAutoTest() {
-        SwervePosition.setPosition(new Vector2(33, -149));
+        BezierCurve curve1 = new BezierCurve(new Vector2(33, -149), new Vector2(101.6, -106), new Vector2(-87.5, -67), new Vector2(-17, -26));
+        BezierCurve curve2 = new BezierCurve(new Vector2(-17, -26), new Vector2(-87.5, -67), new Vector2(101.6, -106), new Vector2(33, -149));
+
+        SwervePosition.setPosition(curve1.a);
 
         Autoframe[] Frames = new Autoframe[] {
-            new FollowBezierCurve(new BezierCurve(new Vector2(33, -149), new Vector2(101.6, -106), new Vector2(-87.5, -67), new Vector2(-17, -26)), 1.0),
-            new FollowBezierCurve(new BezierCurve(new Vector2(-17, -26), new Vector2(-87.5, -67), new Vector2(101.6, -106), new Vector2(33, -149)), 1.0)
+            new FollowBezierCurve(curve1, 1.0),
+            new FollowBezierCurve(curve2, 1.0)
         };
 
         queueFrames(Frames);
@@ -68,36 +71,41 @@ public class Auto {
 
     public static void fourPieceAmpSide() {
         // TODO test this
-        SwervePosition.setPosition(new Vector2(105, -295));
+        BezierCurve curve1 = new BezierCurve(new Vector2(105, -295), new Vector2(100, -260), new Vector2(101, -248.3), new Vector2(109, -223.5));
+        BezierCurve curve2 = new BezierCurve(new Vector2(109, -223.5), new Vector2(100, -250), new Vector2(65.8, -250.7), new Vector2(56.2, -222.6));
+        BezierCurve curve3 = new BezierCurve(new Vector2(56.2, -222.6), new Vector2(50.2, -262), new Vector2(18, -239), new Vector2(3.4, -223.7));
+
+        SwervePosition.setPosition(curve1.a);
 
         Autoframe[] Frames = new Autoframe[] {
-            new SetShooterAngle(0.0), // add angle
-            new SetShooterVelocity(0.0), // add velocity
-            new SetShoot(),
+            new RotateTo(2.5 * Math.PI / 2.0, 0.5),
+            new SetShooterAngle(Math.PI / 3), // add angle
+            new SetShooterVelocity(1000), // add velocity
+            // new SetShoot(),
 
             new SetIntake(), // puts down intake until the piece is grabbed
-            new SetShooterAngle(0.0), // add angle
-            new SetShooterVelocity(0.0), // add velocity
+            new SetShooterAngle(Math.PI / 4), // add angle
+            new SetShooterVelocity(2000), // add velocity
             // go to second piece
-            new RotateTo(0.0, 0.5), // add angle
-            new FollowBezierCurve(new BezierCurve(new Vector2(105, -295), new Vector2(100, -260), new Vector2(101, -248.3), new Vector2(109, -223.5)), 1.0),
-            new SetShoot(), // shoot current piece
+            new RotateTo(2.5 * Math.PI / 2.0, 0.5), // add angle
+            new FollowBezierCurve(curve1, 1.0),
+            // new SetShoot(), // shoot current piece
 
             new SetIntake(), // puts down intake until the piece is grabbed
-            new SetShooterAngle(0.0), // add angle
-            new SetShooterVelocity(0.0), // add velocity
-            // go to third piece
-            new RotateTo(0.0, 0.5), // add angle
-            new FollowBezierCurve(new BezierCurve(new Vector2(109, -223.5), new Vector2(100, -250), new Vector2(65.8, -250.7), new Vector2(56.2, -222.6)), 1.0),
-            new SetShoot(), // shoot current piece
+            new SetShooterAngle(Math.PI / 5), // add angle
+            new SetShooterVelocity(3000), // add velocity
+            // // go to third piece
+            new RotateTo(3.0 * Math.PI / 2.0, 0.5), // add angle
+            new FollowBezierCurve(curve2, 1.0),
+            // new SetShoot(), // shoot current piece
 
             new SetIntake(), // puts down intake until the piece is grabbed
-            new SetShooterAngle(0.0), // add angle
-            new SetShooterVelocity(0.0), // add velocity
+            new SetShooterAngle(Math.PI / 6), // add angle
+            new SetShooterVelocity(4000), // add velocity
             // go to fourth piece
-            new RotateTo(0.0, 0.5), // add angle
-            new FollowBezierCurve(new BezierCurve(new Vector2(56.2, -222.6), new Vector2(50.2, -262), new Vector2(18, -239), new Vector2(3.4, -223.7)), 1.0),
-            new SetShoot() // shoot current piece
+            new RotateTo(3.5 * Math.PI / 2.0, 0.5), // add angle
+            new FollowBezierCurve(curve3, 1.0),
+            // new SetShoot() // shoot current piece
         };
 
         queueFrames(Frames);
@@ -131,8 +139,8 @@ public class Auto {
     public static Queue<Autoframe> queuedFrames;
     public static HashSet<Autoframe> activeFrames = new HashSet<>();
 
-    public static double rotSpeed;
-    public static Vector2 movement;
+    public static double rotSpeed = 0.0;
+    public static Vector2 movement = new Vector2();
 
     public static double startTimestamp = 0;
 
@@ -190,6 +198,7 @@ public class Auto {
         }
 
         // // Rotate and drive the robot according to the output of the active AutoFrames
+        // System.out.println(movement);
         SwerveManager.rotateAndDrive(rotSpeed * rotScale, movement.mul(moveScale));
     }
 

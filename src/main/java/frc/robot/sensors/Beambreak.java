@@ -4,6 +4,7 @@ import au.grapplerobotics.ConfigurationFailedException;
 import au.grapplerobotics.LaserCan;
 import au.grapplerobotics.LaserCan.Measurement;
 import au.grapplerobotics.LaserCan.TimingBudget;
+import edu.wpi.first.wpilibj.RobotBase;
 
 public class Beambreak {
     private final LaserCan sensor;
@@ -34,12 +35,17 @@ public class Beambreak {
     }
 
     public boolean isBroken(){
-        Measurement measurement = sensor.getMeasurement();
-        //if the measurement is funny, we don't consider it. I don't feel like throwing an exception or logging rn
-        if(measurement.status != LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT){
-            return false;
+        if (RobotBase.isSimulation()) {
+            return true;
         }
+        else {
+            Measurement measurement = sensor.getMeasurement();
+            //if the measurement is funny, we don't consider it. I don't feel like throwing an exception or logging rn
+            if(measurement.status != LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT){
+                return false;
+            }
 
-        return measurement.distance_mm < distThreshold;
+            return measurement.distance_mm < distThreshold;
+        }
     }
 }

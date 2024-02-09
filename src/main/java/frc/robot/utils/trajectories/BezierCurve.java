@@ -1,22 +1,37 @@
 package frc.robot.utils.trajectories;
 
 import frc.robot.utils.Vector2;
-import frc.robot.utils.swerve.SwerveState;
-import frc.robot.swerve.SwervePosition;;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Tuning;
 
-public class BezierCurve {
+public class BezierCurve{
 
     public Vector2 a, b, c, d;
-    double maxSpeed;
+    public double rotStart, rotEnd;
+    double maxRot;
+    Vector2 maxTrl;
     double length;
-    Vector2[] curvePoints;
+    CurvePoint[] curvePoints = new CurvePoint[Tuning.CURVE_RESOLUTION];
 
     public BezierCurve(Vector2 a, Vector2 b, Vector2 c, Vector2 d) {
         this.a = a;
         this.b = b;
         this.c = c;
         this.d = d;
+        this.a.x *= -1;
+        this.b.x *= -1;
+        this.c.x *= -1;
+        this.d.x *= -1;
 
+        if (DriverStation.getAlliance().get() == Alliance.Red) {
+            this.a.y *= -1;
+            this.b.y *= -1;
+            this.c.y *= -1;
+            this.d.y *= -1;
+        }
+
+        getEvenlySpacedPoints();
         this.length = approxLength();
     }
 
@@ -36,72 +51,70 @@ public class BezierCurve {
         (Math.pow(t,3) * d.y);
 
         Vector2 r = new Vector2(x, y);
-
-        // System.out.println("T: " + t + " X: " + x + " Y: " + y);
-
         return r;
     }
 
-    public Vector2 getTangent(double t) {
-        // get derivative of the curve
-        double x = -3 * a.x * Math.pow((1 - t), 2) + 3 * b.x * (3 * Math.pow(t, 2) - 4 * t + 1) + 3 * c.x * (2 * t - 3 * Math.pow(t, 2)) + 3 * d.x * Math.pow(t, 2);
-        double y = -3 * a.y * Math.pow((1 - t), 2) + 3 * b.y * (3 * Math.pow(t, 2) - 4 * t + 1) + 3 * c.y * (2 * t - 3 * Math.pow(t, 2)) + 3 * d.y * Math.pow(t, 2);
-        Vector2 vectorTangent = new Vector2(x, y);
-        vectorTangent.norm();
+    public Vector2 getTangent(double t, Vector2 robotPos) {
+        double tTangent = t + 0.05;
+        // System.out.println(tTangent);
+        if (tTangent > 1.0) {t = 1.0;}
+        Vector2 vectorTangent = getPoint(tTangent).sub(robotPos).norm();
         return vectorTangent;
     }
 
     public double approxLength() {
-        int n = 100;
-        double l = 0;
-        Vector2 pPoint = getPoint(0);
-        for(int i = 0; i <= n; i++){
-            double t = (double) i / (double) n;
-            l += getPoint(t).sub(pPoint).mag();
-            pPoint = getPoint(t);
+        double l = 0.0;
+        Vector2 pPoint = this.curvePoints[0].point;
+        for (CurvePoint curvePoint : this.curvePoints) {
+            l += curvePoint.point.sub(pPoint).mag();
+            pPoint = curvePoint.point;
         }
         return l;
     }
 
-    public double approxRemainingLength(double T) {
-        int n = 100;
-        double l = 0;
-        int startingI = (int) (T * 100);
-        // System.out.println("T: " + T + "starting I: " + startingI);
-        Vector2 pPoint = getPoint(0);
-        for(int i = startingI; i <= n; i++){
-            double t = (double) i / (double) n;
-            l += getPoint(t).sub(pPoint).mag();
-            pPoint = getPoint(t);
+    public double getLengthTraveled(Vector2 robotPos) {
+        double l = 0.0;
+        int n = (int) ((double) Tuning.CURVE_RESOLUTION * getClosestT(robotPos));
+        // System.out.println("n: " + n);
+        Vector2 pPoint = this.curvePoints[0].point;
+        for (int i = 0; i < n; i++) {
+            CurvePoint curvePoint = this.curvePoints[i];
+            l += curvePoint.point.sub(pPoint).mag();
+            pPoint = curvePoint.point;
         }
+        // System.out.println("length: " + l);
         return l;
     }
 
     public double getClosestT(Vector2 robotPos) {
-        double n = 3000;
+        int n = Tuning.CURVE_RESOLUTION;
         double t = 0;
         double distance;
-        Vector2 distanceVector;
         double smallestDistance;
-        Vector2 point;
-        point = getPoint(0);
-        distanceVector = point.sub(robotPos);
-        distance = distanceVector.mag();
-        t = 0;
-        smallestDistance = distance;
-        // System.out.println(distance + " " + 0);
-        for (double i = 1; i <= n; i++) {
-            point = getPoint(i / n);
-            distanceVector = point.sub(robotPos);
-            distance = distanceVector.mag();
-            // System.out.println(distance + " " + i / n);
+        smallestDistance = this.curvePoints[0].point.sub(robotPos).mag();
+        for (int i = 0; i < n; i++) {
+            distance = this.curvePoints[(int) (((double) i / (double) n) * (double) Tuning.CURVE_RESOLUTION)].point.sub(robotPos).mag();
+            // System.out.println((int) ((double) i * (double) Tuning.CURVE_RESOLUTION));
             if (distance < smallestDistance) {
-                t = i / n;
+                t = (double) i / (double) n;
                 smallestDistance = distance;
             }
         }
-        // System.out.println("distance from t: " + smallestDistance + " closest value t: " + t);
-        // System.out.println("Current T: " + getPoint(t) + " Next T: " + getPoint(t + 0.01));
+        // System.out.println(t);
         return t;
+    }
+
+    private void getEvenlySpacedPoints() {
+        int n = Tuning.CURVE_RESOLUTION;
+        int i;
+        Vector2 pos;
+        double t;
+        for (i = 0; i < n; i++) {
+            pos = getPoint((double) i / (double) n);
+            t = (double) i / (double) n;
+            this.curvePoints[i] = new CurvePoint(pos, t);
+            // System.out.println("Pos: " + pos + " T: " + t);
+        }
+        // System.out.println(this.curvePoints);
     }
 }

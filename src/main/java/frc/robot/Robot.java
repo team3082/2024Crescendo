@@ -9,6 +9,9 @@ import frc.robot.auto.Auto;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
+import frc.robot.subsystems.note.Flywheels;
+import frc.robot.subsystems.note.Intake;
+import frc.robot.subsystems.note.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -46,6 +49,9 @@ public class Robot extends TimedRobot {
     Telemetry.init();
     ChoreoTrajectoryGenerator.init();
     SwervePosition.setPosition(new Vector2());
+    Flywheels.init();
+    ShooterPivot.init();
+    Intake.init();
     AutoSelector.setup();
   }
 
@@ -59,6 +65,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    OI.init();
     RTime.init();
     Pigeon.setYaw(270);
     AutoSelector.run();
@@ -67,17 +74,19 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Auto.update();
+    SwervePosition.update();
+    // SwerveManager.rotateAndDrive(0.0, new Vector2(1.0, 0.0));
   }
 
   @Override
   public void teleopInit() {
     OI.init();
-    SwervePosition.enableVision();
+    // SwervePosition.enableVision();
   }
 
   @Override
   public void teleopPeriodic() {
-    RTime.update();
+    // RTime.update();
     SwervePosition.update();
     OI.driverInput();
   }
