@@ -31,7 +31,7 @@ public final class Constants {
         public static final int FLYWHEELPIVOT_ID = 9;
 
         // CANCoder offset
-        public static final double PIVOT_OFFSET = 225.439;
+        public static final double PIVOT_OFFSET = 225.527 - 17.0;
         
         //COMposition
         public static final Vector2 SHOOTER_COM_POS = new Vector2(0,0); //position of the com relative to the pivot point. the angle is what really matters

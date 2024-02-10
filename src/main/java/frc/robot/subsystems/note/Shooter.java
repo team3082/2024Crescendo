@@ -59,8 +59,7 @@ public final class Shooter {
         }
 
         Flywheels.update();
-
-        // ShooterPivot.update();
+        ShooterPivot.update();
     }
 
     public static boolean canShoot() {

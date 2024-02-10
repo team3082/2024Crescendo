@@ -131,6 +131,8 @@ public class Telemetry {
     private static final GenericEntry PIVOTAFFSPRING = shooter.add("Pivot AFF Spring", Tuning.ShooterTuning.PIVOT_AFF_SPRING).getEntry();
     private static final GenericEntry FLYWHEELRPM = shooter.add("Flywheel RPM", Flywheels.measuredVel).getEntry();
 
+    private static final GenericEntry pivotAngle = shooter.add("Pivot Angle", ShooterPivot.actualPos).getEntry();
+
     // SwervePosition
     private static final GenericEntry swervePos = pos.add("Swerve Position", SwervePosition.getPosition().toString()).getEntry();
 
@@ -198,8 +200,8 @@ public class Telemetry {
         int allianceMultiplier = (alliance == DriverStation.Alliance.Red) ? -1 : 1;
 
         swervePos.setString(SwervePosition.getPosition().toString());
-
         FLYWHEELRPM.setDouble(Flywheels.measuredVel);
+        pivotAngle.setDouble(ShooterPivot.actualPos);
 
         if (RobotBase.isSimulation()) {
             // Allow the user to drag the robot around if we're in simulation mode

@@ -54,13 +54,13 @@ public class Tuning {
         public static double FLYWHEELKD = 0.0;
         public static double FLYWHEELKF = 0.0;
 
-        public static final double PIVOTKP = 0.0;
+        public static final double PIVOTKP = 0.015;
         public static final double PIVOTKI = 0.0;
-        public static final double PIVOTKD = 0.0;
+        public static final double PIVOTKD = 0.0001;
         public static final double PIVOTKF = 0.0;
 
-        public static final double PIVOT_CRUISE_VEL = 0.0; // Ticks per 100ms
-        public static final double PIVOT_MAX_ACCEL = 0.0; // In ticks per 100ms per second
+        public static final double PIVOT_CRUISE_VEL = 10000.0; // Ticks per 100ms
+        public static final double PIVOT_MAX_ACCEL = 5000.0; // In ticks per 100ms per second
         public static final int PIVOT_JERK_STRENGTH = 0; // [0,8], higher number means lower jerk 
 
         public static final double PIVOT_DEADBAND_POS = 0.0; // In motorticks

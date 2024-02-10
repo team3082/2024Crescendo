@@ -8,6 +8,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.sensors.Pigeon;
 import frc.robot.subsystems.note.Flywheels;
 import frc.robot.subsystems.note.Shooter;
+import frc.robot.subsystems.note.ShooterPivot;
 import frc.robot.subsystems.note.Shooter.ShooterStatus;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwerveModule;
@@ -57,6 +58,11 @@ public class OI {
             Shooter.revTo(manualRPM);
         else
             Shooter.shooterMode = ShooterStatus.DISABLED;
+
+        // if (driverStick.getRawButton(LogitechF310.BUTTON_A)) 
+        //     ShooterPivot.setPosition(Math.toRadians(30.0));
+        // else
+        //     ShooterPivot.setPosition(Math.PI / 2.0);
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
