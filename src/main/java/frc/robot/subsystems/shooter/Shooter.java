@@ -154,6 +154,7 @@ public final class Shooter {
     /**
      * Ejects the gamepiece if the drivetrain, arm 
      * and wheels are at the proper position & velocity.
+     * This method should be called after the revTo() method.
      */
     public static void shoot() { 
         // We can only fire if we were revving beforehand.

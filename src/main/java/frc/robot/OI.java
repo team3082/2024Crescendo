@@ -13,7 +13,7 @@ import frc.robot.utils.Vector2;
 import frc.robot.utils.RMath;
 
 public class OI {
-    public static Joystick driverStick;
+    public static Joystick driverStick, operatorStick;
 
     static final int moveX     = LogitechF310.AXIS_LEFT_X;
     static final int moveY     = LogitechF310.AXIS_LEFT_Y;
@@ -30,6 +30,12 @@ public class OI {
      */
     public static void init() {
         driverStick = new Joystick(0);
+        operatorStick = new Joystick(1);
+    }
+
+    public static void useInput() {
+        driverInput();
+        operatorInput();
     }
 
     /**
@@ -52,6 +58,7 @@ public class OI {
 
         double manualRPM = 5500.0;
         
+        // TODO flip when we have shooter auto-fire ready
         if (driverStick.getRawButton(manualFire)) 
             Shooter.revTo(manualRPM);
             // Shooter.fire();
@@ -92,5 +99,9 @@ public class OI {
                 SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
             return;
         }
+    }
+
+    public static void operatorInput() {
+        // Manual pivot control goes here
     }
 }

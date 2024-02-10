@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
     Shooter.update();
     ShooterPivot.update();
     SwervePosition.update();
-    OI.driverInput();
+    OI.useInput();
   }
 
   @Override
