@@ -1,9 +1,19 @@
 {
   "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        "Shooter": {
+          "open": true
+        },
+        "open": true
+      }
+    },
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/SmartDashboard/Auto Selector": "String Chooser",
       "/Shuffleboard/SmartDashboard/Custom Field": "Mechanism2d",
       "/Shuffleboard/SmartDashboard/Field View": "Field2d",
+      "/Shuffleboard/SmartDashboard/Subsystems": "Mechanism2d",
       "/Shuffleboard/SmartDashboard/Swerve": "Mechanism2d"
     },
     "windows": {
@@ -30,6 +40,9 @@
         }
       }
     }
+  },
+  "NetworkTables Info": {
+    "visible": true
   },
   "NetworkTables Settings": {
     "mode": "Client (NT4)",

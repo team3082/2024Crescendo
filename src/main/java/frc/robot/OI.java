@@ -4,7 +4,11 @@ import static frc.robot.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.note.Flywheels;
+import frc.robot.subsystems.note.Shooter;
+import frc.robot.subsystems.note.Shooter.ShooterStatus;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwerveModule;
 import frc.robot.swerve.SwervePID;
@@ -46,7 +50,13 @@ public class OI {
 
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = driverStick.getRawAxis(rotateX) * -ROTSPEED;
+
+        double manualRPM = 5500.0;
         
+        if (driverStick.getRawButton(lock)) 
+            Shooter.revTo(manualRPM);
+        else
+            Shooter.shooterMode = ShooterStatus.DISABLED;
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
@@ -61,11 +71,11 @@ public class OI {
             }
         }
 
-        if (driverStick.getRawButton(lock)) {
-            for (SwerveModule module: SwerveManager.mods) {
-                module.rotateToRad((module.pos.atan2()));
-            }
-        }
+        // if (driverStick.getRawButton(lock)) {
+        //     for (SwerveModule module: SwerveManager.mods) {
+        //         module.rotateToRad((module.pos.atan2()));
+        //     }
+        // }
 
         //TODO experimental feature
         switch (YAWRATEFEEDBACKSTATUS) {

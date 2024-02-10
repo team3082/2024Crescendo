@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
     SwervePosition.setPosition(new Vector2());
     Shooter.init();
     Flywheels.init();
-    ShooterPivot.init();
+    // ShooterPivot.init();
     Intake.init();
     AutoSelector.setup();
   }
@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // RTime.update();
+    Shooter.update();
     SwervePosition.update();
     OI.driverInput();
   }

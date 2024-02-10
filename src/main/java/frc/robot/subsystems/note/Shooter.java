@@ -1,6 +1,6 @@
 package frc.robot.subsystems.note;
 
-import static frc.robot.Tuning.Shooter.*;
+import static frc.robot.Tuning.ShooterTuning.*;
 
 // Couple notes about the shooter:
 // includes the pivot, flywheel, and handoff.
@@ -17,9 +17,9 @@ public final class Shooter {
     }
 
     // Status of the shooter
-    static enum ShooterStatus {
+    public static enum ShooterStatus {
         DISABLED,
-        READY,
+        REVVING,
         FIRING,
         EJECT
     }
@@ -42,8 +42,8 @@ public final class Shooter {
             break;
 
             case FIRING:
-                // Handoff still has the piece, so run that forwards.
-                Flywheels.setSpeakerScore();
+                // Handoff still has the piece, so run that forwards
+                // when the flywheel is up to speed.
             break;
 
             case EJECT:
@@ -53,13 +53,14 @@ public final class Shooter {
                 Intake.setIntakeVelocity(-1);
             break;
 
-            case READY:
-                // We would set the Banner light here to indicate we are ready to shoot,
-                // then pass the current mode off to "firing" with the light still active.
+            case REVVING:
+                Flywheels.setVelocity(Flywheels.velocity);
             break;
         }
 
-        ShooterPivot.update();
+        Flywheels.update();
+
+        // ShooterPivot.update();
     }
 
     public static boolean canShoot() {
@@ -70,6 +71,10 @@ public final class Shooter {
         return ShooterPivot.atPos() && Flywheels.atVel();
     }
 
+    public static void revTo(double rpm) {
+        Flywheels.setVelocity(rpm);
+        shooterMode = ShooterStatus.REVVING;
+    }
 
     /**
      * ejects the gamepiece if the drivetrain arm and wheels are at the proper position and velocity

@@ -21,7 +21,7 @@ public final class Constants {
         public static final double TICKS_PER_INCH = 0.0;
     }
 
-    public static final class Shooter {
+    public static final class ShooterConstants {
 
         // Talon IDs: Flywheel
         public static final int TOPFLYWHEEL_ID = 10;
@@ -31,7 +31,7 @@ public final class Constants {
         public static final int FLYWHEELPIVOT_ID = 9;
 
         // CANCoder offset
-        public static final double PIVOT_OFFSET = 0;
+        public static final double PIVOT_OFFSET = 225.439;
         
         //COMposition
         public static final Vector2 SHOOTER_COM_POS = new Vector2(0,0); //position of the com relative to the pivot point. the angle is what really matters

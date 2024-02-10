@@ -50,7 +50,7 @@ public class Tuning {
     }
 
     //NOTE CONTROL
-    public static final class Shooter {
+    public static final class ShooterTuning {
         public static double FLYWHEELKD = 0.0;
         public static double FLYWHEELKF = 0.0;
 

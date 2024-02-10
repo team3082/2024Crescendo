@@ -1,7 +1,7 @@
 package frc.robot.subsystems.note;
 
-import static frc.robot.Constants.Shooter.*;
-import static frc.robot.Tuning.Shooter.*;
+import static frc.robot.Constants.ShooterConstants.*;
+import static frc.robot.Tuning.ShooterTuning.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
@@ -45,9 +45,9 @@ public final class ShooterPivot {
         motor.configNeutralDeadband(0.01);
         
         // Zero internal encoder
-        motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor,0,0);
-        double absPosition = absEncoder.getAbsolutePosition() / 360; // In rotations of the pivot itself
-        motor.setSelectedSensorPosition(absPosition * 2048 * shooterGearRatio, 0, 30);
+        motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor,0,30);
+        double absPosition = absEncoder.getAbsolutePosition() / 360.0; // In rotations of the pivot itself
+        motor.setSelectedSensorPosition(absPosition * 2048.0 * shooterGearRatio, 0, 30);
 
         // TUNE
         motor.config_kP(0, PIVOTKP);
@@ -106,8 +106,7 @@ public final class ShooterPivot {
      */
     private static double calcAFF(double motorPos){
         double gravity = Math.cos(ticksToRad(motorPos) + SHOOTER_COM_POS.atan2());
-        double spring = 0.0; //TODO math
-        return PIVOT_AFF_GRAVITY * gravity + PIVOT_AFF_SPRING * spring; 
+        return PIVOT_AFF_GRAVITY * gravity + PIVOT_AFF_SPRING; 
     }
 
 }
