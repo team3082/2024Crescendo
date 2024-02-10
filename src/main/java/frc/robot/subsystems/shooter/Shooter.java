@@ -52,7 +52,7 @@ public final class Shooter {
         config.openloopRamp = 100;
         config.nominalOutputForward = 0.01;
         config.nominalOutputReverse = 0.01;
-        config.supplyCurrLimit = new SupplyCurrentLimitConfiguration(true, 20, 20, 0);
+        config.supplyCurrLimit = new SupplyCurrentLimitConfiguration(true, 40, 40, 0);
         
         topMotor.configAllSettings(config);
         bottomMotor.configAllSettings(config);
@@ -71,10 +71,6 @@ public final class Shooter {
         bottomMotor.config_kI(0, 0.00);
         bottomMotor.config_kD(0, 0.6);
         bottomMotor.config_kF(0, 1023.0 * 0.4584555 / 9064.0);
-
-        SupplyCurrentLimitConfiguration currentLimit = new SupplyCurrentLimitConfiguration(true, 40, 40, 0 );
-        topMotor.configSupplyCurrentLimit(currentLimit);
-        bottomMotor.configSupplyCurrentLimit(currentLimit);
 
         topMotor.configVoltageCompSaturation(12.2);
         bottomMotor.enableVoltageCompensation(true);
