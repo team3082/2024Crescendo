@@ -126,6 +126,7 @@ public class Telemetry {
     // Shooter
     private static final GenericEntry FLYWHEELRPM = shooter.add("Flywheel RPM", Shooter.measuredVel).getEntry();
     private static final GenericEntry FLYWHEELTARGETRPM = shooter.add("Flywheel Targeted RPM", Shooter.targetVelocity).getEntry();
+    private static final GenericEntry FLYWHEELATVEL = shooter.add("Flywheel At Velocity", Shooter.canShoot()).getEntry();
 
     private static final GenericEntry pivotAngle = shooter.add("Pivot Angle", ShooterPivot.actualPos).getEntry();
 
@@ -199,6 +200,7 @@ public class Telemetry {
         FLYWHEELRPM.setDouble(Shooter.measuredVel);
         FLYWHEELTARGETRPM.setDouble(Shooter.targetVelocity);
         pivotAngle.setDouble(ShooterPivot.actualPos);
+        FLYWHEELATVEL.setBoolean(Shooter.canShoot());
 
         if (RobotBase.isSimulation()) {
             // Allow the user to drag the robot around if we're in simulation mode

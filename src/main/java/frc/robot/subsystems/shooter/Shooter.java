@@ -184,7 +184,7 @@ public final class Shooter {
         double top = topMotor.getSelectedSensorVelocity() * VelToRPM;
         double bottom = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
 
-        return ShooterPivot.atPos() && (0 == deadband(top, SPEAKER_SPEED_TOP, SPEAKER_WHEEL_SPEED_DEADBAND)) && (0 == deadband(bottom, SPEAKER_SPEED_BOTTOM, SPEAKER_WHEEL_SPEED_DEADBAND));
+        return /* ShooterPivot.atPos() && */ (0 == deadband(top, SPEAKER_SPEED_TOP, SPEAKER_WHEEL_SPEED_DEADBAND)) && (0 == deadband(bottom, SPEAKER_SPEED_BOTTOM, SPEAKER_WHEEL_SPEED_DEADBAND));
     }
 
     /**
