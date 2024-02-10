@@ -65,15 +65,17 @@ public final class Shooter {
         topMotor.config_kP(0, 0.6);
         topMotor.config_kI(0, 0.00);
         topMotor.config_kD(0, 0.6);
-        topMotor.config_kF(0, 1023.0 * 0.4584555 / 9064.0);
+        // topMotor.config_kF(0, 1023.0 * 0.4584555 / 9064.0);
+        topMotor.config_kF(0, 0);
 
         bottomMotor.config_kP(0, 0.6);
         bottomMotor.config_kI(0, 0.00);
         bottomMotor.config_kD(0, 0.6);
-        bottomMotor.config_kF(0, 1023.0 * 0.4584555 / 9064.0);
+        // bottomMotor.config_kF(0, 1023.0 * 0.4584555 / 9064.0);
+        bottomMotor.config_kF(0, 0);
 
-        topMotor.configVoltageCompSaturation(12.2);
-        bottomMotor.enableVoltageCompensation(true);
+        //topMotor.configVoltageCompSaturation(12.2);
+        // bottomMotor.enableVoltageCompensation(true);
 
         // Zero vars
         targetVelocity = 0.0;

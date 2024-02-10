@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
 import frc.robot.sensors.Pigeon;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwerveModule;
 import frc.robot.swerve.SwervePID;
@@ -56,7 +57,7 @@ public class OI {
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = driverStick.getRawAxis(rotateX) * -ROTSPEED;
 
-        double manualRPM = 5500.0;
+        double manualRPM = 2000.0;
         
         // TODO flip when we have shooter auto-fire ready
         if (driverStick.getRawButton(manualFire)) 
@@ -102,6 +103,13 @@ public class OI {
     }
 
     public static void operatorInput() {
-        // Manual pivot control goes here
+       if (operatorStick.getRawButtonPressed(LogitechF310.BUTTON_X)) {
+        ShooterPivot.setPosition(Math.PI / 3);
+       }
+
+       if (operatorStick.getRawButtonPressed(LogitechF310.BUTTON_A)) {
+        ShooterPivot.setPosition(Math.PI / 6);
+       }
+
     }
 }

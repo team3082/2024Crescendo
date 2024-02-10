@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     OI.init();
     // SwervePosition.enableVision();
-    ShooterPivot.setPosition(-Math.PI / 2.0);
+    // ShooterPivot.setPosition(-Math.PI / 2.0);
   }
 
   @Override
@@ -91,6 +91,7 @@ public class Robot extends TimedRobot {
     ShooterPivot.update();
     SwervePosition.update();
     OI.useInput();
+    OI.operatorInput();
   }
 
   @Override

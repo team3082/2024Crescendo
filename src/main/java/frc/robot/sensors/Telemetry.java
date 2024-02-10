@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
@@ -125,8 +126,8 @@ public class Telemetry {
 
     // Shooter
     private static final GenericEntry FLYWHEELRPM = shooter.add("Flywheel RPM", Shooter.measuredVel).getEntry();
-    private static final GenericEntry FLYWHEELTARGETRPM = shooter.add("Flywheel Targeted RPM", Shooter.targetVelocity).getEntry();
-    private static final GenericEntry FLYWHEELATVEL = shooter.add("Flywheel At Velocity", Shooter.canShoot()).getEntry();
+    private static final GenericEntry FLYWHEELTARGETRPM = shooter.add("Flywheel Targeted RPM", Shooter.targetVelocity * ShooterConstants.VelToRPM).getEntry();
+    // private static final GenericEntry FLYWHEELATVEL = shooter.add("Flywheel At Velocity", Shooter.canShoot()).getEntry();
 
     private static final GenericEntry pivotAngle = shooter.add("Pivot Angle", ShooterPivot.actualPos).getEntry();
 
@@ -198,9 +199,9 @@ public class Telemetry {
 
         swervePos.setString(SwervePosition.getPosition().toString());
         FLYWHEELRPM.setDouble(Shooter.measuredVel);
-        FLYWHEELTARGETRPM.setDouble(Shooter.targetVelocity);
+        FLYWHEELTARGETRPM.setDouble(Shooter.targetVelocity * ShooterConstants.VelToRPM);
         pivotAngle.setDouble(ShooterPivot.actualPos);
-        FLYWHEELATVEL.setBoolean(Shooter.canShoot());
+       // FLYWHEELATVEL.setBoolean(Shooter.canShoot());
 
         if (RobotBase.isSimulation()) {
             // Allow the user to drag the robot around if we're in simulation mode
