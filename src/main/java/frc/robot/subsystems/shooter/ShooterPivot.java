@@ -93,11 +93,11 @@ public final class ShooterPivot {
     }
 
     private static double ticksToRad(double motorPos) {
-        return motorPos / 2048 / shooterGearRatio * Math.PI * 2;
+        return motorPos / 2048.0 / shooterGearRatio * Math.PI * 2.0;
     }
 
     private static double radToTicks(double armPos) {
-        return armPos * 2048 * shooterGearRatio / Math.PI / 2;
+        return armPos * 2048.0 * shooterGearRatio / Math.PI / 2.0;
     }
 
     /**
