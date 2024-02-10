@@ -1,6 +1,6 @@
 package frc.robot.auto.autoframe;
 
-import frc.robot.subsystems.note.Flywheels;
+import frc.robot.subsystems.shooter.Shooter;
 
 public class SetShooterVelocity extends Autoframe {
 
@@ -13,12 +13,12 @@ public class SetShooterVelocity extends Autoframe {
 
     @Override
     public void start() {
-        Flywheels.setVelocity(velocity);
+        Shooter.setVelocity(velocity);
     }
 
     @Override
     public void update() {
-        if (Flywheels.atVel()) {
+        if (Shooter.canShoot()) {
             this.done = true;
         }
     }

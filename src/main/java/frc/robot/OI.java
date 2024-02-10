@@ -4,12 +4,8 @@ import static frc.robot.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.sensors.Pigeon;
-import frc.robot.subsystems.note.Flywheels;
-import frc.robot.subsystems.note.Shooter;
-import frc.robot.subsystems.note.ShooterPivot;
-import frc.robot.subsystems.note.Shooter.ShooterStatus;
+import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwerveModule;
 import frc.robot.swerve.SwervePID;
@@ -23,9 +19,11 @@ public class OI {
     static final int moveY     = LogitechF310.AXIS_LEFT_Y;
     static final int rotateX   = LogitechF310.AXIS_RIGHT_X;
     static final int boost     = LogitechF310.AXIS_RIGHT_TRIGGER;
-    static final int zero      = LogitechF310.BUTTON_Y;
-    static final int lock      = LogitechF310.BUTTON_X;
-    static final int cancel    = LogitechF310.BUTTON_A;
+
+    static final int shooterFire   = LogitechF310.BUTTON_LEFT_BUMPER;
+    static final int manualFire    = LogitechF310.BUTTON_X;
+    static final int lock          = LogitechF310.BUTTON_A;
+    static final int zero          = LogitechF310.BUTTON_Y;
 
     /**
      * Initialize OI with preset joystick ports.
@@ -44,7 +42,7 @@ public class OI {
 
         if (driverStick.getRawButton(zero)) Pigeon.zero();
 
-        double boostStrength= driverStick.getRawAxis(boost);
+        double boostStrength = driverStick.getRawAxis(boost);
         if(boostStrength < 0.1) boostStrength = 0;
 
         double kBoostCoefficient = NORMALSPEED + boostStrength * (1-NORMALSPEED);
@@ -54,15 +52,11 @@ public class OI {
 
         double manualRPM = 5500.0;
         
-        if (driverStick.getRawButton(lock)) 
+        if (driverStick.getRawButton(manualFire)) 
             Shooter.revTo(manualRPM);
+            // Shooter.fire();
         else
-            Shooter.shooterMode = ShooterStatus.DISABLED;
-
-        // if (driverStick.getRawButton(LogitechF310.BUTTON_A)) 
-        //     ShooterPivot.setPosition(Math.toRadians(30.0));
-        // else
-        //     ShooterPivot.setPosition(Math.PI / 2.0);
+            Shooter.disable();
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
@@ -77,13 +71,13 @@ public class OI {
             }
         }
 
-        // if (driverStick.getRawButton(lock)) {
-        //     for (SwerveModule module: SwerveManager.mods) {
-        //         module.rotateToRad((module.pos.atan2()));
-        //     }
-        // }
+        if (driverStick.getRawButton(lock)) {
+            for (SwerveModule module: SwerveManager.mods) {
+                module.rotateToRad((module.pos.atan2()));
+            }
+        }
 
-        //TODO experimental feature
+        // Swerving and a steering! Zoom!
         switch (YAWRATEFEEDBACKSTATUS) {
             case 0:
                 SwerveManager.rotateAndDrive(rotate, drive);
@@ -98,8 +92,5 @@ public class OI {
                 SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
             return;
         }
-
-        // Swerving and a steering! Zoom!
-        // SwerveManager.rotateAndDrive(rotate, drive);
     }
 }

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.note;
+package frc.robot.subsystems.shooter;
 
 import static frc.robot.Constants.Intake.*;
 
@@ -39,7 +39,7 @@ public class Intake {
 
     public static double simAng;
 
-    public static void init(){
+    public static void init() {
 
         topBeltMotor = new CANSparkMax(TOPINTAKE_ID, MotorType.kBrushless);
         bottomBeltMotor = new CANSparkMax(BOTTOMINTAKE_ID, MotorType.kBrushless);

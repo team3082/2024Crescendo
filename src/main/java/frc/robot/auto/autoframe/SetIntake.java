@@ -1,7 +1,7 @@
 package frc.robot.auto.autoframe;
 
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.subsystems.note.Intake;
+import frc.robot.subsystems.shooter.Intake;
 import frc.robot.utils.RTime;
 
 public class SetIntake extends Autoframe {

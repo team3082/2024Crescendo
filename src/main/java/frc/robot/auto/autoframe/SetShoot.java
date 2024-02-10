@@ -1,9 +1,9 @@
 package frc.robot.auto.autoframe;
 
-import frc.robot.subsystems.note.Flywheels;
-import frc.robot.subsystems.note.Intake;
-import frc.robot.subsystems.note.ShooterPivot;
-import frc.robot.subsystems.note.Intake.IntakePosition;
+import frc.robot.subsystems.shooter.Intake;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterPivot;
+import frc.robot.subsystems.shooter.Intake.IntakePosition;
 import frc.robot.utils.RTime;
 
 public class SetShoot extends Autoframe {
@@ -21,7 +21,7 @@ public class SetShoot extends Autoframe {
 
     @Override
     public void update() {
-        if (Flywheels.atVel() && ShooterPivot.atPos()) {
+        if (Shooter.canShoot() && ShooterPivot.atPos()) {
             if (Intake.pieceGrabbed()) {
                 Intake.setIntakeVelocity(0.5);
             }

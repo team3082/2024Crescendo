@@ -9,7 +9,6 @@ import frc.robot.auto.autoframe.Autoframe;
 import frc.robot.auto.autoframe.FollowBezierCurve;
 import frc.robot.auto.autoframe.RotateTo;
 import frc.robot.auto.autoframe.SetIntake;
-import frc.robot.auto.autoframe.SetShoot;
 import frc.robot.auto.autoframe.SetShooterAngle;
 import frc.robot.auto.autoframe.SetShooterVelocity;
 import frc.robot.auto.autoframe.TrajectoryFollow;

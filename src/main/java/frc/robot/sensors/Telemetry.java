@@ -12,10 +12,9 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Constants;
-import frc.robot.Tuning;
-import frc.robot.subsystems.note.Flywheels;
-import frc.robot.subsystems.note.Intake;
-import frc.robot.subsystems.note.ShooterPivot;
+import frc.robot.subsystems.shooter.Intake;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -125,11 +124,8 @@ public class Telemetry {
     private static final GenericEntry rotDeadBand = rotTab.add("Rot Deadband", SwervePID.rotDead).getEntry();
 
     // Shooter
-    private static final GenericEntry FLYWHEELKD = shooter.add("Flywheel kD", Tuning.ShooterTuning.FLYWHEELKD).getEntry();
-    private static final GenericEntry FLYWHEELKF = shooter.add("Flywheel kF", Tuning.ShooterTuning.FLYWHEELKF).getEntry();
-    private static final GenericEntry PIVOTAFFGRAVITY = shooter.add("Pivot AFF Gravity", Tuning.ShooterTuning.PIVOT_AFF_GRAVITY).getEntry();
-    private static final GenericEntry PIVOTAFFSPRING = shooter.add("Pivot AFF Spring", Tuning.ShooterTuning.PIVOT_AFF_SPRING).getEntry();
-    private static final GenericEntry FLYWHEELRPM = shooter.add("Flywheel RPM", Flywheels.measuredVel).getEntry();
+    private static final GenericEntry FLYWHEELRPM = shooter.add("Flywheel RPM", Shooter.measuredVel).getEntry();
+    private static final GenericEntry FLYWHEELTARGETRPM = shooter.add("Flywheel Targeted RPM", Shooter.targetVelocity).getEntry();
 
     private static final GenericEntry pivotAngle = shooter.add("Pivot Angle", ShooterPivot.actualPos).getEntry();
 
@@ -200,7 +196,8 @@ public class Telemetry {
         int allianceMultiplier = (alliance == DriverStation.Alliance.Red) ? -1 : 1;
 
         swervePos.setString(SwervePosition.getPosition().toString());
-        FLYWHEELRPM.setDouble(Flywheels.measuredVel);
+        FLYWHEELRPM.setDouble(Shooter.measuredVel);
+        FLYWHEELTARGETRPM.setDouble(Shooter.targetVelocity);
         pivotAngle.setDouble(ShooterPivot.actualPos);
 
         if (RobotBase.isSimulation()) {
@@ -254,7 +251,7 @@ public class Telemetry {
         // shooter visualization
         intakePivot.setAngle(Math.toDegrees(Intake.getIntakeAngleRad()));
         shooterPivot.setAngle(180 - Math.toDegrees(ShooterPivot.simAng));
-        shooterPivot.setLength((Flywheels.simVel / 250) + 2);
+        shooterPivot.setLength((Shooter.simVel / 250) + 2);
         shooterPivot.setColor(new Color8Bit(255, 0, 0));
 
         // cool swerve visualization stuff that looks cool and i really like

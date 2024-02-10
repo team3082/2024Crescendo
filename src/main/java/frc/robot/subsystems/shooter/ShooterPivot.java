@@ -1,10 +1,8 @@
-package frc.robot.subsystems.note;
+package frc.robot.subsystems.shooter;
 
 import static frc.robot.Constants.ShooterConstants.*;
 import static frc.robot.Tuning.ShooterTuning.*;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -30,18 +28,11 @@ public final class ShooterPivot {
         absEncoder = new CANCoder(12);
         absEncoder.configFactoryDefault();
 
-        // Make the CANCoder report in radians
-        // absEncoder.configFeedbackCoefficient(2 * Math.PI / 4096.0, "rad", SensorTimeBase.PerSecond);
-        // double offsetPos = absEncoder.getAbsolutePosition() - PIVOT_OFFSET; // change to offset facing out
-        // absEncoder.setPosition(offsetPos);
-
         absEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
-        // absEncoder.configMagnetOffset(PIVOT_OFFSET);
         absEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
 
         motor = new TalonFX(FLYWHEELPIVOT_ID);
         motor.configFactoryDefault();
-        // motor.configRemoteFeedbackFilter(absEncoder, 0);
         motor.setNeutralMode(NeutralMode.Brake);
         motor.configNominalOutputForward(0.01);
         motor.configNominalOutputReverse(0.01);
@@ -59,11 +50,10 @@ public final class ShooterPivot {
         double absPosition = absEncoder.getAbsolutePosition(); // In rotations of the pivot itself
         System.out.println(absPosition * 360);
         motor.setSelectedSensorPosition(((absPosition - PIVOT_OFFSET) / 360.0) * 2048.0 * shooterGearRatio, 0, 30);
-// this code sucks 
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -83,11 +73,9 @@ public final class ShooterPivot {
 
         motor.setInverted(false);
 
-
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -130,7 +118,7 @@ public final class ShooterPivot {
     
     public static void update() {
         motor.set(TalonFXControlMode.Position, radToTicks(Math.PI / 4.0));
-        // motor.set(ControlMode.MotionMagic, Math.PI / 2.0, DemandType.ArbitraryFeedForward, calcAFF(motor.getSelectedSensorPosition()));
+        // motor.set(TalonFXControlMode.MotionMagic, Math.PI / 2.0, DemandType.ArbitraryFeedForward, calcAFF(motor.getSelectedSensorPosition()));
         actualPos = ticksToRad(motor.getSelectedSensorPosition());
         System.out.println("actual pos " + actualPos + " target pos " + targetPos);
     }
