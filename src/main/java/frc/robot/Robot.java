@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static frc.robot.auto.Auto.bezierCurveAutoTest;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.auto.Auto;
 import frc.robot.auto.AutoSelector;

@@ -18,6 +18,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import frc.robot.Robot;
 import frc.robot.utils.Beambreak;
 
 @SuppressWarnings("removal")
@@ -179,7 +180,10 @@ public final class Intake {
     }
 
     public static double getIntakeAngleRad(){
-        return ticksToRad(pivotMotor.getSelectedSensorPosition());
+        if(Robot.isReal()){
+            return ticksToRad(pivotMotor.getSelectedSensorPosition());
+        }
+        return 0.0;
     }
 
     public static enum IntakeState {
