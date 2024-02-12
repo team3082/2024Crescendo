@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import static frc.robot.auto.Auto.bezierCurveAutoTest;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.auto.Auto;
 import frc.robot.auto.AutoSelector;
@@ -76,6 +74,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     Auto.update();
     SwervePosition.update();
+    Shooter.update();
     // SwerveManager.rotateAndDrive(0.0, new Vector2(1.0, 0.0));
   }
 
@@ -88,7 +87,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    // RTime.update();
+    RTime.update();
     Shooter.update();
     ShooterPivot.update();
     SwervePosition.update();

@@ -3,15 +3,14 @@ package frc.robot.subsystems.shooter;
 import static frc.robot.Constants.Intake.*;
 import static frc.robot.Tuning.Intake.*;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.MotorFeedbackSensor;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -26,12 +25,12 @@ public final class Intake {
     
     private static TalonFX pivotMotor;
     private static CANCoder absEncoder;
-    private static CANSparkMax topBeltMotor, bottomBeltMotor, conveyorMotor;
+    private static CANSparkMax topBeltMotor, bottomBeltMotor;
+    public static CANSparkMax conveyorMotor;
     private static SparkPIDController topPIDController, bottomPIDController, conveyorPIDController;
     private static Beambreak beambreak;
 
     private static IntakeState state = IntakeState.STOW;
-
 
     public static void init() {
         absEncoder = new CANCoder(INTAKEPIVOT_ID);
@@ -112,75 +111,81 @@ public final class Intake {
 
     }
 
-    private static double ticksToRad(double angleTicks){
-        return angleTicks / 2048 / INTAKERATIO * Math.PI * 2;
+    public static void killHandoff() {
+        Shooter.handoffLiveTime = 0;
+        state = IntakeState.STOW;
     }
 
-    private static double radToTicks(double angleRad){
-        return angleRad * INTAKERATIO * 2048 / Math.PI / 2;
+    private static double ticksToRad(double angleTicks) {
+        return angleTicks / 2048.0 / INTAKERATIO * Math.PI * 2.0;
+    }
+
+    private static double radToTicks(double angleRad) {
+        return angleRad * INTAKERATIO * 2048.0 / Math.PI / 2.0;
     }
 
     public static void update() {//TODO add logic for using the beambreak
         switch(state){
             case SOURCE:
                 source();
-                break;
+            break;
             case STOW:
                 stow();
-                break;
+            break;
             case GROUND:
                 ground();
-                break;
+            break;
             case FEED:
                 feed();
-                break;
+            break;
             case BALANCE:
                 stow();//didn't feel like making anything fancy
-                break;
+            break;
         }
     }
 
 
 
-    private static void stow(){
-        pivotMotor.set(ControlMode.MotionMagic, radToTicks(INROBOT_INTAKE_ANGLE));
+    private static void stow() {
+        pivotMotor.set(TalonFXControlMode.MotionMagic, radToTicks(INROBOT_INTAKE_ANGLE));
         topBeltMotor.stopMotor();
         bottomBeltMotor.stopMotor();
         conveyorMotor.stopMotor();
     }
 
-    private static void ground(){
-        pivotMotor.set(ControlMode.MotionMagic, radToTicks(GROUND_INTAKE_ANGLE));
+    private static void ground() {
+        pivotMotor.set(TalonFXControlMode.MotionMagic, radToTicks(GROUND_INTAKE_ANGLE));
         topPIDController.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);//TODO currently have everything running on duty cycle, may want to switch to velocity control
         bottomPIDController.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);
         conveyorMotor.stopMotor();
     }
 
-    private static void feed(){
-        pivotMotor.set(ControlMode.MotionMagic, radToTicks(INROBOT_INTAKE_ANGLE));
+    // NEVER CALL THIS ANYWHERE ELSE OTHER THAN SHOOTER
+    private static void feed() {
+        pivotMotor.set(TalonFXControlMode.MotionMagic, radToTicks(INROBOT_INTAKE_ANGLE));
         topPIDController.setReference(FEEDSTRENGTH, ControlType.kDutyCycle);
         bottomPIDController.setReference(FEEDSTRENGTH, ControlType.kDutyCycle);
         conveyorPIDController.setReference(FEEDSTRENGTH, ControlType.kDutyCycle);
     }
 
-    private static void source(){
-        pivotMotor.set(ControlMode.MotionMagic, radToTicks(SOURCE_INTAKE_ANGLE));
+    private static void source() {
+        pivotMotor.set(TalonFXControlMode.MotionMagic, radToTicks(SOURCE_INTAKE_ANGLE));
         topPIDController.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);
         bottomPIDController.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);
         conveyorMotor.stopMotor();
     }
 
-    public static boolean pieceGrabbed(){
+    public static boolean pieceGrabbed() {
         return beambreak.isBroken();
     }
 
 
-    public static void setState(IntakeState newState){
+    public static void setState(IntakeState newState) {
         state = newState;
     }
 
-    public static double getIntakeAngleRad(){
-        if(Robot.isReal()){
+    public static double getIntakeAngleRad() {
+        if(Robot.isReal()) {
             return ticksToRad(pivotMotor.getSelectedSensorPosition());
         }
         return 0.0;

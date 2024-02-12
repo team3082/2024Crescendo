@@ -60,11 +60,12 @@ public class OI {
         double manualRPM = 2000.0;
         
         // TODO flip when we have shooter auto-fire ready
-        if (driverStick.getRawButton(manualFire)) 
+        if (driverStick.getRawButton(manualFire)) {
             Shooter.revTo(manualRPM);
-            // Shooter.fire();
-        else
+            Shooter.shoot();
+        } else {
             Shooter.disable();
+        }
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
