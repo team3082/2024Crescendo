@@ -1,7 +1,6 @@
-package frc.robot.utils;
+package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.auto.Auto;
 
 /**
  * Class for selecting autonomous routines.

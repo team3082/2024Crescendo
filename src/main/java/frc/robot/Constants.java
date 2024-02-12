@@ -64,9 +64,8 @@ public final class Constants {
         public static final double INTAKE_OFFSET = 0;
 
         // Motor : belt(s)
-        public static final double intakeBeltRatio = 0;
         // Pivot gear ratio
-        public static final double intakeGearRatio = 0;
+        public static final double INTAKERATIO = 0;
 
         public static final double HANDOFF_SPEED = 0.5;
         public static final double INTAKE_HANDOFF_SPEED = 0.5;

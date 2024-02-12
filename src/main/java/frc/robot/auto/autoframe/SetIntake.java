@@ -2,6 +2,7 @@ package frc.robot.auto.autoframe;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.shooter.Intake;
+import static frc.robot.subsystems.shooter.Intake.IntakeState.*;
 import frc.robot.utils.RTime;
 
 public class SetIntake extends Autoframe {
@@ -13,8 +14,7 @@ public class SetIntake extends Autoframe {
 
     @Override
     public void start() {
-        Intake.setIntakePosition(Intake.IntakePosition.GROUND);
-        Intake.setIntakeVelocity(1);
+        Intake.setState(GROUND);
         this.simDelay = RTime.now();
     }
 
@@ -23,14 +23,12 @@ public class SetIntake extends Autoframe {
         if (Intake.pieceGrabbed()) {
             if (RobotBase.isSimulation()) {
                 if (simDelay < RTime.now() - 1) {
-                    Intake.setIntakePosition(Intake.IntakePosition.INROBOT);
-                    Intake.setIntakeVelocity(0);   
+                    Intake.setState(STOW);
                     this.done = true;
                 }
             }
             else {
-                Intake.setIntakePosition(Intake.IntakePosition.INROBOT);
-                Intake.setIntakeVelocity(0);
+                Intake.setState(STOW);
                 this.done = true;
             }
         }

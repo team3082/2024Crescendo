@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.auto.Auto;
+import frc.robot.auto.AutoSelector;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
@@ -15,7 +16,6 @@ import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
-import frc.robot.utils.AutoSelector;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
     ChoreoTrajectoryGenerator.init();
     SwervePosition.setPosition(new Vector2());
     Shooter.init();
-    Intake.init();
+    // Intake.init();
     AutoSelector.setup();
   }
 

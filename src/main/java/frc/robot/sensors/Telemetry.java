@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.auto.AutoSelector;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
-import frc.robot.utils.AutoSelector;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 

@@ -3,7 +3,7 @@ package frc.robot.auto.autoframe;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
-import frc.robot.subsystems.shooter.Intake.IntakePosition;
+import static frc.robot.subsystems.shooter.Intake.IntakeState.*;
 import frc.robot.utils.RTime;
 
 public class SetShoot extends Autoframe {
@@ -16,21 +16,21 @@ public class SetShoot extends Autoframe {
 
     @Override
     public void start() {
-        Intake.setIntakePosition(IntakePosition.INROBOT);
+        Intake.setState(STOW);
     }
 
     @Override
     public void update() {
         if (Shooter.canShoot() && ShooterPivot.atPos()) {
             if (Intake.pieceGrabbed()) {
-                Intake.setIntakeVelocity(0.5);
+                Intake.setState(FEED);
             }
             else if (Intake.pieceGrabbed() == false) {
                 this.pieceIndexed = true;
                 this.indexTime = RTime.now();
 
                 if (indexTime + 0.5 /*time after piece has left intake to ensure its shot*/ <= RTime.now()) {
-                    Intake.setIntakeVelocity(0);
+                    Intake.setState(STOW);
                     this.done = true;
                 }
             }
