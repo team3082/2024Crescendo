@@ -138,13 +138,7 @@ public class Auto {
     public static Queue<Autoframe> queuedFrames;
     public static HashSet<Autoframe> activeFrames = new HashSet<>();
 
-    public static double rotSpeed = 0.0;
-    public static Vector2 movement = new Vector2();
-
     public static double startTimestamp = 0;
-
-    public static double moveScale = 1;
-    public static double rotScale = 1;
 
 
     private static void queueFrames(Autoframe... frames) {
@@ -154,9 +148,6 @@ public class Auto {
     }
 
     public static void update() {
-        rotSpeed = 0;
-        movement = new Vector2();
-
         boolean advanceFrame = true;
         HashSet<Autoframe> finishedFrames = new HashSet<>();
 
@@ -195,10 +186,6 @@ public class Auto {
         if (queuedFrames.isEmpty() && activeFrames.isEmpty()) {
             System.out.println("Done");
         }
-
-        // // Rotate and drive the robot according to the output of the active AutoFrames
-        // System.out.println(movement);
-        SwerveManager.rotateAndDrive(rotSpeed * rotScale, movement.mul(moveScale));
     }
 
 }

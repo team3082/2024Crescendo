@@ -1,9 +1,9 @@
 package frc.robot.auto.autoframe;
+import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.BezierCurve;
-import static frc.robot.auto.Auto.movement;
 
 import static frc.robot.Tuning.MOVEDEAD;
 
@@ -32,6 +32,8 @@ public class FollowBezierCurve extends Autoframe{
     public void update() {
         // get odometry position data
         Vector2 robotPos = SwervePosition.getPosition();
+
+        Vector2 movement;
 
         // get the closest point t on the Bezier Curve
         double t = this.trajectory.getClosestT(robotPos);
@@ -76,5 +78,7 @@ public class FollowBezierCurve extends Autoframe{
                 // SwerveManager.rotateAndDrive(0.0, movementVector.rotate(Math.PI / 2.0).mul(translationSpeed));
             }
         }
+
+        SwerveManager.rotateAndDrive(0.0, movement);
     }
 }

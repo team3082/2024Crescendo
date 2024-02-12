@@ -1,12 +1,12 @@
 package frc.robot.auto.autoframe;
 
-import static frc.robot.auto.Auto.rotSpeed;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.sensors.Pigeon;
+import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
+import frc.robot.utils.Vector2;
 
 public class RotateTo extends Autoframe {
     double angle;
@@ -23,6 +23,7 @@ public class RotateTo extends Autoframe {
 
     @Override
     public void update() {
+        double rotSpeed = 0.0;
         if (RobotBase.isSimulation()) {
             Pigeon.setSimulatedRot(this.angle);
             this.done = true;
@@ -34,6 +35,7 @@ public class RotateTo extends Autoframe {
                 this.done = true;
             }
         }
+        SwerveManager.rotateAndDrive(rotSpeed, new Vector2());
     }
 
 }
