@@ -36,8 +36,11 @@ public final class Shooter {
 
     public static TalonFX topMotor, bottomMotor;
 
-    // Speeds in RPM
-    public static double targetVelocity, measuredVel, simVel;
+    // Target RPM
+    public static double targetVelocity, simVel;
+
+    // Motors' measured RPMs
+    public static double topRPM, bottomRPM;
 
     public static double temp;
 
@@ -87,7 +90,8 @@ public final class Shooter {
 
         // Zero vars
         targetVelocity = 0.0;
-        measuredVel = 0.0;
+        topRPM = 0.0;
+        bottomRPM = 0.0;
         handoffLiveTime = 0.0;
 
         temp = topMotor.getTemperature();
@@ -100,7 +104,9 @@ public final class Shooter {
         ShooterPivot.update();
 
         // Get our vars
-        measuredVel = topMotor.getSelectedSensorVelocity() * VelToRPM;
+        topRPM = topMotor.getSelectedSensorVelocity() * VelToRPM;
+        bottomRPM = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
+
         temp = topMotor.getTemperature();
 
         boolean atVelocity = canShoot();

@@ -125,7 +125,8 @@ public class Telemetry {
     private static final GenericEntry rotDeadBand = rotTab.add("Rot Deadband", SwervePID.rotDead).getEntry();
 
     // Shooter
-    private static final GenericEntry FLYWHEELRPM = shooter.add("Flywheel RPM", Shooter.measuredVel).getEntry();
+    private static final GenericEntry TOPFLYWHEELRPM = shooter.add("Top Flywheel RPM", Shooter.topRPM).getEntry();
+    private static final GenericEntry BOTTOMFLYWHEELRPM = shooter.add("Bottom Flywheel RPM", Shooter.bottomRPM).getEntry();
     private static final GenericEntry FLYWHEELTARGETRPM = shooter.add("Flywheel Targeted RPM", Shooter.targetVelocity * ShooterConstants.VelToRPM).getEntry();
     // private static final GenericEntry FLYWHEELATVEL = shooter.add("Flywheel At Velocity", Shooter.canShoot()).getEntry();
 
@@ -198,8 +199,11 @@ public class Telemetry {
         int allianceMultiplier = (alliance == DriverStation.Alliance.Red) ? -1 : 1;
 
         swervePos.setString(SwervePosition.getPosition().toString());
-        FLYWHEELRPM.setDouble(Shooter.measuredVel);
+
+        TOPFLYWHEELRPM.setDouble(Shooter.topRPM);
+        BOTTOMFLYWHEELRPM.setDouble(Shooter.bottomRPM);
         FLYWHEELTARGETRPM.setDouble(Shooter.targetVelocity * ShooterConstants.VelToRPM);
+
         pivotAngle.setDouble(ShooterPivot.actualPos);
        // FLYWHEELATVEL.setBoolean(Shooter.canShoot());
 
