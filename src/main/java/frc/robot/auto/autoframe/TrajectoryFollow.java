@@ -1,6 +1,5 @@
 package frc.robot.auto.autoframe;
 
-import frc.robot.Robot;
 import frc.robot.sensors.Pigeon;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
@@ -31,7 +30,6 @@ public class TrajectoryFollow extends Autoframe{
         SwerveState currentState = new SwerveState(currentPos, currentAng, currentVel, currengAngVel);
         // System.out.println(Arrays.toString(currentState.toArray()));
         SwerveInstruction instruction = controller.getInstruction(currentState, RTime.now() - tStart);
-        if(Robot.isReal())
         instruction = new SwerveInstruction(instruction.rotation, new Vector2(-instruction.movement.y, instruction.movement.x));
         SwerveManager.rotateAndDrive(instruction);
         if(controller.path.endState().getPos().dist(currentPos) < 0.1){

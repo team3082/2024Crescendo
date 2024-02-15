@@ -24,8 +24,6 @@ import frc.robot.utils.trajectories.QuinticHermite;
 import frc.robot.utils.trajectories.SwerveTrajectory;
 
 public class Auto {
-
-    @Routine
     public static void bezierCurveAutoTest() {
         BezierCurve curve1 = new BezierCurve(new Vector2(33, -149), new Vector2(101.6, -106), new Vector2(-87.5, -67), new Vector2(-17, -26));
         BezierCurve curve2 = new BezierCurve(new Vector2(-17, -26), new Vector2(-87.5, -67), new Vector2(101.6, -106), new Vector2(33, -149));
@@ -40,7 +38,6 @@ public class Auto {
         queueFrames(Frames);
     }
 
-    @Routine
     public static void trajFollowerTest() {
         SwervePosition.setPosition(new Vector2(0, 0));
         Pigeon.setYawRad(0);
@@ -60,7 +57,6 @@ public class Auto {
         queueFrames(frames);
     }
 
-    @Routine
     public static void choreoTest() {
         SwerveTrajectory traj = ChoreoTrajectoryGenerator.generateTrajectory("Circle.traj");
         PIDFollower controller = new PIDFollower();
@@ -71,7 +67,6 @@ public class Auto {
 
     }
 
-    @Routine
     public static void fourPieceAmpSide() {
         // TODO test this
         BezierCurve curve1 = new BezierCurve(new Vector2(105, -295), new Vector2(100, -260), new Vector2(101, -248.3), new Vector2(109, -223.5));
@@ -114,7 +109,6 @@ public class Auto {
         queueFrames(Frames);
     }
 
-    @Routine
     public static void fourPieceSourceSide() {
         // TODO make this
         Autoframe[] Frames = new Autoframe[] {
@@ -123,7 +117,6 @@ public class Auto {
         queueFrames(Frames);
     }
 
-    @Routine
     public static void threePieceMiddleAmpSide() {
         // TODO make this
         Autoframe[] Frames = new Autoframe[] {
@@ -132,7 +125,6 @@ public class Auto {
         queueFrames(Frames);
     }
 
-    @Routine
     public static void threePieceMiddleSourceSide() {
         // TODO make
         Autoframe[] Frames = new Autoframe[] {
