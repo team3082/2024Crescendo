@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
     ChoreoTrajectoryGenerator.init();
     SwervePosition.setPosition(new Vector2());
     Shooter.init();
-    // Intake.init();
+    Intake.init();
     AutoSelector.setup();
   }
 

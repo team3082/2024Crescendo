@@ -35,11 +35,14 @@ public class AutoSelector {
 
     public static void run(){
         String routineID = autoChooser.getSelected();
+        System.out.println("Auto Selector: " + routineID);
         if(routineID.equals("No Auto")){
             System.out.println("NO AUTO");
             return;
         }
         try {
+            System.out.println("Auto Selector: " + routines);
+            System.out.println("Auto Selector: " + routines.get(Integer.parseInt(routineID)));
             routines.get(Integer.parseInt(routineID)).invoke(null, new Object[0]);
         } catch (IllegalAccessException e) {
             // TODO Auto-generated catch block
