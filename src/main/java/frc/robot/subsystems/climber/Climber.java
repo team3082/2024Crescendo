@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+
 import static frc.robot.Tuning.Climbers.*;
 
 import static frc.robot.Constants.Climber.TICKS_PER_INCH;
@@ -15,6 +17,7 @@ import static frc.robot.Constants.Climber.TICKS_PER_INCH;
 public class Climber {
     
     private TalonFX motor;
+    private DigitalInput sensor;
 
     private boolean loaded = false;
 
@@ -42,9 +45,19 @@ public class Climber {
         motor.configSupplyCurrentLimit(currentLimit);
         motor.configVoltageCompSaturation(12.2);
         motor.enableVoltageCompensation(true);
+
+        sensor = new DigitalInput(sensorID);
     }
 
-    public void zeroMotor() { }
+    public void zeroMotor() {
+        if (sensor.get()) {
+            motor.set(ControlMode.PercentOutput, 0);
+            motor.setSelectedSensorPosition(0);
+        }
+        else {
+            motor.set(ControlMode.PercentOutput, -0.2);
+        }
+    }
 
     public void setLoaded(){
         loaded = true;
