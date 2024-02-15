@@ -10,6 +10,7 @@ import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwerveModule;
 import frc.robot.swerve.SwervePID;
+import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.RMath;
 
@@ -25,6 +26,9 @@ public class OI {
     static final int manualFire    = LogitechF310.BUTTON_X;
     static final int lock          = LogitechF310.BUTTON_A;
     static final int zero          = LogitechF310.BUTTON_Y;
+    static final int funnyButton   = LogitechF310.AXIS_RIGHT_TRIGGER;
+   
+    static boolean alignToSpeaker;
 
     /**
      * Initialize OI with preset joystick ports.
@@ -34,7 +38,7 @@ public class OI {
         operatorStick = new Joystick(1);
     }
 
-    public static void useInput() {
+    public static void userInput() {
         driverInput();
         operatorInput();
     }
@@ -101,6 +105,18 @@ public class OI {
                 SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
             return;
         }
+
+         if(alignToSpeaker){
+            double speakerRot = SwervePosition.getAngleOffsetToTarget(new Vector2());
+            SwervePID.setDestRot(speakerRot);
+            rotate = SwervePID.updateOutputRot();
+            Shooter.setShooterAngleForSpeaker();
+        }
+
+        if(driverStick.getRawButtonPressed(funnyButton)){
+            // silly things 🤣😁
+            alignToSpeaker = !alignToSpeaker;
+          }
     }
 
     public static void operatorInput() {

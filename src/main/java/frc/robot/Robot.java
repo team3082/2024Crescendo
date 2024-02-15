@@ -91,8 +91,8 @@ public class Robot extends TimedRobot {
     Shooter.update();
     ShooterPivot.update();
     SwervePosition.update();
-    OI.useInput();
-    OI.operatorInput();
+    OI.userInput();
+    //OI.operatorInput();
   }
 
   @Override

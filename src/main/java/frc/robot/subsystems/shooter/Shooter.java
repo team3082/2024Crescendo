@@ -8,9 +8,15 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.PositionVoltage;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
+import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
+import frc.robot.utils.Vector2;
 
 @SuppressWarnings("removal")
 public final class Shooter {
@@ -264,5 +270,33 @@ public final class Shooter {
      */
     public static boolean firing() {
         return shooterMode == ShooterStatus.FIRING;
+    }
+    
+    /**
+     * Calculate both the desired flywheel speed for our position
+     * on the field and our desired angle, then rev the shooter
+     * up to that speed and angle the shooter.
+     * @param ftPos Distance from the target
+     */
+    public static void setShooterForDist(double ftPos) {
+        double targetHeight = 6.5;
+        final double g = 32.1740485564;
+        double noteVel = 0; // Initial velocity of the note
+        double shooterAngle = Math.atan(Math.pow(noteVel,2)/(g*ftPos) - Math.sqrt((Math.pow(noteVel, 2)*(Math.pow(noteVel,2)-2*g*targetHeight))/(Math.pow(g,2)*Math.pow(ftPos,2))-1)); // terrible! ew! 🤢 (DO NOT CHANGE)
+        ShooterPivot.setPosition(shooterAngle);
+    }
+    public static void setShooterAngleForSpeaker() {
+         //rotates the pivot motor to the desired angle for the current position
+        double dist;
+        Vector2 speakerPos;
+
+
+        if(RobotBase.isSimulation() ||  DriverStation.getAlliance().get() == Alliance.Blue){
+            speakerPos = new Vector2(56.78, 327.1);
+        }else{
+            speakerPos = new Vector2(56.78, -327.13);
+        }
+        dist = Math.hypot(SwervePosition.getPosition().x-speakerPos.x, SwervePosition.getPosition().y-speakerPos.y);
+        setShooterForDist(dist);
     }
 }
