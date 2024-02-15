@@ -215,6 +215,34 @@ public final class Shooter {
     }
 
     /**
+     * Set the shooter's angle depending on our position on the field.
+     * @param ftPos Distance from the target
+     */
+    public static void setShooterForDist(double ftPos) {
+        double targetHeight = 6.5;
+        final double g = 32.1740485564;
+
+        double noteVel = 0; // Initial velocity of the note
+
+        double shooterAngle = Math.atan(Math.pow(noteVel, 2) / (g * ftPos) - Math.sqrt((Math.pow(noteVel, 2) * (Math.pow(noteVel, 2) - 2 * g * targetHeight)) / (Math.pow(g, 2) * Math.pow(ftPos, 2)) - 1)); // terrible! ew! 🤢 (DO NOT CHANGE)
+        ShooterPivot.setPosition(shooterAngle);
+    }
+
+    public static void setShooterAngleForSpeaker() {
+         //rotates the pivot motor to the desired angle for the current position
+        double dist;
+        Vector2 speakerPos;
+
+        if (RobotBase.isSimulation() ||  DriverStation.getAlliance().get() == Alliance.Blue)
+            speakerPos = new Vector2(56.78, 327.1);
+        else
+            speakerPos = new Vector2(56.78, -327.13);
+
+        dist = Math.hypot(SwervePosition.getPosition().x - speakerPos.x, SwervePosition.getPosition().y - speakerPos.y);
+        setShooterForDist(dist);
+    }
+
+    /**
      * Rev the shooter to a specified RPM.
      */
     public static void revTo(double rpm) {
@@ -270,33 +298,5 @@ public final class Shooter {
      */
     public static boolean firing() {
         return shooterMode == ShooterStatus.FIRING;
-    }
-    
-    /**
-     * Calculate both the desired flywheel speed for our position
-     * on the field and our desired angle, then rev the shooter
-     * up to that speed and angle the shooter.
-     * @param ftPos Distance from the target
-     */
-    public static void setShooterForDist(double ftPos) {
-        double targetHeight = 6.5;
-        final double g = 32.1740485564;
-        double noteVel = 0; // Initial velocity of the note
-        double shooterAngle = Math.atan(Math.pow(noteVel,2)/(g*ftPos) - Math.sqrt((Math.pow(noteVel, 2)*(Math.pow(noteVel,2)-2*g*targetHeight))/(Math.pow(g,2)*Math.pow(ftPos,2))-1)); // terrible! ew! 🤢 (DO NOT CHANGE)
-        ShooterPivot.setPosition(shooterAngle);
-    }
-    public static void setShooterAngleForSpeaker() {
-         //rotates the pivot motor to the desired angle for the current position
-        double dist;
-        Vector2 speakerPos;
-
-
-        if(RobotBase.isSimulation() ||  DriverStation.getAlliance().get() == Alliance.Blue){
-            speakerPos = new Vector2(56.78, 327.1);
-        }else{
-            speakerPos = new Vector2(56.78, -327.13);
-        }
-        dist = Math.hypot(SwervePosition.getPosition().x-speakerPos.x, SwervePosition.getPosition().y-speakerPos.y);
-        setShooterForDist(dist);
     }
 }

@@ -26,7 +26,7 @@ public class OI {
     static final int manualFire    = LogitechF310.BUTTON_X;
     static final int lock          = LogitechF310.BUTTON_A;
     static final int zero          = LogitechF310.BUTTON_Y;
-    static final int funnyButton   = LogitechF310.AXIS_RIGHT_TRIGGER;
+    static final int funnyButton   = LogitechF310.BUTTON_RIGHT_BUMPER;
    
     static boolean alignToSpeaker;
 
@@ -36,6 +36,8 @@ public class OI {
     public static void init() {
         driverStick = new Joystick(0);
         operatorStick = new Joystick(1);
+
+        alignToSpeaker = false;
     }
 
     public static void userInput() {
@@ -83,6 +85,18 @@ public class OI {
                 SwervePID.setDestRot(Math.PI / 2.0 - Math.toRadians(POV - 180));
             }
         }
+        
+        if (driverStick.getRawButtonPressed(funnyButton))
+            alignToSpeaker = !alignToSpeaker; // silly things 🤣😁
+
+        if (alignToSpeaker) {
+            double speakerRot = SwervePosition.getAngleOffsetToTarget(new Vector2());
+
+            SwervePID.setDestRot(speakerRot);
+            rotate = SwervePID.updateOutputRot();
+
+            Shooter.setShooterAngleForSpeaker();
+        }
 
         if (driverStick.getRawButton(lock)) {
             for (SwerveModule module: SwerveManager.mods) {
@@ -105,18 +119,6 @@ public class OI {
                 SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
             return;
         }
-
-         if(alignToSpeaker){
-            double speakerRot = SwervePosition.getAngleOffsetToTarget(new Vector2());
-            SwervePID.setDestRot(speakerRot);
-            rotate = SwervePID.updateOutputRot();
-            Shooter.setShooterAngleForSpeaker();
-        }
-
-        if(driverStick.getRawButtonPressed(funnyButton)){
-            // silly things 🤣😁
-            alignToSpeaker = !alignToSpeaker;
-          }
     }
 
     public static void operatorInput() {
