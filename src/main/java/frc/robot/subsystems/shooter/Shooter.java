@@ -228,6 +228,27 @@ public final class Shooter {
         ShooterPivot.setPosition(shooterAngle);
     }
 
+    /**
+     * returns the desired shooter angle swerve angle and flywheel speed to make a shot from the given position
+     * vel should be in inches per second
+     * @return [shooter angle, shooter speed, swerve angle]
+     */
+    public static double[] getDesiredShooterPos(Vector2 pos, Vector2 vel){
+        double g = 386.08858267717;
+        //desired exit velocities of the note
+        double dz = Math.sqrt(2 * g * (TARGETHEIGHT - SHOOTERPOSZ));
+        double dx = g * (targetX - pos.x) / dz;
+        double dy = g * (targetY - pos.y) / dz;
+
+        double shooterdx = dx - vel.x;
+        double shooterdy = dy - vel.y;
+        
+        double shooterAngle = Math.atan2(dz, Math.sqrt(Math.pow(shooterdx,2) + Math.pow(shooterdy, 2)));
+        double shooterSpeed = Math.sqrt(Math.pow(dz,2) + Math.pow(shooterdx,2) + Math.pow(shooterdy, 2));
+        double swerveAngle = Math.atan2(shooterdy,shooterdx);
+        return new double[]{shooterAngle, shooterSpeed, swerveAngle};
+    }
+
     public static void setShooterAngleForSpeaker() {
          //rotates the pivot motor to the desired angle for the current position
         double dist;

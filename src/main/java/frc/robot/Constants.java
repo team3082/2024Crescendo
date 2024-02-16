@@ -43,8 +43,15 @@ public final class Constants {
 
         // Converting from RPM to Phoenix native sensor units (1u/100ms)
         public static final double RPMToVel = 2048.0 * shooterBeltRatio / 60.0 / 10.0;
-        // Converting from Phoenix native sensor units (1u/100ms) to RPM
+        // Converting from Phoenix native sensor units (1u/100ms) to RPMs
         public static final double VelToRPM = 10.0 * 60.0 / 2048.0 / shooterBeltRatio;
+
+        //all positions for the red alliance in inches
+        public static final double targetX = 56.7;
+        public static final double targetY = -327.13;
+        public static final double TARGETHEIGHT = 78.0;
+
+        public static final double SHOOTERPOSZ = 0.0;//the height the the end of the shooter lies on average. I don't feel like calculating this as a function of shooter angle
     }
 
     public static final class Intake {
