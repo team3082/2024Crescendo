@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.PositionVoltage;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -295,6 +294,13 @@ public final class Shooter {
      */
     public static void disable() {
         shooterMode = ShooterStatus.DISABLED;
+    }
+
+    /**
+     * Eject the shooter
+     */
+    public static void eject() {
+        shooterMode = ShooterStatus.EJECT;
     }
 
     /**

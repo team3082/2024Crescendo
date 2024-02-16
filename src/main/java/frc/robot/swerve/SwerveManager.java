@@ -144,7 +144,7 @@ public final class SwerveManager {
     }
 
     /** locks the robots angle to a specific angle but allows free translation */
-    public static void moveAndRotateTo(Vector2 move, double toAngle){
+    public static void moveAndRotateTo(Vector2 move, double toAngle) {
         SwervePID.rotPID.setDest(toAngle);
         double rotation = SwervePID.rotPID.updateOutput(Pigeon.getRotationRad());
         rotateAndDrive(rotation, move);

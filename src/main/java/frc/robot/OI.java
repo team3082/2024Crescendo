@@ -17,17 +17,24 @@ import frc.robot.utils.RMath;
 public class OI {
     public static Joystick driverStick, operatorStick;
 
+    // Movement
     static final int moveX     = LogitechF310.AXIS_LEFT_X;
     static final int moveY     = LogitechF310.AXIS_LEFT_Y;
     static final int rotateX   = LogitechF310.AXIS_RIGHT_X;
     static final int boost     = LogitechF310.AXIS_RIGHT_TRIGGER;
 
-    static final int shooterFire   = LogitechF310.BUTTON_LEFT_BUMPER;
+    // Shooter
+    static final int pull          = LogitechF310.AXIS_LEFT_TRIGGER;
+    static final int shooterRev    = LogitechF310.BUTTON_LEFT_BUMPER;
+    static final int shooterFire   = LogitechF310.BUTTON_RIGHT_BUMPER;
     static final int manualFire    = LogitechF310.BUTTON_X;
-    static final int lock          = LogitechF310.BUTTON_A;
-    static final int zero          = LogitechF310.BUTTON_Y;
-    static final int funnyButton   = LogitechF310.BUTTON_RIGHT_BUMPER;
+    static final int eject         = LogitechF310.BUTTON_B;
+
+    // Others
+    static final int lock      = LogitechF310.BUTTON_A;
+    static final int zero      = LogitechF310.BUTTON_Y;
    
+    // TODO rework
     static boolean alignToSpeaker;
 
     /**
@@ -65,14 +72,6 @@ public class OI {
 
         double manualRPM = 2000.0;
         
-        // TODO flip when we have shooter auto-fire ready
-        if (driverStick.getRawButton(manualFire)) {
-            Shooter.revTo(manualRPM);
-            Shooter.shoot();
-        } else {
-            Shooter.disable();
-        }
-        
         if (drive.mag() < 0.125)
             drive = new Vector2();
         else
@@ -85,17 +84,43 @@ public class OI {
                 SwervePID.setDestRot(Math.PI / 2.0 - Math.toRadians(POV - 180));
             }
         }
-        
-        if (driverStick.getRawButtonPressed(funnyButton))
-            alignToSpeaker = !alignToSpeaker; // silly things 🤣😁
 
-        if (alignToSpeaker) {
-            double speakerRot = SwervePosition.getAngleOffsetToTarget(new Vector2());
+        if (driverStick.getRawButton(eject)) Shooter.eject();
 
-            SwervePID.setDestRot(speakerRot);
-            rotate = SwervePID.updateOutputRot();
+        // Manually rev
+        boolean shooterRevv = driverStick.getRawButton(shooterRev);
+        // Auto-rev and fire
+        boolean shooterAutoFire = driverStick.getRawButton(shooterFire);
+        // Manual fire
+        boolean shooterManualFire = driverStick.getRawButton(manualFire);
 
-            Shooter.setShooterAngleForSpeaker();
+        double[] arr = Shooter.getDesiredShooterPos(SwervePosition.getPosition(), SwerveManager.getRobotDriveVelocity());
+
+        // ONLY align if we are in auto-fire mode
+        // silly things 🤣😁
+        if (shooterAutoFire && !shooterManualFire) {
+            SwerveManager.moveAndRotateTo(drive, arr[2]);
+        }
+
+        // If we choose to fire at our manual RPM...
+        if (shooterManualFire) {
+            // Manually set a position as a fallback, ensures we can make a shot in our wing
+            ShooterPivot.setPosition(Math.PI / 4.0);
+            Shooter.revTo(manualRPM);
+            Shooter.shoot();
+        } else if (shooterAutoFire) { // Otherwise if we want to automatically fire...
+            ShooterPivot.setPosition(arr[0]);
+            Shooter.revTo(arr[1]);
+            Shooter.shoot();
+        } else {
+            Shooter.disable();
+        }
+
+        if (shooterRevv) {
+            // Rev the shooter to a set rpm, somewhere about the middle of the field-ish
+            Shooter.revTo(manualRPM);
+        } else {
+            Shooter.disable();
         }
 
         if (driverStick.getRawButton(lock)) {
