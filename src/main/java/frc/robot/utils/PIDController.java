@@ -8,7 +8,7 @@ public class PIDController implements Sendable {
 
     private static int instances;
     
-    private double dest;
+    protected double dest;
 
     double errorIntegral; // Used to calculate i
     double errorDerivative;
@@ -20,7 +20,7 @@ public class PIDController implements Sendable {
 
     public double max;
 
-    private long lastUpdate;
+    protected long lastUpdate;
 
     // public double max, min;
 

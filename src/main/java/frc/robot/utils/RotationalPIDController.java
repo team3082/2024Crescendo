@@ -1,41 +1,40 @@
 package frc.robot.utils;
 
 public class RotationalPIDController extends PIDController{
-    
+    public final double minValue;
+    public final double maxValue;
+    public final double range;
 
-    public RotationalPIDController(double p, double i, double d, double deadband, double velDeadband, double max) {
-        super(p, i, d, deadband, velDeadband, max);
+    public RotationalPIDController(double p, double i, double d, double deadband, double velDeadband, double maxOutput, double minValue, double maxValue){
+        super(p,i,d,deadband,velDeadband,maxOutput);
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+        range = maxValue - minValue;
+    }
+
+    public RotationalPIDController(double p, double i, double d, double deadband, double velDeadband, double maxOutput){
+        super(p,i,d,deadband,velDeadband,maxOutput);
+        this.minValue = -Math.PI;
+        this.maxValue = Math.PI;
+        range = Math.PI*2;
     }
 
     @Override
-    public double getDest() {
-        return super.getDest() % 360.0;
+    public void setDest(double dest){
+        dest = RMath.modulo(dest - minValue, range) + minValue;
     }
 
-    public double getDestRad() {
-        return getDest() * Math.PI / 180;
-    }
-
-    public void setDest(double deg, double pos) {
- 
-        double error = deg % 360.0 - pos % 360.0;
-
-        if(Math.abs(error) > 180) {
-            super.setDest(pos - 360.0 + error);
-        }else {
-            super.setDest(pos + error);
+    @Override
+    public double updateOutput(double pos){
+        pos = RMath.modulo(pos - minValue, range) + minValue;
+        double diff = dest - pos;
+        if(diff > range / 2){
+            pos += range;
+        }else if(diff < -range / 2){
+            pos -= range;
         }
+        return super.updateOutput(pos);
     }
 
-    public void setDestRad(double rad, double pos) {
- 
-        double error = rad % (2 * Math.PI) - pos % (2 * Math.PI);
-
-        if(Math.abs(error) > Math.PI) {
-            super.setDest(pos - (2 * Math.PI) + error);
-        }else {
-            super.setDest(pos + error);
-        }
-    }
     
 }

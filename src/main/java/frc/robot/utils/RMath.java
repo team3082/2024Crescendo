@@ -76,4 +76,9 @@ public class RMath {
     public static double deadband(double value, double center, double deadband){
         return (deadband >= Math.abs(value - center)) ? 0.0 : value;
     }
+
+    /**does a proper modulo that is always positive */
+    public static double modulo(double a, double b){
+        return ((a % b) + b) % b;
+    }
 }
