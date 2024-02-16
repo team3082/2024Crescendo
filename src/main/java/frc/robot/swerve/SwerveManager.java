@@ -143,6 +143,13 @@ public final class SwerveManager {
         return velSum.div(mods.length);
     }
 
+    /** locks the robots angle to a specific angle but allows free translation */
+    public static void moveAndRotateTo(Vector2 move, double toAngle){
+        SwervePID.rotPID.setDest(toAngle);
+        double rotation = SwervePID.rotPID.updateOutput(Pigeon.getRotationRad());
+        rotateAndDrive(rotation, move);
+    }
+
     /**
      * Returns the overall rotational velocity of the robot, based on the rotations and velocities of each of the
      * wheels. Primarily meant for applications where the Pigeon is unavailable, such as simulation.
