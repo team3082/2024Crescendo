@@ -52,8 +52,8 @@ public final class Shooter {
 
     // When firing the shooter automatically, 
     // keep the handoff on only for x seconds
-    private static final double handoffTime = 0.5;
-    private static final double handoffDeadTime = 0.5;
+    private static final double handoffTime = 6.5;
+    private static final double handoffDeadTime = 6.5;
 
     public static double handoffLiveTime = 0.0;
     
@@ -79,17 +79,15 @@ public final class Shooter {
 
         bottomMotor.follow(topMotor);
 
-        topMotor.config_kP(0, 0.6);
+        topMotor.config_kP(0, 0.65);
         topMotor.config_kI(0, 0.00);
         topMotor.config_kD(0, 0.6);
-        // topMotor.config_kF(0, 1023.0 * 0.4584555 / 9064.0);
-        topMotor.config_kF(0, 0);
+        topMotor.config_kF(0, 1023.0 * 0.5454545 / 10810.0);
 
-        bottomMotor.config_kP(0, 0.6);
+        bottomMotor.config_kP(0, 0.65);
         bottomMotor.config_kI(0, 0.00);
         bottomMotor.config_kD(0, 0.6);
-        // bottomMotor.config_kF(0, 1023.0 * 0.4584555 / 9064.0);
-        bottomMotor.config_kF(0, 0);
+        bottomMotor.config_kF(0, 1023.0 * 0.5454545 / 10810.0);
 
         //topMotor.configVoltageCompSaturation(12.2);
         //bottomMotor.enableVoltageCompensation(true);
@@ -107,7 +105,7 @@ public final class Shooter {
 
     public static void update() {
         // Update our pivot
-        ShooterPivot.update();
+       // ShooterPivot.update();
 
         // Get our vars
         topRPM = topMotor.getSelectedSensorVelocity() * VelToRPM;
@@ -147,9 +145,9 @@ public final class Shooter {
                     case STOP:
                         // Restart the loop when we have ALREADY been stopped
                         // and at the desired velocity
-                        if (timeNow > handoffLiveTime && atVelocity) {
+                        if (atVelocity) {
                             handoffMode = HandoffStatus.FEED;
-                            handoffLiveTime = timeNow + handoffDeadTime;
+                            handoffLiveTime = timeNow + handoffTime;
                         }
                     break;
                     case EJECT:
@@ -163,19 +161,24 @@ public final class Shooter {
                 switch (handoffMode) {
                     case DISABLED:
                         // Slow retain
-                        Intake.conveyorMotor.set(TalonSRXControlMode.PercentOutput, 0.1);
+                        Intake.conveyorMotor.set(0.1);
+                        System.out.println("DISABLED");
                     break;
                     case FEED:
                         // Feed us into the shooter!
-                        Intake.setState(IntakeState.FEED);
+                        // Intake.setState(IntakeState.FEED);
+                        Intake.conveyorMotor.set(-0.7);
+                        System.out.println("FEED");
                     break;
                     case STOP:
                         // Prevent the note from shooting too early
-                        Intake.conveyorMotor.set(TalonSRXControlMode.PercentOutput, -0.2);
+                        Intake.conveyorMotor.set(-0.2);
+                        System.out.println("STOP");
                     break;
                     case EJECT:
                         // Should be a safe speed...?
-                        Intake.conveyorMotor.set(TalonSRXControlMode.PercentOutput, -0.6);
+                        Intake.conveyorMotor.set(-0.6);
+                        System.out.println("EJECT");
                     break;
                 }
             break;
@@ -185,7 +188,7 @@ public final class Shooter {
                 setVelocity(targetVelocity);
                 
                 // Stop the handoff
-                Intake.conveyorMotor.neutralOutput();
+                // Intake.conveyorMotor.stopMotor();
             break;
 
             case EJECT:
@@ -197,7 +200,7 @@ public final class Shooter {
             case DISABLED:
                 topMotor.set(TalonFXControlMode.Disabled, 0.0);
                 bottomMotor.set(TalonFXControlMode.Disabled, 0.0);
-                Intake.conveyorMotor.set(TalonSRXControlMode.Disabled, 0.0);
+                Intake.conveyorMotor.set(0.0);
                 targetVelocity = 0.0;
             break;
         }
@@ -210,7 +213,7 @@ public final class Shooter {
     public static void setVelocity(double newVelocity) {
         targetVelocity = newVelocity;
         simVel = newVelocity;
-        topMotor.set(TalonFXControlMode.Velocity, targetVelocity * RPMToVel);
+        topMotor.set(TalonFXControlMode.Velocity, targetVelocity);
         bottomMotor.set(TalonFXControlMode.Follower, topMotor.getDeviceID());
     }
 
@@ -225,7 +228,7 @@ public final class Shooter {
         double noteVel = 0; // Initial velocity of the note
 
         double shooterAngle = Math.atan(Math.pow(noteVel, 2) / (g * ftPos) - Math.sqrt((Math.pow(noteVel, 2) * (Math.pow(noteVel, 2) - 2 * g * targetHeight)) / (Math.pow(g, 2) * Math.pow(ftPos, 2)) - 1)); // terrible! ew! 🤢 (DO NOT CHANGE)
-        ShooterPivot.setPosition(shooterAngle);
+       // ShooterPivot.setPosition(shooterAngle);
     }
 
     /**

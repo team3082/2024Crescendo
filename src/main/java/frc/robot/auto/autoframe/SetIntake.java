@@ -14,7 +14,7 @@ public class SetIntake extends Autoframe {
 
     @Override
     public void start() {
-        Intake.setState(GROUND);
+        //Intake.setState(GROUND);
         this.simDelay = RTime.now();
     }
 
@@ -23,12 +23,12 @@ public class SetIntake extends Autoframe {
         if (Intake.pieceGrabbed()) {
             if (RobotBase.isSimulation()) {
                 if (simDelay < RTime.now() - 1) {
-                    Intake.setState(STOW);
+                    //Intake.setState(STOW);
                     this.done = true;
                 }
             }
             else {
-                Intake.setState(STOW);
+                //Intake.setState(STOW);
                 this.done = true;
             }
         }

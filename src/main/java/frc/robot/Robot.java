@@ -45,10 +45,9 @@ public class Robot extends TimedRobot {
     SwervePosition.init();
     SwervePID.init();
     Pigeon.setYaw(270);
-    //VisionManager.init();
+    VisionManager.init();
     Telemetry.init();
     ChoreoTrajectoryGenerator.init();
-    SwervePosition.setPosition(new Vector2());
     Shooter.init();
     Intake.init();
     AutoSelector.setup();
@@ -81,7 +80,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     OI.init();
-    // SwervePosition.enableVision();
+    SwervePosition.enableVision();
     // ShooterPivot.setPosition(-Math.PI / 2.0);
   }
 
@@ -100,7 +99,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    //SwervePosition.updateAveragePosVision();
+    SwervePosition.updateAveragePosVision();
   }
 
   @Override

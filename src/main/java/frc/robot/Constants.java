@@ -8,10 +8,10 @@ import frc.robot.utils.Vector2;
 public final class Constants {
 
     public static final class Climber {
-        public static final int RIGHT_MOTOR_ID = 16;
+        public static final int RIGHT_MOTOR_ID = 21;
         public static final int RIGHT_HALL_ID = 1;
 
-        public static final int LEFT_MOTOR_ID = 17;
+        public static final int LEFT_MOTOR_ID = 20;
         public static final int LEFT_HALL_ID = 1;
 
         public static final boolean LEFT_MOTOR_INVERTED = false;
@@ -31,7 +31,7 @@ public final class Constants {
         public static final int FLYWHEELPIVOT_ID = 9;
 
         // CANCoder offset
-        public static final double PIVOT_OFFSET = 225.527 - 17.0;
+        public static final double PIVOT_OFFSET = 47.725 - 17.0;
         
         //COMposition
         public static final Vector2 SHOOTER_COM_POS = new Vector2(0,0); //position of the com relative to the pivot point. the angle is what really matters
@@ -57,12 +57,12 @@ public final class Constants {
     public static final class Intake {
 
         // Motor IDs: Belt motors
-        public static final int INDEXER_ID = 12;
-        public static final int TOPINTAKE_ID = 13;
-        public static final int BOTTOMINTAKE_ID = 14;
+        public static final int INDEXER_ID = 25;
+        public static final int TOPINTAKE_ID = 0;
+        public static final int BOTTOMINTAKE_ID = 24;
 
         // Motor ID: Pivot
-        public static final int INTAKEPIVOT_ID = 15;
+        public static final int INTAKEPIVOT_ID = 22;
 
         // CAN ID: Beambreak
         public static final int LASER_ID = 0;

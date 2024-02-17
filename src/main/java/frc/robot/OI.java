@@ -19,10 +19,10 @@ public class OI {
     public static Joystick driverStick, operatorStick;
 
     // Movement
-    static final int moveX     = LogitechF310.AXIS_LEFT_X;
-    static final int moveY     = LogitechF310.AXIS_LEFT_Y;
-    static final int rotateX   = LogitechF310.AXIS_RIGHT_X;
-    static final int boost     = LogitechF310.AXIS_RIGHT_TRIGGER;
+    static final int moveX         = LogitechF310.AXIS_LEFT_X;
+    static final int moveY         = LogitechF310.AXIS_LEFT_Y;
+    static final int rotateX       = LogitechF310.AXIS_RIGHT_X;
+    static final int boost         = LogitechF310.AXIS_RIGHT_TRIGGER;
 
     // Shooter
     static final int shooterRev    = LogitechF310.BUTTON_LEFT_BUMPER;
@@ -34,11 +34,11 @@ public class OI {
     static final int intake        = LogitechF310.AXIS_LEFT_TRIGGER;
 
     // Others
-    static final int lock      = LogitechF310.BUTTON_A;
-    static final int zero      = LogitechF310.BUTTON_Y;
+    static final int lock          = LogitechF310.BUTTON_A;
+    static final int zero          = LogitechF310.BUTTON_Y;
    
 
-    static boolean isGround;
+    static boolean isGround = false;
 
     /**
      * Initialize OI with preset joystick ports.
@@ -71,7 +71,7 @@ public class OI {
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = driverStick.getRawAxis(rotateX) * -ROTSPEED;
 
-        double manualRPM = 2000.0;
+        double manualRPM = 3800.0;
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
@@ -99,19 +99,19 @@ public class OI {
 
         // ONLY align if we are in auto-fire mode
         // silly things 🤣😁
-        if (shooterAutoFire && !shooterManualFire) {
-            SwerveManager.moveAndRotateTo(drive, arr[2]);
-        }
+        // if (shooterAutoFire && !shooterManualFire) {
+        //     SwerveManager.moveAndRotateTo(drive, arr[2]);
+        // }
 
         // If we choose to fire at our manual RPM...
         if (shooterManualFire) {
             // Manually set a position as a fallback, ensures we can make a shot in our wing
-            ShooterPivot.setPosition(Math.PI / 4.0);
+           // ShooterPivot.setPosition(Math.PI / 4.0);
             Shooter.revTo(manualRPM);
             Shooter.shoot();
         } else if (shooterAutoFire) { // Otherwise if we want to automatically fire...
-            ShooterPivot.setPosition(arr[0]);
-            Shooter.revTo(arr[1]);
+           // ShooterPivot.setPosition(arr[0]);
+            Shooter.revTo(3000);
             Shooter.shoot();
         } else {
             Shooter.disable();
@@ -120,8 +120,20 @@ public class OI {
         if (shooterRevv) {
             // Rev the shooter to a set rpm, somewhere about the middle of the field-ish
             Shooter.revTo(manualRPM);
+            Intake.conveyorMotor.set(1.0);
+            //Shooter.shoot();
         } else {
             Shooter.disable();
+        }
+
+        if(driverStick.getRawAxis(intake) > 0.5){
+            isGround = !isGround;
+        }
+
+        if (isGround) {
+            Intake.suck();
+        } else {
+            Intake.no();
         }
 
         if (driverStick.getRawButton(lock)) {
@@ -145,23 +157,15 @@ public class OI {
                 SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
             return;
         }
-
-        if(driverStick.getRawAxis(intake) > 0.5){
-            isGround = !isGround;
-            if(isGround)
-                Intake.setState(Intake.IntakeState.GROUND);
-            else
-                Intake.setState(Intake.IntakeState.STOW);
-        }
     }
 
     public static void operatorInput() {
        if (operatorStick.getRawButtonPressed(LogitechF310.BUTTON_X)) {
-        ShooterPivot.setPosition(Math.PI / 3);
+       // ShooterPivot.setPosition(Math.PI / 3);
        }
 
        if (operatorStick.getRawButtonPressed(LogitechF310.BUTTON_A)) {
-        ShooterPivot.setPosition(Math.PI / 6);
+       // ShooterPivot.setPosition(Math.PI / 6);
        }
 
     }

@@ -13,7 +13,7 @@ import frc.robot.utils.Vector2;
 
 public class VisionManager {
 
-    private static final int camNum = 1;
+    private static final int camNum = 4;
 
     // Array of position-tracking cameras.
     private static PhotonCamera[] cameras = new PhotonCamera[camNum];
@@ -54,9 +54,21 @@ public class VisionManager {
     private static final int[] blueTags = {6, 7, 8, 9, 10, 14, 15, 16};
 
     public static void init() {
-        cameras[0] = new PhotonCamera("AprilTag Vision");
-        offsets[0] = new Vector2(0, 0);
+        cameras[0] = new PhotonCamera("AprilTagCamera1");
+        offsets[0] = new Vector2(-4, 5.350);
         cameraRots[0] = Math.PI / 2;
+
+        cameras[1] = new PhotonCamera("AprilTagCamera4");
+        offsets[1] = new Vector2(4, 2.475);
+        cameraRots[1] = 3 * Math.PI / 2;
+
+        cameras[2] = new PhotonCamera("AprilTagCamera3");
+        offsets[2] = new Vector2(-8.525, 5.1);
+        cameraRots[2] = Math.PI;
+
+        cameras[3] = new PhotonCamera("AprilTagCamera2");
+        offsets[3] = new Vector2(8.525, 5.1);
+        cameraRots[3] = 0;
     }
 
     /**
@@ -76,7 +88,6 @@ public class VisionManager {
             
             // Throw away any frames without a target
             if (target == null) {
-                System.out.println("whoops");
                 continue;
             }
 

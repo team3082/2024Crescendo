@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 @SuppressWarnings("removal")
 public final class ShooterPivot {
 
-    public static TalonFX motor;
+    private static TalonFX motor;
     private static CANCoder absEncoder;
 
     public static double targetPos = Math.PI / 4.0;
@@ -80,7 +80,7 @@ public final class ShooterPivot {
             e.printStackTrace();
         }
 
-        targetPos = Math.PI / 4.0;
+       // targetPos = Math.PI / 4.0;
         actualPos = 0;
     }
 
@@ -106,7 +106,7 @@ public final class ShooterPivot {
      * @param pos
      */
     public static void setPosition(double pos) {
-        targetPos = pos;
+       // targetPos = pos;
         simAng = pos;
     }
     
@@ -118,7 +118,7 @@ public final class ShooterPivot {
     }
     
     public static void update() {
-        motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos));
+       // motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos));
         // motor.set(TalonFXControlMode.MotionMagic, Math.PI / 2.0, DemandType.ArbitraryFeedForward, calcAFF(motor.getSelectedSensorPosition()));
         actualPos = ticksToRad(motor.getSelectedSensorPosition());
         // System.out.println("actual pos " + actualPos + " target pos " + targetPos);

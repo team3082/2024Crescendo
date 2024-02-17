@@ -49,6 +49,10 @@ public class Climber {
         sensor = new DigitalInput(sensorID);
     }
 
+    public void moveClimber(double input) {
+        motor.set(ControlMode.PercentOutput, input);
+    }
+
     public void zeroMotor() {
         if (sensor.get()) {
             motor.set(ControlMode.PercentOutput, 0);
