@@ -5,6 +5,7 @@ import static frc.robot.Tuning.OI.*;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
 import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
@@ -24,18 +25,20 @@ public class OI {
     static final int boost     = LogitechF310.AXIS_RIGHT_TRIGGER;
 
     // Shooter
-    static final int pull          = LogitechF310.AXIS_LEFT_TRIGGER;
     static final int shooterRev    = LogitechF310.BUTTON_LEFT_BUMPER;
     static final int shooterFire   = LogitechF310.BUTTON_RIGHT_BUMPER;
     static final int manualFire    = LogitechF310.BUTTON_X;
     static final int eject         = LogitechF310.BUTTON_B;
 
+    // Intake
+    static final int intake        = LogitechF310.AXIS_LEFT_TRIGGER;
+
     // Others
     static final int lock      = LogitechF310.BUTTON_A;
     static final int zero      = LogitechF310.BUTTON_Y;
    
-    // TODO rework
-    static boolean alignToSpeaker;
+
+    static boolean isGround;
 
     /**
      * Initialize OI with preset joystick ports.
@@ -43,8 +46,6 @@ public class OI {
     public static void init() {
         driverStick = new Joystick(0);
         operatorStick = new Joystick(1);
-
-        alignToSpeaker = false;
     }
 
     public static void userInput() {
@@ -144,6 +145,14 @@ public class OI {
                 SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
             return;
         }
+
+        if(driverStick.getRawAxis(intake) > 0.5){
+            isGround = !isGround;
+            if(isGround)
+                Intake.setState(Intake.IntakeState.GROUND);
+            else
+                Intake.setState(Intake.IntakeState.STOW);
+        }
     }
 
     public static void operatorInput() {
@@ -156,4 +165,5 @@ public class OI {
        }
 
     }
+
 }
