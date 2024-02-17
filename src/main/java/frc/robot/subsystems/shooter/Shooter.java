@@ -6,6 +6,7 @@ import static frc.robot.utils.RMath.deadband;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
@@ -162,7 +163,7 @@ public final class Shooter {
                 switch (handoffMode) {
                     case DISABLED:
                         // Slow retain
-                        Intake.conveyorMotor.set(0.1);
+                        Intake.conveyorMotor.set(TalonSRXControlMode.PercentOutput, 0.1);
                     break;
                     case FEED:
                         // Feed us into the shooter!
@@ -170,11 +171,11 @@ public final class Shooter {
                     break;
                     case STOP:
                         // Prevent the note from shooting too early
-                        Intake.conveyorMotor.set(-0.2);
+                        Intake.conveyorMotor.set(TalonSRXControlMode.PercentOutput, -0.2);
                     break;
                     case EJECT:
                         // Should be a safe speed...?
-                        Intake.conveyorMotor.set(-0.6);
+                        Intake.conveyorMotor.set(TalonSRXControlMode.PercentOutput, -0.6);
                     break;
                 }
             break;
@@ -184,7 +185,7 @@ public final class Shooter {
                 setVelocity(targetVelocity);
                 
                 // Stop the handoff
-                Intake.conveyorMotor.set(0.0);
+                Intake.conveyorMotor.neutralOutput();
             break;
 
             case EJECT:
@@ -196,7 +197,7 @@ public final class Shooter {
             case DISABLED:
                 topMotor.set(TalonFXControlMode.Disabled, 0.0);
                 bottomMotor.set(TalonFXControlMode.Disabled, 0.0);
-                Intake.conveyorMotor.set(0.0);
+                Intake.conveyorMotor.set(TalonSRXControlMode.Disabled, 0.0);
                 targetVelocity = 0.0;
             break;
         }

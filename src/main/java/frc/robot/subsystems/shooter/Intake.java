@@ -7,15 +7,11 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.utils.Beambreak;
 
@@ -24,9 +20,8 @@ public final class Intake {
     
     private static TalonFX pivotMotor;
     private static CANCoder absEncoder;
-    private static CANSparkMax topBeltMotor, bottomBeltMotor;
-    public static CANSparkMax conveyorMotor;
-    private static SparkPIDController topPIDController, bottomPIDController, conveyorPIDController;
+    private static TalonSRX topBeltMotor, bottomBeltMotor;
+    public static TalonSRX conveyorMotor;
     private static Beambreak beambreak;
 
     private static IntakeState state = IntakeState.STOW;
@@ -59,55 +54,41 @@ public final class Intake {
         pivotMotor.configSupplyCurrentLimit(pivotCurrentLimit);
         pivotMotor.configVoltageCompSaturation(12.2);
         pivotMotor.enableVoltageCompensation(true);
-        
-        topBeltMotor = new CANSparkMax(TOPINTAKE_ID, MotorType.kBrushless);
-        topBeltMotor.setIdleMode(IdleMode.kCoast);//TODO may want to set this to brake, depends on how motor.stopMotor() works
+
+        topBeltMotor = new TalonSRX(TOPINTAKE_ID);
+        topBeltMotor.configFactoryDefault();
+        topBeltMotor.setNeutralMode(NeutralMode.Coast);
         topBeltMotor.setInverted(false);
-        topBeltMotor.setSmartCurrentLimit(39);
-        topBeltMotor.enableVoltageCompensation(11);
+        topBeltMotor.config_kP(0, 0);
+        topBeltMotor.config_kI(0, 0);
+        topBeltMotor.config_kD(0, 0);
+        topBeltMotor.configSupplyCurrentLimit(pivotCurrentLimit);
+        topBeltMotor.configVoltageCompSaturation(12.2);
+        topBeltMotor.enableVoltageCompensation(true);
 
-        RelativeEncoder topEncoder = topBeltMotor.getEncoder();
-        topEncoder.setVelocityConversionFactor(42);
-
-        topPIDController = topBeltMotor.getPIDController();
-        topPIDController.setFeedbackDevice(topEncoder);
-        topPIDController.setP(INTAKEBELTKP);
-        topPIDController.setI(INTAKEBELTKI);
-        topPIDController.setD(INTAKEBELTKD);
-        
-
-        bottomBeltMotor = new CANSparkMax(BOTTOMINTAKE_ID, MotorType.kBrushless);
-        bottomBeltMotor.setIdleMode(IdleMode.kCoast);//TODO may want to set this to brake, depends on how stop motor works
+        bottomBeltMotor = new TalonSRX(BOTTOMINTAKE_ID);
+        bottomBeltMotor.configFactoryDefault();
+        bottomBeltMotor.setNeutralMode(NeutralMode.Coast);
         bottomBeltMotor.setInverted(false);
-        bottomBeltMotor.setSmartCurrentLimit(39);
-        bottomBeltMotor.enableVoltageCompensation(11);
+        bottomBeltMotor.config_kP(0, 0);
+        bottomBeltMotor.config_kI(0, 0);
+        bottomBeltMotor.config_kD(0, 0);
+        bottomBeltMotor.configSupplyCurrentLimit(pivotCurrentLimit);
+        bottomBeltMotor.configVoltageCompSaturation(12.2);
+        bottomBeltMotor.enableVoltageCompensation(true);
 
-        RelativeEncoder bottomEncoder = bottomBeltMotor.getEncoder();
-        bottomEncoder.setVelocityConversionFactor(42);
-
-        bottomPIDController = bottomBeltMotor.getPIDController();
-        bottomPIDController.setFeedbackDevice(bottomEncoder);
-        bottomPIDController.setP(INTAKEBELTKP);
-        bottomPIDController.setI(INTAKEBELTKI);
-        bottomPIDController.setD(INTAKEBELTKD);
-
-        conveyorMotor = new CANSparkMax(INDEXER_ID, MotorType.kBrushless);
-        conveyorMotor.setIdleMode(IdleMode.kCoast);
+        conveyorMotor = new TalonSRX(BOTTOMINTAKE_ID);
+        conveyorMotor.configFactoryDefault();
+        conveyorMotor.setNeutralMode(NeutralMode.Coast);
         conveyorMotor.setInverted(false);
-        conveyorMotor.setSmartCurrentLimit(39);
-        conveyorMotor.enableVoltageCompensation(11);
-
-        RelativeEncoder conveyorEncoder = conveyorMotor.getEncoder();
-        conveyorEncoder.setVelocityConversionFactor(42);
-
-        conveyorPIDController = conveyorMotor.getPIDController();
-        conveyorPIDController.setFeedbackDevice(conveyorEncoder);
-        conveyorPIDController.setP(CONVEYORKP);
-        conveyorPIDController.setI(CONVEYORKI);
-        conveyorPIDController.setD(CONVEYORKD);
+        conveyorMotor.config_kP(0, 0);
+        conveyorMotor.config_kI(0, 0);
+        conveyorMotor.config_kD(0, 0);
+        conveyorMotor.configSupplyCurrentLimit(pivotCurrentLimit);
+        conveyorMotor.configVoltageCompSaturation(12.2);
+        conveyorMotor.enableVoltageCompensation(true);
 
         beambreak = new Beambreak(LASER_ID, 300);
-
     }
 
     public static void killHandoff() {
@@ -147,31 +128,31 @@ public final class Intake {
 
     private static void stow() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, radToTicks(INROBOT_INTAKE_ANGLE));
-        topBeltMotor.stopMotor();
-        bottomBeltMotor.stopMotor();
-        conveyorMotor.stopMotor();
+        topBeltMotor.set(TalonSRXControlMode.Disabled, 0);
+        bottomBeltMotor.set(TalonSRXControlMode.Disabled, 0);
+        conveyorMotor.set(TalonSRXControlMode.Disabled, 0);
     }
 
     private static void ground() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, radToTicks(GROUND_INTAKE_ANGLE));
-        topPIDController.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);//TODO currently have everything running on duty cycle, may want to switch to velocity control
-        bottomPIDController.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);
-        conveyorMotor.stopMotor();
+        topBeltMotor.set(TalonSRXControlMode.PercentOutput, INTAKESTRENGTH);//TODO currently have everything running on duty cycle, may want to switch to velocity control
+        bottomBeltMotor.set(TalonSRXControlMode.PercentOutput, INTAKESTRENGTH);
+        conveyorMotor.set(TalonSRXControlMode.Disabled, 0);
     }
 
     // NEVER CALL THIS ANYWHERE ELSE OTHER THAN SHOOTER
     private static void feed() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, radToTicks(INROBOT_INTAKE_ANGLE));
-        topPIDController.setReference(FEEDSTRENGTH, ControlType.kDutyCycle);
-        bottomPIDController.setReference(FEEDSTRENGTH, ControlType.kDutyCycle);
-        conveyorPIDController.setReference(FEEDSTRENGTH, ControlType.kDutyCycle);
+        topBeltMotor.set(TalonSRXControlMode.PercentOutput, FEEDSTRENGTH);
+        bottomBeltMotor.set(TalonSRXControlMode.PercentOutput, FEEDSTRENGTH);
+        conveyorMotor.set(TalonSRXControlMode.PercentOutput, FEEDSTRENGTH);
     }
 
     private static void source() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, radToTicks(SOURCE_INTAKE_ANGLE));
-        topPIDController.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);
-        bottomPIDController.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);
-        conveyorMotor.stopMotor();
+        topBeltMotor.set(TalonSRXControlMode.PercentOutput, INTAKESTRENGTH);
+        bottomBeltMotor.set(TalonSRXControlMode.PercentOutput, INTAKESTRENGTH);
+        conveyorMotor.set(TalonSRXControlMode.Disabled, 0);
     }
 
     public static boolean pieceGrabbed() {
