@@ -145,7 +145,7 @@ public final class Shooter {
                     case STOP:
                         // Restart the loop when we have ALREADY been stopped
                         // and at the desired velocity
-                        if (atVelocity) {
+                        if (timeNow > handoffLiveTime && atVelocity) {
                             handoffMode = HandoffStatus.FEED;
                             handoffLiveTime = timeNow + handoffTime;
                         }
