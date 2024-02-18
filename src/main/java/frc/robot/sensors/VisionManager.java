@@ -179,7 +179,7 @@ public class VisionManager {
         Vector2 tagRelOffset = offset.rotate(pigeonAngle - Math.PI / 2);
 
         // We want to flip the X of the offset from the tag, but not the position of the tag itself.
-        if (DriverStation.getAlliance().get() == Alliance.Red)
+        if (DriverStation.getAlliance().get() == Alliance.Blue)
                 tagRelOffset.x *= -1;
         
         Vector2 absolutePos = getTagPos(tagID).add(tagRelOffset);
@@ -194,7 +194,7 @@ public class VisionManager {
      */
     public static boolean isTagFriendly(int tagID) {
         // Alliance is now an optional and crashes the simulator if this isn't like this.
-        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
+        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Red : DriverStation.getAlliance().get();
 
         switch (alliance) {
             case Red:

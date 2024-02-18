@@ -2,6 +2,7 @@ package frc.robot.utils.trajectories;
 
 import frc.robot.utils.Vector2;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Tuning;
 
@@ -24,7 +25,8 @@ public class BezierCurve{
         this.c.x *= -1;
         this.d.x *= -1;
 
-        if (DriverStation.getAlliance().get() == Alliance.Red) {
+        Alliance alliance = RobotBase.isSimulation() ? Alliance.Red : DriverStation.getAlliance().get();
+        if (alliance == Alliance.Blue) {
             this.a.y *= -1;
             this.b.y *= -1;
             this.c.y *= -1;

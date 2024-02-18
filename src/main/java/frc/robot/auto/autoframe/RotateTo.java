@@ -12,7 +12,8 @@ public class RotateTo extends Autoframe {
     double angle;
 
     public RotateTo(double angle, double rotSpeed) {
-        this.angle = (DriverStation.getAlliance().get() == Alliance.Red) ? angle : (2.0 * Math.PI) - angle;
+        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Red : DriverStation.getAlliance().get();
+        this.angle = (alliance == Alliance.Blue) ? angle : (2.0 * Math.PI) - angle;
         blocking = false;
     }
 
