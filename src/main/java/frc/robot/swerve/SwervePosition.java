@@ -45,10 +45,10 @@ public class SwervePosition {
         // Rotate our velocity to be local to the field
         vel = vel.rotate(Pigeon.getRotationRad() - Math.PI / 2);
 
-        // Flip the x component of our velocity if we're on the blue alliance
+        // Flip the x component of our velocity if we're on the red alliance
         // I still don't know why, but we don't need to do this in simulation mode
-        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Red : DriverStation.getAlliance().get();
-        if (alliance == Alliance.Blue)
+        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
+        if (alliance == Alliance.Red)
             vel.x *= -1;
         
         lastAbsVelocity = absVelocity; 

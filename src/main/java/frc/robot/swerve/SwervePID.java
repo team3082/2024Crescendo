@@ -58,7 +58,7 @@ public class SwervePID {
     }
     
     public static double updateOutputX() {
-        return (xPID.atSetpoint() ? 0 : (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) * xPID.updateOutput(SwervePosition.getPosition().x));
+        return (xPID.atSetpoint() ? 0 : (DriverStation.getAlliance().get() == Alliance.Red ? -1 : 1) * xPID.updateOutput(SwervePosition.getPosition().x));
     }
 
     public static double updateOutputY() {

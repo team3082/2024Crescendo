@@ -74,13 +74,14 @@ public class Robot extends TimedRobot {
     Auto.update();
     SwervePosition.update();
     Shooter.update();
-    System.out.println(SwervePosition.getPosition().toString());
+    // SwerveManager.rotateAndDrive(0.0, new Vector2(1.0, 0.0));
   }
 
   @Override
   public void teleopInit() {
     OI.init();
     SwervePosition.enableVision();
+    // ShooterPivot.setPosition(-Math.PI / 2.0);
   }
 
   @Override
@@ -98,7 +99,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-   // SwervePosition.updateAveragePosVision();
+    SwervePosition.updateAveragePosVision();
   }
 
   @Override

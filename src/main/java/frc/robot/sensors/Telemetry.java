@@ -193,10 +193,10 @@ public class Telemetry {
      */
     public static void update(boolean compMode) {
 
-        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Red : DriverStation.getAlliance().get();
+        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
 
-        // -1 if we're on the blue alliance, 1 if we're on the red alliance
-        int allianceMultiplier = (alliance == DriverStation.Alliance.Blue) ? -1 : 1;
+        // -1 if we're on the red alliance, 1 if we're on the blue alliance
+        int allianceMultiplier = (alliance == DriverStation.Alliance.Red) ? -1 : 1;
 
         swervePos.setString(SwervePosition.getPosition().toString());
 
