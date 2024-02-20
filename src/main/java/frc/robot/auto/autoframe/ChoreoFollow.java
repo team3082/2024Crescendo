@@ -9,39 +9,22 @@ import frc.robot.utils.Vector2;
 import frc.robot.utils.followers.PIDFollower;
 import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveState;
-import frc.robot.utils.trajectories.ChoreoTrajectory;
 
-public class ChoreoFollow extends Autoframe{
-    private ChoreoTrajectory trajectory;
-    private double tStart;
-    private PIDFollower controller;
+import static frc.robot.utils.trajectories.ChoreoTrajectoryGenerator.getChoreo;
 
-    public ChoreoFollow(ChoreoTrajectory traj){
-        this.trajectory = traj;
-        this.controller = new PIDFollower();
-        
-        blocking = true;
-    }
+public class ChoreoFollow extends TrajectoryFollow{
     
+    public final String trajName;
+
+    public ChoreoFollow(String name){
+        super(new PIDFollower());
+        this.trajName = name;
+    }
+
     @Override
     public void start(){
-        tStart = RTime.now();
-        controller.setTrajectory(trajectory.next());
+        controller.setTrajectory(getChoreo(trajName));
+        super.start();
     }
 
-    public void update(){
-        Vector2 currentPos = SwervePosition.getPosition();
-        Vector2 currentVel = SwerveManager.getRobotDriveVelocity();
-        double currentAng = Pigeon.getRotationRad();
-        double currengAngVel = Pigeon.getDeltaRotRad();
-        SwerveState currentState = new SwerveState(currentPos, currentAng, currentVel, currengAngVel);
-        // System.out.println(Arrays.toString(currentState.toArray()));
-        SwerveInstruction instruction = controller.getInstruction(currentState, RTime.now() - tStart);
-        if(Robot.isReal())
-            instruction = new SwerveInstruction(instruction.rotation, new Vector2(-instruction.movement.y, instruction.movement.x));
-        SwerveManager.rotateAndDrive(instruction);
-        if(RTime.now() - tStart > controller.path.length()){
-            done = true;
-        }
-    }
 }

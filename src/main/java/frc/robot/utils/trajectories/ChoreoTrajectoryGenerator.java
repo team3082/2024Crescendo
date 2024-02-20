@@ -2,8 +2,11 @@ package frc.robot.utils.trajectories;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -80,6 +83,52 @@ public class ChoreoTrajectoryGenerator{
         }
 
         return new DiscreteTraj(new ArrayList<DiscreteSwerveState>(choreoStates.stream().map((s) -> toSwerveState(s)).toList()));
+    }
+    
+    private static HashMap<String,DiscreteTraj> choreoTrajectories;
+
+    public static DiscreteTraj getChoreo(String name){
+        return choreoTrajectories.get(name);
+    }
+
+    /**
+     * populates a hash map with all of the 
+    */
+    public static synchronized void parseAll(){
+        File dir = new File(Filesystem.getDeployDirectory(), "deploy/choreo");
+
+        final File[] files = dir.listFiles((s) -> Pattern.matches(".*\\.\\d+\\.\\w+$", s.getName()) && s.isFile());
+        choreoTrajectories = new HashMap<>(files.length * 3);//idk what the best size for a hashmap is. hopefully this is good
+        
+        Thread parser = new Thread(){
+            @Override
+            public void run(){
+                for(File f : files){
+                    long start = System.currentTimeMillis();
+                    List<ChoreoState> choreoStates = null;
+                    String simpleName = f.toPath().getFileName().toString();
+                    simpleName = simpleName.substring(0,simpleName.length() - 5);
+                    System.out.println(simpleName);
+
+                    try{
+                        JsonNode node = om.readTree(f).get("samples");
+                        choreoStates = om.convertValue(node, new TypeReference<List<ChoreoState>>(){});
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+
+                    DiscreteTraj traj = new DiscreteTraj(new ArrayList<DiscreteSwerveState>(choreoStates.stream().map((s) -> toSwerveState(s)).toList()));
+                    choreoTrajectories.put(simpleName, traj);
+                    System.out.println(System.currentTimeMillis() - start);
+                }
+            }
+        };
+
+        parser.setName("Choreo Parser");
+        parser.setDaemon(true);
+        parser.setPriority(Thread.MIN_PRIORITY);
+        parser.start();
+
     }
 
 
