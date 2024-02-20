@@ -16,7 +16,7 @@ import static frc.robot.Constants.METERSTOINCHES;
 public class ChoreoTrajectoryGenerator{
     
     private static DiscreteSwerveState toSwerveState(ChoreoState cs){
-        return new DiscreteSwerveState(cs.x * METERSTOINCHES,cs.y * METERSTOINCHES,cs.heading,cs.velocityX * METERSTOINCHES,cs.velocityY * METERSTOINCHES,cs.angularVelocity, cs.timestamp);
+        return new DiscreteSwerveState(-(cs.y-4.105) * METERSTOINCHES,(cs.x - 8.273) * METERSTOINCHES,cs.heading + Math.PI / 2,-cs.velocityX * METERSTOINCHES,cs.velocityY * METERSTOINCHES,cs.angularVelocity, cs.timestamp);
     }
 
     private static ObjectMapper om;
