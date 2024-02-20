@@ -24,6 +24,7 @@ public class AutoSelector {
         autoChooser.addOption("Choreo Test", "Choreo Test");
         autoChooser.addOption("Bezier Curve Test", "Bezier Curve Test");
         autoChooser.addOption("Bounce Test", "Bounce Test");
+        autoChooser.addOption("4 Piece Middle", "4 Piece Middle");
     }
 
     /**
@@ -66,6 +67,10 @@ public class AutoSelector {
 
             case "Bounce Test":
                 Auto.bounceTest();
+            break;
+            
+            case "4 Piece Middle":
+                Auto.fourPieceMiddle();
             break;
         }
     }

@@ -19,6 +19,7 @@ public class ChoreoFollow extends TrajectoryFollow{
     public ChoreoFollow(String name){
         super(new PIDFollower());
         this.trajName = name;
+        this.blocking = true;
     }
 
     @Override

@@ -4,14 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-import frc.robot.auto.autoframe.Autoframe;
-import frc.robot.auto.autoframe.ChoreoFollow;
-import frc.robot.auto.autoframe.FollowBezierCurve;
-import frc.robot.auto.autoframe.RotateTo;
-import frc.robot.auto.autoframe.SetIntake;
-import frc.robot.auto.autoframe.SetShooterAngle;
-import frc.robot.auto.autoframe.SetShooterVelocity;
-import frc.robot.auto.autoframe.TrajectoryFollow;
+import frc.robot.auto.autoframe.*;
 import frc.robot.sensors.Pigeon;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
@@ -81,6 +74,32 @@ public class Auto {
         Pigeon.setYawRad(start.theta);
 
         queueFrames(new ChoreoFollow("Loopties.1"));
+    }
+
+    public static void fourPieceMiddle() {
+        SwerveTrajectory traj = ChoreoTrajectoryGenerator.getChoreo("4 Piece Center.1");
+        SwerveState start = traj.startState();
+        SwervePosition.setPosition(start.getPos());;
+        Pigeon.setYawRad(start.theta);
+
+        queueFrames(
+            new SetIntake(),
+            new ChoreoFollow("4 Piece Center.1"),
+            new SetShooterAngle(Math.PI/2),
+            // new SetShoot(),
+            new ChoreoFollow("4 Piece Center.2"),
+            new SetIntake(),
+            new ChoreoFollow("4 Piece Center.3"),
+            new SetShooterAngle(Math.PI/2),
+            // new SetShoot(),
+            new ChoreoFollow("4 Piece Center.4"),
+            new SetIntake(),
+            new ChoreoFollow("4 Piece Center.5"),
+            new SetShooterAngle(Math.PI/2),
+            // new SetShoot(),
+            new ChoreoFollow("4 Piece Center.6"),
+            new ChoreoFollow("4 Piece Center.7")
+        );
     }
 
     public static void fourPieceAmpSide() {
@@ -187,6 +206,7 @@ public class Auto {
         activeFrames.removeAll(finishedFrames);
 
         System.out.println(); // Newline for debugging readability
+        System.out.println(activeFrames.size());
 
         // Conditions for advancing the frame:
         // AdvanceFrame must be true, meaning there are no active, blocking frames

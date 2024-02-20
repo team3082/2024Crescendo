@@ -13,10 +13,11 @@ import frc.robot.utils.swerve.SwerveState;
 public class TrajectoryFollow extends Autoframe{
     public SwerveFollower controller;
     public double tStart;
-    public boolean blocking = true;
 
     public TrajectoryFollow(SwerveFollower follower){
         this.controller = follower;
+        this.done = false;
+        this.blocking = true;
     }
 
     public void start(){
