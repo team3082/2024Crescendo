@@ -89,7 +89,6 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     RTime.update();
     Shooter.update();
-    ShooterPivot.update();
     SwervePosition.update();
     OI.userInput();
     //OI.operatorInput();
