@@ -36,6 +36,7 @@ public class TrajectoryFollow extends Autoframe{
             instruction = new SwerveInstruction(instruction.rotation, new Vector2(-instruction.movement.y, instruction.movement.x));
         SwerveManager.rotateAndDrive(instruction);
         if(RTime.now() - tStart > controller.path.length()){
+            SwerveManager.rotateAndDrive(0, new Vector2());
             done = true;
         }
     }
