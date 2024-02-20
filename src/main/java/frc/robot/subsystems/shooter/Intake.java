@@ -46,9 +46,6 @@ public final class Intake {
         pivotMotor.configNominalOutputReverse(0.01);
         pivotMotor.configNeutralDeadband(0.01);
         pivotMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 30);
-
-        double absPosition = (absEncoder.getAbsolutePosition() + INTAKE_OFFSET) / 360.0 * INTAKERATIO * 2048;
-        pivotMotor.setSelectedSensorPosition(absPosition, 0, 30);
         
         pivotMotor.config_kP(0, INTAKEPIVOTKP, 30);
         pivotMotor.config_kI(0, INTAKEPIVOTKI, 30);
@@ -101,6 +98,9 @@ public final class Intake {
         conveyorPIDController.setD(CONVEYORKD);
 
        // beambreak = new Beambreak(LASER_ID, 300);
+
+       // Zero the Falcon's relative encoder LAST
+       pivotMotor.setSelectedSensorPosition(0);
     }
 
     public static void killHandoff() {
@@ -117,7 +117,7 @@ public final class Intake {
     }
 
     public static void update() {//TODO add logic for using the beambreak
-        switch(state){
+        switch (state) {
             case SOURCE:
                 source();
             break;
@@ -131,7 +131,7 @@ public final class Intake {
                 feed();
             break;
             case BALANCE:
-                stow();//didn't feel like making anything fancy
+                stow();
             break;
         }
     }
@@ -139,14 +139,14 @@ public final class Intake {
 
 
     private static void stow() {
-        pivotMotor.set(TalonFXControlMode.MotionMagic, radToTicks(INROBOT_INTAKE_ANGLE));
+        pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);
         topBeltMotor.set(TalonSRXControlMode.Disabled, 0);
         bottomBeltMotor.set(TalonSRXControlMode.Disabled, 0);
         conveyorMotor.set(0);
     }
 
     private static void ground() {
-        pivotMotor.set(TalonFXControlMode.MotionMagic, radToTicks(GROUND_INTAKE_ANGLE));
+        pivotMotor.set(TalonFXControlMode.MotionMagic, GROUND_INTAKE_ANGLE);
         topBeltMotor.set(TalonSRXControlMode.PercentOutput, INTAKESTRENGTH);
         bottomBeltMotor.set(TalonSRXControlMode.PercentOutput, INTAKESTRENGTH);
         conveyorMotor.set(0);
@@ -164,14 +164,14 @@ public final class Intake {
 
     // NEVER CALL THIS ANYWHERE ELSE OTHER THAN SHOOTER
     private static void feed() {
-        pivotMotor.set(TalonFXControlMode.MotionMagic, radToTicks(INROBOT_INTAKE_ANGLE));
+        pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);
         topBeltMotor.set(TalonSRXControlMode.PercentOutput, FEEDSTRENGTH);
         bottomBeltMotor.set(TalonSRXControlMode.PercentOutput, FEEDSTRENGTH);
         conveyorMotor.set(FEEDSTRENGTH);
     }
 
     private static void source() {
-        pivotMotor.set(TalonFXControlMode.MotionMagic, radToTicks(SOURCE_INTAKE_ANGLE));
+        pivotMotor.set(TalonFXControlMode.MotionMagic, SOURCE_INTAKE_ANGLE);
         topBeltMotor.set(TalonSRXControlMode.PercentOutput, INTAKESTRENGTH);
         bottomBeltMotor.set(TalonSRXControlMode.PercentOutput, INTAKESTRENGTH);
         conveyorMotor.set(0);
