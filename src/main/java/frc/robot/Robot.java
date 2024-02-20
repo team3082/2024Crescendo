@@ -100,6 +100,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     SwervePosition.updateAveragePosVision();
+    SwerveManager.rotateAndDrive(0, new Vector2());
   }
 
   @Override

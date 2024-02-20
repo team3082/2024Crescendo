@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-
 import frc.robot.auto.autoframe.Autoframe;
+import frc.robot.auto.autoframe.ChoreoFollow;
 import frc.robot.auto.autoframe.FollowBezierCurve;
 import frc.robot.auto.autoframe.RotateTo;
 import frc.robot.auto.autoframe.SetIntake;
@@ -19,9 +19,8 @@ import frc.robot.utils.Vector2;
 import frc.robot.utils.followers.PIDFollower;
 import frc.robot.utils.swerve.SwerveState;
 import frc.robot.utils.trajectories.BezierCurve;
-import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
+import frc.robot.utils.trajectories.ChoreoTrajectory;
 import frc.robot.utils.trajectories.QuinticHermite;
-import frc.robot.utils.trajectories.SwerveTrajectory;
 
 public class Auto {
     public static void bezierCurveAutoTest() {
@@ -57,14 +56,15 @@ public class Auto {
         queueFrames(frames);
     }
 
-    public static void choreoTest() {
-        SwerveTrajectory traj = ChoreoTrajectoryGenerator.generateTrajectory("Circle.traj");
-        PIDFollower controller = new PIDFollower();
-        controller.setTrajectory(traj);
-        SwervePosition.setPosition(traj.startState().getPos());
-        Pigeon.setYawRad(traj.startState().theta);
-        queueFrames(new TrajectoryFollow(controller));
 
+
+    public static void choreoTest() {
+        ChoreoTrajectory traj = new ChoreoTrajectory("PoleDancing");
+        SwerveState start = traj.getStart();
+        SwervePosition.setPosition(start.getPos());;
+        Pigeon.setYawRad(start.theta);
+
+        queueFrames(new ChoreoFollow(traj));
     }
 
     public static void fourPieceAmpSide() {

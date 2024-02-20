@@ -16,4 +16,9 @@ public abstract class Autoframe {
     }
 
     public void finish() {}
+
+    public Autoframe setBlocking(boolean blocking){
+        this.blocking = blocking;
+        return this;
+    }
 }

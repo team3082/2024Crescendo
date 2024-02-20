@@ -12,6 +12,7 @@ import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import frc.robot.utils.Vector2;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RuntimeType;
 
 @SuppressWarnings("removal")
 public class SwerveModule {

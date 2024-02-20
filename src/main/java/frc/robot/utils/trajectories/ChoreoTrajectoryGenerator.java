@@ -3,6 +3,7 @@ package frc.robot.utils.trajectories;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,8 +27,49 @@ public class ChoreoTrajectoryGenerator{
         om = new ObjectMapper();
     }
 
-    public static DiscreteTraj generateTrajectory(String fileName){
-        File f = new File(Filesystem.getDeployDirectory(), "/deploy/choreo/" + fileName);
+
+    /**
+     * fills the supplied queue with the trajectory segments
+     * @param fileName name of the parent trajectory
+     * @param queue a queue to be filled with the trajectory segments
+     * @return the number of segments in the trajectory
+     */
+    public static int generateTrajectory(final String fileName, final BlockingQueue<DiscreteTraj> queue){
+        int i = 0;
+        //searching for the number of segments in the deploy trajectory
+        while(true){
+            i++;
+            System.out.println(i);
+            if(new File(Filesystem.getDeployDirectory(), "/deploy/choreo/" + fileName + "." + i + ".traj").isFile()){
+                continue;
+            }
+            break;
+        }
+        final int numSegments = i - 1;
+
+
+        Thread generator = new Thread(){
+            @Override
+            public void run(){
+                long start = System.currentTimeMillis();
+                for(int j = 1; j < numSegments + 1; j++){
+                    DiscreteTraj traj = parseTrajectory(fileName + "." + j);
+                    queue.add(traj);
+                    System.out.println(System.currentTimeMillis() - start);
+                }
+            }
+        };
+
+        generator.setDaemon(true);
+        generator.setPriority(Thread.MIN_PRIORITY);
+        generator.setName("Choreo Parser " + fileName);
+        generator.start();
+        return numSegments;
+    }
+
+
+    private synchronized static DiscreteTraj parseTrajectory(String fileName){
+        File f = new File(Filesystem.getDeployDirectory(), "/deploy/choreo/" + fileName + ".traj");
         List<ChoreoState> choreoStates = null;
 
         try{

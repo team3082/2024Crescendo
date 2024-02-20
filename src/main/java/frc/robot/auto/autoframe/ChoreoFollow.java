@@ -6,22 +6,27 @@ import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
-import frc.robot.utils.followers.SwerveFollower;
+import frc.robot.utils.followers.PIDFollower;
 import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveState;
+import frc.robot.utils.trajectories.ChoreoTrajectory;
 
-public class TrajectoryFollow extends Autoframe{
-    public SwerveFollower controller;
-    public double tStart;
-    public boolean blocking = true;
+public class ChoreoFollow extends Autoframe{
+    private ChoreoTrajectory trajectory;
+    private double tStart;
+    private PIDFollower controller;
 
-    public TrajectoryFollow(SwerveFollower follower){
-        this.controller = follower;
+    public ChoreoFollow(ChoreoTrajectory traj){
+        this.trajectory = traj;
+        this.controller = new PIDFollower();
+        
+        blocking = true;
     }
-
+    
+    @Override
     public void start(){
         tStart = RTime.now();
-        
+        controller.setTrajectory(trajectory.next());
     }
 
     public void update(){
@@ -39,6 +44,4 @@ public class TrajectoryFollow extends Autoframe{
             done = true;
         }
     }
-
-    
 }
