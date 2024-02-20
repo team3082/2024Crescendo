@@ -62,7 +62,7 @@ public class Auto {
         PIDFollower controller = new PIDFollower();
         controller.setTrajectory(traj);
         SwervePosition.setPosition(traj.startState().getPos());
-        Pigeon.setYaw(traj.startState().theta);
+        Pigeon.setYawRad(traj.startState().theta);
         queueFrames(new TrajectoryFollow(controller));
 
     }
