@@ -104,8 +104,9 @@ public final class Shooter {
     }
 
     public static void update() {
-        // Update our pivot
-       // ShooterPivot.update();
+        // Update our pivot & intake
+        ShooterPivot.update();
+        Intake.update();
 
         // Get our vars
         topRPM = topMotor.getSelectedSensorVelocity() * VelToRPM;
