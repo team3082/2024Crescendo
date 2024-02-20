@@ -36,6 +36,16 @@
         "window": {
           "visible": true
         }
+      },
+      "/Shuffleboard/SmartDashboard/Subsystems": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/Shuffleboard/SmartDashboard/Swerve": {
+        "window": {
+          "visible": true
+        }
       }
     }
   },
@@ -50,17 +60,10 @@
     }
   },
   "NetworkTables Info": {
-    "Clients": {
-      "open": true
-    },
     "Server": {
-      "Publishers": {
-        "open": true
-      },
       "Subscribers": {
         "open": true
-      },
-      "open": true
+      }
     },
     "visible": true
   },

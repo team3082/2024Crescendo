@@ -100,8 +100,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    if(Robot.isReal())
-    SwervePosition.updateAveragePosVision();
+    if (Robot.isReal())
+      SwervePosition.updateAveragePosVision();
     SwerveManager.rotateAndDrive(0, new Vector2());
   }
 
