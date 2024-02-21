@@ -1,7 +1,6 @@
 package frc.robot.subsystems.climber;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -12,8 +11,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 import static frc.robot.Tuning.Climbers.*;
 
-import static frc.robot.Constants.Climber.TICKS_PER_INCH;
-
 //TODO still need to add the hall effect sensors, this might require much more math to make sure it doesn't break itself
 @SuppressWarnings("removal")
 public class Climber {
@@ -21,7 +18,7 @@ public class Climber {
     public TalonFX motor;
     public DigitalInput sensor;
 
-    private boolean loaded = false;
+    // private boolean loaded = false;
 
     public Climber(int motorID, int sensorID, boolean inverted){
         motor = new TalonFX(motorID);

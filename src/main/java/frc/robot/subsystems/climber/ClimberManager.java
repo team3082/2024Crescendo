@@ -2,8 +2,6 @@ package frc.robot.subsystems.climber;
 
 import static frc.robot.Constants.Climber.*;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 public final class ClimberManager {
     
     private static Climber leftClimber;
@@ -20,14 +18,10 @@ public final class ClimberManager {
     // THIS NEEDS TO RUN AFTER OPERATOR INPUT
     public static void update() {
         if (zeroing) {
-            if (leftClimber.zeroMotor() && rightClimber.zeroMotor()) {
-                zeroing = false;
-            }
+            zeroing = !(zero());
         }
         else if (balancing) {
-            if (balance()) {
-                balancing = false;
-            }
+            balancing = !(balance());
         }
         else {
             brake();
@@ -63,9 +57,12 @@ public final class ClimberManager {
     }
 
     // zero the climbers
-    public static void zero() {
+    public static boolean zero() {
         if (leftClimber.zeroMotor() && rightClimber.zeroMotor()) {
-            
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
