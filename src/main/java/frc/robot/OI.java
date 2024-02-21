@@ -130,28 +130,33 @@ public class OI {
         //     SwerveManager.moveAndRotateTo(drive, arr[2]);
         // }
 
-        // If we choose to fire at our manual RPM...
+        // checks current shooter mode and sets the angle and velocities accordingly
         if (shooterFire) {
-            // Manually set a position as a fallback, ensures we can make a shot in our wing
-            ShooterPivot.setPosition(Math.toRadians(55.0));
-            Shooter.revTo(manualRPM);
-            Shooter.shoot();
-        } 
-        // TODO: tune auto fire(not a priority)
-        // else if (shooterAutoFire) { // Otherwise if we want to automatically fire...
-        //     ShooterPivot.setPosition(arr[0]);
-        //     Shooter.revTo(arr[1]);
-        //     Shooter.shoot();
-        // } 
-        else {
-            ShooterPivot.setPosition(Math.toRadians(20.0)); // stow shooter
-            Shooter.disable(); // Leave the shooter off if not in use
-        }
+            switch (currentShooterMode) {
+                case AMP:
+                    ShooterPivot.setPosition(Math.toRadians(55.0));
+                    Shooter.revToVaried(topVector, bottomVector);
+                    Shooter.shoot();
+                    break;
 
-        // Scoring in the amp
-        if (shooterRevv) {
-           Shooter.revToVaried(topVector, bottomVector); // Vector speeds to flip piece into amp
+                 // currently this is the same as manual score till we tune it when we do we will change that
+                case SPEAKER:
+                    ShooterPivot.setPosition(Math.toRadians(55.0));
+                    Shooter.revTo(manualRPM);
+                    Shooter.shoot();
+                    break;
+
+                case SPEAKER_MANUAL:
+                    ShooterPivot.setPosition(Math.toRadians(55.0));
+                    Shooter.revTo(manualRPM);
+                    Shooter.shoot();
+                    break;
+            
+                default:
+                    break;
+            }
         } else {
+            ShooterPivot.setPosition(Math.toRadians(20.0)); // stow shooter
             Shooter.disable(); // Leave the shooter off if not in use
         }
 
