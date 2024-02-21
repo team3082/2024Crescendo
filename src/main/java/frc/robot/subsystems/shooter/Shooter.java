@@ -252,7 +252,7 @@ public final class Shooter {
         double noteVel = 0; // Initial velocity of the note
 
         double shooterAngle = Math.atan(Math.pow(noteVel, 2) / (g * ftPos) - Math.sqrt((Math.pow(noteVel, 2) * (Math.pow(noteVel, 2) - 2 * g * targetHeight)) / (Math.pow(g, 2) * Math.pow(ftPos, 2)) - 1)); // terrible! ew! 🤢 (DO NOT CHANGE)
-        ShooterPivot.setPosition(shooterAngle);
+        // ShooterPivot.setPosition(shooterAngle);
     }
 
     /**

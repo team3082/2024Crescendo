@@ -43,6 +43,9 @@ public class OI {
 
     static boolean isGround = false;
 
+    public static double topVector = 530;
+    public static double bottomVector = 700;
+
     /**
      * Initialize OI with preset joystick ports.
      */
@@ -122,7 +125,7 @@ public class OI {
 
         // Scoring in the amp
         if (shooterRevv) {
-           Shooter.revToVaried(530, 700); // Vector speeds to flip piece into amp
+           Shooter.revToVaried(topVector, bottomVector); // Vector speeds to flip piece into amp
         } else {
             Shooter.disable(); // Leave the shooter off if not in use
         }

@@ -1,5 +1,8 @@
 package frc.robot.sensors;
 
+import static frc.robot.Constants.ShooterConstants.RPMToVel;
+import static frc.robot.Constants.ShooterConstants.VelToRPM;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -12,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Constants;
+import frc.robot.OI;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.auto.AutoSelector;
 import frc.robot.subsystems.shooter.Intake;
@@ -128,6 +132,8 @@ public class Telemetry {
     private static final GenericEntry TOPFLYWHEELRPM = shooter.add("Top Flywheel RPM", Shooter.topRPM).getEntry();
     private static final GenericEntry BOTTOMFLYWHEELRPM = shooter.add("Bottom Flywheel RPM", Shooter.bottomRPM).getEntry();
     private static final GenericEntry FLYWHEELTARGETRPM = shooter.add("Flywheel Targeted RPM", Shooter.targetVelocity * ShooterConstants.VelToRPM).getEntry();
+    private static final GenericEntry TOPVECTOR = shooter.add("Top Flywheel Vector", OI.topVector).getEntry();
+    private static final GenericEntry BOTTOMVECTOR = shooter.add("Bottom Flywheel Vector", OI.bottomVector).getEntry();
     // private static final GenericEntry FLYWHEELATVEL = shooter.add("Flywheel At Velocity", Shooter.canShoot()).getEntry();
 
     private static final GenericEntry pivotAngle = shooter.add("Pivot Angle", ShooterPivot.actualPos).getEntry();
@@ -204,6 +210,9 @@ public class Telemetry {
         BOTTOMFLYWHEELRPM.setDouble(Shooter.bottomRPM);
         FLYWHEELTARGETRPM.setDouble(Shooter.targetVelocity * ShooterConstants.VelToRPM);
 
+        TOPVECTOR.setDouble(OI.topVector);
+        BOTTOMVECTOR.setDouble(OI.bottomVector);
+
         pivotAngle.setDouble(ShooterPivot.actualPos);
        // FLYWHEELATVEL.setBoolean(Shooter.canShoot());
 
@@ -250,6 +259,12 @@ public class Telemetry {
         SwervePID.rotPID.kI = rotI.getDouble(0);
         SwervePID.rotPID.kD = rotD.getDouble(0);
         SwervePID.rotPID.deadband = rotDeadBand.getDouble(0);
+
+        // Shooter
+        Shooter.targetVelocity = FLYWHEELTARGETRPM.getDouble(0) * RPMToVel;
+        ShooterPivot.targetPos = Math.toRadians(pivotAngle.getDouble(0));
+        OI.topVector = TOPVECTOR.getDouble(0) * RPMToVel;
+        OI.bottomVector = BOTTOMVECTOR.getDouble(0) * RPMToVel;
 
         // Tuning.Shooter.FLYWHEELKD = FLYWHEELKD.getDouble(0);
         // Tuning.Shooter.FLYWHEELKF = FLYWHEELKF.getDouble(0);
