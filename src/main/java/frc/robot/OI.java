@@ -110,16 +110,18 @@ public class OI {
         // }
 
         // If we choose to fire at our manual RPM...
-        if (shooterManualFire) {
+        if (shooterManualFire == true || shooterAutoFire == true) {
             // Manually set a position as a fallback, ensures we can make a shot in our wing
             ShooterPivot.setPosition(Math.toRadians(55.0));
             Shooter.revTo(manualRPM);
             Shooter.shoot();
-        } else if (shooterAutoFire) { // Otherwise if we want to automatically fire...
-            ShooterPivot.setPosition(arr[0]);
-            Shooter.revTo(arr[1]);
-            Shooter.shoot();
-        } else {
+        } 
+        // else if (shooterAutoFire) { // Otherwise if we want to automatically fire...
+        //     ShooterPivot.setPosition(arr[0]);
+        //     Shooter.revTo(arr[1]);
+        //     Shooter.shoot();
+        // } 
+        else {
             ShooterPivot.setPosition(Math.toRadians(20.0)); // stow shooter
             Shooter.disable(); // Leave the shooter off if not in use
         }
