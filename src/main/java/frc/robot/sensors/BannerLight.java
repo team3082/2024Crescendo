@@ -32,57 +32,7 @@ public class BannerLight {
         white.set(whiteState);
     }
 
-    //set light to indicate to human player where to toss the high note
-    public static void setCloseClimb() {
-        setState(true, false, false, false);
-    }
-
-    public static void setLeftClimb() {
-        setState(true, false, false, true);
-    }
-
-    public static void setRightClimb() {
-        setState(true, false, true, false);
-    }
-
-    //tells human player where 2 robots will climb
-    public static void setCloseHarmony() {
-        setState(true, true, false, false);
-    }
-
-    public static void setLeftHarmony() {
-        setState(true, true, false, true);
-    }
-
-    public static void setRightHarmony() {
-        setState(true, true, true, false);
-    }
-
-    //tell human player to amplify
-    public static void setAmplify() {
-        setState(true, true, true, true);
-    }
-
-    public static void setSpeakerMode() {
-        setState(false, false, true, true);
-    }
-
-    public static void setAmpMode() {
-        setState(false, true, false, false);
-    }
-
-    public static void setClimbingMode() {
-        setState(false, true, false, true);
-    }
-
-    public static void setGroundIntakeMode() {
-        setState(false, true, true, false);
-    }
-
-    public static void setSourceIntakeMode() {
-        setState(false, true, true, true);
-    }
-
+    // Green/Cyan 50-50 or Red/Cyan 50-50
     public static void setTagInView(boolean tagInView) {
         if(tagInView) {
             setState(false, false, false, true);
@@ -91,8 +41,73 @@ public class BannerLight {
         }
     }
 
-    public static void off() {
-        setState(false, false, false, false);
+    // Cyan Solid
+    public static void setClimbing() {
+        setState(true, true, true, true);
     }
 
+    // Green Steady
+    public static void setShotComplete() {
+        setState(true, true, true, false);
+    }
+
+    // Purple/Red Chase
+    public static void setSpeakerNoPieceGround() {
+        setState(false, false, true, false);
+    }
+
+    // Purple/Cyan Chase
+    public static void setSpeakerNoPieceSource() {
+        setState(false, false, true, true);
+    }
+
+    // Purple/Orange Chase
+    public static void setSpeakerHasPiece() {
+        setState(false, true, false, false);
+    }
+
+    // Purple/Green Chase
+    public static void setSpeakerShooting() {
+        setState(false, true, false, true);
+    }
+
+    // Magenta/Red Chase
+    public static void setManualSpeakerNoPieceGround() {
+        setState(false, true, true, false);
+    }
+
+    // Magenta/Cyan Chase
+    public static void setManualSpeakerNoPieceSource() {
+        setState(false, true, true, true);
+    }
+
+    // Magenta/Orange Chase
+    public static void setManualSpeakerHasPiece() {
+        setState(true, false, false, false);
+    }
+
+    // Magenta/Green Chase
+    public static void setManualSpeakerShooting() {
+        setState(true, false, false, true);
+    }
+
+    // Yellow/Red Chase
+    public static void setAmpNoPieceGround() {
+        setState(true, false, true, false);
+    }
+
+    // Yellow/Cyan Chase
+    public static void setAmpNoPieceSource() {
+        setState(true, false, true, true);
+    }
+
+    // Yellow/Orange Chase
+    public static void setAmpHasPiece() {
+        setState(true, true, false, false);
+    }
+
+    // Yellow/Green Chase
+    public static void setAmpShooting() {
+        setState(true, true, false, true);
+    }
 }
