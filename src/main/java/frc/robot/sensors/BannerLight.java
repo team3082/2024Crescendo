@@ -1,6 +1,7 @@
 package frc.robot.sensors;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
+import frc.robot.Robot;
 
 public class BannerLight {
 
@@ -10,15 +11,17 @@ public class BannerLight {
     public static DigitalOutput white;
 
     public static void init() {
-        brown = new DigitalOutput(7);
-        gray = new DigitalOutput(4);
-        black = new DigitalOutput(5);
-        white = new DigitalOutput(6);
+        if(Robot.isReal()){
+            brown = new DigitalOutput(7);
+            gray = new DigitalOutput(4);
+            black = new DigitalOutput(5);
+            white = new DigitalOutput(6);
 
-        brown.set(false);
-        gray.set(false);
-        black.set(true);
-        white.set(false);
+            brown.set(false);
+            gray.set(false);
+            black.set(true);
+            white.set(false);
+        }
     }
 
     public static void updateAuto() {}

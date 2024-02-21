@@ -9,7 +9,7 @@ public final class Constants {
 
     public static final class Climber {
         public static final int RIGHT_MOTOR_ID = 21;
-        public static final int RIGHT_HALL_ID = 1;
+        public static final int RIGHT_HALL_ID = 0;
 
         public static final int LEFT_MOTOR_ID = 20;
         public static final int LEFT_HALL_ID = 1;

@@ -137,7 +137,7 @@ public class Telemetry {
     // private static final GenericEntry FLYWHEELATVEL = shooter.add("Flywheel At Velocity", Shooter.canShoot()).getEntry();
 
     private static final GenericEntry pivotAngle = shooter.add("Pivot Angle", ShooterPivot.actualPos).getEntry();
-    private static final GenericEntry pivotTargetAngle = shooter.add("Pivot Angle", ShooterPivot.targetPos).getEntry();
+    private static final GenericEntry pivotTargetAngle = shooter.add("Pivot Target Angle", ShooterPivot.targetPos).getEntry();
 
     // SwervePosition
     private static final GenericEntry swervePos = pos.add("Swerve Position", SwervePosition.getPosition().toString()).getEntry();

@@ -102,7 +102,8 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     // SwervePosition.updateAveragePosVision();
-    BannerLight.setTagInView(VisionManager.hasTarget());
+    if(Robot.isReal())
+      BannerLight.setTagInView(VisionManager.hasTarget());
   }
 
   @Override
