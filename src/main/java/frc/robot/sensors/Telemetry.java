@@ -137,6 +137,7 @@ public class Telemetry {
     // private static final GenericEntry FLYWHEELATVEL = shooter.add("Flywheel At Velocity", Shooter.canShoot()).getEntry();
 
     private static final GenericEntry pivotAngle = shooter.add("Pivot Angle", ShooterPivot.actualPos).getEntry();
+    private static final GenericEntry pivotTargetAngle = shooter.add("Pivot Angle", ShooterPivot.targetPos).getEntry();
 
     // SwervePosition
     private static final GenericEntry swervePos = pos.add("Swerve Position", SwervePosition.getPosition().toString()).getEntry();
@@ -214,6 +215,7 @@ public class Telemetry {
         BOTTOMVECTOR.setDouble(OI.bottomVector);
 
         pivotAngle.setDouble(ShooterPivot.actualPos);
+        pivotTargetAngle.setDouble(ShooterPivot.targetPos);
        // FLYWHEELATVEL.setBoolean(Shooter.canShoot());
 
         if (RobotBase.isSimulation()) {
@@ -262,7 +264,7 @@ public class Telemetry {
 
         // Shooter
         Shooter.targetVelocity = FLYWHEELTARGETRPM.getDouble(0) * RPMToVel;
-        ShooterPivot.targetPos = Math.toRadians(pivotAngle.getDouble(0));
+        ShooterPivot.targetPos = Math.toRadians(pivotTargetAngle.getDouble(35));
         OI.topVector = TOPVECTOR.getDouble(0) * RPMToVel;
         OI.bottomVector = BOTTOMVECTOR.getDouble(0) * RPMToVel;
 
