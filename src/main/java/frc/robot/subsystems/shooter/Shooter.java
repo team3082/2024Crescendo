@@ -43,12 +43,14 @@ public final class Shooter {
     public static TalonFX topMotor, bottomMotor;
 
     // Target RPM
-    public static double targetVelocity, simVel;
+    public static double targetVelocity, simVel, targetTop, targetBottom;
 
     // Motors' measured RPMs
     public static double topRPM, bottomRPM;
 
     public static double temp;
+
+    public static boolean varied = true;
 
     // When firing the shooter automatically, 
     // keep the handoff on only for x seconds
@@ -65,8 +67,8 @@ public final class Shooter {
 
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.neutralDeadband = 0.01;
-        config.closedloopRamp = 50;
-        config.openloopRamp = 50;
+        config.closedloopRamp = 0.5;
+        config.openloopRamp = 0.5;
         config.nominalOutputForward = 0.01;
         config.nominalOutputReverse = 0.01;
         config.supplyCurrLimit = new SupplyCurrentLimitConfiguration(true, 40, 40, 0);
@@ -77,23 +79,28 @@ public final class Shooter {
         topMotor.setNeutralMode(NeutralMode.Coast);
         bottomMotor.setNeutralMode(NeutralMode.Coast);
 
-        bottomMotor.follow(topMotor);
+        // bottomMotor.follow(topMotor);
 
-        topMotor.config_kP(0, 0.65);
-        topMotor.config_kI(0, 0.00);
-        topMotor.config_kD(0, 0.6);
-        topMotor.config_kF(0, 1023.0 * 0.5454545 / 10810.0);
+        topMotor.config_kP(0, 0.3);
+        topMotor.config_kI(0, 0.00015);
+        topMotor.configMaxIntegralAccumulator(0, 1000);
+        topMotor.config_kD(0, 0);
+        topMotor.config_kF(0, 1023.0 * 0.6246 / 11819.0);
 
-        bottomMotor.config_kP(0, 0.65);
-        bottomMotor.config_kI(0, 0.00);
-        bottomMotor.config_kD(0, 0.6);
-        bottomMotor.config_kF(0, 1023.0 * 0.5454545 / 10810.0);
+        bottomMotor.config_kP(0, 0.3);
+        bottomMotor.config_kI(0, 0.00015);
+        bottomMotor.configMaxIntegralAccumulator(0, 1000);
+        bottomMotor.config_kD(0, 0);
+        bottomMotor.config_kF(0, 1023.0 * 0.6266 / 11808.0);
 
         //topMotor.configVoltageCompSaturation(12.2);
         //bottomMotor.enableVoltageCompensation(true);
 
         // Zero vars
         targetVelocity = 0.0;
+        targetTop = 0.0;
+        targetBottom = 0.0;
+
         topRPM = 0.0;
         bottomRPM = 0.0;
         handoffLiveTime = 0.0;
@@ -106,7 +113,7 @@ public final class Shooter {
     public static void update() {
         // Update our pivot & intake
         ShooterPivot.update();
-        Intake.update();
+        // Intake.update();
 
         // Get our vars
         topRPM = topMotor.getSelectedSensorVelocity() * VelToRPM;
@@ -120,7 +127,10 @@ public final class Shooter {
             case FIRING:
 
                 double timeNow = RTime.now();
-                setVelocity(targetVelocity);
+                if (varied)
+                    setVariedVelocity(targetTop, targetBottom);
+                else
+                    setVelocity(targetVelocity);
 
                 // Pass through the note ONLY when we have reached
                 // the velocity
@@ -162,23 +172,23 @@ public final class Shooter {
                 switch (handoffMode) {
                     case DISABLED:
                         // Slow retain
-                        Intake.conveyorMotor.set(0.1);
+                       // Intake.conveyorMotor.set(0.1);
                         System.out.println("DISABLED");
                     break;
                     case FEED:
                         // Feed us into the shooter!
                         // Intake.setState(IntakeState.FEED);
-                        Intake.conveyorMotor.set(-0.7);
+                       // Intake.conveyorMotor.set(-0.7);
                         System.out.println("FEED");
                     break;
                     case STOP:
                         // Prevent the note from shooting too early
-                        Intake.conveyorMotor.set(-0.2);
+                       // Intake.conveyorMotor.set(-0.2);
                         System.out.println("STOP");
                     break;
                     case EJECT:
                         // Should be a safe speed...?
-                        Intake.conveyorMotor.set(-0.6);
+                       // Intake.conveyorMotor.set(-0.6);
                         System.out.println("EJECT");
                     break;
                 }
@@ -186,7 +196,10 @@ public final class Shooter {
 
             case REVVING:
                 // Rev the flywheel up to our set velocity
-                setVelocity(targetVelocity);
+                if (varied)
+                    setVariedVelocity(targetTop, targetBottom);
+                else
+                    setVelocity(targetVelocity);
                 
                 // Stop the handoff
                 // Intake.conveyorMotor.stopMotor();
@@ -201,7 +214,7 @@ public final class Shooter {
             case DISABLED:
                 topMotor.set(TalonFXControlMode.Disabled, 0.0);
                 bottomMotor.set(TalonFXControlMode.Disabled, 0.0);
-                Intake.conveyorMotor.set(0.0);
+               // Intake.conveyorMotor.set(0.0);
                 targetVelocity = 0.0;
             break;
         }
@@ -216,6 +229,13 @@ public final class Shooter {
         simVel = newVelocity;
         topMotor.set(TalonFXControlMode.Velocity, targetVelocity);
         bottomMotor.set(TalonFXControlMode.Follower, topMotor.getDeviceID());
+    }
+
+    private static void setVariedVelocity(double topSpeed, double bottomSpeed) {
+        targetTop = topSpeed;
+        targetBottom = bottomSpeed;
+        topMotor.set(TalonFXControlMode.Velocity, targetTop);
+        bottomMotor.set(TalonFXControlMode.Velocity, targetBottom);
     }
 
     /**
@@ -272,6 +292,15 @@ public final class Shooter {
      */
     public static void revTo(double rpm) {
         targetVelocity = rpm * RPMToVel;
+        shooterMode = ShooterStatus.REVVING;
+    }
+
+    /**
+     * Rev the shooter to a specified RPM.
+     */
+    public static void revToVaried(double top, double bottom) {
+        targetTop = top * RPMToVel;
+        targetBottom = bottom * RPMToVel;
         shooterMode = ShooterStatus.REVVING;
     }
 

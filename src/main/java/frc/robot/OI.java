@@ -4,7 +4,9 @@ import static frc.robot.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
+import frc.robot.Constants.Climber;
 import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
@@ -71,7 +73,7 @@ public class OI {
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = driverStick.getRawAxis(rotateX) * -ROTSPEED;
 
-        double manualRPM = 3800.0;
+        double manualRPM = 3500.0;
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
@@ -109,10 +111,10 @@ public class OI {
            // ShooterPivot.setPosition(Math.PI / 4.0);
             Shooter.revTo(manualRPM);
             Shooter.shoot();
-        } else if (shooterAutoFire) { // Otherwise if we want to automatically fire...
-           // ShooterPivot.setPosition(arr[0]);
-            Shooter.revTo(3000);
-            Shooter.shoot();
+        // } else if (shooterAutoFire) { // Otherwise if we want to automatically fire...
+        //    // ShooterPivot.setPosition(arr[0]);
+        //     Shooter.revTo(3000);
+        //     Shooter.shoot();
         } else {
             Shooter.disable();
         }
@@ -120,21 +122,25 @@ public class OI {
         if (shooterRevv) {
             // Rev the shooter to a set rpm, somewhere about the middle of the field-ish
             Shooter.revTo(manualRPM);
-            Intake.conveyorMotor.set(1.0);
+           // Intake.conveyorMotor.set(1.0);
             //Shooter.shoot();
         } else {
             Shooter.disable();
+        }
+
+        if (shooterManualFire) {
+            Shooter.revToVaried(530, 700);
         }
 
         if(driverStick.getRawAxis(intake) > 0.5){
             isGround = !isGround;
         }
 
-        if (isGround) {
-            Intake.suck();
-        } else {
-            Intake.no();
-        }
+        // if (isGround) {
+        //     Intake.suck();
+        // } else {
+        //     Intake.no();
+        // }
 
         if (driverStick.getRawButton(lock)) {
             for (SwerveModule module: SwerveManager.mods) {
@@ -161,7 +167,9 @@ public class OI {
 
     public static void operatorInput() {
        if (operatorStick.getRawButtonPressed(LogitechF310.BUTTON_X)) {
-       // ShooterPivot.setPosition(Math.PI / 3);
+            ClimberManager.pullHooks();
+       } else {
+            ClimberManager.brake();
        }
 
        if (operatorStick.getRawButtonPressed(LogitechF310.BUTTON_A)) {

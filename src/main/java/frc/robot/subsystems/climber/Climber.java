@@ -16,8 +16,8 @@ import static frc.robot.Constants.Climber.TICKS_PER_INCH;
 @SuppressWarnings("removal")
 public class Climber {
     
-    private TalonFX motor;
-    private DigitalInput sensor;
+    public TalonFX motor;
+    public DigitalInput sensor;
 
     private boolean loaded = false;
 

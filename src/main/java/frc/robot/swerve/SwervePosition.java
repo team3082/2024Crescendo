@@ -59,9 +59,9 @@ public class SwervePosition {
 
         if (correctWithVision) {
             try {
-                Vector2 visionPos = VisionManager.getPosition();
-                Vector2 posError = visionPos.sub(position);
-                position = position.add(posError.mul(VISION_CORRECTION_FACTOR));
+                // Vector2 visionPos = VisionManager.getPosition();
+                // Vector2 posError = visionPos.sub(position);
+                // position = position.add(posError.mul(VISION_CORRECTION_FACTOR));
             } catch(Exception e) { }
         }
     }

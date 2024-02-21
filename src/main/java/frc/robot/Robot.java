@@ -10,6 +10,7 @@ import frc.robot.auto.AutoSelector;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
+import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
@@ -49,7 +50,8 @@ public class Robot extends TimedRobot {
     Telemetry.init();
     ChoreoTrajectoryGenerator.init();
     Shooter.init();
-    Intake.init();
+    // Intake.init();
+    ClimberManager.init();
     AutoSelector.setup();
     ChoreoTrajectoryGenerator.parseAll();
   }
@@ -91,6 +93,7 @@ public class Robot extends TimedRobot {
     Shooter.update();
     SwervePosition.update();
     OI.userInput();
+    Shooter.setShooterAngleForSpeaker();
     //OI.operatorInput();
   }
 
@@ -100,7 +103,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     if (Robot.isReal())
-      SwervePosition.updateAveragePosVision();
+     // SwervePosition.updateAveragePosVision();
     SwerveManager.rotateAndDrive(0, new Vector2());
   }
 

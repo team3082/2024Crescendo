@@ -20,7 +20,7 @@ public final class ShooterPivot {
     private static TalonFX motor;
     private static CANCoder absEncoder;
 
-    public static double targetPos = Math.PI / 4.0;
+    public static double targetPos = Math.toRadians(60.5);
     public static double actualPos;
 
     public static double simAng;
@@ -118,7 +118,7 @@ public final class ShooterPivot {
     }
     
     public static void update() {
-       // motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos));
+        motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos));
         // motor.set(TalonFXControlMode.MotionMagic, Math.PI / 2.0, DemandType.ArbitraryFeedForward, calcAFF(motor.getSelectedSensorPosition()));
         actualPos = ticksToRad(motor.getSelectedSensorPosition());
         // System.out.println("actual pos " + actualPos + " target pos " + targetPos);

@@ -35,9 +35,6 @@ public final class Intake {
     private static IntakeState state = IntakeState.STOW;
 
     public static void init() {
-        absEncoder = new CANCoder(INTAKEPIVOT_ID);
-        absEncoder.configFactoryDefault();
-        absEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
 
         pivotMotor = new TalonFX(INTAKEPIVOT_ID);
         pivotMotor.configFactoryDefault();

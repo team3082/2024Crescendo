@@ -256,7 +256,7 @@ public class Telemetry {
         // Tuning.Shooter.PIVOT_AFF_SCALAR = PIVOTAFF.getDouble(0);
 
         // shooter visualization
-        intakePivot.setAngle(Math.toDegrees(Intake.getIntakeAngleRad()));
+        // intakePivot.setAngle(Math.toDegrees(Intake.getIntakeAngleRad()));
         shooterPivot.setAngle(180 - Math.toDegrees(ShooterPivot.simAng));
         shooterPivot.setLength((Shooter.simVel / 250) + 2);
         shooterPivot.setColor(new Color8Bit(255, 0, 0));
