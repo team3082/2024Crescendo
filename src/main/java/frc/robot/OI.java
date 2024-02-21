@@ -101,7 +101,7 @@ public class OI {
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = driverStick.getRawAxis(rotateX) * -ROTSPEED;
 
-        double manualRPM = 3500.0;
+        double manualRPM = 2000.0; // i think we can run the speed so much lower
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
