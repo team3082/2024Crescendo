@@ -14,7 +14,7 @@ public class Pigeon {
     private static double lastRot;
     private static double deltaRot;
 
-    private static double simulatedRot = 0;
+    public static double simulatedRot = 0;
 
     public static void init() {
         pigeon = new Pigeon2(0);

@@ -24,12 +24,12 @@ public class BezierCurve{
         this.c.x *= -1;
         this.d.x *= -1;
 
-        if (DriverStation.getAlliance().get() == Alliance.Red) {
-            this.a.y *= -1;
-            this.b.y *= -1;
-            this.c.y *= -1;
-            this.d.y *= -1;
-        }
+        // if (DriverStation.getAlliance().get() == Alliance.Red) {
+        //     this.a.y *= -1;
+        //     this.b.y *= -1;
+        //     this.c.y *= -1;
+        //     this.d.y *= -1;
+        // }
 
         getEvenlySpacedPoints();
         this.length = approxLength();

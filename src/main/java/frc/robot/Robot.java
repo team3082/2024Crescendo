@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.Climber;
 import frc.robot.auto.Auto;
 import frc.robot.auto.AutoSelector;
@@ -20,6 +21,7 @@ import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
+import frc.robot.auto.CommandAuto;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -48,15 +50,17 @@ public class Robot extends TimedRobot {
     VisionManager.init();
     Telemetry.init();
     ChoreoTrajectoryGenerator.init();
+    ChoreoTrajectoryGenerator.parseAll();
     Shooter.init();
     // Intake.init();
-    ClimberManager.init();
+    //ClimberManager.init();
     AutoSelector.setup();
-    ChoreoTrajectoryGenerator.parseAll();
+    
   }
 
   @Override
   public void robotPeriodic() {
+    
     Pigeon.update();
     RTime.updateAbsolute();
     RTime.update();
@@ -65,23 +69,30 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    
+    
     OI.init();
     RTime.init();
     Pigeon.setYaw(270);
+    //CommandAuto.init();
+    CommandScheduler.getInstance().enable();
     AutoSelector.run();
   }
 
   @Override
   public void autonomousPeriodic() {
-    Auto.update();
+    //Auto.update();
     SwervePosition.update();
-    Shooter.update();
+    CommandAuto.update();
+    //Shooter.update();
+    // SwerveManager.rotateAndDrive(0.0, new Vector2(1.0, 0.0));
   }
 
   @Override
   public void teleopInit() {
     OI.init();
-    SwervePosition.enableVision();
+    
+    // SwervePosition.enableVision();
     // ShooterPivot.setPosition(-Math.PI / 2.0);
   }
 
@@ -97,7 +108,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    CommandScheduler.getInstance().disable();
+  }
 
   @Override
   public void disabledPeriodic() {
@@ -107,10 +120,13 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void testInit() {}
+  public void testInit() {
+  }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    
+  }
 
   @Override
   public void simulationInit() {}

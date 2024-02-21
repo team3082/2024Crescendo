@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import frc.robot.auto.autoframe.*;
 import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;

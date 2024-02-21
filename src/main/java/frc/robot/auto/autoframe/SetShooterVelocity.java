@@ -1,5 +1,6 @@
 package frc.robot.auto.autoframe;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.shooter.Shooter;
 
 public class SetShooterVelocity extends Autoframe {

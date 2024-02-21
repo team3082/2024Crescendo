@@ -27,6 +27,7 @@ public class SetShoot extends Autoframe {
             else if (Intake.pieceGrabbed() == false) {
                 this.pieceIndexed = true;
                 this.indexTime = RTime.now();
+                Shooter.shoot();
 
                 if (indexTime + 0.5 /*time after piece has left intake to ensure its shot*/ <= RTime.now()) {
                    // Intake.setState(STOW);
