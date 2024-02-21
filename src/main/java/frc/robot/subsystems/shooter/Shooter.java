@@ -43,7 +43,8 @@ public final class Shooter {
     public static TalonFX topMotor, bottomMotor;
 
     // Target RPM
-    public static double targetVelocity, simVel, targetTop, targetBottom;
+    public static double targetVelocity, simVel;
+    public static double targetTop, targetBottom;
 
     // Motors' measured RPMs
     public static double topRPM, bottomRPM;
@@ -228,9 +229,13 @@ public final class Shooter {
         targetVelocity = newVelocity;
         simVel = newVelocity;
         topMotor.set(TalonFXControlMode.Velocity, targetVelocity);
-        bottomMotor.set(TalonFXControlMode.Follower, topMotor.getDeviceID());
+        bottomMotor.set(TalonFXControlMode.Velocity, targetVelocity);
     }
 
+    /**
+     * Set individual velocities for each of the motors.
+     * Allows us to vector the wheels for amp/trap scoring.
+     */
     private static void setVariedVelocity(double topSpeed, double bottomSpeed) {
         targetTop = topSpeed;
         targetBottom = bottomSpeed;

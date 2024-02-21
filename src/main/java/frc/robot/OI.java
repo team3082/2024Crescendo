@@ -108,13 +108,13 @@ public class OI {
         // If we choose to fire at our manual RPM...
         if (shooterManualFire) {
             // Manually set a position as a fallback, ensures we can make a shot in our wing
-           // ShooterPivot.setPosition(Math.PI / 4.0);
+            ShooterPivot.setPosition(Math.toRadians(55.0));
             Shooter.revTo(manualRPM);
             Shooter.shoot();
-        // } else if (shooterAutoFire) { // Otherwise if we want to automatically fire...
-        //    // ShooterPivot.setPosition(arr[0]);
-        //     Shooter.revTo(3000);
-        //     Shooter.shoot();
+        } else if (shooterAutoFire) { // Otherwise if we want to automatically fire...
+           // ShooterPivot.setPosition(arr[0]);
+            Shooter.revTo(3000);
+            Shooter.shoot();
         } else {
             Shooter.disable();
         }
@@ -122,8 +122,7 @@ public class OI {
         if (shooterRevv) {
             // Rev the shooter to a set rpm, somewhere about the middle of the field-ish
             Shooter.revTo(manualRPM);
-           // Intake.conveyorMotor.set(1.0);
-            //Shooter.shoot();
+            // Shooter.shoot();
         } else {
             Shooter.disable();
         }
@@ -135,12 +134,6 @@ public class OI {
         if(driverStick.getRawAxis(intake) > 0.5){
             isGround = !isGround;
         }
-
-        // if (isGround) {
-        //     Intake.suck();
-        // } else {
-        //     Intake.no();
-        // }
 
         if (driverStick.getRawButton(lock)) {
             for (SwerveModule module: SwerveManager.mods) {
