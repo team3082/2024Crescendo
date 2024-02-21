@@ -10,10 +10,10 @@ public class BannerLight {
     public static DigitalOutput white;
 
     public static void init() {
-        brown = new DigitalOutput(0);
-        gray = new DigitalOutput(1);
-        black = new DigitalOutput(2);
-        white = new DigitalOutput(3);
+        brown = new DigitalOutput(7);
+        gray = new DigitalOutput(4);
+        black = new DigitalOutput(5);
+        white = new DigitalOutput(6);
 
         brown.set(false);
         gray.set(false);
