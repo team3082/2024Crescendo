@@ -22,7 +22,10 @@ public final class ClimberManager {
     /**
      * lower the hooks while lifting the robot
      */
-    public static void pullHooks() { }
+    public static void pullHooks() {
+        leftClimber.moveClimber();
+        rightClimber.moveClimber();
+    }
 
 
     /**

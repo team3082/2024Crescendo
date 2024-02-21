@@ -49,18 +49,30 @@ public class Climber {
         sensor = new DigitalInput(sensorID);
     }
 
+    /**
+     * Move the climber
+     * @param input Precent speed to move climber motor at
+     */
     public void moveClimber(double input) {
         motor.set(ControlMode.PercentOutput, input);
     }
 
+    /**
+     * Move the climber until magnet is tripped
+     */
+    public void moveClimber() {
+        zeroMotor();
+    }
+
+    /**
+     * While loop checking if the {@link frc.robot.subsystems.climber.Climber#sensor} is true 
+     */
     public void zeroMotor() {
-        if (sensor.get()) {
-            motor.set(ControlMode.PercentOutput, 0);
-            motor.setSelectedSensorPosition(0);
-        }
-        else {
+        while(!sensor.get()) {
             motor.set(ControlMode.PercentOutput, -0.2);
         }
+        motor.set(ControlMode.PercentOutput, 0);
+        motor.setSelectedSensorPosition(0);
     }
 
     public void setLoaded(){
