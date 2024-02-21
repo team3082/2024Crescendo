@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.Constants.Climber;
 import frc.robot.auto.Auto;
 import frc.robot.auto.AutoSelector;
 import frc.robot.sensors.Pigeon;
@@ -87,10 +88,11 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     RTime.update();
     Shooter.update();
+    ClimberManager.update();
     SwervePosition.update();
     OI.userInput();
-    Shooter.setShooterAngleForSpeaker();
-    //OI.operatorInput();
+    // Shooter.setShooterAngleForSpeaker();
+    // OI.operatorInput();
   }
 
   @Override

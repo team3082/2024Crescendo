@@ -5,6 +5,7 @@ import static frc.robot.Tuning.OI.*;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
 import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.BannerLight;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
@@ -18,18 +19,19 @@ import frc.robot.utils.RMath;
 public class OI {
     public static Joystick driverStick, operatorStick;
 
+    // Driver Controls
+
     // Movement
     static final int moveX         = LogitechF310.AXIS_LEFT_X;
     static final int moveY         = LogitechF310.AXIS_LEFT_Y;
     static final int rotateX       = LogitechF310.AXIS_RIGHT_X;
     static final int boost         = LogitechF310.AXIS_RIGHT_TRIGGER;
 
+    // Shooter
     /** Pre-rev the shooter to a velocity for somewhere in the field */
-    static final int shooterRev    = LogitechF310.BUTTON_LEFT_BUMPER;
-    /** Automatically adjusts angle & velocity for both amp and speaker */
-    static final int shooterFire   = LogitechF310.BUTTON_RIGHT_BUMPER;
-    /** Manually revs to and ejects the piece at a pre-defined velocity */
-    static final int manualFire    = LogitechF310.BUTTON_X;
+    static final int revShooter    = LogitechF310.BUTTON_LEFT_BUMPER;
+    /** Automatically adjusts angle & velocity for both amp and speaker or goes to manual angle/velocity if in manual mode */
+    static final int fireShooter   = LogitechF310.BUTTON_RIGHT_BUMPER;
     /** Ejects the gamepiece without regard for our field position */
     static final int eject         = LogitechF310.BUTTON_B;
 
@@ -39,7 +41,29 @@ public class OI {
     // Others
     static final int lock          = LogitechF310.BUTTON_A;
     static final int zero          = LogitechF310.BUTTON_Y;
-   
+
+    /*-------------------------------------------------------------------*/
+
+    // Operator Controls
+
+    // Shooter
+    static final int switchShooterMode 
+                                   = LogitechF310.BUTTON_LEFT_BUMPER;
+    static final int setManualShoot= LogitechF310.BUTTON_Y;
+
+    // Climber
+    static final int zeroClimber   = LogitechF310.BUTTON_X;
+    static final int climberUp     = LogitechF310.DPAD_UP;
+    static final int climberDown   = LogitechF310.DPAD_DOWN;
+
+    static private enum ShooterMode {
+        SPEAKER,
+        SPEAKER_MANUAL,
+        AMP
+    }
+
+    public static ShooterMode currentShooterMode = ShooterMode.SPEAKER;
+    public static boolean manualFireSet = true;
 
     static boolean isGround = false;
 
@@ -95,11 +119,9 @@ public class OI {
         if (driverStick.getRawButton(eject)) Shooter.eject();
 
         // Manually rev
-        boolean shooterRevv = driverStick.getRawButton(shooterRev);
+        boolean shooterRevv = driverStick.getRawButton(revShooter);
         // Auto-rev and fire
-        boolean shooterAutoFire = driverStick.getRawButton(shooterFire);
-        // Manual fire
-        boolean shooterManualFire = driverStick.getRawButton(manualFire);
+        boolean shooterFire = driverStick.getRawButton(fireShooter);
 
         double[] arr = Shooter.getDesiredShooterPos(SwervePosition.getPosition(), SwerveManager.getRobotDriveVelocity());
 
@@ -110,12 +132,13 @@ public class OI {
         // }
 
         // If we choose to fire at our manual RPM...
-        if (shooterManualFire == true || shooterAutoFire == true) {
+        if (shooterFire == true) {
             // Manually set a position as a fallback, ensures we can make a shot in our wing
             ShooterPivot.setPosition(Math.toRadians(55.0));
             Shooter.revTo(manualRPM);
             Shooter.shoot();
         } 
+        // TODO: tune auto fire(not a priority)
         // else if (shooterAutoFire) { // Otherwise if we want to automatically fire...
         //     ShooterPivot.setPosition(arr[0]);
         //     Shooter.revTo(arr[1]);
@@ -159,15 +182,44 @@ public class OI {
     }
 
     public static void operatorInput() {
-       if (operatorStick.getRawButtonPressed(LogitechF310.BUTTON_X)) {
-            ClimberManager.pullHooks();
-       } else {
-            ClimberManager.brake();
-       }
+        // Climbing
+        // X
+        if (operatorStick.getRawButton(zeroClimber)) {
+            ClimberManager.zero();
+        }
 
-       if (operatorStick.getRawButtonPressed(LogitechF310.BUTTON_A)) {
-       // ShooterPivot.setPosition(Math.PI / 6);
-       }
+        // DPAD UP
+        if (operatorStick.getPOV() == climberUp) {
+            ClimberManager.raiseHooks();
+        } 
+        // DPAD DOWN
+        else if (operatorStick.getPOV() == climberDown) {
+            ClimberManager.pullHooks();
+        }
+
+        // Y
+        if (operatorStick.getRawButtonPressed(setManualShoot)) {
+            manualFireSet = !(manualFireSet);
+        }
+
+        // Shooter Mode Switching
+        // RIGHT BUMPER
+        if (operatorStick.getRawButtonPressed(switchShooterMode)) {
+            switch (currentShooterMode) {
+                case AMP:
+                    currentShooterMode = manualFireSet ? ShooterMode.SPEAKER_MANUAL : ShooterMode.SPEAKER;
+                    break;
+                case SPEAKER:
+                    currentShooterMode = ShooterMode.AMP;
+                    break;
+                case SPEAKER_MANUAL:
+                    currentShooterMode = ShooterMode.AMP;
+                    break;
+            
+                default:
+                    break;
+            }
+        }
 
     }
 

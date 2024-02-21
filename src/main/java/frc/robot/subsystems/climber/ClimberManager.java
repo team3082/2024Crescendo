@@ -2,55 +2,82 @@ package frc.robot.subsystems.climber;
 
 import static frc.robot.Constants.Climber.*;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 public final class ClimberManager {
     
     private static Climber leftClimber;
     private static Climber rightClimber;
 
+    private static boolean zeroing = true; // setting to zero at the start so that it zeroes at start of match
+    private static boolean balancing = false;
+
     public static void init(){
         leftClimber = new Climber(LEFT_MOTOR_ID, LEFT_HALL_ID, LEFT_MOTOR_INVERTED);
-        rightClimber = new Climber(RIGHT_MOTOR_ID, 0, RIGHT_MOTOR_INVERTED);
+        rightClimber = new Climber(RIGHT_MOTOR_ID, RIGHT_HALL_ID, RIGHT_MOTOR_INVERTED);
     }
 
-    public static void stow(){
-        leftClimber.stow();
-        rightClimber.stow();
+    // THIS NEEDS TO RUN AFTER OPERATOR INPUT
+    public static void update() {
+        if (zeroing) {
+            if (leftClimber.zeroMotor() && rightClimber.zeroMotor()) {
+                zeroing = false;
+            }
+        }
+        else if (balancing) {
+            if (balance()) {
+                balancing = false;
+            }
+        }
+        else {
+            brake();
+        }
     }
 
-    public static void raiseHooks() { }
+    // raise the hooks unless the max extension has been reached
+    public static void raiseHooks() {
+        leftClimber.extend();
+        rightClimber.extend();
+    }
 
+    // lower the hooks unless the magnet is tripped
+    public static void pullHooks() { 
+        leftClimber.pull();
+        rightClimber.pull();
+    }
+
+    // are both the magnets tripped
     public static boolean trippedMagnet() {
         return (leftClimber.sensor.get() && rightClimber.sensor.get());
     }
 
-    /**
-     * lower the hooks while lifting the robot
-     */
-    public static void pullHooks() { 
-        if (trippedMagnet()) {
-            leftClimber.motor.neutralOutput();
-            rightClimber.motor.neutralOutput();
-        } else {
-            leftClimber.setPosition(-0.2);
-            rightClimber.setPosition(-0.2);
-        }
-    }
-
+    // stops moving
     public static void brake() {
         leftClimber.motor.neutralOutput();
         rightClimber.motor.neutralOutput();
     }
 
+    // sets the climbers to be zeroed
+    public static void setZero() {
+        zeroing = true;
+    }
 
-    /**
-     * lower the hooks, without raising the robot
-     */
-    public static void lowerHooks() { }
+    // zero the climbers
+    public static void zero() {
+        if (leftClimber.zeroMotor() && rightClimber.zeroMotor()) {
+            
+        }
+    }
 
-    /**
-     * raise the robot while keeping the drivetrain level
-     */
-    public static void balance(){ } 
+    // set the robot to start balancing
+    public static void setBalance(){
+        balancing = true;
+    } 
 
+    // balance the robot on the chain
+    public static boolean balance() {
+        // TODO implement this (if needed)
+        return true;
+    }
 
 }

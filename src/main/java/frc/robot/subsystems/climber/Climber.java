@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import static frc.robot.Constants.Climber.*;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import static frc.robot.Tuning.Climbers.*;
@@ -49,51 +51,70 @@ public class Climber {
         sensor = new DigitalInput(sensorID);
     }
 
-    /**
-     * Move the climber
-     * @param input Precent speed to move climber motor at
-     */
-    public void moveClimber(double input) {
-        motor.set(ControlMode.PercentOutput, input);
-    }
-
-    /**
-     * Move the climber until magnet is tripped
-     */
-    public void moveClimber() {
-        zeroMotor();
-    }
-
-    /**
-     * While loop checking if the {@link frc.robot.subsystems.climber.Climber#sensor} is true 
-     */
-    public void zeroMotor() {
-        while(!sensor.get()) {
-            motor.set(ControlMode.PercentOutput, -0.2);
+    // extend until max extension reached
+    public void extend() {
+        if (this.motor.getSelectedSensorPosition() == MAX_EXTENSION) {
+            this.motor.neutralOutput();
+        } else {
+            this.motor.set(ControlMode.PercentOutput, 0.5);
         }
-        motor.set(ControlMode.PercentOutput, 0);
-        motor.setSelectedSensorPosition(0);
     }
 
-    public void setLoaded(){
-        loaded = true;
+    // pull unless magnet is tripped
+    public void pull() {
+        if (this.sensor.get()) {
+            this.motor.neutralOutput();
+        } else {
+            this.motor.set(ControlMode.PercentOutput, 0.5);
+        }
     }
-
-    public void setUnloaded(){
-        loaded = false;
-    }
-
-    public void stow() { }
-
 
     /**
-     * 
-     * @param pos in inches from the fully stowed position
+     * Pull until the sensor sees the magnet
      */
-    public void setPosition(double pos) {
-        motor.set(ControlMode.MotionMagic, pos * TICKS_PER_INCH, DemandType.ArbitraryFeedForward, loaded ? CLIMBER_AFF_LOADED : CLIMBER_AFF_UNLOADED);
+    public boolean zeroMotor() {
+        boolean zeroed;
+        if (!(sensor.get())) {
+            motor.set(ControlMode.PercentOutput, -0.5);
+            zeroed = false;
+        } else {
+            motor.neutralOutput();
+            motor.setSelectedSensorPosition(0);
+            zeroed = true;
+        }
+        return zeroed;
     }
 
-    
+    // /**
+    //  * Move the climber
+    //  * @param input Precent speed to move climber motor at
+    //  */
+    // public void moveClimber(double input) {
+    //     motor.set(ControlMode.PercentOutput, input);
+    // }
 
+    // /**
+    //  * Move the climber until magnet is tripped
+    //  */
+    // public void moveClimber() {
+    //     zeroMotor();
+    // }
+
+    // public void setLoaded(){
+    //     loaded = true;
+    // }
+
+    // public void setUnloaded(){
+    //     loaded = false;
+    // }
+
+    // public void stow() { }
+
+    // /**
+    //  * 
+    //  * @param pos in inches from the fully stowed position
+    //  */
+    // public void setPosition(double pos) {
+    //     motor.set(ControlMode.MotionMagic, pos * TICKS_PER_INCH, DemandType.ArbitraryFeedForward, loaded ? CLIMBER_AFF_LOADED : CLIMBER_AFF_UNLOADED);
+    // }
 }

@@ -19,6 +19,8 @@ public final class Constants {
 
         public static final double INCHES_PER_ROTATION = 0.0;
         public static final double TICKS_PER_INCH = 0.0;
+
+        public static final double MAX_EXTENSION = 0.0;
     }
 
     public static final class ShooterConstants {
