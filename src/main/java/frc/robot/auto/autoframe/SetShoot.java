@@ -3,7 +3,6 @@ package frc.robot.auto.autoframe;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
-import static frc.robot.subsystems.shooter.Intake.IntakeState.*;
 import frc.robot.utils.RTime;
 
 public class SetShoot extends Autoframe {

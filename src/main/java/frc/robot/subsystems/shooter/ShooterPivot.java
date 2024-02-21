@@ -106,7 +106,7 @@ public final class ShooterPivot {
      * @param pos
      */
     public static void setPosition(double pos) {
-       // targetPos = pos;
+        targetPos = pos;
         simAng = pos;
     }
     
@@ -119,17 +119,6 @@ public final class ShooterPivot {
     
     public static void update() {
         motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos));
-        // motor.set(TalonFXControlMode.MotionMagic, Math.PI / 2.0, DemandType.ArbitraryFeedForward, calcAFF(motor.getSelectedSensorPosition()));
         actualPos = ticksToRad(motor.getSelectedSensorPosition());
-        // System.out.println("actual pos " + actualPos + " target pos " + targetPos);
     }
-
-    /**
-     * @param motorPos position of the motor in ticks
-     */
-    private static double calcAFF(double motorPos){
-        double gravity = Math.cos(ticksToRad(motorPos) + SHOOTER_COM_POS.atan2());
-        return PIVOT_AFF_GRAVITY * gravity + PIVOT_AFF_SPRING; 
-    }
-
 }

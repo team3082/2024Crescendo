@@ -10,8 +10,6 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -24,7 +22,6 @@ import frc.robot.utils.Beambreak;
 public final class Intake {
     
     private static TalonFX pivotMotor;
-    private static CANCoder absEncoder;
     private static TalonSRX topBeltMotor, bottomBeltMotor;
     public static CANSparkMax conveyorMotor;
     private static RelativeEncoder conveyorEncoder;
@@ -132,8 +129,6 @@ public final class Intake {
             break;
         }
     }
-
-
 
     private static void stow() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);

@@ -6,14 +6,12 @@ import static frc.robot.utils.RMath.deadband;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
@@ -254,7 +252,7 @@ public final class Shooter {
         double noteVel = 0; // Initial velocity of the note
 
         double shooterAngle = Math.atan(Math.pow(noteVel, 2) / (g * ftPos) - Math.sqrt((Math.pow(noteVel, 2) * (Math.pow(noteVel, 2) - 2 * g * targetHeight)) / (Math.pow(g, 2) * Math.pow(ftPos, 2)) - 1)); // terrible! ew! 🤢 (DO NOT CHANGE)
-       // ShooterPivot.setPosition(shooterAngle);
+        ShooterPivot.setPosition(shooterAngle);
     }
 
     /**
@@ -275,7 +273,7 @@ public final class Shooter {
         double shooterAngle = Math.atan2(dz, Math.sqrt(Math.pow(shooterdx,2) + Math.pow(shooterdy, 2)));
         double shooterSpeed = Math.sqrt(Math.pow(dz,2) + Math.pow(shooterdx,2) + Math.pow(shooterdy, 2));
         double swerveAngle = Math.atan2(shooterdy,shooterdx);
-        return new double[]{shooterAngle, shooterSpeed, swerveAngle};
+        return new double[] {shooterAngle, shooterSpeed, swerveAngle};
     }
 
     public static void setShooterAngleForSpeaker() {

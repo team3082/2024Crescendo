@@ -17,8 +17,6 @@ import frc.robot.utils.trajectories.DiscreteTraj;
 import frc.robot.utils.trajectories.QuinticHermite;
 import frc.robot.utils.trajectories.SwerveTrajectory;
 
-import static frc.robot.utils.trajectories.ChoreoTrajectoryGenerator.getChoreo;
-
 public class Auto {
     public static void bezierCurveAutoTest() {
         BezierCurve curve1 = new BezierCurve(new Vector2(33, -149), new Vector2(101.6, -106), new Vector2(-87.5, -67), new Vector2(-17, -26));

@@ -2,7 +2,6 @@ package frc.robot.auto.autoframe;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.shooter.Intake;
-import static frc.robot.subsystems.shooter.Intake.IntakeState.*;
 import frc.robot.utils.RTime;
 
 public class SetIntake extends Autoframe {

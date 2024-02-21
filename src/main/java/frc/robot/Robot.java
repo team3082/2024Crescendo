@@ -11,9 +11,7 @@ import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
 import frc.robot.subsystems.climber.ClimberManager;
-import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -37,7 +35,6 @@ public class Robot extends TimedRobot {
     try {
       Thread.sleep(2000);
     } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     Pigeon.init();
@@ -77,7 +74,6 @@ public class Robot extends TimedRobot {
     Auto.update();
     SwervePosition.update();
     Shooter.update();
-    // SwerveManager.rotateAndDrive(0.0, new Vector2(1.0, 0.0));
   }
 
   @Override

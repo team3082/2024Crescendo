@@ -4,10 +4,8 @@ import static frc.robot.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
-import frc.robot.Constants.Climber;
 import frc.robot.sensors.Pigeon;
 import frc.robot.subsystems.climber.ClimberManager;
-import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
@@ -26,10 +24,13 @@ public class OI {
     static final int rotateX       = LogitechF310.AXIS_RIGHT_X;
     static final int boost         = LogitechF310.AXIS_RIGHT_TRIGGER;
 
-    // Shooter
+    /** Pre-rev the shooter to a velocity for somewhere in the field */
     static final int shooterRev    = LogitechF310.BUTTON_LEFT_BUMPER;
+    /** Automatically adjusts angle & velocity for both amp and speaker */
     static final int shooterFire   = LogitechF310.BUTTON_RIGHT_BUMPER;
+    /** Manually revs to and ejects the piece at a pre-defined velocity */
     static final int manualFire    = LogitechF310.BUTTON_X;
+    /** Ejects the gamepiece without regard for our field position */
     static final int eject         = LogitechF310.BUTTON_B;
 
     // Intake
@@ -112,28 +113,21 @@ public class OI {
             Shooter.revTo(manualRPM);
             Shooter.shoot();
         } else if (shooterAutoFire) { // Otherwise if we want to automatically fire...
-           // ShooterPivot.setPosition(arr[0]);
-            Shooter.revTo(3000);
+            ShooterPivot.setPosition(arr[0]);
+            Shooter.revTo(arr[1]);
             Shooter.shoot();
         } else {
-            Shooter.disable();
+            Shooter.disable(); // Leave the shooter off if not in use
         }
 
+        // Scoring in the amp
         if (shooterRevv) {
-            // Rev the shooter to a set rpm, somewhere about the middle of the field-ish
-            Shooter.revTo(manualRPM);
-            // Shooter.shoot();
+           Shooter.revToVaried(530, 700); // Vector speeds to flip piece into amp
         } else {
-            Shooter.disable();
+            Shooter.disable(); // Leave the shooter off if not in use
         }
 
-        if (shooterManualFire) {
-            Shooter.revToVaried(530, 700);
-        }
-
-        if(driverStick.getRawAxis(intake) > 0.5){
-            isGround = !isGround;
-        }
+        if (driverStick.getRawAxis(intake) > 0.5) isGround = !isGround;
 
         if (driverStick.getRawButton(lock)) {
             for (SwerveModule module: SwerveManager.mods) {
