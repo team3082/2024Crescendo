@@ -47,9 +47,8 @@ public class OI {
     // Operator Controls
 
     // Shooter
-    static final int switchShooterMode 
-                                   = LogitechF310.BUTTON_LEFT_BUMPER;
-    static final int setManualShoot= LogitechF310.BUTTON_Y;
+    static final int switchShooterMode  = LogitechF310.BUTTON_LEFT_BUMPER;
+    static final int setManualShoot     = LogitechF310.BUTTON_Y;
 
     // Climber
     static final int zeroClimber   = LogitechF310.BUTTON_X;
@@ -132,7 +131,7 @@ public class OI {
         // }
 
         // If we choose to fire at our manual RPM...
-        if (shooterFire == true) {
+        if (shooterFire) {
             // Manually set a position as a fallback, ensures we can make a shot in our wing
             ShooterPivot.setPosition(Math.toRadians(55.0));
             Shooter.revTo(manualRPM);
