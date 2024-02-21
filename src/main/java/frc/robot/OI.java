@@ -120,6 +120,7 @@ public class OI {
             Shooter.revTo(arr[1]);
             Shooter.shoot();
         } else {
+            ShooterPivot.setPosition(Math.toRadians(20.0)); // stow shooter
             Shooter.disable(); // Leave the shooter off if not in use
         }
 

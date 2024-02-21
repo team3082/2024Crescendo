@@ -49,7 +49,7 @@ public final class Shooter {
 
     public static double temp;
 
-    public static boolean varied = true;
+    public static boolean varied = false;
 
     // When firing the shooter automatically, 
     // keep the handoff on only for x seconds
@@ -224,6 +224,7 @@ public final class Shooter {
      * @param newVelocity Velocity in RPM
      */
     public static void setVelocity(double newVelocity) {
+        varied = false;
         targetVelocity = newVelocity;
         simVel = newVelocity;
         topMotor.set(TalonFXControlMode.Velocity, targetVelocity);
@@ -235,6 +236,7 @@ public final class Shooter {
      * Allows us to vector the wheels for amp/trap scoring.
      */
     private static void setVariedVelocity(double topSpeed, double bottomSpeed) {
+        varied = true;
         targetTop = topSpeed;
         targetBottom = bottomSpeed;
         topMotor.set(TalonFXControlMode.Velocity, targetTop);
