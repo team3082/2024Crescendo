@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.Constants.Climber;
 import frc.robot.auto.Auto;
 import frc.robot.auto.AutoSelector;
+import frc.robot.sensors.BannerLight;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
@@ -100,9 +101,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    if (Robot.isReal())
-     // SwervePosition.updateAveragePosVision();
-    SwerveManager.rotateAndDrive(0, new Vector2());
+    // SwervePosition.updateAveragePosVision();
+    BannerLight.setTagInView(VisionManager.hasTarget());
   }
 
   @Override
