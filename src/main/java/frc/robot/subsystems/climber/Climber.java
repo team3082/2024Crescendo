@@ -54,7 +54,7 @@ public class Climber {
 
         SupplyCurrentLimitConfiguration currentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0 );
         motor.configSupplyCurrentLimit(currentLimit);
-        motor.configVoltageCompSaturation(12.2);
+        motor.configVoltageCompSaturation(11.0);
         motor.enableVoltageCompensation(true);
 
         sensor = new DigitalInput(sensorID);
@@ -81,32 +81,31 @@ public class Climber {
         switch (this.climberControlState) {
             case MANUAL_EXTENDING:
                 manualExtend();
-                break;
+            break;
 
             case MANUAL_PULLING:
                 manualPull();
-                break;
+            break;
 
             case AUTO_EXTENDING:
-                autoExtend();
-                
-                break;
+                autoExtend();        
+            break;
 
             case AUTO_PULLING:
                 autoPull();
-                break;
+            break;
 
             case ZEROING:
                 zero();
-                break;
+            break;
 
             case BRAKED:
                 brake();
-                break;
+            break;
 
             default:
                 System.out.println("Climber.java: there is no climber state right now?");
-                break;
+            break;
         }
 
     }

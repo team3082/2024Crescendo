@@ -103,7 +103,7 @@ public class VisionManager {
             // Convert to inches
             offset = offset.mul(39.3701);
             // Compensate for the angle of the camera
-            offset.y *= Math.cos(Math.toRadians(17.5));
+            offset.y *= Math.cos(Math.toRadians(15));
             // Point vector axes forward relative to robot
             offset = offset.rotate(Math.PI / 2 - cameraRots[0]);
             // Compensate for the camera's position on the robot
