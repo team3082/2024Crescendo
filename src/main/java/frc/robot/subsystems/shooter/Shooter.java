@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -170,19 +171,17 @@ public final class Shooter {
                 // it'll override the driver's control.
                 switch (handoffMode) {
                     case DISABLED:
-                        // Slow retain
-                       // Intake.conveyorMotor.set(0.1);
+                        Intake.bottomPID.setReference(0.0, ControlType.kDutyCycle);
                         System.out.println("DISABLED");
                     break;
                     case FEED:
                         // Feed us into the shooter!
                         // Intake.setState(IntakeState.FEED);
-                       // Intake.conveyorMotor.set(-0.7);
+                        Intake.bottomPID.setReference(-0.35, ControlType.kDutyCycle);
                         System.out.println("FEED");
                     break;
                     case STOP:
                         // Prevent the note from shooting too early
-                       // Intake.conveyorMotor.set(-0.2);
                         System.out.println("STOP");
                     break;
                     case EJECT:
@@ -199,9 +198,6 @@ public final class Shooter {
                     setVariedVelocity(targetTop, targetBottom);
                 else
                     setVelocity(targetVelocity);
-                
-                // Stop the handoff
-                // Intake.conveyorMotor.stopMotor();
             break;
 
             case EJECT:

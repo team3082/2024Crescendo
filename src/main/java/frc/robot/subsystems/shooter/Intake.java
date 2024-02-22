@@ -7,9 +7,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -25,7 +23,8 @@ public final class Intake {
     private static TalonFX pivotMotor;
     private static CANSparkMax topBeltMotor, bottomBeltMotor; // bottom = handoff too
     private static RelativeEncoder topEncoder, bottomEncoder;
-    private static SparkPIDController topPID, bottomPID;
+    private static SparkPIDController topPID;
+    public static SparkPIDController bottomPID;
     private static Beambreak beambreak;
 
     private static IntakeState state = IntakeState.STOW;
@@ -40,20 +39,20 @@ public final class Intake {
         pivotMotor.configNeutralDeadband(0.01);
         pivotMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 30);
         
-        pivotMotor.config_kP(0, INTAKEPIVOTKP, 30);
-        pivotMotor.config_kI(0, INTAKEPIVOTKI, 30);
-        pivotMotor.config_kD(0, INTAKEPIVOTKD, 30);
+        pivotMotor.config_kP(0, 0.045, 30);
+        pivotMotor.config_kI(0, 0.0, 30);
+        pivotMotor.config_kD(0, 0.0013, 30);
 
-        pivotMotor.configMotionAcceleration(INTAKEPIVOTMAXACCEL);
-        pivotMotor.configMotionCruiseVelocity(INTAKEPIVOTMAXACCEL);
-        pivotMotor.configMotionSCurveStrength(INTAKEPIVOTJERKSTRENGTH);
+        pivotMotor.configMotionAcceleration(30000.0);
+        pivotMotor.configMotionCruiseVelocity(15000.0);
+        pivotMotor.configMotionSCurveStrength(0);
 
         SupplyCurrentLimitConfiguration pivotCurrentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0 );
         pivotMotor.configSupplyCurrentLimit(pivotCurrentLimit);
-        pivotMotor.configVoltageCompSaturation(12.2);
+        pivotMotor.configVoltageCompSaturation(11.6);
         pivotMotor.enableVoltageCompensation(true);
         
-        topBeltMotor = new CANSparkMax(0, MotorType.kBrushless);
+        topBeltMotor = new CANSparkMax(5, MotorType.kBrushless);
         topBeltMotor.restoreFactoryDefaults();
         topBeltMotor.setIdleMode(IdleMode.kCoast);
         topBeltMotor.enableVoltageCompensation(11.6);
@@ -63,11 +62,11 @@ public final class Intake {
         topPID = topBeltMotor.getPIDController();
         topEncoder = topBeltMotor.getEncoder();
 
-        topPID.setP(0);
+        topPID.setP(0.005);
         topPID.setI(0);
-        topPID.setD(0);
+        topPID.setD(0.001);
 
-        bottomBeltMotor = new CANSparkMax(0, MotorType.kBrushless);
+        bottomBeltMotor = new CANSparkMax(8, MotorType.kBrushless);
         bottomBeltMotor.restoreFactoryDefaults();
         bottomBeltMotor.setIdleMode(IdleMode.kCoast);
         bottomBeltMotor.enableVoltageCompensation(11.8);
@@ -77,9 +76,9 @@ public final class Intake {
         bottomPID = bottomBeltMotor.getPIDController();
         bottomEncoder = bottomBeltMotor.getEncoder();
 
-        bottomPID.setP(0);
+        bottomPID.setP(0.005);
         bottomPID.setI(0);
-        bottomPID.setD(0);
+        bottomPID.setD(0.001);
 
         topBeltMotor.burnFlash();
         bottomBeltMotor.burnFlash();
@@ -96,7 +95,8 @@ public final class Intake {
        // beambreak = new Beambreak(LASER_ID, 300);
 
        // Zero the Falcon's relative encoder LAST
-       pivotMotor.setSelectedSensorPosition(0);
+       // 0 points up
+       pivotMotor.setSelectedSensorPosition(radToTicks(0));
     }
 
     public static void killHandoff() {
@@ -140,13 +140,13 @@ public final class Intake {
 
     private static void ground() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, GROUND_INTAKE_ANGLE);
-        topPID.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);
-        bottomPID.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);
+        topPID.setReference(0.35, ControlType.kDutyCycle);
+        bottomPID.setReference(0.35, ControlType.kDutyCycle);
     }
 
     public static void suck() {
-        topPID.setReference(1, ControlType.kDutyCycle);
-        bottomPID.setReference(1, ControlType.kDutyCycle);
+        topPID.setReference(0.35, ControlType.kDutyCycle);
+        bottomPID.setReference(0.35, ControlType.kDutyCycle);
     }
 
     public static void no() {
@@ -157,8 +157,8 @@ public final class Intake {
     // NEVER CALL THIS ANYWHERE ELSE OTHER THAN SHOOTER
     private static void feed() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);
-        topPID.setReference(FEEDSTRENGTH, ControlType.kDutyCycle);
-        bottomPID.setReference(FEEDSTRENGTH, ControlType.kDutyCycle);
+        topPID.setReference(0, ControlType.kDutyCycle);
+        bottomPID.setReference(-0.35, ControlType.kDutyCycle);
     }
 
     private static void source() {
@@ -172,9 +172,9 @@ public final class Intake {
     }
 
 
-    // public static void setState(IntakeState newState) {
-        //state = newState;
-    //}
+    public static void setState(IntakeState newState) {
+        state = newState;
+    }
 
     public static double getIntakeAngleRad() {
         return ticksToRad(pivotMotor.getSelectedSensorPosition());

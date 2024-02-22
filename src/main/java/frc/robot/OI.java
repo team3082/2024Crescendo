@@ -7,8 +7,10 @@ import frc.controllermaps.LogitechF310;
 import frc.robot.sensors.Pigeon;
 import frc.robot.subsystems.BannerLight;
 import frc.robot.subsystems.climber.ClimberManager;
+import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
+import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwerveModule;
 import frc.robot.swerve.SwervePID;
@@ -95,12 +97,12 @@ public class OI {
         double boostStrength = driverStick.getRawAxis(boost);
         if(boostStrength < 0.1) boostStrength = 0;
 
-        double kBoostCoefficient = NORMALSPEED + boostStrength * (1-NORMALSPEED);
+        double kBoostCoefficient = NORMALSPEED + boostStrength * (1 - NORMALSPEED);
 
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = driverStick.getRawAxis(rotateX) * -ROTSPEED;
 
-        double manualRPM = 2000.0; // i think we can run the speed so much lower
+        double manualRPM = 2500.0;
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
@@ -137,30 +139,34 @@ public class OI {
                     ShooterPivot.setPosition(Math.toRadians(55.0));
                     Shooter.revToVaried(topVector, bottomVector);
                     Shooter.shoot();
-                    break;
+                break;
 
-                 // currently this is the same as manual score till we tune it when we do we will change that
+                 // manual for now, change to auto when tuned
+                 // use the arr variable above for that
                 case SPEAKER:
-                    ShooterPivot.setPosition(Math.toRadians(55.0));
+                    ShooterPivot.setPosition(Math.toRadians(57.0));
                     Shooter.revTo(manualRPM);
                     Shooter.shoot();
-                    break;
+                break;
 
                 case SPEAKER_MANUAL:
-                    ShooterPivot.setPosition(Math.toRadians(55.0));
+                    ShooterPivot.setPosition(Math.toRadians(57.0));
                     Shooter.revTo(manualRPM);
                     Shooter.shoot();
-                    break;
+                break;
             
                 default:
-                    break;
+                break;
             }
         } else {
             ShooterPivot.setPosition(Math.toRadians(20.0)); // stow shooter
             Shooter.disable(); // Leave the shooter off if not in use
         }
 
-        if (driverStick.getRawAxis(intake) > 0.5) isGround = !isGround;
+        if (driverStick.getRawAxis(intake) > 0.5)
+            Intake.setState(IntakeState.GROUND);
+        else
+            Intake.no();
 
         if (driverStick.getRawButton(lock)) {
             for (SwerveModule module: SwerveManager.mods) {
@@ -212,19 +218,17 @@ public class OI {
             switch (currentShooterMode) {
                 case AMP:
                     currentShooterMode = manualFireSet ? ShooterMode.SPEAKER_MANUAL : ShooterMode.SPEAKER;
-                    break;
+                break;
                 case SPEAKER:
                     currentShooterMode = ShooterMode.AMP;
-                    break;
+                break;
                 case SPEAKER_MANUAL:
                     currentShooterMode = ShooterMode.AMP;
-                    break;
-            
+                break;
+
                 default:
-                    break;
+                break;
             }
         }
-
     }
-
 }
