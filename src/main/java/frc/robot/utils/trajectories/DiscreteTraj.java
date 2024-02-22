@@ -2,6 +2,8 @@ package frc.robot.utils.trajectories;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.utils.swerve.DiscreteSwerveState;
 import frc.robot.utils.swerve.SwerveState;
 
@@ -10,12 +12,18 @@ public class DiscreteTraj implements SwerveTrajectory{
 
     @Override
     public DiscreteSwerveState endState(){
-        return path.get(path.size() - 1);
+        DiscreteSwerveState blueState = path.get(path.size() - 1);
+        if(DriverStation.getAlliance().get() == Alliance.Red){
+            return new DiscreteSwerveState(blueState.flip(), blueState.time);
+        }
+        return blueState;
     }
 
     @Override
     public SwerveState startState(){
-        return path.get(0);
+        DiscreteSwerveState blueState = path.get(0);
+        return (DriverStation.getAlliance().get() == Alliance.Red) ? blueState.flip() : blueState;
+
     }
 
     @Override
@@ -42,7 +50,8 @@ public class DiscreteTraj implements SwerveTrajectory{
         SwerveState a = path.get(posa);
         SwerveState b = path.get(posa+1);
         double deltaT = t - path.get(posa).time;
-        return a.interpolate(b, deltaT);
+        SwerveState blueState= a.interpolate(b, deltaT);
+        return (DriverStation.getAlliance().get() == Alliance.Red) ? blueState.flip() : blueState;
     }
 
     public DiscreteTraj(ArrayList<DiscreteSwerveState> path){
