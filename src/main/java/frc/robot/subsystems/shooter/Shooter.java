@@ -219,7 +219,7 @@ public final class Shooter {
      * Set the desired velocity for our shooter to maintain.
      * @param newVelocity Velocity in RPM
      */
-    public static void setVelocity(double newVelocity) {
+    private static void setVelocity(double newVelocity) {
         varied = false;
         targetVelocity = newVelocity;
         simVel = newVelocity;
