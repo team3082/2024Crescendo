@@ -177,7 +177,7 @@ public class OI {
 
 
         if (driverStick.getRawAxis(intake) > 0.5)
-            Intake.setState(IntakeState.GROUND);
+            Intake.suck();
         else
             Intake.no();
 
