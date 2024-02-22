@@ -11,12 +11,24 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 import static frc.robot.Tuning.Climbers.*;
 
-//TODO still need to add the hall effect sensors, this might require much more math to make sure it doesn't break itself
 @SuppressWarnings("removal")
 public class Climber {
     
     public TalonFX motor;
     public DigitalInput sensor;
+
+    public boolean hasBeenZeroed = false;
+
+    public ClimberControlState climberControlState = ClimberControlState.ZEROING;
+
+    public enum ClimberControlState {
+        MANUAL_EXTENDING,
+        MANUAL_PULLING,
+        AUTO_EXTENDING,
+        AUTO_PULLING,
+        ZEROING,
+        BRAKED
+    }
 
     // private boolean loaded = false;
 
@@ -46,40 +58,101 @@ public class Climber {
         motor.enableVoltageCompensation(true);
 
         sensor = new DigitalInput(sensorID);
+
+        // make sure the sensor is fully initialized
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // if the sensor is already at the zeroed position then set the motor position
+        if (!(sensor.get())) {
+            motor.setSelectedSensorPosition(0.0);
+            this.hasBeenZeroed = true;
+        }
+    }
+
+    public void update() {
+        if (this.hasBeenZeroed == false) {
+            this.climberControlState = ClimberControlState.ZEROING;
+        }
+        switch (this.climberControlState) {
+            case MANUAL_EXTENDING:
+                manualExtend();
+                break;
+
+            case MANUAL_PULLING:
+                manualPull();
+                break;
+
+            case AUTO_EXTENDING:
+                autoExtend();
+                break;
+
+            case AUTO_PULLING:
+                autoPull();
+                break;
+
+            case ZEROING:
+                zero();
+                break;
+
+            case BRAKED:
+                brake();
+                break;
+                
+            default:
+                System.out.println("Climber.java: there is no climber state right now?");
+                break;
+        }
+
+    }
+
+    public void setClimberControlState(ClimberControlState newClimberControlState) {
+        this.climberControlState = newClimberControlState;
     }
 
     // extend until max extension reached
-    public void extend() {
-        if (this.motor.getSelectedSensorPosition() == MAX_EXTENSION) {
+    public void manualExtend() {
+        if (this.motor.getSelectedSensorPosition() >= MAX_EXTENSION_TICKS) {
             this.motor.neutralOutput();
         } else {
-            this.motor.set(ControlMode.PercentOutput, 0.5);
+            this.motor.set(ControlMode.PercentOutput, 0.35);
         }
     }
 
     // pull unless magnet is tripped
-    public void pull() {
-        if (this.sensor.get()) {
+    public void manualPull() {
+        if (!(this.sensor.get())) {
             this.motor.neutralOutput();
         } else {
-            this.motor.set(ControlMode.PercentOutput, 0.5);
+            this.motor.set(ControlMode.PercentOutput, -0.35);
         }
+    }
+
+    public void autoExtend() {
+        this.motor.set(ControlMode.Position, MAX_EXTENSION_TICKS);
+    }
+
+    public void autoPull() {
+        this.motor.set(ControlMode.Position, 0);
     }
 
     /**
      * Pull until the sensor sees the magnet
      */
-    public boolean zeroMotor() {
-        boolean zeroed;
-        if (!(sensor.get())) {
-            motor.set(ControlMode.PercentOutput, -0.5);
-            zeroed = false;
+    public void zero() {
+        if (!(this.sensor.get())) {
+            this.motor.setSelectedSensorPosition(MAX_EXTENSION_TICKS);
+            this.hasBeenZeroed = true;
         } else {
-            motor.neutralOutput();
-            motor.setSelectedSensorPosition(0);
-            zeroed = true;
+            this.motor.set(ControlMode.PercentOutput, -0.2);
         }
-        return zeroed;
+    }
+
+    public void brake() {
+        this.motor.neutralOutput();
     }
 
     // /**

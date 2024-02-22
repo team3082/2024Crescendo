@@ -200,11 +200,11 @@ public class OI {
 
         // DPAD UP
         if (operatorStick.getPOV() == climberUp) {
-            ClimberManager.raiseHooks();
+            ClimberManager.manualExtend();
         } 
         // DPAD DOWN
         else if (operatorStick.getPOV() == climberDown) {
-            ClimberManager.pullHooks();
+            ClimberManager.manualPull();
         }
 
         // Y
