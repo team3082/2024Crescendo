@@ -76,23 +76,22 @@ public class Robot extends TimedRobot {
     Auto.update();
     SwervePosition.update();
     Shooter.update();
+    ClimberManager.update();
   }
 
   @Override
   public void teleopInit() {
     OI.init();
     SwervePosition.enableVision();
-    // ShooterPivot.setPosition(-Math.PI / 2.0);
   }
 
   @Override
   public void teleopPeriodic() {
     RTime.update();
     Shooter.update();
+    ClimberManager.update();
     SwervePosition.update();
     OI.userInput();
-    // OI.operatorInput();
-    // ClimberManager.update();
   }
 
   @Override

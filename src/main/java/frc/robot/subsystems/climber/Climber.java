@@ -77,6 +77,7 @@ public class Climber {
         if (this.hasBeenZeroed == false) {
             this.climberControlState = ClimberControlState.ZEROING;
         }
+
         switch (this.climberControlState) {
             case MANUAL_EXTENDING:
                 manualExtend();
@@ -88,6 +89,7 @@ public class Climber {
 
             case AUTO_EXTENDING:
                 autoExtend();
+                
                 break;
 
             case AUTO_PULLING:
@@ -101,7 +103,7 @@ public class Climber {
             case BRAKED:
                 brake();
                 break;
-                
+
             default:
                 System.out.println("Climber.java: there is no climber state right now?");
                 break;
@@ -133,10 +135,20 @@ public class Climber {
 
     public void autoExtend() {
         this.motor.set(ControlMode.Position, MAX_EXTENSION_TICKS);
+        if ((this.motor.getSelectedSensorPosition() <= this.motor.getActiveTrajectoryPosition() + 100) // this deadband is in ticks
+         && (this.motor.getSelectedSensorPosition() >= this.motor.getActiveTrajectoryPosition() - 100)) {
+            this.climberControlState = ClimberControlState.BRAKED;
+            brake();
+        }
     }
 
     public void autoPull() {
         this.motor.set(ControlMode.Position, 0);
+        if ((this.motor.getSelectedSensorPosition() <= this.motor.getActiveTrajectoryPosition() + 100) // this deadband is in ticks
+         && (this.motor.getSelectedSensorPosition() >= this.motor.getActiveTrajectoryPosition() - 100)) {
+            this.climberControlState = ClimberControlState.BRAKED;
+            brake();
+        }
     }
 
     /**

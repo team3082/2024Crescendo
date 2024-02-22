@@ -4,6 +4,7 @@ import static frc.robot.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
+import frc.robot.Constants.Climber;
 import frc.robot.sensors.Pigeon;
 import frc.robot.subsystems.BannerLight;
 import frc.robot.subsystems.climber.ClimberManager;
@@ -54,6 +55,7 @@ public class OI {
 
     // Climber
     static final int zeroClimber   = LogitechF310.BUTTON_X;
+    static final int setManualClimb= LogitechF310.BUTTON_A;
     static final int climberUp     = LogitechF310.DPAD_UP;
     static final int climberDown   = LogitechF310.DPAD_DOWN;
 
@@ -65,6 +67,7 @@ public class OI {
 
     public static ShooterMode currentShooterMode = ShooterMode.SPEAKER;
     public static boolean manualFireSet = true;
+    public static boolean manualClimbSet = true;
 
     static boolean isGround = false;
 
@@ -91,6 +94,7 @@ public class OI {
      * so this lives in the teleopPeriodic() function.
      */
     public static void driverInput() {
+        // INPUT
 
         if (driverStick.getRawButton(zero)) Pigeon.zero();
 
@@ -116,6 +120,9 @@ public class OI {
                 SwervePID.setDestRot(Math.PI / 2.0 - Math.toRadians(POV - 180));
             }
         }
+
+        /*--------------------------------------------------------------------------------------------------------*/
+        // SHOOTER
 
         if (driverStick.getRawButton(eject)) Shooter.eject();
 
@@ -159,9 +166,13 @@ public class OI {
                 break;
             }
         } else {
-            ShooterPivot.setPosition(Math.toRadians(20.0)); // stow shooter
+            ShooterPivot.setPosition(Math.toRadians(30.0)); // stow shooter
             Shooter.disable(); // Leave the shooter off if not in use
         }
+
+        /*--------------------------------------------------------------------------------------------------------*/
+        // INTAKE
+
 
         if (driverStick.getRawAxis(intake) > 0.5)
             Intake.setState(IntakeState.GROUND);
@@ -173,6 +184,9 @@ public class OI {
                 module.rotateToRad((module.pos.atan2()));
             }
         }
+
+        /*--------------------------------------------------------------------------------------------------------*/
+        // SWERVE
 
         // Swerving and a steering! Zoom!
         switch (YAWRATEFEEDBACKSTATUS) {
@@ -192,27 +206,49 @@ public class OI {
     }
 
     public static void operatorInput() {
-        // Climbing
+        // CLIMBER
+
         // X
-        if (operatorStick.getRawButton(zeroClimber)) {
+        if (operatorStick.getRawButtonPressed(zeroClimber)) {
             ClimberManager.zero();
         }
 
-        // DPAD UP
-        if (operatorStick.getPOV() == climberUp) {
-            ClimberManager.manualExtend();
-        } 
-        // DPAD DOWN
-        else if (operatorStick.getPOV() == climberDown) {
-            ClimberManager.manualPull();
+        if (operatorStick.getRawButtonPressed(setManualClimb)) {
+            manualClimbSet = true;
         }
+
+        if (!(manualClimbSet)) {
+            // DPAD UP
+            if (operatorStick.getPOV() == climberUp) {
+                ClimberManager.manualExtend();
+            } 
+            // DPAD DOWN
+            else if (operatorStick.getPOV() == climberDown) {
+                ClimberManager.manualPull();
+            }
+            // NO CLIMBER INPUT
+            else {
+                ClimberManager.brake();
+            }
+        } else {
+            // DPAD UP
+            if (operatorStick.getPOV() == climberUp) {
+                ClimberManager.autoExtend();
+            } 
+            // DPAD DOWN
+            else if (operatorStick.getPOV() == climberDown) {
+                ClimberManager.autoPull();
+            }
+        }
+
+        /*--------------------------------------------------------------------------------------------------------*/
+        // SHOOTER
 
         // Y
         if (operatorStick.getRawButtonPressed(setManualShoot)) {
             manualFireSet = !(manualFireSet);
         }
 
-        // Shooter Mode Switching
         // RIGHT BUMPER
         if (operatorStick.getRawButtonPressed(switchShooterMode)) {
             switch (currentShooterMode) {
