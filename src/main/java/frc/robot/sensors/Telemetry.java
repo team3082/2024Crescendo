@@ -139,8 +139,8 @@ public class Telemetry {
     // private static final GenericEntry FLYWHEELATVEL = shooter.add("Flywheel At Velocity", Shooter.canShoot()).getEntry();
 
     // Climber
-    private static final GenericEntry LEFTCLIMBERSTATE = climber.add("Left Climber State", ClimberManager.leftClimber.climberControlState).getEntry();
-    private static final GenericEntry RIGHTCLIMBERSTATE = climber.add("Left Climber State", ClimberManager.rightClimber.climberControlState).getEntry();
+    private static final GenericEntry LEFTCLIMBERSTATE = climber.add("Left Climber State", ClimberManager.leftClimber.climberControlState.name()).getEntry();
+    private static final GenericEntry RIGHTCLIMBERSTATE = climber.add("Right Climber State", ClimberManager.rightClimber.climberControlState.name()).getEntry();
 
     private static final GenericEntry pivotAngle = shooter.add("Pivot Angle", ShooterPivot.actualPos).getEntry();
     private static final GenericEntry pivotTargetAngle = shooter.add("Pivot Target Angle", ShooterPivot.targetPos).getEntry();

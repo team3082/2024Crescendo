@@ -46,13 +46,13 @@ public class Robot extends TimedRobot {
     SwervePID.init();
     Pigeon.setYaw(270);
     VisionManager.init();
-    Telemetry.init();
+    ClimberManager.init();
     ChoreoTrajectoryGenerator.init();
     Shooter.init();
     // Intake.init();
-    ClimberManager.init();
     AutoSelector.setup();
     ChoreoTrajectoryGenerator.parseAll();
+    Telemetry.init();
   }
 
   @Override

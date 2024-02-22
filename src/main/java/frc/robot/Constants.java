@@ -68,6 +68,7 @@ public final class Constants {
 
         // CAN ID: Beambreak
         public static final int LASER_ID = 0;
+        public static final double LASER_BREAK_DIST= 0.0;
 
         // CANCoder offset
         public static final double INTAKE_OFFSET = 0;

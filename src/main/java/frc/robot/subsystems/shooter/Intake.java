@@ -83,6 +83,8 @@ public final class Intake {
         topBeltMotor.burnFlash();
         bottomBeltMotor.burnFlash();
 
+        beambreak = new Beambreak(LASER_ID, LASER_BREAK_DIST);
+
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
