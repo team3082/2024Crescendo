@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
     Auto.update();
     SwervePosition.update();
     Shooter.update();
-    ClimberManager.update();
+    // ClimberManager.update();
   }
 
   @Override
@@ -89,9 +89,9 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     RTime.update();
     Shooter.update();
-    ClimberManager.update();
     SwervePosition.update();
     OI.userInput();
+    // ClimberManager.update();
   }
 
   @Override
@@ -100,8 +100,8 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     // SwervePosition.updateAveragePosVision();
-    if(Robot.isReal())
-      BannerLight.setTagInView(VisionManager.hasTarget());
+    // if(Robot.isReal())
+    //   BannerLight.setTagInView(VisionManager.hasTarget());
   }
 
   @Override
