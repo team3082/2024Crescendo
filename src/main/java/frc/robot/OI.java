@@ -250,6 +250,11 @@ public class OI {
         // Y
         if (operatorStick.getRawButtonPressed(setManualShoot)) {
             manualFireSet = !(manualFireSet);
+            if (manualFireSet && currentShooterMode == ShooterMode.SPEAKER) {
+                currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+            } else if (!(manualFireSet) && currentShooterMode == ShooterMode.SPEAKER_MANUAL) {
+                currentShooterMode = ShooterMode.SPEAKER;
+            }
         }
 
         // RIGHT BUMPER

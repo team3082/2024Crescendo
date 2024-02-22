@@ -75,7 +75,7 @@ public final class Constants {
 
         // Motor : belt(s)
         // Pivot gear ratio
-        public static final double INTAKERATIO = 48.0; // TODO: make sure this is correct
+        public static final double INTAKERATIO = 48.0;
 
         public static final double HANDOFF_SPEED = 0.5;
         public static final double INTAKE_HANDOFF_SPEED = 0.5;
