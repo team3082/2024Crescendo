@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
     ChoreoTrajectoryGenerator.parseAll();
     Shooter.init();
     // Intake.init();
-    //ClimberManager.init();
+    ClimberManager.init();
     AutoSelector.setup();
     
   }
@@ -91,7 +91,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     OI.init();
-    
     // SwervePosition.enableVision();
     // ShooterPivot.setPosition(-Math.PI / 2.0);
   }

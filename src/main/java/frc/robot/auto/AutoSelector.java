@@ -47,16 +47,16 @@ public class AutoSelector {
             break;
 
             case "4 Piece Source":
-                Auto.fourPieceSourceSide();
+                CommandAuto.init(CommandAuto.fourPieceSourceSide());
             break;
 
             case "3 Piece Middle Amp":
             
-                Auto.threePieceMiddleAmpSide();
+                CommandAuto.init(CommandAuto.threePieceMiddleAmpSide());
             break;
 
             case "3 Piece Middle Source":
-                Auto.threePieceMiddleSourceSide();
+                CommandAuto.init(CommandAuto.threePieceMiddleSourceSide());
             break;
 
             case "Choreo Test":

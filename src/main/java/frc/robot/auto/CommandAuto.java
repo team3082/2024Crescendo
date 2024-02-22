@@ -168,5 +168,20 @@ public class CommandAuto {
 
        return new ChoreoFollow("Loopties.1");
     }
+
+    public static Command fourPieceSourceSide() {
+      // TODO make this
+      return new SequentialCommandGroup(Commands.none());
+  }
+
+  public static Command threePieceMiddleAmpSide() {
+      // TODO make this
+      return new SequentialCommandGroup(Commands.none());
+  }
+
+  public static Command threePieceMiddleSourceSide() {
+      // TODO make
+      return new SequentialCommandGroup(Commands.none());
+  }
 }
 
