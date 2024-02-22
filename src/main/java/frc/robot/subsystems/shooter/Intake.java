@@ -109,10 +109,10 @@ public final class Intake {
     }
 
     private static double radToTicks(double angleRad) {
-        return angleRad * INTAKERATIO * 2048.0 / Math.PI / 2.0;
+        return (angleRad / (2.0 * Math.PI)) * INTAKERATIO * 2048.0;
     }
 
-    public static void update() {//TODO add logic for using the beambreak
+    public static void update() { //TODO add logic for using the beambreak
         switch (state) {
             case SOURCE:
                 source();
@@ -134,19 +134,19 @@ public final class Intake {
 
     private static void stow() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);
-        topPID.setReference(0, ControlType.kVelocity);
-        bottomPID.setReference(0, ControlType.kVelocity);
+        topPID.setReference(0, ControlType.kDutyCycle);
+        bottomPID.setReference(0, ControlType.kDutyCycle);
     }
 
     private static void ground() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, GROUND_INTAKE_ANGLE);
-        topPID.setReference(0.35, ControlType.kDutyCycle);
-        bottomPID.setReference(0.35, ControlType.kDutyCycle);
+        topPID.setReference(-0.35, ControlType.kDutyCycle);
+        bottomPID.setReference(-0.35, ControlType.kDutyCycle);
     }
 
     public static void suck() {
-        topPID.setReference(0.35, ControlType.kDutyCycle);
-        bottomPID.setReference(0.35, ControlType.kDutyCycle);
+        topPID.setReference(-0.35, ControlType.kDutyCycle);
+        bottomPID.setReference(-0.35, ControlType.kDutyCycle);
     }
 
     public static void no() {
@@ -157,7 +157,7 @@ public final class Intake {
     // NEVER CALL THIS ANYWHERE ELSE OTHER THAN SHOOTER
     private static void feed() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);
-        topPID.setReference(0, ControlType.kDutyCycle);
+        topPID.setReference(-0.35, ControlType.kDutyCycle);
         bottomPID.setReference(-0.35, ControlType.kDutyCycle);
     }
 
@@ -168,7 +168,7 @@ public final class Intake {
     }
 
     public static boolean pieceGrabbed() {
-        return true;
+        return beambreak.isBroken();
     }
 
 

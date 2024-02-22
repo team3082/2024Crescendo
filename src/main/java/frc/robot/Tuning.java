@@ -116,8 +116,8 @@ public class Tuning {
         public static final double CONVEYORKI = 0.0;
         public static final double CONVEYORKD = 0.0;
 
-        public static final double INTAKESTRENGTH = 0.8;
-        public static final double FEEDSTRENGTH = 0.8;
+        public static final double INTAKESTRENGTH = -0.8;
+        public static final double FEEDSTRENGTH = -0.8;
 
     }
 }
