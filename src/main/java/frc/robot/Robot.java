@@ -89,11 +89,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     RTime.update();
     Shooter.update();
-    ClimberManager.update();
     SwervePosition.update();
     OI.userInput();
-    // Shooter.setShooterAngleForSpeaker();
     // OI.operatorInput();
+    // ClimberManager.update();
   }
 
   @Override
