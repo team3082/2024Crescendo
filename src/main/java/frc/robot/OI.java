@@ -69,6 +69,8 @@ public class OI {
     public static boolean manualFireSet = true;
     public static boolean manualClimbSet = true;
 
+    public static int lastPOV = -1;
+
     static boolean isGround = false;
 
     public static double topVector = 530;
@@ -206,6 +208,7 @@ public class OI {
     }
 
     public static void operatorInput() {
+        
         // CLIMBER
 
         // X
@@ -217,7 +220,7 @@ public class OI {
             manualClimbSet = true;
         }
 
-        if (!(manualClimbSet)) {
+        if (manualClimbSet) {
             // DPAD UP
             if (operatorStick.getPOV() == climberUp) {
                 ClimberManager.manualExtend();
@@ -232,11 +235,11 @@ public class OI {
             }
         } else {
             // DPAD UP
-            if (operatorStick.getPOV() == climberUp) {
+            if (operatorStick.getPOV() == climberUp && operatorStick.getPOV() != lastPOV) {
                 ClimberManager.autoExtend();
             } 
             // DPAD DOWN
-            else if (operatorStick.getPOV() == climberDown) {
+            else if (operatorStick.getPOV() == climberDown && operatorStick.getPOV() != lastPOV) {
                 ClimberManager.autoPull();
             }
         }
@@ -266,5 +269,7 @@ public class OI {
                 break;
             }
         }
+
+        lastPOV = operatorStick.getPOV();
     }
 }

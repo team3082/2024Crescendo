@@ -6,8 +6,8 @@ import frc.robot.subsystems.climber.Climber.ClimberControlState;
 
 public final class ClimberManager {
     
-    private static Climber leftClimber;
-    private static Climber rightClimber;
+    public static Climber leftClimber;
+    public static Climber rightClimber;
 
     public static void init(){
         leftClimber = new Climber(LEFT_MOTOR_ID, LEFT_HALL_ID, LEFT_MOTOR_INVERTED);

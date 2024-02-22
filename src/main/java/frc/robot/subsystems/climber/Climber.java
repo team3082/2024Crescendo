@@ -156,7 +156,7 @@ public class Climber {
      */
     public void zero() {
         if (!(this.sensor.get())) {
-            this.motor.setSelectedSensorPosition(MAX_EXTENSION_TICKS);
+            this.motor.setSelectedSensorPosition(0);
             this.hasBeenZeroed = true;
         } else {
             this.motor.set(ControlMode.PercentOutput, -0.2);
