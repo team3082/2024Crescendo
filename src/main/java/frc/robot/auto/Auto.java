@@ -66,7 +66,7 @@ public class Auto {
             // while driving to piece, go back to subwoofer,
             // wait till Choreo is finished and then shoot.
             new SetIntake(IntakeState.GROUND),
-            new ChoreoFollow("Test"),
+            new ChoreoFollow("New Path"),
             new SetShooterAngle(Math.toRadians(58.8)),
             new SetShooterVelocity(2650),
             new FireShooter(),

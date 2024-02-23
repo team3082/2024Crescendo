@@ -122,12 +122,12 @@ public final class Shooter {
         switch (shooterMode) {
             case FIRING:
                 if (atVelocity) {
-                    Intake.suck2();
-                } else {
+                    Intake.suck2(); // fire if we are ready
+                } else { // otherwise keep revvin till we are
                     if (varied)
-                     setVariedVelocity(targetTop, targetBottom);
+                        setVariedVelocity(targetTop, targetBottom);
                     else
-                     setVelocity(targetVelocity);
+                        setVelocity(targetVelocity);
                 }
             break;
 
@@ -254,8 +254,7 @@ public final class Shooter {
      * This method should be called after the revTo() method.
      */
     public static void shoot() { 
-        // We can only fire if we were revving be
-            shooterMode = ShooterStatus.FIRING;
+        shooterMode = ShooterStatus.FIRING;
     }
 
     /**
