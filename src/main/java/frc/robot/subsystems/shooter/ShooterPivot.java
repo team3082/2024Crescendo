@@ -121,4 +121,12 @@ public final class ShooterPivot {
         motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos));
         actualPos = ticksToRad(motor.getSelectedSensorPosition());
     }
+
+    public static void enableCoast() {
+        motor.setNeutralMode(NeutralMode.Coast);
+    }
+
+    public static void setCoast() {
+        motor.neutralOutput();
+    }
 }

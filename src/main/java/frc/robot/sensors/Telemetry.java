@@ -272,10 +272,10 @@ public class Telemetry {
         SwervePID.rotPID.deadband = rotDeadBand.getDouble(0);
 
         // Shooter
-        Shooter.targetVelocity = FLYWHEELTARGETRPM.getDouble(0) * RPMToVel;
-        ShooterPivot.targetPos = Math.toRadians(pivotTargetAngle.getDouble(35));
-        OI.topVector = TOPVECTOR.getDouble(0) * RPMToVel;
-        OI.bottomVector = BOTTOMVECTOR.getDouble(0) * RPMToVel;
+        // Shooter.targetVelocity = FLYWHEELTARGETRPM.getDouble(0) * RPMToVel;
+        // ShooterPivot.targetPos = Math.toRadians(pivotTargetAngle.getDouble(35));
+        // OI.topVector = TOPVECTOR.getDouble(0) * RPMToVel;
+        // OI.bottomVector = BOTTOMVECTOR.getDouble(0) * RPMToVel;
 
         // Tuning.Shooter.FLYWHEELKD = FLYWHEELKD.getDouble(0);
         // Tuning.Shooter.FLYWHEELKF = FLYWHEELKF.getDouble(0);

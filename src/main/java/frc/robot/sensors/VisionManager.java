@@ -25,26 +25,28 @@ public class VisionManager {
     // PI / 2 is pointing straight forward
     private static double[] cameraRots = new double[camNum];
 
+    private static double cameraHeight = 22.0;
+
     // Positions of the apriltags, in inches.
     // See: https://www.desmos.com/calculator/xm8hs63y3r
     private static final Vector2[] aprilTags = {
         new Vector2(), // fake
-        new Vector2(-151.96, -268.08),
-        new Vector2(-126.85, -311.61),
-        new Vector2(34.53, -327.13),
-        new Vector2(56.78, -327.13),
-        new Vector2(161.36, -253.17),
-        new Vector2(161.36, 253.17),
-        new Vector2(56.78, 327.13),
-        new Vector2(34.53, 327.13),
-        new Vector2(-126.85, 311.61),
-        new Vector2(-151.96, 268.08),
-        new Vector2(-15.45, -143.09),
-        new Vector2(15.46, -143.09),
-        new Vector2(-0.02, -116.14),
-        new Vector2(-0.02, 116.14),
-        new Vector2(15.46, 142.87),
-        new Vector2(-15.45, 142.87)
+        new Vector2(151.96, -268.08),
+        new Vector2(126.85, -311.61),
+        new Vector2(-34.53, -327.13),
+        new Vector2(-56.78, -327.13),
+        new Vector2(-161.36, -253.17),
+        new Vector2(-161.36, 253.17),
+        new Vector2(-56.78, 327.13),
+        new Vector2(-34.53, 327.13),
+        new Vector2(126.85, 311.61),
+        new Vector2(151.96, 268.08),
+        new Vector2(15.45, -143.09),
+        new Vector2(-15.46, -143.09),
+        new Vector2(0.02, -116.14),
+        new Vector2(0.02, 116.14),
+        new Vector2(-15.46, 142.87),
+        new Vector2(15.45, 142.87)
     };
 
     // AprilTags on the alliance's side of the tape.
@@ -54,19 +56,19 @@ public class VisionManager {
     private static final int[] blueTags = {6, 7, 8, 9, 10, 14, 15, 16};
 
     public static void init() {
-        cameras[0] = new PhotonCamera("AprilTagCamera1");
+        cameras[0] = new PhotonCamera("ApriltagCamera1");
         offsets[0] = new Vector2(-4, 5.350);
         cameraRots[0] = Math.PI / 2;
 
-        cameras[1] = new PhotonCamera("AprilTagCamera4");
+        cameras[1] = new PhotonCamera("ApriltagCamera4");
         offsets[1] = new Vector2(4, 2.475);
         cameraRots[1] = 3 * Math.PI / 2;
 
-        cameras[2] = new PhotonCamera("AprilTagCamera3");
+        cameras[2] = new PhotonCamera("ApriltagCamera3");
         offsets[2] = new Vector2(-8.525, 5.1);
         cameraRots[2] = Math.PI;
 
-        cameras[3] = new PhotonCamera("AprilTagCamera2");
+        cameras[3] = new PhotonCamera("ApriltagCamera2");
         offsets[3] = new Vector2(8.525, 5.1);
         cameraRots[3] = 0;
     }
@@ -207,7 +209,7 @@ public class VisionManager {
                 }
             default:
                 System.out.println("SOMETHING IS BAD");
-                return false;
+            return false;
         }
     }
 

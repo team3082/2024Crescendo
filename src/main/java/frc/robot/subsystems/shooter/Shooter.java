@@ -87,7 +87,7 @@ public final class Shooter {
         topMotor.config_kD(0, 0);
         topMotor.config_kF(0, 1023.0 * 0.6246 / 11819.0);
 
-        bottomMotor.config_kP(0, 0.3);
+        bottomMotor.config_kP(0, 0.5);
         bottomMotor.config_kI(0, 0.00015);
         bottomMotor.configMaxIntegralAccumulator(0, 1000);
         bottomMotor.config_kD(0, 0);
@@ -113,7 +113,7 @@ public final class Shooter {
     public static void update() {
         // Update our pivot & intake
         ShooterPivot.update();
-        // Intake.update();
+        Intake.update();
 
         // Get our vars
         topRPM = topMotor.getSelectedSensorVelocity() * VelToRPM;
@@ -127,69 +127,72 @@ public final class Shooter {
             case FIRING:
 
                 double timeNow = RTime.now();
+
+                if (atVelocity) {
+                    Intake.suck2();
+                }
+
                 if (varied)
                     setVariedVelocity(targetTop, targetBottom);
                 else
                     setVelocity(targetVelocity);
 
                 // Pass through the note ONLY when we have reached
-                // the velocity
+                // // the velocity
 
-                // Determine the handoff's ideal state
-                switch (handoffMode) {
-                    case DISABLED:
-                        // Lie in wait until we are at the velocity,
-                        // then make us live.
-                        if (atVelocity) {
-                            handoffMode = HandoffStatus.FEED;
-                            handoffLiveTime = timeNow + handoffTime;
-                        }
-                    break;
-                    case FEED:
-                        // We're running, so we wait until
-                        // we are over our liveTime and then we stop.
-                        if (timeNow > handoffLiveTime) {
-                            handoffMode = HandoffStatus.STOP;
-                            handoffLiveTime = timeNow + handoffDeadTime;
-                        }
-                    break;
-                    case STOP:
-                        // Restart the loop when we have ALREADY been stopped
-                        // and at the desired velocity
-                        if (timeNow > handoffLiveTime && atVelocity) {
-                            handoffMode = HandoffStatus.FEED;
-                            handoffLiveTime = timeNow + handoffTime;
-                        }
-                    break;
-                    case EJECT:
-                        // Manually override this later so not needed
-                    break;
-                }
+                // // Determine the handoff's ideal state
+                // switch (handoffMode) {
+                //     case DISABLED:
+                //         // Lie in wait until we are at the velocity,
+                //         // then make us live.
+                //         if (atVelocity) {
+                //             handoffMode = HandoffStatus.FEED;
+                //             handoffLiveTime = timeNow + handoffTime;
+                //         }
+                //     break;
+                //     case FEED:
+                //         // We're running, so we wait until
+                //         // we are over our liveTime and then we stop.
+                //         if (timeNow > handoffLiveTime) {
+                //             handoffMode = HandoffStatus.STOP;
+                //             handoffLiveTime = timeNow + handoffDeadTime;
+                //         }
+                //     break;
+                //     case STOP:
+                //         // Restart the loop when we have ALREADY been stopped
+                //         // and at the desired velocity
+                //         handoffMode = HandoffStatus.DISABLED;
+                //     break;
+                //     case EJECT:
+                //         // Manually override this later so not needed
+                //     break;
+                // }
 
                 // Apply the handoff's state to the intake.
                 // Avoiding setting the mode direct because
                 // it'll override the driver's control.
-                switch (handoffMode) {
-                    case DISABLED:
-                        Intake.bottomPID.setReference(0.0, ControlType.kDutyCycle);
-                        System.out.println("DISABLED");
-                    break;
-                    case FEED:
-                        // Feed us into the shooter!
-                        // Intake.setState(IntakeState.FEED);
-                        Intake.bottomPID.setReference(-0.35, ControlType.kDutyCycle);
-                        System.out.println("FEED");
-                    break;
-                    case STOP:
-                        // Prevent the note from shooting too early
-                        System.out.println("STOP");
-                    break;
-                    case EJECT:
-                        // Should be a safe speed...?
-                       // Intake.conveyorMotor.set(-0.6);
-                        System.out.println("EJECT");
-                    break;
-                }
+                // switch (handoffMode) {
+                //     case DISABLED:
+                //         Intake.bottomPID.setReference(0.0, ControlType.kDutyCycle);
+                //         System.out.println("DISABLED");
+                //     break;
+                //     case FEED:
+                //         // Feed us into the shooter!
+                //         // Intake.setState(IntakeState.FEED);
+                //         Intake.bottomPID.setReference(-0.35, ControlType.kDutyCycle);
+                //         System.out.println("FEED");
+                //     break;
+                //     case STOP:
+                //         // Prevent the note from shooting too early
+                //         Intake.bottomPID.setReference(0.0, ControlType.kDutyCycle);
+                //         System.out.println("STOP");
+                //     break;
+                //     case EJECT:
+                //         // Should be a safe speed...?
+                //        // Intake.conveyorMotor.set(-0.6);
+                //         System.out.println("EJECT");
+                //     break;
+                // }
             break;
 
             case REVVING:
@@ -285,7 +288,7 @@ public final class Shooter {
             speakerPos = new Vector2(56.78, -327.13);
 
         dist = Math.hypot(SwervePosition.getPosition().x - speakerPos.x, SwervePosition.getPosition().y - speakerPos.y);
-        setShooterForDist(dist);
+        // setShooterForDist(dist);
     }
 
     /**
@@ -294,6 +297,10 @@ public final class Shooter {
     public static void revTo(double rpm) {
         targetVelocity = rpm * RPMToVel;
         shooterMode = ShooterStatus.REVVING;
+    }
+
+    public static void setIntakeMode(HandoffStatus status) {
+        handoffMode = status;
     }
 
     /**
@@ -311,8 +318,7 @@ public final class Shooter {
      * This method should be called after the revTo() method.
      */
     public static void shoot() { 
-        // We can only fire if we were revving beforehand.
-        if (shooterMode == ShooterStatus.REVVING) 
+        // We can only fire if we were revving be
             shooterMode = ShooterStatus.FIRING;
     }
 
@@ -329,6 +335,7 @@ public final class Shooter {
      */
     public static void disable() {
         shooterMode = ShooterStatus.DISABLED;
+        handoffMode = HandoffStatus.DISABLED;
     }
 
     /**
@@ -345,7 +352,7 @@ public final class Shooter {
         double top = topMotor.getSelectedSensorVelocity() * VelToRPM;
         double bottom = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
 
-        return /* ShooterPivot.atPos() && */ (0 == deadband(top, targetVelocity, 20.0)) && (0 == deadband(bottom, targetVelocity, 20.0));
+        return /* ShooterPivot.atPos() && */ (0 == deadband(top, targetVelocity, 40.0)) && (0 == deadband(bottom, targetVelocity, 40.0));
     }
 
     /**

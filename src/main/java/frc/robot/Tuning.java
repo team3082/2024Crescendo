@@ -44,7 +44,7 @@ public class Tuning {
         /**0 for never on, 1 for only on with no rotation input, 2 for always on */
         public static final int YAWRATEFEEDBACKSTATUS = 0;
 
-        public static final double NORMALSPEED = 0.6;
+        public static final double NORMALSPEED = 0.4;
 
         public static final double ROTSPEED = 0.3;
     }
@@ -103,6 +103,8 @@ public class Tuning {
         public static final double INTAKEPIVOTKP = 0.0;
         public static final double INTAKEPIVOTKI = 0.0;
         public static final double INTAKEPIVOTKD = 0.0;
+
+        public static final double INTAKEGROUNDPOS = 18714 + 112911;
 
         public static final double INTAKEPIVOTMAXVEL = 0.0;
         public static final double INTAKEPIVOTMAXACCEL = 0.0;

@@ -2,6 +2,9 @@
   "NetworkTables": {
     "transitory": {
       "Shuffleboard": {
+        "Positions": {
+          "open": true
+        },
         "Shooter": {
           "open": true
         },

@@ -27,7 +27,7 @@ public class Beambreak {
             sensor.setTimingBudget(TimingBudget.TIMING_BUDGET_20MS);
 
             //setting to narrow fov
-            sensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,6,6)); //TODO probably tune this and also make sure it is centered
+            sensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,2,2)); //TODO probably tune this and also make sure it is centered
         } catch(ConfigurationFailedException e) {
             System.err.println("LaserCan, more like LaserCan't");
             e.printStackTrace();

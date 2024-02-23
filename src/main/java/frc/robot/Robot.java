@@ -13,7 +13,9 @@ import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
 import frc.robot.subsystems.climber.ClimberManager;
+import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -44,14 +46,14 @@ public class Robot extends TimedRobot {
     SwerveManager.init();
     SwervePosition.init();
     SwervePID.init();
-    Pigeon.setYaw(270);
+    Pigeon.setYaw(90);
     VisionManager.init();
     ClimberManager.init();
-    ChoreoTrajectoryGenerator.init();
+    // ChoreoTrajectoryGenerator.init();
     Shooter.init();
-    // Intake.init();
+    Intake.init();
     AutoSelector.setup();
-    ChoreoTrajectoryGenerator.parseAll();
+    // ChoreoTrajectoryGenerator.parseAll();
     Telemetry.init();
   }
 
@@ -61,13 +63,14 @@ public class Robot extends TimedRobot {
     RTime.updateAbsolute();
     RTime.update();
     Telemetry.update(false);
+    Intake.beambreak.isBroken();
   }
 
   @Override
   public void autonomousInit() {
     OI.init();
     RTime.init();
-    Pigeon.setYaw(270);
+    Pigeon.setYaw(90);
     AutoSelector.run();
   }
 
@@ -99,16 +102,23 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    // SwervePosition.updateAveragePosVision();
+    SwervePosition.updateAveragePosVision();
+    // System.out.println(SwervePosition.getPosition().toString());
     // if(Robot.isReal())
     //   BannerLight.setTagInView(VisionManager.hasTarget());
   }
 
   @Override
-  public void testInit() {}
+  public void testInit() {
+    Intake.enableCoast();
+    ShooterPivot.enableCoast();
+  }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    Intake.setCoast();
+    ShooterPivot.setCoast();
+  }
 
   @Override
   public void simulationInit() {}

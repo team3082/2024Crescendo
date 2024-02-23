@@ -103,10 +103,10 @@ public class OI {
         double boostStrength = driverStick.getRawAxis(boost);
         if(boostStrength < 0.1) boostStrength = 0;
 
-        double kBoostCoefficient = NORMALSPEED + boostStrength * (1 - NORMALSPEED);
+        double kBoostCoefficient = NORMALSPEED + boostStrength * (0.7 - NORMALSPEED);
 
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
-        double rotate = driverStick.getRawAxis(rotateX) * -ROTSPEED;
+        double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
         double manualRPM = 2500.0;
         
@@ -126,7 +126,9 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SHOOTER
 
-        if (driverStick.getRawButton(eject)) Shooter.eject();
+        if (driverStick.getRawButton(eject)){
+            Intake.suck2();
+        }
 
         // Manually rev
         boolean shooterRevv = driverStick.getRawButton(revShooter);
@@ -176,10 +178,15 @@ public class OI {
         // INTAKE
 
 
-        if (driverStick.getRawAxis(intake) > 0.5)
+        if (driverStick.getRawAxis(intake) > 0.5) {
+            // Intake.suck2();
+            Intake.setState(IntakeState.GROUND);
             Intake.suck();
-        else
-            Intake.no();
+        }
+        else {
+            // Intake.no();
+            Intake.setState(IntakeState.STOW);
+        }
 
         if (driverStick.getRawButton(lock)) {
             for (SwerveModule module: SwerveManager.mods) {
