@@ -20,7 +20,7 @@ public final class Constants {
         public static final double INCHES_PER_ROTATION = 0.0;
         public static final double TICKS_PER_INCH = 0.0;
 
-        public static final double MAX_EXTENSION_TICKS = 0.0;
+        public static final double MAX_EXTENSION_TICKS = 1000000;
     }
 
     public static final class ShooterConstants {
@@ -86,7 +86,7 @@ public final class Constants {
 
         public static final double INROBOT_INTAKE_ANGLE = 300;//in ticks
         public static final double SOURCE_INTAKE_ANGLE = 0;
-        public static final double GROUND_INTAKE_ANGLE = 31000;
+        public static final double GROUND_INTAKE_ANGLE = 29200;
     }
 
     public static final class Swerve {

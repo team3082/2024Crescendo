@@ -58,6 +58,8 @@ public final class Shooter {
     private static final double handoffDeadTime = 6.5;
 
     public static double handoffLiveTime = 0.0;
+
+    public static final double deadband = 25.0;
     
     public static void init() {
         ShooterPivot.init();
@@ -125,74 +127,14 @@ public final class Shooter {
 
         switch (shooterMode) {
             case FIRING:
-
-                double timeNow = RTime.now();
-
                 if (atVelocity) {
                     Intake.suck2();
+                } else {
+                    if (varied)
+                     setVariedVelocity(targetTop, targetBottom);
+                    else
+                     setVelocity(targetVelocity);
                 }
-
-                if (varied)
-                    setVariedVelocity(targetTop, targetBottom);
-                else
-                    setVelocity(targetVelocity);
-
-                // Pass through the note ONLY when we have reached
-                // // the velocity
-
-                // // Determine the handoff's ideal state
-                // switch (handoffMode) {
-                //     case DISABLED:
-                //         // Lie in wait until we are at the velocity,
-                //         // then make us live.
-                //         if (atVelocity) {
-                //             handoffMode = HandoffStatus.FEED;
-                //             handoffLiveTime = timeNow + handoffTime;
-                //         }
-                //     break;
-                //     case FEED:
-                //         // We're running, so we wait until
-                //         // we are over our liveTime and then we stop.
-                //         if (timeNow > handoffLiveTime) {
-                //             handoffMode = HandoffStatus.STOP;
-                //             handoffLiveTime = timeNow + handoffDeadTime;
-                //         }
-                //     break;
-                //     case STOP:
-                //         // Restart the loop when we have ALREADY been stopped
-                //         // and at the desired velocity
-                //         handoffMode = HandoffStatus.DISABLED;
-                //     break;
-                //     case EJECT:
-                //         // Manually override this later so not needed
-                //     break;
-                // }
-
-                // Apply the handoff's state to the intake.
-                // Avoiding setting the mode direct because
-                // it'll override the driver's control.
-                // switch (handoffMode) {
-                //     case DISABLED:
-                //         Intake.bottomPID.setReference(0.0, ControlType.kDutyCycle);
-                //         System.out.println("DISABLED");
-                //     break;
-                //     case FEED:
-                //         // Feed us into the shooter!
-                //         // Intake.setState(IntakeState.FEED);
-                //         Intake.bottomPID.setReference(-0.35, ControlType.kDutyCycle);
-                //         System.out.println("FEED");
-                //     break;
-                //     case STOP:
-                //         // Prevent the note from shooting too early
-                //         Intake.bottomPID.setReference(0.0, ControlType.kDutyCycle);
-                //         System.out.println("STOP");
-                //     break;
-                //     case EJECT:
-                //         // Should be a safe speed...?
-                //        // Intake.conveyorMotor.set(-0.6);
-                //         System.out.println("EJECT");
-                //     break;
-                // }
             break;
 
             case REVVING:
@@ -347,12 +289,14 @@ public final class Shooter {
 
     /**
      * Can we fire a gamepiece?
+     * Checks the top flywheel first.
      */
     public static boolean canShoot() {
         double top = topMotor.getSelectedSensorVelocity() * VelToRPM;
-        double bottom = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
 
-        return /* ShooterPivot.atPos() && */ (0 == deadband(top, targetVelocity, 40.0)) && (0 == deadband(bottom, targetVelocity, 40.0));
+        double velDeadband = deadband * RPMToVel;
+        double err = Math.abs(top - targetVelocity * VelToRPM);
+        return err < velDeadband;
     }
 
     /**

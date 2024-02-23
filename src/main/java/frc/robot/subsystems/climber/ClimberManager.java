@@ -22,15 +22,17 @@ public final class ClimberManager {
 
     // raise the hooks unless the max extension has been reached
     public static void manualExtend() {
-        leftClimber.climberControlState = ClimberControlState.MANUAL_EXTENDING;
-        rightClimber.climberControlState = ClimberControlState.MANUAL_EXTENDING;
+        // leftClimber.climberControlState = ClimberControlState.MANUAL_EXTENDING;
+        // rightClimber.climberControlState = ClimberControlState.MANUAL_EXTENDING;
+        leftClimber.manualExtend();
+        rightClimber.manualExtend();
         
     }
 
     // lower the hooks unless the magnet is tripped
     public static void manualPull() { 
-        leftClimber.climberControlState = ClimberControlState.MANUAL_PULLING;
-        rightClimber.climberControlState = ClimberControlState.MANUAL_PULLING;
+        leftClimber.manualPull();
+        rightClimber.manualPull();
     }
 
     // raise the hooks unless the max extension has been reached

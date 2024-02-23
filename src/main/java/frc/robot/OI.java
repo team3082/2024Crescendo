@@ -108,7 +108,7 @@ public class OI {
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
-        double manualRPM = 2500.0;
+        double manualRPM = 3500;
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
@@ -155,13 +155,13 @@ public class OI {
                  // manual for now, change to auto when tuned
                  // use the arr variable above for that
                 case SPEAKER:
-                    ShooterPivot.setPosition(Math.toRadians(57.0));
+                    ShooterPivot.setPosition(Math.toRadians(61.0));
                     Shooter.revTo(manualRPM);
                     Shooter.shoot();
                 break;
 
                 case SPEAKER_MANUAL:
-                    ShooterPivot.setPosition(Math.toRadians(57.0));
+                    ShooterPivot.setPosition(Math.toRadians(61.0));
                     Shooter.revTo(manualRPM);
                     Shooter.shoot();
                 break;
@@ -226,15 +226,17 @@ public class OI {
         if (operatorStick.getRawButtonPressed(setManualClimb)) {
             manualClimbSet = true;
         }
-
-        if (manualClimbSet) {
+        // System.out.println(manualClimbSet);
+        if (true) {
             // DPAD UP
             if (operatorStick.getPOV() == climberUp) {
                 ClimberManager.manualExtend();
+                System.out.println("extending");
             } 
             // DPAD DOWN
             else if (operatorStick.getPOV() == climberDown) {
                 ClimberManager.manualPull();
+                System.out.println("pulling");
             }
             // NO CLIMBER INPUT
             else {

@@ -43,9 +43,9 @@ public final class Intake {
         
         pivotMotor.config_kP(0, 0.1, 30);
         pivotMotor.config_kI(0, 0.0, 30);
-        pivotMotor.config_kD(0, 0.01, 30);
+        pivotMotor.config_kD(0, 0.02, 30);
 
-        pivotMotor.configMotionAcceleration(50000);
+        pivotMotor.configMotionAcceleration(40000);
         pivotMotor.configMotionCruiseVelocity(15000);
         pivotMotor.configMotionSCurveStrength(1);
 

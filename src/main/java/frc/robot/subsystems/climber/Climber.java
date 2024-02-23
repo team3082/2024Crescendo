@@ -119,7 +119,7 @@ public class Climber {
         if (this.motor.getSelectedSensorPosition() >= MAX_EXTENSION_TICKS) {
             this.motor.neutralOutput();
         } else {
-            this.motor.set(ControlMode.PercentOutput, 0.35);
+            this.motor.set(ControlMode.PercentOutput, 0.8);
         }
     }
 
@@ -128,7 +128,7 @@ public class Climber {
         if (!(this.sensor.get())) {
             this.motor.neutralOutput();
         } else {
-            this.motor.set(ControlMode.PercentOutput, -0.35);
+            this.motor.set(ControlMode.PercentOutput, -0.8);
         }
     }
 
