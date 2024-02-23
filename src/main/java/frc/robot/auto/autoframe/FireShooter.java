@@ -1,9 +1,11 @@
 package frc.robot.auto.autoframe;
 
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.utils.RTime;
 
 public class FireShooter extends Autoframe {
-    private double velocity;
+    double startTime;
+    double exitTime = 3;
 
     public FireShooter() {
         blocking = false;
@@ -12,12 +14,15 @@ public class FireShooter extends Autoframe {
     @Override
     public void start() {
         Shooter.shoot();
+        startTime = RTime.now();
     }
 
     @Override
     public void update() {
-        if (Shooter.canShoot()) {
+        if (RTime.now() > startTime + exitTime) {
             this.done = true;
+        } else {
+            Shooter.shoot();
         }
     }
 }
