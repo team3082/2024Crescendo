@@ -13,7 +13,6 @@ public class FireShooter extends Autoframe {
 
     @Override
     public void start() {
-        Shooter.shoot();
         startTime = RTime.now();
     }
 

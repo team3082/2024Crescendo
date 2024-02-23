@@ -55,7 +55,16 @@ public class Auto {
         queueFrames(frames);
     }
 
+    public static void test() {
 
+        Autoframe[] frames = new Autoframe[] {
+            new SetShooterAngle(Math.toRadians(58.8)),
+            new SetShooterVelocity(2650),
+            new FireShooter(),
+            new SetIntake(IntakeState.GROUND),
+        };
+        queueFrames(frames);
+    }
 
     public static void choreoTest() {
         

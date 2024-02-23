@@ -90,7 +90,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    RTime.update();
     Shooter.update();
     SwervePosition.update();
     OI.userInput();
@@ -103,7 +102,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     SwervePosition.updateAveragePosVision();
-    // System.out.println(SwervePosition.getPosition().toString());
+    System.out.println(SwervePosition.getPosition().toString());
     // if(Robot.isReal())
     //   BannerLight.setTagInView(VisionManager.hasTarget());
   }
