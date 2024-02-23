@@ -127,7 +127,7 @@ public class OI {
         // SHOOTER
 
         if (driverStick.getRawButton(eject)){
-            Intake.suck2();
+            Intake.runHandoff();
         }
 
         // Manually rev

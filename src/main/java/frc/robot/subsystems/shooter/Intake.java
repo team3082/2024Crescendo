@@ -176,7 +176,10 @@ public final class Intake {
         // System.out.println(suckState.name());
     }
 
-    public static void suck2() {
+    /**
+     * Runs the handoff
+     */
+    public static void runHandoff() {
         topPID.setReference(-0.8, ControlType.kDutyCycle);
         bottomPID.setReference(-0.8, ControlType.kDutyCycle);
     }

@@ -122,7 +122,7 @@ public final class Shooter {
         switch (shooterMode) {
             case FIRING:
                 if (atVelocity) {
-                    Intake.suck2(); // fire if we are ready
+                    Intake.runHandoff(); // fire if we are ready
                 } else { // otherwise keep revvin till we are
                     if (varied)
                         setVariedVelocity(targetTop, targetBottom);
