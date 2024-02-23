@@ -1,20 +1,17 @@
 package frc.robot.subsystems.shooter;
 
 import static frc.robot.Constants.ShooterConstants.*;
-import static frc.robot.utils.RMath.deadband;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.swerve.SwervePosition;
-import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 
 @SuppressWarnings("removal")
@@ -51,11 +48,6 @@ public final class Shooter {
     public static double temp;
 
     public static boolean varied = false;
-
-    // When firing the shooter automatically, 
-    // keep the handoff on only for x seconds
-    private static final double handoffTime = 6.5;
-    private static final double handoffDeadTime = 6.5;
 
     public static double handoffLiveTime = 0.0;
 
@@ -95,8 +87,10 @@ public final class Shooter {
         bottomMotor.config_kD(0, 0);
         bottomMotor.config_kF(0, 1023.0 * 0.6266 / 11808.0);
 
-        //topMotor.configVoltageCompSaturation(12.2);
-        //bottomMotor.enableVoltageCompensation(true);
+        topMotor.configVoltageCompSaturation(12);
+        bottomMotor.configVoltageCompSaturation(12);
+        topMotor.enableVoltageCompensation(true);
+        bottomMotor.enableVoltageCompensation(true);
 
         // Zero vars
         targetVelocity = 0.0;

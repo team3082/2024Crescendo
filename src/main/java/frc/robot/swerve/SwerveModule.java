@@ -71,8 +71,13 @@ public class SwerveModule {
 
         SupplyCurrentLimitConfiguration currentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0 );
         drive.configSupplyCurrentLimit(currentLimit);
-        drive.configVoltageCompSaturation(12.5);
+        drive.configVoltageCompSaturation(11.9);
         drive.enableVoltageCompensation(true);
+
+        SupplyCurrentLimitConfiguration steerCurrentLimit = new SupplyCurrentLimitConfiguration(true, 30, 30, 0 );
+        steer.configSupplyCurrentLimit(steerCurrentLimit);
+        steer.configVoltageCompSaturation(11.9);
+        steer.enableVoltageCompensation(true);
 
         this.cancoderOffset = cancoderOffset;
 

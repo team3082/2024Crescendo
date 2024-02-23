@@ -20,5 +20,4 @@ public class ChoreoFollow extends TrajectoryFollow{
         controller.setTrajectory(getChoreo(trajName));
         super.start();
     }
-
 }

@@ -49,11 +49,11 @@ public class Robot extends TimedRobot {
     Pigeon.setYaw(90);
     VisionManager.init();
     ClimberManager.init();
-    // ChoreoTrajectoryGenerator.init();
+    ChoreoTrajectoryGenerator.init();
     Shooter.init();
     Intake.init();
     AutoSelector.setup();
-    // ChoreoTrajectoryGenerator.parseAll();
+    ChoreoTrajectoryGenerator.parseAll();
     Telemetry.init();
   }
 

@@ -25,7 +25,7 @@ public class VisionManager {
     // PI / 2 is pointing straight forward
     private static double[] cameraRots = new double[camNum];
 
-    private static double cameraHeight = 22.0;
+    // private static double cameraHeight = 22.0;
 
     // Positions of the apriltags, in inches.
     // See: https://www.desmos.com/calculator/xm8hs63y3r

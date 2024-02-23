@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import frc.robot.auto.autoframe.*;
 import frc.robot.sensors.Pigeon;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
@@ -58,10 +56,21 @@ public class Auto {
     public static void test() {
 
         Autoframe[] frames = new Autoframe[] {
+            // Shoot preloaded from subwoofer
             new SetShooterAngle(Math.toRadians(58.8)),
             new SetShooterVelocity(2650),
             new FireShooter(),
+            new ClearActive(),
+
+            // Set intake to ground, intake for 3 seconds
+            // while driving to piece, go back to subwoofer,
+            // wait till Choreo is finished and then shoot.
             new SetIntake(IntakeState.GROUND),
+            new ChoreoFollow("Test"),
+            new SetShooterAngle(Math.toRadians(58.8)),
+            new SetShooterVelocity(2650),
+            new FireShooter(),
+            new ClearActive(),
         };
         queueFrames(frames);
     }
