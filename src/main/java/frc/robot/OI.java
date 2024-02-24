@@ -103,7 +103,7 @@ public class OI {
         double boostStrength = driverStick.getRawAxis(boost);
         if(boostStrength < 0.1) boostStrength = 0;
 
-        double kBoostCoefficient = NORMALSPEED + boostStrength * (0.7 - NORMALSPEED);
+        double kBoostCoefficient = NORMALSPEED + boostStrength * (1.0 - NORMALSPEED);
 
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;

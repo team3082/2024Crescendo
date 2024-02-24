@@ -2,6 +2,7 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 /**
  * Class for selecting autonomous routines.
@@ -38,9 +39,8 @@ public class AutoSelector {
         selectedAuto = autoChooser.getSelected();
 
         switch(autoChooser.getSelected()) {
-
             case "No Auto":
-            
+                CommandAuto.init(Commands.none());     
             break;
 
             case "4 Piece Amp":
@@ -74,11 +74,11 @@ public class AutoSelector {
             break;
             
             case "4 Piece Middle":
-                CommandAuto.init(CommandAuto.fourPieceMiddle());
+               // CommandAuto.init(CommandAuto.fourPieceMiddle());
             break;
 
             case "Test":
-                Auto.test();
+                CommandAuto.init(CommandAuto.test());
             break;
         }
     }

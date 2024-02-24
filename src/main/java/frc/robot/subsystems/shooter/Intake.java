@@ -57,8 +57,8 @@ public final class Intake {
         topBeltMotor = new CANSparkMax(31, MotorType.kBrushless);
         topBeltMotor.restoreFactoryDefaults();
         topBeltMotor.setIdleMode(IdleMode.kCoast);
-        topBeltMotor.enableVoltageCompensation(11.6);
-        topBeltMotor.setSmartCurrentLimit(30);
+        topBeltMotor.enableVoltageCompensation(9.6);
+        topBeltMotor.setSmartCurrentLimit(20);
         topBeltMotor.setCANTimeout(30);
 
         topPID = topBeltMotor.getPIDController();
@@ -71,8 +71,8 @@ public final class Intake {
         bottomBeltMotor = new CANSparkMax(30, MotorType.kBrushless);
         bottomBeltMotor.restoreFactoryDefaults();
         bottomBeltMotor.setIdleMode(IdleMode.kCoast);
-        bottomBeltMotor.enableVoltageCompensation(11.8);
-        bottomBeltMotor.setSmartCurrentLimit(35); // works harder than the top motor
+        bottomBeltMotor.enableVoltageCompensation(9.8);
+        bottomBeltMotor.setSmartCurrentLimit(20); // works harder than the top motor
         bottomBeltMotor.setCANTimeout(30);
 
         bottomPID = bottomBeltMotor.getPIDController();
@@ -167,8 +167,8 @@ public final class Intake {
 
         // if it has the piece it can intake if it doesnt it cant
         if (!hasPiece) {
-            topPID.setReference(-0.5, ControlType.kDutyCycle);
-            bottomPID.setReference(-0.5, ControlType.kDutyCycle);
+            topPID.setReference(-0.35, ControlType.kDutyCycle);
+            bottomPID.setReference(-0.35, ControlType.kDutyCycle);
         } else {
             topPID.setReference(0.0, ControlType.kDutyCycle);
             bottomPID.setReference(0.0, ControlType.kDutyCycle);

@@ -114,7 +114,7 @@ public final class ShooterPivot {
         if (RobotBase.isSimulation()) {
             return true;
         }
-        return false;
+        return radToTicks(motor.getSelectedSensorPosition()) < radToTicks(targetPos) + Math.toRadians(1.2) || radToTicks(motor.getSelectedSensorPosition()) > radToTicks(targetPos) - Math.toRadians(1.2);
     }
     
     public static void update() {

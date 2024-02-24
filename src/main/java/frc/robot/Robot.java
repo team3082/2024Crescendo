@@ -72,9 +72,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    
-    
-    OI.init();
     RTime.init();
     Pigeon.setYaw(90);
 	  CommandScheduler.getInstance().enable();
@@ -87,7 +84,7 @@ public class Robot extends TimedRobot {
     //Auto.update();
     SwervePosition.update();
     CommandAuto.update();
-    //Shooter.update();
+    Shooter.update();
     // SwerveManager.rotateAndDrive(0.0, new Vector2(1.0, 0.0));
   }
 

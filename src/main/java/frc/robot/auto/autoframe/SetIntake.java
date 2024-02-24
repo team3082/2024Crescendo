@@ -25,6 +25,7 @@ public class SetIntake extends Autoframe {
     public void update() {
         Intake.suck();        
         if (Intake.beambreak.isBroken()) {
+            System.out.println("i can see");
             Intake.setState(IntakeState.STOW);
             Intake.no();
             this.done = true;

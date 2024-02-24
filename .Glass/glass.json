@@ -26,9 +26,18 @@
       "/Shuffleboard/SmartDashboard/Custom Field": "Mechanism2d",
       "/Shuffleboard/SmartDashboard/Field View": "Field2d",
       "/Shuffleboard/SmartDashboard/Subsystems": "Mechanism2d",
-      "/Shuffleboard/SmartDashboard/Swerve": "Mechanism2d"
+      "/Shuffleboard/SmartDashboard/Swerve": "Mechanism2d",
+      "/SmartDashboard/Auto Choices": "String Chooser",
+      "/SmartDashboard/Auto choices": "String Chooser",
+      "/SmartDashboard/NAVX": "Gyro",
+      "/SmartDashboard/Odometry Pose Field": "Field2d"
     },
     "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      },
       "/Shuffleboard/SmartDashboard/Auto Selector": {
         "window": {
           "visible": true

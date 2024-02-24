@@ -1,5 +1,8 @@
 package frc.robot.auto;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -75,20 +78,13 @@ public class CommandAuto {
             // new SetShoot(), // shoot current piece
     }
 
-    public static Command test() {
-      DiscreteTraj traj1 = ChoreoTrajectoryGenerator.getChoreo("New Path.1");
-        SwerveState start = traj1.startState();
-        SwervePosition.setPosition(start.getPos());;
-        Pigeon.setYawRad(start.theta);
-        PIDFollower f = new PIDFollower();
-        f.setTrajectory(traj1);
-
+    public static Command test2() {
+        SwervePosition.setPosition(new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
-            // Shoot preloaded from subwoofer
-            new SetShooterAngle(Math.toRadians(58.8)),
-            //new SetShooterVelocity(2650),
-            new RotateToPoint(new Vector2(-56.78, -327.1))
+              // Shoot preloaded from subwoofer
+              new SetShooterAngle(Math.toRadians(58.8)),
+              new SetShooterVelocity(3500)
             ),
             new FireShooter(),
             //new ClearActive(),
@@ -97,20 +93,50 @@ public class CommandAuto {
             // while driving to piece, go back to subwoofer,
             // wait till Choreo is finished and then shoot.
             new ParallelCommandGroup(
-            new SetIntake(IntakeState.GROUND),
-            new SequentialCommandGroup(
-            new ChoreoFollow("New Path.1"),
-            new ChoreoFollow("New Path.2")
+              new SetIntake(IntakeState.GROUND),
+              new ChoreoFollow("2 Piece Middle.1"),
+              new SetShooterAngle(Math.toRadians(58.8)),
+              new SetShooterVelocity(3500)
             ),
-            new SetShooterAngle(Math.toRadians(58.8))
-            //new SetShooterVelocity(2650)
-            ),
-            new RotateTo(Math.PI/2 - SwervePosition.getAngleOffsetToTarget(new Vector2(56.78, 327.1))),
-            new FireShooter()
+            new ChoreoFollow("2 Piece Middle.2"),
+            new FireShooter(),
+            new SetShooterVelocity(0),
+            new SetShooterAngle(30)
             //new ClearActive()
         );
     }
-    
+    public static Command test() {
+      SwervePosition.setPosition(new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
+      return new SequentialCommandGroup(
+        new ParallelCommandGroup(
+          new SetShooterAngle(Math.toRadians(58.8)),
+          new SetShooterVelocity(3500)
+        ),
+        new FireShooter(),
+        new ParallelCommandGroup(
+          new SetIntake(IntakeState.GROUND),
+          new ChoreoFollow("3 Piece Middle.1")
+        ),
+        new ParallelCommandGroup(
+          new SetShooterAngle(Math.toRadians(59.8)),
+          new ChoreoFollow("3 Piece Middle.2"),
+          new SetShooterVelocity(3500)
+        ),
+        new FireShooter(),
+        new ParallelCommandGroup(
+          new SetIntake(IntakeState.GROUND),
+          new ChoreoFollow("3 Piece Middle.3")
+        ),
+        new ParallelCommandGroup(
+          new SetShooterAngle(Math.toRadians(59.8)),
+          new ChoreoFollow("3 Piece Middle.4"),
+          new SetShooterVelocity(3500)
+        ),
+        new FireShooter()
+        
+        // new SetShooterVelocity(0)
+      );
+    }
     /*public static Command fourPieceMiddle() {
       SwerveTrajectory traj = ChoreoTrajectoryGenerator.getChoreo("4 Piece Center.1");
       SwerveState start = traj.startState();
