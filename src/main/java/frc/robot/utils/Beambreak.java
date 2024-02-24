@@ -11,15 +11,15 @@ public class Beambreak {
     /**The minimum distance in which the beam is not broken in mm*/
     private final double distThreshold;
 
-    public Beambreak(int canID, double distThreshold){
+    public Beambreak(int canID, double distThreshold) {
         this.sensor = new LaserCan(canID);
         this.distThreshold = distThreshold;
 
-        try{
+        try {
             //Setting max distance lower if possible for more accurate measurements
-            if(this.distThreshold < 1300){
+            if (this.distThreshold < 1300) {
                 sensor.setRangingMode(LaserCan.RangingMode.SHORT);
-            }else{
+            } else {
                 sensor.setRangingMode(LaserCan.RangingMode.LONG);
             }
 
@@ -27,24 +27,22 @@ public class Beambreak {
             sensor.setTimingBudget(TimingBudget.TIMING_BUDGET_20MS);
 
             //setting to narrow fov
-            sensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,6,6));//TODO probably tune this and also make sure it is centered
-        }catch(ConfigurationFailedException e){
+            sensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,2,2)); //TODO probably tune this and also make sure it is centered
+        } catch(ConfigurationFailedException e) {
             System.err.println("LaserCan, more like LaserCan't");
             e.printStackTrace();
         }
     }
 
-    public boolean isBroken(){
+    public boolean isBroken() {
         if (RobotBase.isSimulation()) {
             return true;
-        }
-        else {
+        } else {
             Measurement measurement = sensor.getMeasurement();
             //if the measurement is funny, we don't consider it. I don't feel like throwing an exception or logging rn
-            if(measurement.status != LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT){
+            if (measurement.status != LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
                 return false;
             }
-
             return measurement.distance_mm < distThreshold;
         }
     }

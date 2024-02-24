@@ -1,35 +1,35 @@
 package frc.robot.auto.autoframe;
 
-import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.shooter.Intake;
+import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.utils.RTime;
 
 public class SetIntake extends Autoframe {
-    double simDelay;
+    double timeDelay;
+    IntakeState s;
 
-    public SetIntake() {
+    public SetIntake(IntakeState state) {
         blocking = false;
+        s = state;
     }
 
     @Override
     public void start() {
-        //Intake.setState(GROUND);
-        this.simDelay = RTime.now();
+        Intake.setState(s);
+        if (s == IntakeState.GROUND)
+            Intake.suck();
+        this.timeDelay = RTime.now();
     }
 
     @Override
     public void update() {        
-        if (Intake.pieceGrabbed()) {
-            if (RobotBase.isSimulation()) {
-                if (simDelay < RTime.now() - 1) {
-                    //Intake.setState(STOW);
-                    this.done = true;
-                }
-            }
-            else {
-                //Intake.setState(STOW);
-                this.done = true;
-            }
+        if (Intake.pieceGrabbed() && RTime.now() >= timeDelay + 3.0) {
+            Intake.setState(IntakeState.STOW);
+            this.done = true;
+        } else {
+            Intake.setState(s);
+            if (s == IntakeState.GROUND)
+                Intake.suck();
         }
     }
 }

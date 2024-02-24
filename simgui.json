@@ -50,12 +50,20 @@
     }
   },
   "NetworkTables": {
-    "Retained Values": {
-      "open": false
+    "retained": {
+      "Shuffleboard": {
+        "SmartDashboard": {
+          "Auto Selector": {
+            "open": true
+          },
+          "open": true
+        },
+        "open": true
+      }
     },
     "transitory": {
       "Shuffleboard": {
-        "Move PID": {
+        "Climber": {
           "open": true
         },
         "Positions": {
@@ -70,8 +78,5 @@
       "open": true
     },
     "visible": true
-  },
-  "NetworkTables View": {
-    "visible": false
   }
 }

@@ -69,7 +69,7 @@ public final class ShooterPivot {
         // please please pleaaasssee turn around !!!
         SupplyCurrentLimitConfiguration pivotCurrentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0 );
         motor.configSupplyCurrentLimit(pivotCurrentLimit);
-        motor.configVoltageCompSaturation(12.2);
+        motor.configVoltageCompSaturation(11.6);
         motor.enableVoltageCompensation(true);
 
         motor.setInverted(false);
@@ -120,5 +120,13 @@ public final class ShooterPivot {
     public static void update() {
         motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos));
         actualPos = ticksToRad(motor.getSelectedSensorPosition());
+    }
+
+    public static void enableCoast() {
+        motor.setNeutralMode(NeutralMode.Coast);
+    }
+
+    public static void setCoast() {
+        motor.neutralOutput();
     }
 }

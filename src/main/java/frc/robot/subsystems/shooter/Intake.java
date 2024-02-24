@@ -3,13 +3,12 @@ package frc.robot.subsystems.shooter;
 import static frc.robot.Constants.Intake.*;
 import static frc.robot.Tuning.Intake.*;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -18,6 +17,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
 import frc.robot.utils.Beambreak;
+import frc.robot.utils.RTime;
 
 @SuppressWarnings("removal")
 public final class Intake {
@@ -25,8 +25,9 @@ public final class Intake {
     private static TalonFX pivotMotor;
     private static CANSparkMax topBeltMotor, bottomBeltMotor; // bottom = handoff too
     private static RelativeEncoder topEncoder, bottomEncoder;
-    private static SparkPIDController topPID, bottomPID;
-    private static Beambreak beambreak;
+    private static SparkPIDController topPID;
+    public static SparkPIDController bottomPID;
+    public static Beambreak beambreak;
 
     private static IntakeState state = IntakeState.STOW;
 
@@ -40,20 +41,20 @@ public final class Intake {
         pivotMotor.configNeutralDeadband(0.01);
         pivotMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 30);
         
-        pivotMotor.config_kP(0, INTAKEPIVOTKP, 30);
-        pivotMotor.config_kI(0, INTAKEPIVOTKI, 30);
-        pivotMotor.config_kD(0, INTAKEPIVOTKD, 30);
+        pivotMotor.config_kP(0, 0.1, 30);
+        pivotMotor.config_kI(0, 0.0, 30);
+        pivotMotor.config_kD(0, 0.02, 30);
 
-        pivotMotor.configMotionAcceleration(INTAKEPIVOTMAXACCEL);
-        pivotMotor.configMotionCruiseVelocity(INTAKEPIVOTMAXACCEL);
-        pivotMotor.configMotionSCurveStrength(INTAKEPIVOTJERKSTRENGTH);
+        pivotMotor.configMotionAcceleration(40000);
+        pivotMotor.configMotionCruiseVelocity(15000);
+        pivotMotor.configMotionSCurveStrength(1);
 
         SupplyCurrentLimitConfiguration pivotCurrentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0 );
         pivotMotor.configSupplyCurrentLimit(pivotCurrentLimit);
-        pivotMotor.configVoltageCompSaturation(12.2);
+        pivotMotor.configVoltageCompSaturation(11.6);
         pivotMotor.enableVoltageCompensation(true);
         
-        topBeltMotor = new CANSparkMax(0, MotorType.kBrushless);
+        topBeltMotor = new CANSparkMax(31, MotorType.kBrushless);
         topBeltMotor.restoreFactoryDefaults();
         topBeltMotor.setIdleMode(IdleMode.kCoast);
         topBeltMotor.enableVoltageCompensation(11.6);
@@ -63,11 +64,11 @@ public final class Intake {
         topPID = topBeltMotor.getPIDController();
         topEncoder = topBeltMotor.getEncoder();
 
-        topPID.setP(0);
+        topPID.setP(0.005);
         topPID.setI(0);
-        topPID.setD(0);
+        topPID.setD(0.003);
 
-        bottomBeltMotor = new CANSparkMax(0, MotorType.kBrushless);
+        bottomBeltMotor = new CANSparkMax(30, MotorType.kBrushless);
         bottomBeltMotor.restoreFactoryDefaults();
         bottomBeltMotor.setIdleMode(IdleMode.kCoast);
         bottomBeltMotor.enableVoltageCompensation(11.8);
@@ -77,12 +78,14 @@ public final class Intake {
         bottomPID = bottomBeltMotor.getPIDController();
         bottomEncoder = bottomBeltMotor.getEncoder();
 
-        bottomPID.setP(0);
+        bottomPID.setP(0.005);
         bottomPID.setI(0);
-        bottomPID.setD(0);
+        bottomPID.setD(0.001);
 
         topBeltMotor.burnFlash();
         bottomBeltMotor.burnFlash();
+
+        beambreak = new Beambreak(LASER_ID, LASER_BREAK_DIST);
 
         try {
             Thread.sleep(2000);
@@ -93,9 +96,10 @@ public final class Intake {
         topBeltMotor.burnFlash();
         bottomBeltMotor.burnFlash();
 
-       // beambreak = new Beambreak(LASER_ID, 300);
+       beambreak = new Beambreak(LASER_ID, 300);
 
        // Zero the Falcon's relative encoder LAST
+       // 0 points up
        pivotMotor.setSelectedSensorPosition(0);
     }
 
@@ -109,10 +113,10 @@ public final class Intake {
     }
 
     private static double radToTicks(double angleRad) {
-        return angleRad * INTAKERATIO * 2048.0 / Math.PI / 2.0;
+        return (angleRad / (2.0 * Math.PI)) * INTAKERATIO * 2048.0;
     }
 
-    public static void update() {//TODO add logic for using the beambreak
+    public static void update() { //TODO add logic for using the beambreak
         switch (state) {
             case SOURCE:
                 source();
@@ -134,19 +138,50 @@ public final class Intake {
 
     private static void stow() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);
-        topPID.setReference(0, ControlType.kVelocity);
-        bottomPID.setReference(0, ControlType.kVelocity);
+        topPID.setReference(0, ControlType.kDutyCycle);
+        bottomPID.setReference(0, ControlType.kDutyCycle);
     }
 
     private static void ground() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, GROUND_INTAKE_ANGLE);
-        topPID.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);
-        bottomPID.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);
+        topPID.setReference(-0.35, ControlType.kDutyCycle);
+        bottomPID.setReference(-0.35, ControlType.kDutyCycle);
     }
 
+    public enum SuckState {
+        CONTINUE_SUCK,
+        STOP_SUCK
+    }
+
+    public static SuckState suckState = SuckState.CONTINUE_SUCK;
+    public static double suckTime = 0.0;
+    public static boolean hasPiece;
+
     public static void suck() {
-        topPID.setReference(1, ControlType.kDutyCycle);
-        bottomPID.setReference(1, ControlType.kDutyCycle);
+
+        if (beambreak.isBroken()) {
+            hasPiece = true;
+        } else if (!beambreak.isBroken()) {
+            hasPiece = false;
+        }
+
+        // if it has the piece it can intake if it doesnt it cant
+        if (!hasPiece) {
+            topPID.setReference(-0.5, ControlType.kDutyCycle);
+            bottomPID.setReference(-0.5, ControlType.kDutyCycle);
+        } else {
+            topPID.setReference(0.0, ControlType.kDutyCycle);
+            bottomPID.setReference(0.0, ControlType.kDutyCycle);
+        }
+        // System.out.println(suckState.name());
+    }
+
+    /**
+     * Runs the handoff
+     */
+    public static void runHandoff() {
+        topPID.setReference(-0.8, ControlType.kDutyCycle);
+        bottomPID.setReference(-0.8, ControlType.kDutyCycle);
     }
 
     public static void no() {
@@ -157,8 +192,8 @@ public final class Intake {
     // NEVER CALL THIS ANYWHERE ELSE OTHER THAN SHOOTER
     private static void feed() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);
-        topPID.setReference(FEEDSTRENGTH, ControlType.kDutyCycle);
-        bottomPID.setReference(FEEDSTRENGTH, ControlType.kDutyCycle);
+        topPID.setReference(-0.35, ControlType.kDutyCycle);
+        bottomPID.setReference(-0.35, ControlType.kDutyCycle);
     }
 
     private static void source() {
@@ -168,16 +203,24 @@ public final class Intake {
     }
 
     public static boolean pieceGrabbed() {
-        return true;
+        return beambreak.isBroken();
     }
 
 
-    // public static void setState(IntakeState newState) {
-        //state = newState;
-    //}
+    public static void setState(IntakeState newState) {
+        state = newState;
+    }
 
     public static double getIntakeAngleRad() {
         return ticksToRad(pivotMotor.getSelectedSensorPosition());
+    }
+
+    public static void enableCoast() {
+        pivotMotor.setNeutralMode(NeutralMode.Coast);
+    }
+
+    public static void setCoast() {
+        pivotMotor.neutralOutput();
     }
 
     public static enum IntakeState {

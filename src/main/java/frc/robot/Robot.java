@@ -14,7 +14,9 @@ import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
 import frc.robot.subsystems.climber.ClimberManager;
+import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -37,7 +39,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     try {
-      Thread.sleep(2000);
+      Thread.sleep(10000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -46,16 +48,16 @@ public class Robot extends TimedRobot {
     SwerveManager.init();
     SwervePosition.init();
     SwervePID.init();
-    Pigeon.setYaw(270);
+    Pigeon.setYaw(90);
     VisionManager.init();
-    Telemetry.init();
+    ClimberManager.init();
     ChoreoTrajectoryGenerator.init();
     ChoreoTrajectoryGenerator.parseAll();
     Shooter.init();
-    // Intake.init();
-    ClimberManager.init();
+    Intake.init();
     AutoSelector.setup();
-    
+    ChoreoTrajectoryGenerator.parseAll();
+    Telemetry.init();
   }
 
   @Override
@@ -65,6 +67,7 @@ public class Robot extends TimedRobot {
     RTime.updateAbsolute();
     RTime.update();
     Telemetry.update(false);
+    Intake.beambreak.isBroken();
   }
 
   @Override
@@ -73,9 +76,8 @@ public class Robot extends TimedRobot {
     
     OI.init();
     RTime.init();
-    Pigeon.setYaw(270);
-    //CommandAuto.init();
-    CommandScheduler.getInstance().enable();
+    Pigeon.setYaw(90);
+	CommandScheduler.getInstance().enable();
     AutoSelector.run();
   }
 
@@ -91,19 +93,15 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     OI.init();
-    // SwervePosition.enableVision();
-    // ShooterPivot.setPosition(-Math.PI / 2.0);
+    SwervePosition.enableVision();
   }
 
   @Override
   public void teleopPeriodic() {
-    RTime.update();
     Shooter.update();
-    ClimberManager.update();
     SwervePosition.update();
     OI.userInput();
-    // Shooter.setShooterAngleForSpeaker();
-    // OI.operatorInput();
+    // ClimberManager.update();
   }
 
   @Override
@@ -113,18 +111,22 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    // SwervePosition.updateAveragePosVision();
-    if(Robot.isReal())
-      BannerLight.setTagInView(VisionManager.hasTarget());
+    SwervePosition.updateAveragePosVision();
+    System.out.println(SwervePosition.getPosition().toString());
+    // if(Robot.isReal())
+    //   BannerLight.setTagInView(VisionManager.hasTarget());
   }
 
   @Override
   public void testInit() {
+    Intake.enableCoast();
+    ShooterPivot.enableCoast();
   }
 
   @Override
   public void testPeriodic() {
-    
+    Intake.setCoast();
+    ShooterPivot.setCoast();
   }
 
   @Override

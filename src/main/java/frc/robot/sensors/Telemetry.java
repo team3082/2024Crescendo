@@ -18,6 +18,7 @@ import frc.robot.Constants;
 import frc.robot.OI;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.auto.AutoSelector;
+import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
@@ -71,6 +72,7 @@ public class Telemetry {
     private static final ShuffleboardTab rotTab = Shuffleboard.getTab("Rot PID");
     private static final ShuffleboardTab pos = Shuffleboard.getTab("Positions");
     private static final ShuffleboardTab shooter = Shuffleboard.getTab("Shooter");
+    private static final ShuffleboardTab climber = Shuffleboard.getTab("Climber");
     // private static final ShuffleboardTab intake = Shuffleboard.getTab("Intake");
 
     // NetworkTable entries
@@ -135,6 +137,10 @@ public class Telemetry {
     private static final GenericEntry TOPVECTOR = shooter.add("Top Flywheel Vector", OI.topVector).getEntry();
     private static final GenericEntry BOTTOMVECTOR = shooter.add("Bottom Flywheel Vector", OI.bottomVector).getEntry();
     // private static final GenericEntry FLYWHEELATVEL = shooter.add("Flywheel At Velocity", Shooter.canShoot()).getEntry();
+
+    // Climber
+    private static final GenericEntry LEFTCLIMBERSTATE = climber.add("Left Climber State", ClimberManager.leftClimber.climberControlState.name()).getEntry();
+    private static final GenericEntry RIGHTCLIMBERSTATE = climber.add("Right Climber State", ClimberManager.rightClimber.climberControlState.name()).getEntry();
 
     private static final GenericEntry pivotAngle = shooter.add("Pivot Angle", ShooterPivot.actualPos).getEntry();
     private static final GenericEntry pivotTargetAngle = shooter.add("Pivot Target Angle", ShooterPivot.targetPos).getEntry();
@@ -203,7 +209,7 @@ public class Telemetry {
         Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
 
         // -1 if we're on the red alliance, 1 if we're on the blue alliance
-        int allianceMultiplier = (alliance == DriverStation.Alliance.Red) ? -1 : 1;
+        int allianceMultiplier = (alliance == DriverStation.Alliance.Blue) ? -1 : 1;
 
         swervePos.setString(SwervePosition.getPosition().toString());
 
@@ -217,6 +223,9 @@ public class Telemetry {
         pivotAngle.setDouble(ShooterPivot.actualPos);
         pivotTargetAngle.setDouble(ShooterPivot.targetPos);
        // FLYWHEELATVEL.setBoolean(Shooter.canShoot());
+
+        LEFTCLIMBERSTATE.setString(ClimberManager.leftClimber.climberControlState.name());
+        RIGHTCLIMBERSTATE.setString(ClimberManager.rightClimber.climberControlState.name());
 
         if (RobotBase.isSimulation()) {
             // Allow the user to drag the robot around if we're in simulation mode
@@ -263,10 +272,10 @@ public class Telemetry {
         SwervePID.rotPID.deadband = rotDeadBand.getDouble(0);
 
         // Shooter
-        Shooter.targetVelocity = FLYWHEELTARGETRPM.getDouble(0) * RPMToVel;
-        ShooterPivot.targetPos = Math.toRadians(pivotTargetAngle.getDouble(35));
-        OI.topVector = TOPVECTOR.getDouble(0) * RPMToVel;
-        OI.bottomVector = BOTTOMVECTOR.getDouble(0) * RPMToVel;
+        // Shooter.targetVelocity = FLYWHEELTARGETRPM.getDouble(0) * RPMToVel;
+        // ShooterPivot.targetPos = Math.toRadians(pivotTargetAngle.getDouble(35));
+        // OI.topVector = TOPVECTOR.getDouble(0) * RPMToVel;
+        // OI.bottomVector = BOTTOMVECTOR.getDouble(0) * RPMToVel;
 
         // Tuning.Shooter.FLYWHEELKD = FLYWHEELKD.getDouble(0);
         // Tuning.Shooter.FLYWHEELKF = FLYWHEELKF.getDouble(0);

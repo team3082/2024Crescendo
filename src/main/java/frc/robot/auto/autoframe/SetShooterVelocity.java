@@ -9,12 +9,12 @@ public class SetShooterVelocity extends Autoframe {
 
     public SetShooterVelocity(double velocity) {
         this.velocity = velocity;
-        blocking = false;
+        blocking = true;
     }
 
     @Override
     public void start() {
-        Shooter.setVelocity(velocity);
+        Shooter.revTo(velocity);
     }
 
     @Override

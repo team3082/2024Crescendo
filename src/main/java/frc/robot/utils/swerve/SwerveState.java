@@ -116,4 +116,19 @@ public class SwerveState {
 
         return new SwerveState(newState);
     }
+
+    /**
+     * flips the state to the opposing alliance
+     * @return
+     */
+    public SwerveState flip(){
+        return new SwerveState(
+            -this.x,
+            this.y,
+            -(this.theta - Math.PI / 2.0) + Math.PI / 2.0,
+            -this.dx,
+            this.dy,
+            -this.dtheta
+        );
+    }
 }

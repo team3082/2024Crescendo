@@ -4,11 +4,14 @@ import static frc.robot.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
+import frc.robot.Constants.Climber;
 import frc.robot.sensors.Pigeon;
 import frc.robot.subsystems.BannerLight;
 import frc.robot.subsystems.climber.ClimberManager;
+import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
+import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwerveModule;
 import frc.robot.swerve.SwervePID;
@@ -52,6 +55,7 @@ public class OI {
 
     // Climber
     static final int zeroClimber   = LogitechF310.BUTTON_X;
+    static final int setManualClimb= LogitechF310.BUTTON_A;
     static final int climberUp     = LogitechF310.DPAD_UP;
     static final int climberDown   = LogitechF310.DPAD_DOWN;
 
@@ -63,6 +67,9 @@ public class OI {
 
     public static ShooterMode currentShooterMode = ShooterMode.SPEAKER;
     public static boolean manualFireSet = true;
+    public static boolean manualClimbSet = true;
+
+    public static int lastPOV = -1;
 
     static boolean isGround = false;
 
@@ -89,18 +96,19 @@ public class OI {
      * so this lives in the teleopPeriodic() function.
      */
     public static void driverInput() {
+        // INPUT
 
         if (driverStick.getRawButton(zero)) Pigeon.zero();
 
         double boostStrength = driverStick.getRawAxis(boost);
         if(boostStrength < 0.1) boostStrength = 0;
 
-        double kBoostCoefficient = NORMALSPEED + boostStrength * (1-NORMALSPEED);
+        double kBoostCoefficient = NORMALSPEED + boostStrength * (0.7 - NORMALSPEED);
 
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
-        double rotate = driverStick.getRawAxis(rotateX) * -ROTSPEED;
+        double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
-        double manualRPM = 2000.0; // i think we can run the speed so much lower
+        double manualRPM = 3500.0;
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
@@ -115,7 +123,12 @@ public class OI {
             }
         }
 
-        if (driverStick.getRawButton(eject)) Shooter.eject();
+        /*--------------------------------------------------------------------------------------------------------*/
+        // SHOOTER
+
+        if (driverStick.getRawButton(eject)){
+            Intake.runHandoff();
+        }
 
         // Manually rev
         boolean shooterRevv = driverStick.getRawButton(revShooter);
@@ -137,36 +150,52 @@ public class OI {
                     ShooterPivot.setPosition(Math.toRadians(55.0));
                     Shooter.revToVaried(topVector, bottomVector);
                     Shooter.shoot();
-                    break;
+                break;
 
-                 // currently this is the same as manual score till we tune it when we do we will change that
+                 // manual for now, change to auto when tuned
+                 // use the arr variable above for that
                 case SPEAKER:
-                    ShooterPivot.setPosition(Math.toRadians(55.0));
+                    ShooterPivot.setPosition(Math.toRadians(61.0));
                     Shooter.revTo(manualRPM);
                     Shooter.shoot();
-                    break;
+                break;
 
                 case SPEAKER_MANUAL:
-                    ShooterPivot.setPosition(Math.toRadians(55.0));
+                    ShooterPivot.setPosition(Math.toRadians(61.0));
                     Shooter.revTo(manualRPM);
                     Shooter.shoot();
-                    break;
+                break;
             
                 default:
-                    break;
+                break;
             }
         } else {
-            ShooterPivot.setPosition(Math.toRadians(20.0)); // stow shooter
+            ShooterPivot.setPosition(Math.toRadians(30.0)); // stow shooter
             Shooter.disable(); // Leave the shooter off if not in use
         }
 
-        if (driverStick.getRawAxis(intake) > 0.5) isGround = !isGround;
+        /*--------------------------------------------------------------------------------------------------------*/
+        // INTAKE
+
+
+        if (driverStick.getRawAxis(intake) > 0.5) {
+            // Intake.suck2();
+            Intake.setState(IntakeState.GROUND);
+            Intake.suck();
+        }
+        else {
+            // Intake.no();
+            Intake.setState(IntakeState.STOW);
+        }
 
         if (driverStick.getRawButton(lock)) {
             for (SwerveModule module: SwerveManager.mods) {
                 module.rotateToRad((module.pos.atan2()));
             }
         }
+
+        /*--------------------------------------------------------------------------------------------------------*/
+        // SWERVE
 
         // Swerving and a steering! Zoom!
         switch (YAWRATEFEEDBACKSTATUS) {
@@ -186,45 +215,75 @@ public class OI {
     }
 
     public static void operatorInput() {
-        // Climbing
+        
+        // CLIMBER
+
         // X
-        if (operatorStick.getRawButton(zeroClimber)) {
+        if (operatorStick.getRawButtonPressed(zeroClimber)) {
             ClimberManager.zero();
         }
 
-        // DPAD UP
-        if (operatorStick.getPOV() == climberUp) {
-            ClimberManager.raiseHooks();
-        } 
-        // DPAD DOWN
-        else if (operatorStick.getPOV() == climberDown) {
-            ClimberManager.pullHooks();
+        if (operatorStick.getRawButtonPressed(setManualClimb)) {
+            manualClimbSet = true;
         }
+        // System.out.println(manualClimbSet);
+        if (true) {
+            // DPAD UP
+            if (operatorStick.getPOV() == climberUp) {
+                ClimberManager.manualExtend();
+                System.out.println("extending");
+            } 
+            // DPAD DOWN
+            else if (operatorStick.getPOV() == climberDown) {
+                ClimberManager.manualPull();
+                System.out.println("pulling");
+            }
+            // NO CLIMBER INPUT
+            else {
+                ClimberManager.brake();
+            }
+        } else {
+            // DPAD UP
+            if (operatorStick.getPOV() == climberUp && operatorStick.getPOV() != lastPOV) {
+                ClimberManager.autoExtend();
+            } 
+            // DPAD DOWN
+            else if (operatorStick.getPOV() == climberDown && operatorStick.getPOV() != lastPOV) {
+                ClimberManager.autoPull();
+            }
+        }
+
+        /*--------------------------------------------------------------------------------------------------------*/
+        // SHOOTER
 
         // Y
         if (operatorStick.getRawButtonPressed(setManualShoot)) {
             manualFireSet = !(manualFireSet);
+            if (manualFireSet && currentShooterMode == ShooterMode.SPEAKER) {
+                currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+            } else if (!(manualFireSet) && currentShooterMode == ShooterMode.SPEAKER_MANUAL) {
+                currentShooterMode = ShooterMode.SPEAKER;
+            }
         }
 
-        // Shooter Mode Switching
         // RIGHT BUMPER
         if (operatorStick.getRawButtonPressed(switchShooterMode)) {
             switch (currentShooterMode) {
                 case AMP:
                     currentShooterMode = manualFireSet ? ShooterMode.SPEAKER_MANUAL : ShooterMode.SPEAKER;
-                    break;
+                break;
                 case SPEAKER:
                     currentShooterMode = ShooterMode.AMP;
-                    break;
+                break;
                 case SPEAKER_MANUAL:
                     currentShooterMode = ShooterMode.AMP;
-                    break;
-            
+                break;
+
                 default:
-                    break;
+                break;
             }
         }
 
+        lastPOV = operatorStick.getPOV();
     }
-
 }

@@ -1,7 +1,6 @@
 package frc.robot.subsystems.shooter;
 
 import static frc.robot.Constants.ShooterConstants.*;
-import static frc.robot.utils.RMath.deadband;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -13,7 +12,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.swerve.SwervePosition;
-import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 
 @SuppressWarnings("removal")
@@ -51,12 +49,9 @@ public final class Shooter {
 
     public static boolean varied = false;
 
-    // When firing the shooter automatically, 
-    // keep the handoff on only for x seconds
-    private static final double handoffTime = 6.5;
-    private static final double handoffDeadTime = 6.5;
-
     public static double handoffLiveTime = 0.0;
+
+    public static final double deadband = 25.0;
     
     public static void init() {
         ShooterPivot.init();
@@ -86,14 +81,16 @@ public final class Shooter {
         topMotor.config_kD(0, 0);
         topMotor.config_kF(0, 1023.0 * 0.6246 / 11819.0);
 
-        bottomMotor.config_kP(0, 0.3);
+        bottomMotor.config_kP(0, 0.5);
         bottomMotor.config_kI(0, 0.00015);
         bottomMotor.configMaxIntegralAccumulator(0, 1000);
         bottomMotor.config_kD(0, 0);
         bottomMotor.config_kF(0, 1023.0 * 0.6266 / 11808.0);
 
-        //topMotor.configVoltageCompSaturation(12.2);
-        //bottomMotor.enableVoltageCompensation(true);
+        topMotor.configVoltageCompSaturation(12);
+        bottomMotor.configVoltageCompSaturation(12);
+        topMotor.enableVoltageCompensation(true);
+        bottomMotor.enableVoltageCompensation(true);
 
         // Zero vars
         targetVelocity = 0.0;
@@ -112,7 +109,7 @@ public final class Shooter {
     public static void update() {
         // Update our pivot & intake
         ShooterPivot.update();
-        // Intake.update();
+        Intake.update();
 
         // Get our vars
         topRPM = topMotor.getSelectedSensorVelocity() * VelToRPM;
@@ -124,72 +121,13 @@ public final class Shooter {
 
         switch (shooterMode) {
             case FIRING:
-
-                double timeNow = RTime.now();
-                if (varied)
-                    setVariedVelocity(targetTop, targetBottom);
-                else
-                    setVelocity(targetVelocity);
-
-                // Pass through the note ONLY when we have reached
-                // the velocity
-
-                // Determine the handoff's ideal state
-                switch (handoffMode) {
-                    case DISABLED:
-                        // Lie in wait until we are at the velocity,
-                        // then make us live.
-                        if (atVelocity) {
-                            handoffMode = HandoffStatus.FEED;
-                            handoffLiveTime = timeNow + handoffTime;
-                        }
-                    break;
-                    case FEED:
-                        // We're running, so we wait until
-                        // we are over our liveTime and then we stop.
-                        if (timeNow > handoffLiveTime) {
-                            handoffMode = HandoffStatus.STOP;
-                            handoffLiveTime = timeNow + handoffDeadTime;
-                        }
-                    break;
-                    case STOP:
-                        // Restart the loop when we have ALREADY been stopped
-                        // and at the desired velocity
-                        if (timeNow > handoffLiveTime && atVelocity) {
-                            handoffMode = HandoffStatus.FEED;
-                            handoffLiveTime = timeNow + handoffTime;
-                        }
-                    break;
-                    case EJECT:
-                        // Manually override this later so not needed
-                    break;
-                }
-
-                // Apply the handoff's state to the intake.
-                // Avoiding setting the mode direct because
-                // it'll override the driver's control.
-                switch (handoffMode) {
-                    case DISABLED:
-                        // Slow retain
-                       // Intake.conveyorMotor.set(0.1);
-                        System.out.println("DISABLED");
-                    break;
-                    case FEED:
-                        // Feed us into the shooter!
-                        // Intake.setState(IntakeState.FEED);
-                       // Intake.conveyorMotor.set(-0.7);
-                        System.out.println("FEED");
-                    break;
-                    case STOP:
-                        // Prevent the note from shooting too early
-                       // Intake.conveyorMotor.set(-0.2);
-                        System.out.println("STOP");
-                    break;
-                    case EJECT:
-                        // Should be a safe speed...?
-                       // Intake.conveyorMotor.set(-0.6);
-                        System.out.println("EJECT");
-                    break;
+                if (atVelocity) {
+                    Intake.runHandoff(); // fire if we are ready
+                } else { // otherwise keep revvin till we are
+                    if (varied)
+                        setVariedVelocity(targetTop, targetBottom);
+                    else
+                        setVelocity(targetVelocity);
                 }
             break;
 
@@ -199,9 +137,6 @@ public final class Shooter {
                     setVariedVelocity(targetTop, targetBottom);
                 else
                     setVelocity(targetVelocity);
-                
-                // Stop the handoff
-                // Intake.conveyorMotor.stopMotor();
             break;
 
             case EJECT:
@@ -223,7 +158,7 @@ public final class Shooter {
      * Set the desired velocity for our shooter to maintain.
      * @param newVelocity Velocity in RPM
      */
-    public static void setVelocity(double newVelocity) {
+    private static void setVelocity(double newVelocity) {
         varied = false;
         targetVelocity = newVelocity;
         simVel = newVelocity;
@@ -295,7 +230,7 @@ public final class Shooter {
             speakerPos = new Vector2(56.78, -327.13);
 
         dist = Math.hypot(SwervePosition.getPosition().x - speakerPos.x, SwervePosition.getPosition().y - speakerPos.y);
-        setShooterForDist(dist);
+        // setShooterForDist(dist);
     }
 
     /**
@@ -304,6 +239,10 @@ public final class Shooter {
     public static void revTo(double rpm) {
         targetVelocity = rpm * RPMToVel;
         shooterMode = ShooterStatus.REVVING;
+    }
+
+    public static void setIntakeMode(HandoffStatus status) {
+        handoffMode = status;
     }
 
     /**
@@ -321,9 +260,7 @@ public final class Shooter {
      * This method should be called after the revTo() method.
      */
     public static void shoot() { 
-        // We can only fire if we were revving beforehand.
-        if (shooterMode == ShooterStatus.REVVING) 
-            shooterMode = ShooterStatus.FIRING;
+        shooterMode = ShooterStatus.FIRING;
     }
 
     /**
@@ -339,6 +276,7 @@ public final class Shooter {
      */
     public static void disable() {
         shooterMode = ShooterStatus.DISABLED;
+        handoffMode = HandoffStatus.DISABLED;
     }
 
     /**
@@ -350,12 +288,14 @@ public final class Shooter {
 
     /**
      * Can we fire a gamepiece?
+     * Checks the top flywheel first.
      */
     public static boolean canShoot() {
         double top = topMotor.getSelectedSensorVelocity() * VelToRPM;
-        double bottom = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
 
-        return /* ShooterPivot.atPos() && */ (0 == deadband(top, targetVelocity, 20.0)) && (0 == deadband(bottom, targetVelocity, 20.0));
+        double velDeadband = deadband * RPMToVel;
+        double err = Math.abs(top - targetVelocity * VelToRPM);
+        return err < velDeadband;
     }
 
     /**

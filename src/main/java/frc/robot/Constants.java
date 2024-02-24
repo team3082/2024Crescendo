@@ -20,7 +20,7 @@ public final class Constants {
         public static final double INCHES_PER_ROTATION = 0.0;
         public static final double TICKS_PER_INCH = 0.0;
 
-        public static final double MAX_EXTENSION = 0.0;
+        public static final double MAX_EXTENSION_TICKS = 1000000;
     }
 
     public static final class ShooterConstants {
@@ -33,7 +33,7 @@ public final class Constants {
         public static final int FLYWHEELPIVOT_ID = 9;
 
         // CANCoder offset
-        public static final double PIVOT_OFFSET = 47.725 - 17.0;
+        public static final double PIVOT_OFFSET = 45.615 - 17.0;
         
         //COMposition
         public static final Vector2 SHOOTER_COM_POS = new Vector2(0,0); //position of the com relative to the pivot point. the angle is what really matters
@@ -68,13 +68,14 @@ public final class Constants {
 
         // CAN ID: Beambreak
         public static final int LASER_ID = 0;
+        public static final double LASER_BREAK_DIST= 250.0;
 
         // CANCoder offset
         public static final double INTAKE_OFFSET = 0;
 
         // Motor : belt(s)
         // Pivot gear ratio
-        public static final double INTAKERATIO = 0;
+        public static final double INTAKERATIO = 48.0;
 
         public static final double HANDOFF_SPEED = 0.5;
         public static final double INTAKE_HANDOFF_SPEED = 0.5;
@@ -83,9 +84,9 @@ public final class Constants {
         public static final int INTAKE_WIDTH_mm = 635;
         public static final int NOTE_WIDTH_mm = 355;
 
-        public static final double INROBOT_INTAKE_ANGLE = 0;
+        public static final double INROBOT_INTAKE_ANGLE = 300;//in ticks
         public static final double SOURCE_INTAKE_ANGLE = 0;
-        public static final double GROUND_INTAKE_ANGLE = 0;
+        public static final double GROUND_INTAKE_ANGLE = 29200;
     }
 
     public static final class Swerve {

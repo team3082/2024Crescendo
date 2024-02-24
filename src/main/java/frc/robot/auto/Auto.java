@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+
 import frc.robot.auto.autoframe.*;
 import frc.robot.sensors.Pigeon;
-import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.swerve.SwerveManager;
+import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
@@ -53,7 +53,27 @@ public class Auto {
         queueFrames(frames);
     }
 
+    public static void test() {
 
+        Autoframe[] frames = new Autoframe[] {
+            // Shoot preloaded from subwoofer
+            new SetShooterAngle(Math.toRadians(58.8)),
+            new SetShooterVelocity(2650),
+            new FireShooter(),
+            new ClearActive(),
+
+            // Set intake to ground, intake for 3 seconds
+            // while driving to piece, go back to subwoofer,
+            // wait till Choreo is finished and then shoot.
+            new SetIntake(IntakeState.GROUND),
+            new ChoreoFollow("New Path"),
+            new SetShooterAngle(Math.toRadians(58.8)),
+            new SetShooterVelocity(2650),
+            new FireShooter(),
+            new ClearActive(),
+        };
+        queueFrames(frames);
+    }
 
     public static void choreoTest() {
         
@@ -83,17 +103,17 @@ public class Auto {
         Pigeon.setYawRad(start.theta);
 
         queueFrames(
-            new SetIntake(),
+            new SetIntake(IntakeState.GROUND),
             new ChoreoFollow("4 Piece Center.1"),
             new SetShooterAngle(Math.PI/4),
             // new SetShoot(),
             new ChoreoFollow("4 Piece Center.2"),
-            new SetIntake(),
+            new SetIntake(IntakeState.GROUND),
             new ChoreoFollow("4 Piece Center.3"),
             new SetShooterAngle(Math.PI/4),
             // new SetShoot(),
             new ChoreoFollow("4 Piece Center.4"),
-            new SetIntake(),
+            new SetIntake(IntakeState.GROUND),
             new ChoreoFollow("4 Piece Center.5"),
             new SetShooterAngle(Math.PI/4),
             // new SetShoot(),
@@ -116,7 +136,7 @@ public class Auto {
             new SetShooterVelocity(1000), // add velocity
             // new SetShoot(),
 
-            new SetIntake(), // puts down intake until the piece is grabbed
+            new SetIntake(IntakeState.GROUND), // puts down intake until the piece is grabbed
             new SetShooterAngle(Math.PI / 4), // add angle
             new SetShooterVelocity(2000), // add velocity
             // go to second piece
@@ -124,7 +144,7 @@ public class Auto {
             new FollowBezierCurve(curve1, 1.0),
             // new SetShoot(), // shoot current piece
 
-            new SetIntake(), // puts down intake until the piece is grabbed
+            new SetIntake(IntakeState.GROUND), // puts down intake until the piece is grabbed
             new SetShooterAngle(Math.PI / 5), // add angle
             new SetShooterVelocity(3000), // add velocity
             // // go to third piece
@@ -132,7 +152,7 @@ public class Auto {
             new FollowBezierCurve(curve2, 1.0),
             // new SetShoot(), // shoot current piece
 
-            new SetIntake(), // puts down intake until the piece is grabbed
+            new SetIntake(IntakeState.GROUND), // puts down intake until the piece is grabbed
             new SetShooterAngle(Math.PI / 6), // add angle
             new SetShooterVelocity(4000), // add velocity
             // go to fourth piece
