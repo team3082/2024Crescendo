@@ -87,6 +87,10 @@ public class Vector2 {
     public double atan2(){
         return Math.atan2(y, x);
     }
+
+    public boolean isGreater(Vector2 b){
+        return x > b.x && y > b.y;
+    }
     
     @Override
     public String toString(){
