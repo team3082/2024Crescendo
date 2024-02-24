@@ -33,8 +33,6 @@ public class TrajectoryFollow extends Autoframe{
         SwerveState currentState = new SwerveState(currentPos, currentAng, currentVel, currengAngVel);
         // System.out.println(Arrays.toString(currentState.toArray()));
         SwerveInstruction instruction = controller.getInstruction(currentState, RTime.now() - tStart);
-        if(Robot.isReal())
-            instruction = new SwerveInstruction(instruction.rotation, new Vector2(-instruction.movement.y, instruction.movement.x));
         SwerveManager.rotateAndDrive(instruction);
         if(RTime.now() - tStart > controller.path.length()){
             SwerveManager.rotateAndDrive(0, new Vector2());

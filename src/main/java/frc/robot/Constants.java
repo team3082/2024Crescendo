@@ -9,18 +9,18 @@ public final class Constants {
 
     public static final class Climber {
         public static final int RIGHT_MOTOR_ID = 21;
-        public static final int RIGHT_HALL_ID = 0;
+        public static final int RIGHT_HALL_ID = 1;
 
         public static final int LEFT_MOTOR_ID = 20;
-        public static final int LEFT_HALL_ID = 1;
+        public static final int LEFT_HALL_ID = 0;
 
-        public static final boolean LEFT_MOTOR_INVERTED = false;
+        public static final boolean LEFT_MOTOR_INVERTED = true;
         public static final boolean RIGHT_MOTOR_INVERTED = false;
 
         public static final double INCHES_PER_ROTATION = 0.0;
         public static final double TICKS_PER_INCH = 0.0;
 
-        public static final double MAX_EXTENSION_TICKS = 1000000;
+        public static final double MAX_EXTENSION_TICKS = 200000;
     }
 
     public static final class ShooterConstants {

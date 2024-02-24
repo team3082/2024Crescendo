@@ -1,5 +1,6 @@
 package frc.robot.auto.autoframe;
 
+import frc.robot.Robot;
 import frc.robot.subsystems.shooter.Shooter;
 
 public class SetShooterVelocity extends Autoframe {
@@ -18,7 +19,7 @@ public class SetShooterVelocity extends Autoframe {
 
     @Override
     public void update() {
-        if (Shooter.canShoot()) {
+        if (Shooter.canShoot() || Robot.isSimulation()) {
             this.done = true;
         }
     }

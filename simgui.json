@@ -66,6 +66,9 @@
         "Climber": {
           "open": true
         },
+        "Positions": {
+          "open": true
+        },
         "open": true
       }
     }
@@ -75,7 +78,6 @@
       "Subscribers": {
         "open": true
       }
-    },
-    "visible": true
+    }
   }
 }

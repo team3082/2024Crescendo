@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.auto.autoframe.*;
 import frc.robot.sensors.Pigeon;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
@@ -55,10 +57,12 @@ public class Auto {
 
     public static void test() {
 
+        SwervePosition.setPosition(new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
+
         Autoframe[] frames = new Autoframe[] {
             // Shoot preloaded from subwoofer
             new SetShooterAngle(Math.toRadians(58.8)),
-            new SetShooterVelocity(2650),
+            new SetShooterVelocity(3500),
             new FireShooter(),
             new ClearActive(),
 
@@ -66,10 +70,11 @@ public class Auto {
             // while driving to piece, go back to subwoofer,
             // wait till Choreo is finished and then shoot.
             new SetIntake(IntakeState.GROUND),
-            new ChoreoFollow("New Path"),
-            new SetShooterAngle(Math.toRadians(58.8)),
-            new SetShooterVelocity(2650),
-            new FireShooter(),
+            new ChoreoFollow("2 Piece Middle.1"),
+            new ChoreoFollow("2 Piece Middle.2"),
+            // new SetShooterAngle(Math.toRadians(58.8)),
+            // new SetShooterVelocity(2650),
+            // new FireShooter(),
             new ClearActive(),
         };
         queueFrames(frames);

@@ -147,8 +147,8 @@ public class OI {
         if (shooterFire) {
             switch (currentShooterMode) {
                 case AMP:
-                    ShooterPivot.setPosition(Math.toRadians(55.0));
-                    Shooter.revToVaried(topVector, bottomVector);
+                    ShooterPivot.setPosition(Math.toRadians(61.0));
+                    Shooter.revTo(manualRPM);
                     Shooter.shoot();
                 break;
 

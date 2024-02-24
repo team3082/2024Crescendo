@@ -22,14 +22,12 @@ public class SetIntake extends Autoframe {
     }
 
     @Override
-    public void update() {        
-        if (Intake.pieceGrabbed() && RTime.now() >= timeDelay + 3.0) {
+    public void update() {
+        Intake.suck();        
+        if (Intake.beambreak.isBroken()) {
             Intake.setState(IntakeState.STOW);
+            Intake.no();
             this.done = true;
-        } else {
-            Intake.setState(s);
-            if (s == IntakeState.GROUND)
-                Intake.suck();
         }
     }
 }

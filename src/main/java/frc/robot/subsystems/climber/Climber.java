@@ -41,6 +41,7 @@ public class Climber {
         motor.configNeutralDeadband(0.01);
 
         motor.setInverted(inverted);
+        motor.setSensorPhase(inverted);
 
         // TUNE
         motor.config_kP(0, CLIMBER_KP);
@@ -125,7 +126,9 @@ public class Climber {
 
     // pull unless magnet is tripped
     public void manualPull() {
+        System.out.println("hall sensor: " + this.sensor.get());
         if (!(this.sensor.get())) {
+            // System.out.println("nuetral");
             this.motor.neutralOutput();
         } else {
             this.motor.set(ControlMode.PercentOutput, -0.8);
@@ -134,11 +137,6 @@ public class Climber {
 
     public void autoExtend() {
         this.motor.set(ControlMode.Position, MAX_EXTENSION_TICKS);
-        if ((this.motor.getSelectedSensorPosition() <= this.motor.getActiveTrajectoryPosition() + 100) // this deadband is in ticks
-         && (this.motor.getSelectedSensorPosition() >= this.motor.getActiveTrajectoryPosition() - 100)) {
-            this.climberControlState = ClimberControlState.BRAKED;
-            brake();
-        }
     }
 
     public void autoPull() {

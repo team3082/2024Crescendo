@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
     SwervePosition.init();
     SwervePID.init();
     Pigeon.setYaw(90);
-    VisionManager.init();
+    // VisionManager.init();
     ClimberManager.init();
     ChoreoTrajectoryGenerator.init();
     Shooter.init();
@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
     AutoSelector.setup();
     ChoreoTrajectoryGenerator.parseAll();
     Telemetry.init();
+    SwervePosition.disableVision();
   }
 
   @Override
@@ -72,6 +73,7 @@ public class Robot extends TimedRobot {
     RTime.init();
     Pigeon.setYaw(90);
     AutoSelector.run();
+    SwervePosition.disableVision();
   }
 
   @Override
@@ -85,7 +87,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     OI.init();
-    SwervePosition.enableVision();
+    // SwervePosition.enableVision();
   }
 
   @Override
@@ -101,7 +103,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    SwervePosition.updateAveragePosVision();
+    //SwervePosition.updateAveragePosVision();
     // System.out.println(SwervePosition.getPosition().toString());
     // if(Robot.isReal())
     //   BannerLight.setTagInView(VisionManager.hasTarget());
