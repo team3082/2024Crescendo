@@ -3,6 +3,7 @@ package frc.robot.utils.trajectories;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.utils.swerve.DiscreteSwerveState;
 import frc.robot.utils.swerve.SwerveState;
@@ -22,7 +23,10 @@ public class DiscreteTraj implements SwerveTrajectory{
     @Override
     public SwerveState startState(){
         DiscreteSwerveState blueState = path.get(0);
-        return (DriverStation.getAlliance().get() == Alliance.Red) ? blueState.flip() : blueState;
+        if(RobotBase.isReal())
+            return (DriverStation.getAlliance().get() == Alliance.Red) ? blueState.flip() : blueState;
+        else
+            return blueState;
 
     }
 

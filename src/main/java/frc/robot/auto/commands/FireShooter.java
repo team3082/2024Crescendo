@@ -8,28 +8,26 @@ import static frc.robot.subsystems.shooter.Intake.IntakeState.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.utils.RTime;
 
-public class SetShoot extends Command {
-    public boolean pieceIndexed = false;
-    public double indexTime;
+public class FireShooter extends Command {
 
-    public frc.robot.auto.autoframe.SetShoot setShoot;
+    public frc.robot.auto.autoframe.FireShooter fireShooter;
 
-    public SetShoot(){
-        setShoot = new frc.robot.auto.autoframe.SetShoot();
+    public FireShooter(){
+        fireShooter = new frc.robot.auto.autoframe.FireShooter();
     }
 
     @Override
     public void initialize() {
-        setShoot.start();
+        fireShooter.start();
     }
 
     @Override
     public void execute() {
-        setShoot.update();
+        fireShooter.update();
     }
 
     @Override
     public boolean isFinished() {
-        return setShoot.done;
+        return fireShooter.done;
     }
 }

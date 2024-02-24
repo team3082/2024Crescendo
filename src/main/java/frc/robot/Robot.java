@@ -56,7 +56,6 @@ public class Robot extends TimedRobot {
     Shooter.init();
     Intake.init();
     AutoSelector.setup();
-    ChoreoTrajectoryGenerator.parseAll();
     Telemetry.init();
   }
 
@@ -77,7 +76,7 @@ public class Robot extends TimedRobot {
     OI.init();
     RTime.init();
     Pigeon.setYaw(90);
-	CommandScheduler.getInstance().enable();
+	  CommandScheduler.getInstance().enable();
     AutoSelector.run();
   }
 
@@ -113,8 +112,8 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
     SwervePosition.updateAveragePosVision();
     System.out.println(SwervePosition.getPosition().toString());
-    // if(Robot.isReal())
-    //   BannerLight.setTagInView(VisionManager.hasTarget());
+    if(Robot.isReal())
+       BannerLight.setTagInView(VisionManager.hasTarget());
   }
 
   @Override

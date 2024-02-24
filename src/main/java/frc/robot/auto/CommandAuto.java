@@ -8,14 +8,19 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto.autoframe.Autoframe;
+import frc.robot.auto.autoframe.ClearActive;
+import frc.robot.auto.commands.FireShooter;
 import frc.robot.auto.commands.ChoreoFollow;
 import frc.robot.auto.commands.FollowBezierCurve;
 import frc.robot.auto.commands.MoveTo;
 import frc.robot.auto.commands.RotateTo;
+import frc.robot.auto.commands.RotateToPoint;
 import frc.robot.auto.commands.SetIntake;
 import frc.robot.auto.commands.SetShooterAngle;
+import frc.robot.auto.commands.SetShooterVelocity;
 import frc.robot.auto.commands.TrajectoryFollow;
 import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
@@ -63,14 +68,50 @@ public class CommandAuto {
             return new ParallelDeadlineGroup(
               new frc.robot.auto.commands.FollowBezierCurve(curve, 1.0),
               new frc.robot.auto.commands.RotateToPoint(new Vector2(-56.78, -327.1)).repeatedly(),
-              new frc.robot.auto.commands.SetIntake(),
+              //new frc.robot.auto.commands.SetIntake(),
               new frc.robot.auto.commands.SetShooterAngle(shooterAngle), 
               new frc.robot.auto.commands.SetShooterVelocity(shooterSpeed)
             );
             // new SetShoot(), // shoot current piece
     }
+
+    public static Command test() {
+      DiscreteTraj traj1 = ChoreoTrajectoryGenerator.getChoreo("New Path.1");
+        SwerveState start = traj1.startState();
+        SwervePosition.setPosition(start.getPos());;
+        Pigeon.setYawRad(start.theta);
+        PIDFollower f = new PIDFollower();
+        f.setTrajectory(traj1);
+
+        return new SequentialCommandGroup(
+            new ParallelCommandGroup(
+            // Shoot preloaded from subwoofer
+            new SetShooterAngle(Math.toRadians(58.8)),
+            //new SetShooterVelocity(2650),
+            new RotateToPoint(new Vector2(-56.78, -327.1))
+            ),
+            new FireShooter(),
+            //new ClearActive(),
+
+            // Set intake to ground, intake for 3 seconds
+            // while driving to piece, go back to subwoofer,
+            // wait till Choreo is finished and then shoot.
+            new ParallelCommandGroup(
+            new SetIntake(IntakeState.GROUND),
+            new SequentialCommandGroup(
+            new ChoreoFollow("New Path.1"),
+            new ChoreoFollow("New Path.2")
+            ),
+            new SetShooterAngle(Math.toRadians(58.8))
+            //new SetShooterVelocity(2650)
+            ),
+            new RotateTo(Math.PI/2 - SwervePosition.getAngleOffsetToTarget(new Vector2(56.78, 327.1))),
+            new FireShooter()
+            //new ClearActive()
+        );
+    }
     
-    public static Command fourPieceMiddle() {
+    /*public static Command fourPieceMiddle() {
       SwerveTrajectory traj = ChoreoTrajectoryGenerator.getChoreo("4 Piece Center.1");
       SwerveState start = traj.startState();
       SwervePosition.setPosition(start.getPos());;
@@ -104,7 +145,7 @@ public class CommandAuto {
           new ChoreoFollow("4 Piece Center.6"),
           new ChoreoFollow("4 Piece Center.7")
       );
-  }
+  }*/
 
     public static Command choreoTest() {
         
