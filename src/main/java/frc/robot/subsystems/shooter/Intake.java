@@ -33,7 +33,7 @@ public final class Intake {
 
     public static void init() {
 
-        pivotMotor = new TalonFX(INTAKEPIVOT_ID);
+        pivotMotor = new TalonFX(INTAKEPIVOT_ID, "CANivore");
         pivotMotor.configFactoryDefault();
         pivotMotor.setNeutralMode(NeutralMode.Brake);
         pivotMotor.configNominalOutputForward(0.01);
