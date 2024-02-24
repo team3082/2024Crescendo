@@ -33,7 +33,7 @@ public class Climber {
     // private boolean loaded = false;
 
     public Climber(int motorID, int sensorID, boolean inverted){
-        motor = new TalonFX(motorID);
+        motor = new TalonFX(motorID, "CANivore");
         motor.configFactoryDefault();
         motor.setNeutralMode(NeutralMode.Brake);
         motor.configNominalOutputForward(0.01);

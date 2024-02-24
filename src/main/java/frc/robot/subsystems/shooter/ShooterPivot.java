@@ -26,13 +26,13 @@ public final class ShooterPivot {
     public static double simAng;
 
     public static void init() {
-        absEncoder = new CANCoder(12);
+        absEncoder = new CANCoder(12, "CANivore");
         absEncoder.configFactoryDefault();
 
         absEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
         absEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
 
-        motor = new TalonFX(FLYWHEELPIVOT_ID);
+        motor = new TalonFX(FLYWHEELPIVOT_ID, "CANivore");
         motor.configFactoryDefault();
         motor.setNeutralMode(NeutralMode.Brake);
         motor.configNominalOutputForward(0.01);

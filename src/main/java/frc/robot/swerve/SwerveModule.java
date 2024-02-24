@@ -35,9 +35,9 @@ public class SwerveModule {
 
 
     public SwerveModule(int steerID, int driveID, double cancoderOffset, double x, double y) {
-        steer = new TalonFX(steerID);
-        drive = new TalonFX(driveID);
-        absEncoder = new CANCoder(steerID);
+        steer = new TalonFX(steerID, "CANivore");
+        drive = new TalonFX(driveID, "CANivore");
+        absEncoder = new CANCoder(steerID, "CANivore");
 
         pos = new Vector2(x, y);
 

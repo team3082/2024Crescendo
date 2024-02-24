@@ -56,8 +56,8 @@ public final class Shooter {
     public static void init() {
         ShooterPivot.init();
 
-        topMotor = new TalonFX(TOPFLYWHEEL_ID);
-        bottomMotor = new TalonFX(BOTTOMFLYWHEEL_ID);
+        topMotor = new TalonFX(TOPFLYWHEEL_ID, "CANivore");
+        bottomMotor = new TalonFX(BOTTOMFLYWHEEL_ID, "CANivore");
 
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.neutralDeadband = 0.01;

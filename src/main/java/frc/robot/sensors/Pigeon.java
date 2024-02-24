@@ -17,7 +17,7 @@ public class Pigeon {
     private static double simulatedRot = 0;
 
     public static void init() {
-        pigeon = new Pigeon2(0);
+        pigeon = new Pigeon2(0, "CANivore");
         pigeon.configFactoryDefault();
     }
 
