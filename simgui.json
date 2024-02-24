@@ -66,15 +66,16 @@
         "Climber": {
           "open": true
         },
+        "Positions": {
+          "open": true
+        },
         "open": true
       }
     }
   },
   "NetworkTables Info": {
     "Server": {
-      "Subscribers": {
-        "open": true
-      }
+      "open": true
     },
     "visible": true
   }

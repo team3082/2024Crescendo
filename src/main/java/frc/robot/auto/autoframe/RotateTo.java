@@ -12,7 +12,10 @@ public class RotateTo extends Autoframe {
     double angle;
 
     public RotateTo(double angle, double rotSpeed) {
-        this.angle = (DriverStation.getAlliance().get() == Alliance.Red) ? angle : (2.0 * Math.PI) - angle;
+        if(RobotBase.isReal())
+            this.angle = (DriverStation.getAlliance().get() == Alliance.Red) ? angle : (2.0 * Math.PI) - angle;
+        else
+            this.angle = (2.0 * Math.PI) - angle;
         blocking = false;
     }
 
@@ -35,7 +38,7 @@ public class RotateTo extends Autoframe {
                 this.done = true;
             }
         }
-        SwerveManager.rotateAndDrive(rotSpeed, new Vector2());
+        SwerveManager.rotateAndDrive(rotSpeed, SwerveManager.movement);
     }
 
 }

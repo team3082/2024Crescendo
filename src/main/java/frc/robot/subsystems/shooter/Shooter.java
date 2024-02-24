@@ -201,7 +201,13 @@ public final class Shooter {
         double g = 386.08858267717;
         //desired exit velocities of the note
         double dz = Math.sqrt(2 * g * (TARGETHEIGHT - SHOOTERPOSZ));
-        double dx = g * (((DriverStation.getAlliance().get() == Alliance.Blue) ? -targetX : targetX) - pos.x) / dz;
+        double dx;
+        try{
+            dx = g * (((DriverStation.getAlliance().get() == Alliance.Blue) ? -targetX : targetX) - pos.x) / dz;
+        } catch(Exception e){
+            dx = g *  (-targetX - pos.x) / dz;
+        }
+
         double dy = g * (targetY - pos.y) / dz;
 
         double shooterdx = dx - vel.x;
