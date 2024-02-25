@@ -9,18 +9,16 @@ public class SetShooterVelocity extends Autoframe {
 
     public SetShooterVelocity(double velocity) {
         this.velocity = velocity;
-        blocking = true;
+        blocking = false;
     }
 
     @Override
     public void start() {
         Shooter.revTo(velocity);
+        this.done = true;
     }
 
     @Override
     public void update() {
-        if (Shooter.canShoot() || RobotBase.isSimulation()) {
-            this.done = true;
-        }
     }
 }

@@ -114,22 +114,26 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Middle.1")
         ),
         new ParallelCommandGroup(
-          new SetShooterAngle(Math.toRadians(60.3)),
           new ChoreoFollow("3 Piece Middle.2"),
           new SetShooterVelocity(3500)
         ),
-        new FireShooter(),
+        new ParallelCommandGroup(
+          new SetShooterAngle(Math.toRadians(60.3)),
+          new FireShooter()
+        ),
         new StowShooter(),
         new ParallelCommandGroup(
           new SetIntake(IntakeState.GROUND),
           new ChoreoFollow("3 Piece Middle.3")
         ),
         new ParallelCommandGroup(
-          new SetShooterAngle(Math.toRadians(60.3)),
           new ChoreoFollow("3 Piece Middle.4"),
           new SetShooterVelocity(3500)
         ),
-        new FireShooter(),
+        new ParallelCommandGroup(
+          new SetShooterAngle(Math.toRadians(60.3)),
+          new FireShooter()
+        ),
         new StowShooter()
         
         // new SetShooterVelocity(0)
