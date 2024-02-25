@@ -103,6 +103,19 @@ public class OI {
 
         double kBoostCoefficient = NORMALSPEED + boostStrength * (1.0 - NORMALSPEED);
 
+        /*--------------------------------------------------------------------------------------------------------*/
+        // INTAKE
+
+        if (driverStick.getRawAxis(intake) > 0.5) {
+            Intake.suck();
+            // TODO slow the drive if intaking
+            kBoostCoefficient = 0.4;
+        } else {
+            Intake.setState(IntakeState.STOW);
+        }
+
+        /*--------------------------------------------------------------------------------------------------------*/
+
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
@@ -165,17 +178,6 @@ public class OI {
         } else {
             ShooterPivot.setPosition(Math.toRadians(30.0)); // stow shooter
             Shooter.disable(); // Leave the shooter off if not in use
-        }
-
-        /*--------------------------------------------------------------------------------------------------------*/
-        // INTAKE
-
-
-        if (driverStick.getRawAxis(intake) > 0.5) {
-            Intake.setState(IntakeState.GROUND);
-            Intake.suck();
-        } else {
-            Intake.setState(IntakeState.STOW);
         }
 
         /*--------------------------------------------------------------------------------------------------------*/

@@ -158,9 +158,11 @@ public final class Intake {
         if (!hasPiece) {
             topPID.setReference(-0.35, ControlType.kDutyCycle);
             bottomPID.setReference(-0.35, ControlType.kDutyCycle);
+            Intake.setState(IntakeState.GROUND);
         } else {
             topPID.setReference(0.0, ControlType.kDutyCycle);
             bottomPID.setReference(0.0, ControlType.kDutyCycle);
+            Intake.setState(IntakeState.STOW);
         }
         // System.out.println(suckState.name());
     }
