@@ -63,7 +63,7 @@ public class OI {
         AMP
     }
 
-    public static ShooterMode currentShooterMode = ShooterMode.SPEAKER;
+    public static ShooterMode currentShooterMode = ShooterMode.SPEAKER_MANUAL;
     public static boolean manualFireSet = true;
     public static boolean manualClimbSet = true;
 
@@ -103,10 +103,24 @@ public class OI {
 
         double kBoostCoefficient = NORMALSPEED + boostStrength * (1.0 - NORMALSPEED);
 
+        /*--------------------------------------------------------------------------------------------------------*/
+        // INTAKE
+
+        if (driverStick.getRawAxis(intake) > 0.5) {
+            Intake.suck();
+            // TODO slow the drive if intaking
+            kBoostCoefficient = 0.4;
+        } else {
+            Intake.setState(IntakeState.STOW);
+        }
+
+        /*--------------------------------------------------------------------------------------------------------*/
+
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
         double manualRPM = 3500.0;
+        double manualAngle = 61.0;
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
@@ -148,13 +162,13 @@ public class OI {
                  // manual for now, change to auto when tuned
                  // use the arr variable above for that
                 case SPEAKER:
-                    ShooterPivot.setPosition(Math.toRadians(61.0));
+                    ShooterPivot.setPosition(Math.toRadians(manualAngle));
                     Shooter.revTo(manualRPM);
                     Shooter.shoot();
                 break;
 
                 case SPEAKER_MANUAL:
-                    ShooterPivot.setPosition(Math.toRadians(61.0));
+                    ShooterPivot.setPosition(Math.toRadians(manualAngle));
                     Shooter.revTo(manualRPM);
                     Shooter.shoot();
                 break;
@@ -165,17 +179,6 @@ public class OI {
         } else {
             ShooterPivot.setPosition(Math.toRadians(30.0)); // stow shooter
             Shooter.disable(); // Leave the shooter off if not in use
-        }
-
-        /*--------------------------------------------------------------------------------------------------------*/
-        // INTAKE
-
-
-        if (driverStick.getRawAxis(intake) > 0.5) {
-            Intake.setState(IntakeState.GROUND);
-            Intake.suck();
-        } else {
-            Intake.setState(IntakeState.STOW);
         }
 
         /*--------------------------------------------------------------------------------------------------------*/

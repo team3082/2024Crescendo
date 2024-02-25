@@ -17,6 +17,7 @@ import frc.robot.auto.commands.RotateTo;
 import frc.robot.auto.commands.SetIntake;
 import frc.robot.auto.commands.SetShooterAngle;
 import frc.robot.auto.commands.SetShooterVelocity;
+import frc.robot.auto.commands.StowShooter;
 import frc.robot.auto.commands.TrajectoryFollow;
 import frc.robot.sensors.Pigeon;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
@@ -107,26 +108,33 @@ public class CommandAuto {
           new SetShooterVelocity(3500)
         ),
         new FireShooter(),
+        new StowShooter(),
         new ParallelCommandGroup(
           new SetIntake(IntakeState.GROUND),
           new ChoreoFollow("3 Piece Middle.1")
         ),
         new ParallelCommandGroup(
-          new SetShooterAngle(Math.toRadians(60.3)),
           new ChoreoFollow("3 Piece Middle.2"),
           new SetShooterVelocity(3500)
         ),
-        new FireShooter(),
+        new ParallelCommandGroup(
+          new SetShooterAngle(Math.toRadians(60.3)),
+          new FireShooter()
+        ),
+        new StowShooter(),
         new ParallelCommandGroup(
           new SetIntake(IntakeState.GROUND),
           new ChoreoFollow("3 Piece Middle.3")
         ),
         new ParallelCommandGroup(
-          new SetShooterAngle(Math.toRadians(60.3)),
           new ChoreoFollow("3 Piece Middle.4"),
           new SetShooterVelocity(3500)
         ),
-        new FireShooter()
+        new ParallelCommandGroup(
+          new SetShooterAngle(Math.toRadians(60.3)),
+          new FireShooter()
+        ),
+        new StowShooter()
         
         // new SetShooterVelocity(0)
       );
