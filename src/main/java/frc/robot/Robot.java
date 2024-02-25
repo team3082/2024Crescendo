@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     try {
-      Thread.sleep(10000);
+      Thread.sleep(5000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -57,7 +57,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    
     Pigeon.update();
     RTime.updateAbsolute();
     RTime.update();
@@ -76,11 +75,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    //Auto.update();
     SwervePosition.update();
     CommandAuto.update();
     Shooter.update();
-    // SwerveManager.rotateAndDrive(0.0, new Vector2(1.0, 0.0));
   }
 
   @Override

@@ -1,8 +1,6 @@
 package frc.robot.utils.trajectories;
 
 import frc.robot.utils.Vector2;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Tuning;
 
 public class BezierCurve{

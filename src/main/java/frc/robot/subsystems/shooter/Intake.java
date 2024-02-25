@@ -173,6 +173,11 @@ public final class Intake {
         bottomPID.setReference(-0.8, ControlType.kDutyCycle);
     }
 
+    public static void eject() {
+        topPID.setReference(0.8, ControlType.kDutyCycle);
+        bottomPID.setReference(0.8, ControlType.kDutyCycle);
+    }
+
     public static void no() {
         topPID.setReference(0, ControlType.kDutyCycle);
         bottomPID.setReference(0, ControlType.kDutyCycle);

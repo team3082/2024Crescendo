@@ -73,8 +73,6 @@ public final class Shooter {
         topMotor.setNeutralMode(NeutralMode.Coast);
         bottomMotor.setNeutralMode(NeutralMode.Coast);
 
-        // bottomMotor.follow(topMotor);
-
         topMotor.config_kP(0, 0.3);
         topMotor.config_kI(0, 0.00015);
         topMotor.configMaxIntegralAccumulator(0, 1000);
@@ -148,7 +146,6 @@ public final class Shooter {
             case DISABLED:
                 topMotor.set(TalonFXControlMode.Disabled, 0.0);
                 bottomMotor.set(TalonFXControlMode.Disabled, 0.0);
-               // Intake.conveyorMotor.set(0.0);
                 targetVelocity = 0.0;
             break;
         }

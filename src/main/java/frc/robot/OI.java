@@ -52,10 +52,10 @@ public class OI {
     static final int setManualShoot     = LogitechF310.BUTTON_Y;
 
     // Climber
-    static final int zeroClimber   = LogitechF310.BUTTON_X;
-    static final int setManualClimb= LogitechF310.BUTTON_A;
-    static final int climberUp     = LogitechF310.DPAD_UP;
-    static final int climberDown   = LogitechF310.DPAD_DOWN;
+    static final int zeroClimber        = LogitechF310.BUTTON_X;
+    static final int setManualClimb     = LogitechF310.BUTTON_A;
+    static final int climberUp          = LogitechF310.DPAD_UP;
+    static final int climberDown        = LogitechF310.DPAD_DOWN;
 
     static private enum ShooterMode {
         SPEAKER,
@@ -124,15 +124,10 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SHOOTER
 
-        if (driverStick.getRawButton(eject)){
-            Intake.runHandoff();
-        }
+        if (driverStick.getRawButton(eject)) Intake.eject();
 
-        // Manually rev
-        boolean shooterRevv = driverStick.getRawButton(revShooter);
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
-
         double[] arr = Shooter.getDesiredShooterPos(SwervePosition.getPosition(), SwerveManager.getRobotDriveVelocity());
 
         // ONLY align if we are in auto-fire mode
@@ -145,8 +140,8 @@ public class OI {
         if (shooterFire) {
             switch (currentShooterMode) {
                 case AMP:
-                    ShooterPivot.setPosition(Math.toRadians(61.0));
-                    Shooter.revTo(manualRPM);
+                    ShooterPivot.setPosition(Math.toRadians(55.0));
+                    Shooter.revToVaried(topVector, bottomVector);
                     Shooter.shoot();
                 break;
 
@@ -177,23 +172,20 @@ public class OI {
 
 
         if (driverStick.getRawAxis(intake) > 0.5) {
-            // Intake.suck2();
             Intake.setState(IntakeState.GROUND);
             Intake.suck();
-        }
-        else {
-            // Intake.no();
+        } else {
             Intake.setState(IntakeState.STOW);
         }
+
+        /*--------------------------------------------------------------------------------------------------------*/
+        // SWERVE
 
         if (driverStick.getRawButton(lock)) {
             for (SwerveModule module: SwerveManager.mods) {
                 module.rotateToRad((module.pos.atan2()));
             }
         }
-
-        /*--------------------------------------------------------------------------------------------------------*/
-        // SWERVE
 
         // Swerving and a steering! Zoom!
         switch (YAWRATEFEEDBACKSTATUS) {
@@ -224,7 +216,6 @@ public class OI {
         if (operatorStick.getRawButtonPressed(setManualClimb)) {
             manualClimbSet = true;
         }
-        // System.out.println(manualClimbSet);
         if (true) {
             // DPAD UP
             if (operatorStick.getPOV() == climberUp) {

@@ -83,8 +83,6 @@ public class CommandAuto {
               new SetShooterVelocity(3500)
             ),
             new FireShooter(),
-            //new ClearActive(),
-
             // Set intake to ground, intake for 3 seconds
             // while driving to piece, go back to subwoofer,
             // wait till Choreo is finished and then shoot.
@@ -105,7 +103,7 @@ public class CommandAuto {
       SwervePosition.setPosition(new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
       return new SequentialCommandGroup(
         new ParallelCommandGroup(
-          new SetShooterAngle(Math.toRadians(58.8)),
+          new SetShooterAngle(Math.toRadians(59.8)),
           new SetShooterVelocity(3500)
         ),
         new FireShooter(),
@@ -114,7 +112,7 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Middle.1")
         ),
         new ParallelCommandGroup(
-          new SetShooterAngle(Math.toRadians(59.8)),
+          new SetShooterAngle(Math.toRadians(60.3)),
           new ChoreoFollow("3 Piece Middle.2"),
           new SetShooterVelocity(3500)
         ),
@@ -124,7 +122,7 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Middle.3")
         ),
         new ParallelCommandGroup(
-          new SetShooterAngle(Math.toRadians(59.8)),
+          new SetShooterAngle(Math.toRadians(60.3)),
           new ChoreoFollow("3 Piece Middle.4"),
           new SetShooterVelocity(3500)
         ),
