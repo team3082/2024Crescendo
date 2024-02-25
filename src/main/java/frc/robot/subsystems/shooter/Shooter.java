@@ -106,7 +106,7 @@ public final class Shooter {
 
     public static void update() {
         // Update our pivot & intake
-        // ShooterPivot.update();
+        ShooterPivot.update();
         Intake.update();
 
         // Get our vars
