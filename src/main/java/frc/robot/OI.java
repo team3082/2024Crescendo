@@ -4,9 +4,7 @@ import static frc.robot.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
-import frc.robot.Constants.Climber;
 import frc.robot.sensors.Pigeon;
-import frc.robot.subsystems.BannerLight;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;

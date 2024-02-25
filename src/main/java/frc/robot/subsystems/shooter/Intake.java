@@ -2,8 +2,6 @@ package frc.robot.subsystems.shooter;
 
 import static frc.robot.Constants.Intake.*;
 import static frc.robot.Tuning.Intake.*;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -13,18 +11,15 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
 import frc.robot.utils.Beambreak;
-import frc.robot.utils.RTime;
 
 @SuppressWarnings("removal")
 public final class Intake {
     
     private static TalonFX pivotMotor;
     private static CANSparkMax topBeltMotor, bottomBeltMotor; // bottom = handoff too
-    private static RelativeEncoder topEncoder, bottomEncoder;
     private static SparkPIDController topPID;
     public static SparkPIDController bottomPID;
     public static Beambreak beambreak;
@@ -62,7 +57,6 @@ public final class Intake {
         topBeltMotor.setCANTimeout(30);
 
         topPID = topBeltMotor.getPIDController();
-        topEncoder = topBeltMotor.getEncoder();
 
         topPID.setP(0.005);
         topPID.setI(0);
@@ -76,7 +70,6 @@ public final class Intake {
         bottomBeltMotor.setCANTimeout(30);
 
         bottomPID = bottomBeltMotor.getPIDController();
-        bottomEncoder = bottomBeltMotor.getEncoder();
 
         bottomPID.setP(0.005);
         bottomPID.setI(0);
@@ -110,10 +103,6 @@ public final class Intake {
 
     private static double ticksToRad(double angleTicks) {
         return angleTicks / 2048.0 / INTAKERATIO * Math.PI * 2.0;
-    }
-
-    private static double radToTicks(double angleRad) {
-        return (angleRad / (2.0 * Math.PI)) * INTAKERATIO * 2048.0;
     }
 
     public static void update() { //TODO add logic for using the beambreak

@@ -1,18 +1,11 @@
 package frc.robot.auto.commands;
 
-import frc.robot.swerve.SwerveManager;
-import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.PIDController;
-import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.BezierCurve;
 
-import static frc.robot.Tuning.MOVEDEAD;
-
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Tuning;
 
-public class FollowBezierCurve extends Command{
+public class FollowBezierCurve extends Command {
     public BezierCurve trajectory;
     PIDController trajectoryPID;
     double maxSpeed;

@@ -6,9 +6,6 @@ import frc.robot.utils.TrapezoidalController;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
-
-
 public class TrapezoidalControllerTest {
     
     @Test

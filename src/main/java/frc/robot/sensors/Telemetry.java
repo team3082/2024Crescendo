@@ -1,8 +1,5 @@
 package frc.robot.sensors;
 
-import static frc.robot.Constants.ShooterConstants.RPMToVel;
-import static frc.robot.Constants.ShooterConstants.VelToRPM;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -19,7 +16,6 @@ import frc.robot.OI;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.auto.AutoSelector;
 import frc.robot.subsystems.climber.ClimberManager;
-import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
@@ -87,8 +83,8 @@ public class Telemetry {
 
     // mechanism visualization  
     private static Mechanism2d subsystems = new Mechanism2d(60, 60);
-    private static MechanismRoot2d intakeRoot = subsystems.getRoot("Intake", 40, 10);
-    private static MechanismLigament2d intakePivot = intakeRoot.append(new MechanismLigament2d("Intake", 15, 0));
+    // private static MechanismRoot2d intakeRoot = subsystems.getRoot("Intake", 40, 10);
+    // private static MechanismLigament2d intakePivot = intakeRoot.append(new MechanismLigament2d("Intake", 15, 0));
     private static MechanismRoot2d shooterRoot = subsystems.getRoot("Shooter", 20, 10);
     private static MechanismLigament2d shooterPivot = shooterRoot.append(new MechanismLigament2d("Shooter", 10, 180));
 

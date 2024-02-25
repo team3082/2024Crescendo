@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.sensors.Pigeon;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
-import frc.robot.utils.Vector2;
 
 public class RotateTo extends Autoframe {
     double angle;

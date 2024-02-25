@@ -1,12 +1,6 @@
 package frc.robot.auto.commands;
 
-import frc.robot.subsystems.shooter.Intake;
-import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterPivot;
-import static frc.robot.subsystems.shooter.Intake.IntakeState.*;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.utils.RTime;
 
 public class FireShooter extends Command {
 

@@ -1,10 +1,6 @@
 package frc.robot.auto.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.Swerve;
-import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterPivot;
-import frc.robot.swerve.SwerveManager;
 import frc.robot.utils.Vector2;
 
 public class SetShooterAngle extends Command {

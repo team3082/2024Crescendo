@@ -1,9 +1,5 @@
 package frc.robot.auto.commands;
 
-import frc.robot.utils.followers.PIDFollower;
-
-import static frc.robot.utils.trajectories.ChoreoTrajectoryGenerator.getChoreo;
-
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class ChoreoFollow extends Command{

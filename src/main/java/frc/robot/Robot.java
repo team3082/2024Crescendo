@@ -6,13 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.Climber;
-import frc.robot.auto.Auto;
 import frc.robot.auto.AutoSelector;
-import frc.robot.sensors.BannerLight;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
-import frc.robot.sensors.VisionManager;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
@@ -21,7 +17,6 @@ import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
-import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
 import frc.robot.auto.CommandAuto;
 
