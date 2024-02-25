@@ -156,8 +156,8 @@ public final class Intake {
 
         // if it has the piece it can intake if it doesnt it cant
         if (!hasPiece) {
-            topPID.setReference(-0.35, ControlType.kDutyCycle);
-            bottomPID.setReference(-0.35, ControlType.kDutyCycle);
+            topPID.setReference(-0.5, ControlType.kDutyCycle);
+            bottomPID.setReference(-0.5, ControlType.kDutyCycle);
             Intake.setState(IntakeState.GROUND);
         } else {
             topPID.setReference(0.0, ControlType.kDutyCycle);
@@ -188,8 +188,8 @@ public final class Intake {
     // NEVER CALL THIS ANYWHERE ELSE OTHER THAN SHOOTER
     private static void feed() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);
-        topPID.setReference(-0.35, ControlType.kDutyCycle);
-        bottomPID.setReference(-0.35, ControlType.kDutyCycle);
+        topPID.setReference(-0.5, ControlType.kDutyCycle);
+        bottomPID.setReference(-0.5, ControlType.kDutyCycle);
     }
 
     private static void source() {

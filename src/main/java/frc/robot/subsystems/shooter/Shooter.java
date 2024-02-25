@@ -73,20 +73,20 @@ public final class Shooter {
         topMotor.setNeutralMode(NeutralMode.Coast);
         bottomMotor.setNeutralMode(NeutralMode.Coast);
 
-        topMotor.config_kP(0, 0.3);
-        topMotor.config_kI(0, 0.00015);
-        topMotor.configMaxIntegralAccumulator(0, 1000);
+        topMotor.config_kP(0, 0.28);
+        topMotor.config_kI(0, 0.00017);
+        topMotor.configMaxIntegralAccumulator(0, 1500);
         topMotor.config_kD(0, 0);
-        topMotor.config_kF(0, 1023.0 * 0.6246 / 11819.0);
+        topMotor.config_kF(0, 1023.0 * 0.698 / 12185.0 /** * 6/5 */);
 
-        bottomMotor.config_kP(0, 0.5);
-        bottomMotor.config_kI(0, 0.00015);
+        bottomMotor.config_kP(0, 0.265);
+        bottomMotor.config_kI(0, 0.00017);
         bottomMotor.configMaxIntegralAccumulator(0, 1000);
         bottomMotor.config_kD(0, 0);
-        bottomMotor.config_kF(0, 1023.0 * 0.6266 / 11808.0);
+        bottomMotor.config_kF(0, 1023.0 * 0.7 / 12121.0);
 
-        topMotor.configVoltageCompSaturation(12);
-        bottomMotor.configVoltageCompSaturation(12);
+        topMotor.configVoltageCompSaturation(10);
+        bottomMotor.configVoltageCompSaturation(10);
         topMotor.enableVoltageCompensation(true);
         bottomMotor.enableVoltageCompensation(true);
 
@@ -106,7 +106,7 @@ public final class Shooter {
 
     public static void update() {
         // Update our pivot & intake
-        ShooterPivot.update();
+        // ShooterPivot.update();
         Intake.update();
 
         // Get our vars

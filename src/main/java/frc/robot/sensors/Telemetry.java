@@ -1,5 +1,7 @@
 package frc.robot.sensors;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -202,10 +204,9 @@ public class Telemetry {
      */
     public static void update(boolean compMode) {
 
-        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
-
         // -1 if we're on the red alliance, 1 if we're on the blue alliance
-        int allianceMultiplier = (alliance == DriverStation.Alliance.Blue) ? -1 : 1;
+        Optional<Alliance> alliance = DriverStation.getAlliance();
+        int allianceMultiplier = (alliance.isEmpty() || alliance.get() == Alliance.Red ? -1 : 1);
 
         swervePos.setString(SwervePosition.getPosition().toString());
 
