@@ -63,7 +63,7 @@ public class OI {
         AMP
     }
 
-    public static ShooterMode currentShooterMode = ShooterMode.SPEAKER;
+    public static ShooterMode currentShooterMode = ShooterMode.SPEAKER_MANUAL;
     public static boolean manualFireSet = true;
     public static boolean manualClimbSet = true;
 
@@ -120,6 +120,7 @@ public class OI {
         double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
         double manualRPM = 3500.0;
+        double manualAngle = 61.0;
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
@@ -161,13 +162,13 @@ public class OI {
                  // manual for now, change to auto when tuned
                  // use the arr variable above for that
                 case SPEAKER:
-                    ShooterPivot.setPosition(Math.toRadians(61.0));
+                    ShooterPivot.setPosition(Math.toRadians(manualAngle));
                     Shooter.revTo(manualRPM);
                     Shooter.shoot();
                 break;
 
                 case SPEAKER_MANUAL:
-                    ShooterPivot.setPosition(Math.toRadians(61.0));
+                    ShooterPivot.setPosition(Math.toRadians(manualAngle));
                     Shooter.revTo(manualRPM);
                     Shooter.shoot();
                 break;
