@@ -57,11 +57,11 @@ public class VisionManager {
 
     public static void init() {
         cameras[0] = new PhotonCamera("ApriltagCamera1");
-        offsets[0] = new Vector2(-4, 5.350);
+        offsets[0] = new Vector2(4, 5.350);
         cameraRots[0] = Math.PI / 2;
 
         cameras[1] = new PhotonCamera("ApriltagCamera4");
-        offsets[1] = new Vector2(4, 2.475);
+        offsets[1] = new Vector2(-4, 2.475);
         cameraRots[1] = 3 * Math.PI / 2;
 
         cameras[2] = new PhotonCamera("ApriltagCamera3");
@@ -195,10 +195,8 @@ public class VisionManager {
      * @param tagID The ID of the tag to check.
      */
     public static boolean isTagFriendly(int tagID) {
-        // Alliance is now an optional and crashes the simulator if this isn't like this.
-        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
 
-        switch (alliance) {
+        switch (DriverStation.getAlliance().get()) {
             case Red:
                 for (int n : redTags) {
                     if (n == tagID) return true;

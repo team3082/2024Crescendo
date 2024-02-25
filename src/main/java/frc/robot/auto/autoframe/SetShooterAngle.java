@@ -1,5 +1,6 @@
 package frc.robot.auto.autoframe;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.utils.Vector2;
 
@@ -23,7 +24,7 @@ public class SetShooterAngle extends Autoframe {
 
     @Override
     public void update() {
-        if (ShooterPivot.atPos()) {
+        if (ShooterPivot.atPos() || RobotBase.isSimulation()) {
             this.done = true;
         }
     }

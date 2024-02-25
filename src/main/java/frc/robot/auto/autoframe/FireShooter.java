@@ -1,5 +1,6 @@
 package frc.robot.auto.autoframe;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.utils.RTime;
 
@@ -18,7 +19,7 @@ public class FireShooter extends Autoframe {
 
     @Override
     public void update() {
-        if (RTime.now() > startTime + exitTime && Shooter.canShoot()) {
+        if (RTime.now() > startTime + exitTime && Shooter.canShoot() || RobotBase.isSimulation()) {
             this.done = true;
         } else {
             Shooter.shoot();
