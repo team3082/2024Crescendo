@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
     Pigeon.setYaw(90);
 	  CommandScheduler.getInstance().enable();
     AutoSelector.run();
-    // SwervePosition.disableVision();
+    SwervePosition.disableVision();
   }
 
   @Override
