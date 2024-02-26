@@ -81,7 +81,7 @@ public class VisionManager {
      * in inches, with (0, 0) in the center of the field.
      * @return Vector2 representing the robot's position on the field.
      */
-    public static Vector2 getPosition() {
+    public static Vector2 getPosition() throws Exception {
 
         Vector2 posSum = new Vector2();
         int nTargets = 0;
@@ -89,6 +89,7 @@ public class VisionManager {
         for (int i = 0; i < camNum; i++) {
             Vector2 offset;
             int tagID;
+
             if (RobotBase.isSimulation()) {
                 offset = new Vector2(1.71, 0.8).mul(Constants.METERSTOINCHES);
                 tagID = 8;
@@ -104,33 +105,31 @@ public class VisionManager {
                 if (tagID > 16 || tagID < 1) 
                     continue;
 
-                //We have a valid target
+                // We have a valid target
                 Transform3d transform = target.getBestCameraToTarget();
                 offset = new Vector2(transform.getX(), transform.getY()).mul(Constants.METERSTOINCHES);
             }
 
             // tbh this confuses me but its not too jank now
-            if (DriverStation.getAlliance().get() == Alliance.Blue) {
+            if (DriverStation.getAlliance().get() == Alliance.Blue)
                 offset.y *= -1;
-            }
-            if (DriverStation.getAlliance().get() == Alliance.Red) {
+
+            if (DriverStation.getAlliance().get() == Alliance.Red)
                 offset.x *= -1;
-            }
 
             double thetaRobot = Pigeon.getRotationRad();
             double thetaCamYaw = 3.0 * Math.PI / 2.0;
 
-            // rotate the offset from tag to get position away from tag
+            // rotate the offset from tag to get the position away from tag
             offset = offset.rotate(-thetaRobot + thetaCamYaw + Math.PI / 2.0);
             
             // add the offset from the tag to the ops of the tag to get global coordinates
             Vector2 tagPos = getTagPos(tagID);
             Vector2 pos = tagPos.add(offset);
 
-            // this is cuz of how the robot coord system works
-            if (DriverStation.getAlliance().get() == Alliance.Blue) {
+            // compensate for the field coordinate system
+            if (DriverStation.getAlliance().get() == Alliance.Blue)
                 pos.y *= -1;
-            }
 
             // Adding pos to average it out
             posSum = posSum.add(pos);
@@ -142,9 +141,9 @@ public class VisionManager {
         if (nTargets > 0) {
             return posSum.div(nTargets);
         }
-        return posSum.div(nTargets);
 
-        // throw new Exception("No targets found!");
+        // otherwise tell us we have no new targets
+        throw new Exception("No targets found!");
     }
 
     /**
