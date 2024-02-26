@@ -1,18 +1,13 @@
 package frc.robot.sensors;
 
-import javax.naming.directory.DirContext;
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.ADXL345_I2C.AllAxes;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.utils.Vector2;
 
@@ -70,7 +65,7 @@ public class VisionManager {
         // cameraRots[1] = 3 * Math.PI / 2;
 
         cameras[0] = new PhotonCamera("ApriltagCamera3");
-        offsets[0] = new Vector2(-8.525, 5.1);
+        offsets[0] = new Vector2(4, 5.350);
         cameraRots[0] = 3.0 * Math.PI / 2.0;
 
         // cameras[3] = new PhotonCamera("ApriltagCamera2");
@@ -84,44 +79,51 @@ public class VisionManager {
      * @return Vector2 representing the robot's position on the field.
      */
     public static Vector2 getPosition() throws Exception {
-        System.out.println("ye its runnnin");
 
         Vector2 posSum = new Vector2();
         int nTargets = 0;
 
         for (int i = 0; i < camNum; i++) {
+
             Vector2 offset;
             int id;
+
             if (RobotBase.isSimulation()) {
+
                 offset = new Vector2(0.80, -1.71);
                 offset.x = -offset.x;
-                if (DriverStation.getAlliance().get() == Alliance.Red) {
+
+                if (DriverStation.getAlliance().get() == Alliance.Red)
                     offset.y = -offset.y;
-                }
-                id = 1;
-                if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id)) {
+
+                id = 8;
+
+                if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id))
                     offset.y = -offset.y;
-                }
+
             } else {
                 PhotonPipelineResult cameraResult = cameras[i].getLatestResult();
                 PhotonTrackedTarget target = cameraResult.getBestTarget();
+
                 // Throw away any frames without a target
-                if (target == null) {
+                if (target == null)
                     continue;
-                }
+
                 id = target.getFiducialId();
                 if (id > 16 || id < 1) 
                     continue;
+
                 //We have a valid target
                 Transform3d transform = target.getBestCameraToTarget();
                 offset = new Vector2(-transform.getY(), transform.getX());
+
                 offset.x = -offset.x;
-                if (DriverStation.getAlliance().get() == Alliance.Red) {
+    
+                if (DriverStation.getAlliance().get() == Alliance.Red)
                     offset.y = -offset.y;
-                }
-                if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id)) {
+
+                if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id))
                     offset.y = -offset.y;
-                }
             }
 
             // Convert to inches
@@ -135,15 +137,13 @@ public class VisionManager {
             // Make vector in field space instead of robot space
             offset = toFieldSpace(offset, Pigeon.getRotationRad(), id);
             offset.y = -offset.y;
-            if (DriverStation.getAlliance().get() == Alliance.Red && isTagFriendly(id)) {
-                offset.y = -offset.y;
-            }
-            if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id)) {
-                offset.y = -offset.y;
-            }
 
+            if (DriverStation.getAlliance().get() == Alliance.Red && isTagFriendly(id))
+                offset.y = -offset.y;
 
-            // offset.y = -offset.y;
+            if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id))
+                offset.y = -offset.y;
+
             // Adding pos to average it out
             posSum = posSum.add(offset);
             nTargets++;
