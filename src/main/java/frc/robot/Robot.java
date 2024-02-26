@@ -52,7 +52,6 @@ public class Robot extends TimedRobot {
     Intake.init();
     AutoSelector.setup();
     Telemetry.init();
-    SwervePosition.disableVision();
   }
 
   @Override

@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 
 import frc.robot.utils.Beambreak;
+import frc.robot.utils.RTime;
 
 @SuppressWarnings("removal")
 public final class Intake {
@@ -40,7 +41,7 @@ public final class Intake {
         pivotMotor.config_kI(0, 0.0, 30);
         pivotMotor.config_kD(0, 0.02, 30);
 
-        pivotMotor.configMotionAcceleration(40000);
+        pivotMotor.configMotionAcceleration(30000);
         pivotMotor.configMotionCruiseVelocity(15000);
         pivotMotor.configMotionSCurveStrength(1);
 
@@ -116,9 +117,6 @@ public final class Intake {
             case GROUND:
                 ground();
             break;
-            case FEED:
-                feed();
-            break;
             case BALANCE:
                 stow();
             break;
@@ -146,9 +144,12 @@ public final class Intake {
     public static double suckTime = 0.0;
     public static boolean hasPiece;
 
-    public static void suck() {
+    public static boolean suck() {
 
         if (beambreak.isBroken()) {
+            if (hasPiece == false){
+                suckTime = RTime.now();
+            }
             hasPiece = true;
         } else if (!beambreak.isBroken()) {
             hasPiece = false;
@@ -162,7 +163,32 @@ public final class Intake {
         } else {
             topPID.setReference(0.0, ControlType.kDutyCycle);
             bottomPID.setReference(0.0, ControlType.kDutyCycle);
-            Intake.setState(IntakeState.STOW);
+            if (RTime.now() >= suckTime + 0.25) {
+                Intake.setState(IntakeState.STOW);
+                return true;
+            }
+        }
+        return false;
+        // System.out.println(suckState.name());
+    }
+
+    public static void suck2() {
+
+        if (beambreak.isBroken()) {
+            hasPiece = true;
+        } else if (!beambreak.isBroken()) {
+            hasPiece = false;
+        }
+
+        // if it has the piece it can intake if it doesnt it cant
+        if (!hasPiece) {
+            topPID.setReference(-0.5, ControlType.kDutyCycle);
+            bottomPID.setReference(-0.5, ControlType.kDutyCycle);
+            // Intake.setState(IntakeState.GROUND);
+        } else {
+            topPID.setReference(0.0, ControlType.kDutyCycle);
+            bottomPID.setReference(0.0, ControlType.kDutyCycle);
+            // Intake.setState(IntakeState.STOW);
         }
         // System.out.println(suckState.name());
     }
@@ -171,25 +197,18 @@ public final class Intake {
      * Runs the handoff
      */
     public static void runHandoff() {
-        topPID.setReference(-0.8, ControlType.kDutyCycle);
-        bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+        topPID.setReference(-1, ControlType.kDutyCycle);
+        bottomPID.setReference(-1, ControlType.kDutyCycle);
     }
 
     public static void eject() {
-        topPID.setReference(0.8, ControlType.kDutyCycle);
-        bottomPID.setReference(0.8, ControlType.kDutyCycle);
+        topPID.setReference(1, ControlType.kDutyCycle);
+        bottomPID.setReference(1, ControlType.kDutyCycle);
     }
 
     public static void no() {
         topPID.setReference(0, ControlType.kDutyCycle);
         bottomPID.setReference(0, ControlType.kDutyCycle);
-    }
-
-    // NEVER CALL THIS ANYWHERE ELSE OTHER THAN SHOOTER
-    private static void feed() {
-        pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);
-        topPID.setReference(-0.5, ControlType.kDutyCycle);
-        bottomPID.setReference(-0.5, ControlType.kDutyCycle);
     }
 
     private static void source() {
@@ -221,7 +240,6 @@ public final class Intake {
 
     public static enum IntakeState {
         STOW,
-        FEED,
         GROUND,
         SOURCE,
         BALANCE

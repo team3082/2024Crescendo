@@ -14,6 +14,12 @@
         "ApriltagCamera1": {
           "open": true
         },
+        "ApriltagCamera3": {
+          "double[]##v_/photonvision/ApriltagCamera3/targetPose": {
+            "open": true
+          },
+          "open": true
+        },
         "ApriltagCamera4": {
           "open": true
         },

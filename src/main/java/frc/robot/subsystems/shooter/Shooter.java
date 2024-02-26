@@ -51,7 +51,7 @@ public final class Shooter {
 
     public static double handoffLiveTime = 0.0;
 
-    public static final double deadband = 25.0;
+    public static final double deadband = 50.0;
     
     public static void init() {
         ShooterPivot.init();

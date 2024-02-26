@@ -14,10 +14,10 @@ public class SetShooterVelocity extends Autoframe {
     @Override
     public void start() {
         Shooter.revTo(velocity);
-        this.done = true;
     }
 
     @Override
     public void update() {
+        if (Shooter.canShoot()) this.done = true;
     }
 }

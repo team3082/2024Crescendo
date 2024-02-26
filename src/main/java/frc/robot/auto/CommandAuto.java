@@ -103,7 +103,43 @@ public class CommandAuto {
             //new ClearActive()
         );
     }
+
+
+
     public static Command test() {
+      SwervePosition.setPosition(new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
+      return new SequentialCommandGroup(
+        new ParallelCommandGroup(
+          new SetShooterAngle(Math.toRadians(58.8)),
+          new SetShooterVelocity(3500)
+        ),
+        new FireShooter(),
+        new ParallelCommandGroup(
+          new SetIntake(IntakeState.GROUND),
+          new ChoreoFollow("3 Piece Middle.1")
+        ),
+        new ParallelCommandGroup(
+          new SetShooterAngle(Math.toRadians(59.8)),
+          new ChoreoFollow("3 Piece Middle.2"),
+          new SetShooterVelocity(3500)
+        ),
+        new FireShooter(),
+        new ParallelCommandGroup(
+          new SetIntake(IntakeState.GROUND),
+          new ChoreoFollow("3 Piece Middle.3")
+        ),
+        new ParallelCommandGroup(
+          new SetShooterAngle(Math.toRadians(59.8)),
+          new ChoreoFollow("3 Piece Middle.4"),
+          new SetShooterVelocity(3500)
+        ),
+        new FireShooter()
+        
+        // new SetShooterVelocity(0)
+      );
+    }
+
+    public static Command fourPieceMiddle() {
       SwervePosition.setPosition(new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
       return new SequentialCommandGroup(
         new ParallelCommandGroup(
@@ -114,10 +150,10 @@ public class CommandAuto {
         new StowShooter(),
         new ParallelCommandGroup(
           intakePiece(),
-          new ChoreoFollow("3 Piece Middle.1")
+          new ChoreoFollow("4 Piece Middle.1")
         ),
         new ParallelCommandGroup(
-          new ChoreoFollow("3 Piece Middle.2"),
+          new ChoreoFollow("4 Piece Middle.2"),
           new SetShooterVelocity(3500)
         ),
         new ParallelCommandGroup(
@@ -126,11 +162,24 @@ public class CommandAuto {
         ),
         new StowShooter(),
         new ParallelCommandGroup(
-          intakePiece(),
-          new ChoreoFollow("3 Piece Middle.3")
+          new ChoreoFollow("4 Piece Middle.3"),
+          intakePiece()
         ),
         new ParallelCommandGroup(
-          new ChoreoFollow("3 Piece Middle.4"),
+          new ChoreoFollow("4 Piece Middle.4"),
+          new SetShooterVelocity(3500)
+        ),
+        new ParallelCommandGroup(
+          new SetShooterAngle(Math.toRadians(60.3)),
+          new FireShooter()
+        ),
+        new StowShooter(),
+        new ParallelCommandGroup(
+          new ChoreoFollow("4 Piece Middle.5"),
+          intakePiece()
+        ),
+        new ParallelCommandGroup(
+          new ChoreoFollow("4 Piece Middle.6"),
           new SetShooterVelocity(3500)
         ),
         new ParallelCommandGroup(
@@ -138,45 +187,10 @@ public class CommandAuto {
           new FireShooter()
         ),
         new StowShooter()
-        
-        // new SetShooterVelocity(0)
-      );
-    }
-    /*public static Command fourPieceMiddle() {
-      SwerveTrajectory traj = ChoreoTrajectoryGenerator.getChoreo("4 Piece Center.1");
-      SwerveState start = traj.startState();
-      SwervePosition.setPosition(start.getPos());;
-      Pigeon.setYawRad(start.theta);
 
-      return new SequentialCommandGroup(
-          new ParallelCommandGroup(
-          new SetIntake(),
-          new ChoreoFollow("4 Piece Center.1"),
-          new SetShooterAngle(Math.PI/4)
-          ),
-          // new SetShoot(),
-          new ParallelCommandGroup(
-          new ChoreoFollow("4 Piece Center.2"),
-          new SetIntake()
-          ),
-          new ParallelCommandGroup(
-          new ChoreoFollow("4 Piece Center.3"),
-          new SetShooterAngle(Math.PI/4)
-          ),
-          // new SetShoot(),
-          new ParallelCommandGroup(
-          new ChoreoFollow("4 Piece Center.4"),
-          new SetIntake()
-          ),
-          new ParallelCommandGroup(
-          new ChoreoFollow("4 Piece Center.5"),
-          new SetShooterAngle(Math.PI/4)
-          ),
-          // new SetShoot(),
-          new ChoreoFollow("4 Piece Center.6"),
-          new ChoreoFollow("4 Piece Center.7")
+        // new SetShoot(),
       );
-  }*/
+  }
 
     public static Command choreoTest() {
         

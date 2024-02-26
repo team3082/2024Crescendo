@@ -73,7 +73,7 @@ public class AutoSelector {
             break;
             
             case "4 Piece Middle":
-               // CommandAuto.init(CommandAuto.fourPieceMiddle());
+               CommandAuto.init(CommandAuto.fourPieceMiddle());
             break;
 
             case "Test":

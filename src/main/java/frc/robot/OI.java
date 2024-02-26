@@ -122,6 +122,7 @@ public class OI {
         double manualRPM = 3500.0;
         double manualAngle = 61.0;
         
+        
         if (drive.mag() < 0.125)
             drive = new Vector2();
         else
