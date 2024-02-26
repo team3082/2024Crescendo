@@ -175,7 +175,10 @@ public class VisionManager {
             // 0 is straight forward
             double cameraRotation = (isTagFriendly(id) ? 0 : Math.PI) + (Math.PI / 2) - tagRotation;
             // 0 is to the right
-            double robotRotation = cameraRotation - (cameraRots[i] - Math.PI / 2); 
+            // double robotRotation = cameraRotation - (cameraRots[i] - Math.PI / 2); 
+            double tagRotationField = Math.PI / 2.0;
+
+            double robotRotation = tagRotationField + tagRotation - cameraRotation + Math.PI / 2.0;
 
             rotSum += robotRotation;
             nTargets++;
