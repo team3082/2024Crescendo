@@ -98,7 +98,7 @@ public class VisionManager {
                 if (DriverStation.getAlliance().get() == Alliance.Red) {
                     offset.y = -offset.y;
                 }
-                id = 4;
+                id = 1;
                 if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id)) {
                     offset.y = -offset.y;
                 }
@@ -115,6 +115,13 @@ public class VisionManager {
                 //We have a valid target
                 Transform3d transform = target.getBestCameraToTarget();
                 offset = new Vector2(-transform.getY(), transform.getX());
+                offset.x = -offset.x;
+                if (DriverStation.getAlliance().get() == Alliance.Red) {
+                    offset.y = -offset.y;
+                }
+                if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id)) {
+                    offset.y = -offset.y;
+                }
             }
 
             // Convert to inches
