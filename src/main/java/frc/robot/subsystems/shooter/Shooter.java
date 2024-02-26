@@ -77,7 +77,7 @@ public final class Shooter {
         topMotor.config_kI(0, 0.00017);
         topMotor.configMaxIntegralAccumulator(0, 1500);
         topMotor.config_kD(0, 0);
-        topMotor.config_kF(0, 1023.0 * 0.698 / 12185.0 /** * 6/5 */);
+        topMotor.config_kF(0, 1023.0 * 0.698 / 12185.0);
 
         bottomMotor.config_kP(0, 0.265);
         bottomMotor.config_kI(0, 0.00017);
