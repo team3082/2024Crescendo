@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.ADXL345_I2C.AllAxes;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.utils.Vector2;
 
@@ -97,7 +98,10 @@ public class VisionManager {
                 if (DriverStation.getAlliance().get() == Alliance.Red) {
                     offset.y = -offset.y;
                 }
-                id = 8;
+                id = 4;
+                if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id)) {
+                    offset.y = -offset.y;
+                }
             } else {
                 PhotonPipelineResult cameraResult = cameras[i].getLatestResult();
                 PhotonTrackedTarget target = cameraResult.getBestTarget();
@@ -124,15 +128,20 @@ public class VisionManager {
             // Make vector in field space instead of robot space
             offset = toFieldSpace(offset, Pigeon.getRotationRad(), id);
             offset.y = -offset.y;
-            if (DriverStation.getAlliance().get() == Alliance.Red) {
-                // offset.x = -offset.x;
+            if (DriverStation.getAlliance().get() == Alliance.Red && isTagFriendly(id)) {
+                offset.y = -offset.y;
+            }
+            if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id)) {
                 offset.y = -offset.y;
             }
 
+
+            // offset.y = -offset.y;
             // Adding pos to average it out
             posSum = posSum.add(offset);
             nTargets++;
         }
+
 
         // Only update if we actually saw any targets
         if (nTargets > 0) {
@@ -211,19 +220,25 @@ public class VisionManager {
      * @param tagID The ID of the tag to check.
      */
     public static boolean isTagFriendly(int tagID) {
-
+        System.out.println(tagID);
         switch (DriverStation.getAlliance().get()) {
             case Red:
                 for (int n : redTags) {
-                    if (n == tagID) return true;
+                    if (n == tagID) {
+                        System.out.println("is red");
+                        return true;
+                    }
                 }
             case Blue:
                 for (int n : blueTags) {
-                    if (n == tagID) return true;
+                    if (n == tagID) {
+                        System.out.println("is blue");
+                        return true;
+                    }
                 }
             default:
                 System.out.println("SOMETHING IS BAD");
-            return false;
+                return false;
         }
     }
 
