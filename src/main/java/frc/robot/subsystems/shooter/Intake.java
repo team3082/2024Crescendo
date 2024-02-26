@@ -143,9 +143,10 @@ public final class Intake {
     public static SuckState suckState = SuckState.CONTINUE_SUCK;
     public static double suckTime = 0.0;
     public static boolean hasPiece;
+    public static boolean reallyHasPiece;
 
-    public static boolean suck() {
-
+    public static void suck() {
+        // tracks if beambreak is brokey
         if (beambreak.isBroken()) {
             if (hasPiece == false){
                 suckTime = RTime.now();
@@ -153,42 +154,19 @@ public final class Intake {
             hasPiece = true;
         } else if (!beambreak.isBroken()) {
             hasPiece = false;
+            reallyHasPiece = false;
         }
 
         // if it has the piece it can intake if it doesnt it cant
-        if (!hasPiece) {
+        if (hasPiece) {
+            topPID.setReference(0.0, ControlType.kDutyCycle);
+            bottomPID.setReference(0.0, ControlType.kDutyCycle);
+            Intake.setState(IntakeState.STOW);
+            reallyHasPiece = true;
+        } else {
             topPID.setReference(-0.5, ControlType.kDutyCycle);
             bottomPID.setReference(-0.5, ControlType.kDutyCycle);
             Intake.setState(IntakeState.GROUND);
-        } else {
-            topPID.setReference(0.0, ControlType.kDutyCycle);
-            bottomPID.setReference(0.0, ControlType.kDutyCycle);
-            if (RTime.now() >= suckTime + 0.25) {
-                Intake.setState(IntakeState.STOW);
-                return true;
-            }
-        }
-        return false;
-        // System.out.println(suckState.name());
-    }
-
-    public static void suck2() {
-
-        if (beambreak.isBroken()) {
-            hasPiece = true;
-        } else if (!beambreak.isBroken()) {
-            hasPiece = false;
-        }
-
-        // if it has the piece it can intake if it doesnt it cant
-        if (!hasPiece) {
-            topPID.setReference(-0.5, ControlType.kDutyCycle);
-            bottomPID.setReference(-0.5, ControlType.kDutyCycle);
-            // Intake.setState(IntakeState.GROUND);
-        } else {
-            topPID.setReference(0.0, ControlType.kDutyCycle);
-            bottomPID.setReference(0.0, ControlType.kDutyCycle);
-            // Intake.setState(IntakeState.STOW);
         }
         // System.out.println(suckState.name());
     }

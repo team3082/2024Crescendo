@@ -19,9 +19,11 @@ public class SetIntake extends Autoframe {
 
     @Override
     public void update() {
-        if(Intake.suck()) {
-
-        }       
-        
+        Intake.suck();        
+        if (Intake.reallyHasPiece) {
+            Intake.setState(IntakeState.STOW);
+            Intake.no();
+            this.done = true;
+        }
     }
 }

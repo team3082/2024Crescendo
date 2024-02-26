@@ -21,7 +21,7 @@ public class SwervePosition {
     private static Vector2 absVelocity;
     private static Vector2 lastAbsVelocity;
 
-    private static boolean correctWithVision = false;
+    private static boolean correctWithVision = true;
 
     public static void init() {
         absVelocity     = new Vector2();

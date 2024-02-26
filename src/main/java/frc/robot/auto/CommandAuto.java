@@ -79,32 +79,30 @@ public class CommandAuto {
     }
 
     public static Command test2() {
-        SwervePosition.setPosition(new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
-        return new SequentialCommandGroup(
-            new ParallelCommandGroup(
-              // Shoot preloaded from subwoofer
-              new SetShooterAngle(Math.toRadians(58.8)),
-              new SetShooterVelocity(3500)
-            ),
-            new FireShooter(),
-            // Set intake to ground, intake for 3 seconds
-            // while driving to piece, go back to subwoofer,
-            // wait till Choreo is finished and then shoot.
-            new ParallelCommandGroup(
-              intakePiece(),
-              new ChoreoFollow("2 Piece Middle.1"),
-              new SetShooterAngle(Math.toRadians(58.8)),
-              new SetShooterVelocity(3500)
-            ),
-            new ChoreoFollow("2 Piece Middle.2"),
-            new FireShooter(),
-            new SetShooterVelocity(0),
-            new SetShooterAngle(30)
-            //new ClearActive()
-        );
-    }
+      SwervePosition.setPosition(new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
+      return new SequentialCommandGroup(
+          new ParallelCommandGroup(
+            // Shoot preloaded from subwoofer
+            new SetShooterAngle(Math.toRadians(58.8)),
+            new SetShooterVelocity(3500)
+          ),
+          new FireShooter(),
 
-
+          // Set intake to ground, intake for 3 seconds
+          // while driving to piece, go back to subwoofer,
+          // wait till Choreo is finished and then shoot.
+          new ParallelCommandGroup(
+            new SetIntake(IntakeState.GROUND),
+            new ChoreoFollow("2 Piece Middle.1"),
+            new SetShooterAngle(Math.toRadians(58.8)),
+            new SetShooterVelocity(3500)
+          ),
+          new ChoreoFollow("2 Piece Middle.2"),
+          new FireShooter(),
+          new SetShooterAngle(30)
+          //new ClearActive()
+      );
+  }
 
     public static Command test() {
       SwervePosition.setPosition(new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));

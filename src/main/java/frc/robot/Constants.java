@@ -87,6 +87,8 @@ public final class Constants {
         public static final double INROBOT_INTAKE_ANGLE = 300;//in ticks
         public static final double SOURCE_INTAKE_ANGLE = 0;
         public static final double GROUND_INTAKE_ANGLE = 30000;
+
+        public static final double FLIPUP_TIME = 0.1;
     }
 
     public static final class Swerve {

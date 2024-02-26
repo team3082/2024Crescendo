@@ -1,5 +1,7 @@
 package frc.robot.sensors;
 
+import javax.swing.GroupLayout.Alignment;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -9,11 +11,12 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Constants;
 import frc.robot.utils.Vector2;
 
 public class VisionManager {
 
-    private static final int camNum = 4;
+    private static final int camNum = 1;
 
     // Array of position-tracking cameras.
     private static PhotonCamera[] cameras = new PhotonCamera[camNum];
@@ -56,21 +59,21 @@ public class VisionManager {
     private static final int[] blueTags = {6, 7, 8, 9, 10, 14, 15, 16};
 
     public static void init() {
-        cameras[0] = new PhotonCamera("ApriltagCamera1");
+        // cameras[0] = new PhotonCamera("ApriltagCamera1");
+        // offsets[0] = new Vector2(4, 5.350);
+        // cameraRots[0] = Math.PI / 2;
+
+        // cameras[1] = new PhotonCamera("ApriltagCamera4");
+        // offsets[1] = new Vector2(-4, 2.475);
+        // cameraRots[1] = 3 * Math.PI / 2;
+
+        cameras[0] = new PhotonCamera("ApriltagCamera3");
         offsets[0] = new Vector2(4, 5.350);
-        cameraRots[0] = Math.PI / 2;
+        cameraRots[0] = 3.0 * Math.PI / 2.0;
 
-        cameras[1] = new PhotonCamera("ApriltagCamera4");
-        offsets[1] = new Vector2(-4, 2.475);
-        cameraRots[1] = 3 * Math.PI / 2;
-
-        cameras[2] = new PhotonCamera("ApriltagCamera3");
-        offsets[2] = new Vector2(-8.525, 5.1);
-        cameraRots[2] = Math.PI;
-
-        cameras[3] = new PhotonCamera("ApriltagCamera2");
-        offsets[3] = new Vector2(8.525, 5.1);
-        cameraRots[3] = 0;
+        // cameras[3] = new PhotonCamera("ApriltagCamera2");
+        // offsets[3] = new Vector2(8.525, 5.1);
+        // cameraRots[3] = 0;
     }
 
     /**
@@ -84,45 +87,62 @@ public class VisionManager {
         int nTargets = 0;
 
         for (int i = 0; i < camNum; i++) {
+            Vector2 offset;
+            int tagID;
 
-            PhotonPipelineResult cameraResult = cameras[i].getLatestResult();
-            PhotonTrackedTarget target = cameraResult.getBestTarget();
-            
-            // Throw away any frames without a target
-            if (target == null) {
-                continue;
+            if (RobotBase.isSimulation()) {
+                offset = new Vector2(1.71, 0.8).mul(Constants.METERSTOINCHES);
+                tagID = 8;
+            } else {
+                PhotonPipelineResult cameraResult = cameras[i].getLatestResult();
+                PhotonTrackedTarget target = cameraResult.getBestTarget();
+
+                // Throw away any frames without a target
+                if (target == null)
+                    continue;
+
+                tagID = target.getFiducialId();
+                if (tagID > 16 || tagID < 1) 
+                    continue;
+
+                // We have a valid target
+                Transform3d transform = target.getBestCameraToTarget();
+                offset = new Vector2(transform.getX(), transform.getY()).mul(Constants.METERSTOINCHES);
             }
 
-            int id = target.getFiducialId();
-            if (id > 16 || id < 1) 
-                continue;
+            // tbh this confuses me but its not too jank now
+            if (DriverStation.getAlliance().get() == Alliance.Blue)
+                offset.y *= -1;
 
-            //We have a valid target
-            Transform3d transform = target.getBestCameraToTarget();
+            if (DriverStation.getAlliance().get() == Alliance.Red)
+                offset.x *= -1;
 
-            // offset is the vector from the center of the robot to the apriltag
-            Vector2 offset = new Vector2(-transform.getY(), transform.getX());
-            // Convert to inches
-            offset = offset.mul(39.3701);
-            // Compensate for the angle of the camera
-            offset.y *= Math.cos(Math.toRadians(15));
-            // Point vector axes forward relative to robot
-            offset = offset.rotate(Math.PI / 2 - cameraRots[0]);
-            // Compensate for the camera's position on the robot
-            offset = offset.add(offsets[0]);
-            // Make vector in field space instead of robot space
-            offset = toFieldSpace(offset, Pigeon.getRotationRad(), id);
+            double thetaRobot = Pigeon.getRotationRad();
+            double thetaCamYaw = 3.0 * Math.PI / 2.0;
+
+            // rotate the offset from tag to get the position away from tag
+            offset = offset.rotate(-thetaRobot + thetaCamYaw + Math.PI / 2.0);
+            
+            // add the offset from the tag to the ops of the tag to get global coordinates
+            Vector2 tagPos = getTagPos(tagID);
+            Vector2 pos = tagPos.add(offset);
+
+            // compensate for the field coordinate system
+            if (DriverStation.getAlliance().get() == Alliance.Blue)
+                pos.y *= -1;
 
             // Adding pos to average it out
-            posSum = posSum.add(offset);
+            posSum = posSum.add(pos);
             nTargets++;
         }
+
 
         // Only update if we actually saw any targets
         if (nTargets > 0) {
             return posSum.div(nTargets);
         }
 
+        // otherwise tell us we have no new targets
         throw new Exception("No targets found!");
     }
 
@@ -154,7 +174,10 @@ public class VisionManager {
             // 0 is straight forward
             double cameraRotation = (isTagFriendly(id) ? 0 : Math.PI) + (Math.PI / 2) - tagRotation;
             // 0 is to the right
-            double robotRotation = cameraRotation - (cameraRots[i] - Math.PI / 2); 
+            // double robotRotation = cameraRotation - (cameraRots[i] - Math.PI / 2); 
+            double tagRotationField = Math.PI / 2.0;
+
+            double robotRotation = tagRotationField + tagRotation - cameraRotation + Math.PI / 2.0;
 
             rotSum += robotRotation;
             nTargets++;
@@ -178,6 +201,9 @@ public class VisionManager {
      */
     private static Vector2 toFieldSpace(Vector2 offset, double pigeonAngle, int tagID) {
         offset = offset.mul(-1);
+        if (DriverStation.getAlliance().get() == Alliance.Blue) {
+            pigeonAngle = 2.0 * Math.PI - pigeonAngle;
+        }
         Vector2 tagRelOffset = offset.rotate(pigeonAngle - Math.PI / 2);
 
         // We want to flip the X of the offset from the tag, but not the position of the tag itself.
@@ -195,19 +221,25 @@ public class VisionManager {
      * @param tagID The ID of the tag to check.
      */
     public static boolean isTagFriendly(int tagID) {
-
+        System.out.println(tagID);
         switch (DriverStation.getAlliance().get()) {
             case Red:
                 for (int n : redTags) {
-                    if (n == tagID) return true;
+                    if (n == tagID) {
+                        System.out.println("is red");
+                        return true;
+                    }
                 }
             case Blue:
                 for (int n : blueTags) {
-                    if (n == tagID) return true;
+                    if (n == tagID) {
+                        System.out.println("is blue");
+                        return true;
+                    }
                 }
             default:
                 System.out.println("SOMETHING IS BAD");
-            return false;
+                return false;
         }
     }
 
@@ -236,8 +268,8 @@ public class VisionManager {
         // LEAVE IT LIKE THIS SO WE DON'T FLIP APRIL TAG POSITIONS
         Vector2 v = new Vector2(aprilTags[tagID].x, aprilTags[tagID].y);
         
-        if(!isTagFriendly(tagID))
-            v.y *= -1; //If it's enemy make tag y positive
+        // if(!isTagFriendly(tagID))
+        //     v.y *= -1; //If it's enemy make tag y positive
         return v;
     }
 }
