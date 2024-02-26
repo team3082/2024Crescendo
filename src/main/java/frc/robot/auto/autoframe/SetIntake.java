@@ -24,8 +24,7 @@ public class SetIntake extends Autoframe {
     @Override
     public void update() {
         Intake.suck();        
-        if (Intake.beambreak.isBroken()) {
-            System.out.println("i can see");
+        if (Intake.reallyHasPiece) {
             Intake.setState(IntakeState.STOW);
             Intake.no();
             this.done = true;

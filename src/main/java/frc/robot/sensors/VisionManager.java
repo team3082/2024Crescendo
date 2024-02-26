@@ -1,8 +1,12 @@
 package frc.robot.sensors;
 
+import javax.naming.directory.DirContext;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -13,7 +17,7 @@ import frc.robot.utils.Vector2;
 
 public class VisionManager {
 
-    private static final int camNum = 4;
+    private static final int camNum = 1;
 
     // Array of position-tracking cameras.
     private static PhotonCamera[] cameras = new PhotonCamera[camNum];
@@ -56,21 +60,21 @@ public class VisionManager {
     private static final int[] blueTags = {6, 7, 8, 9, 10, 14, 15, 16};
 
     public static void init() {
-        cameras[0] = new PhotonCamera("ApriltagCamera1");
-        offsets[0] = new Vector2(4, 5.350);
-        cameraRots[0] = Math.PI / 2;
+        // cameras[0] = new PhotonCamera("ApriltagCamera1");
+        // offsets[0] = new Vector2(4, 5.350);
+        // cameraRots[0] = Math.PI / 2;
 
-        cameras[1] = new PhotonCamera("ApriltagCamera4");
-        offsets[1] = new Vector2(-4, 2.475);
-        cameraRots[1] = 3 * Math.PI / 2;
+        // cameras[1] = new PhotonCamera("ApriltagCamera4");
+        // offsets[1] = new Vector2(-4, 2.475);
+        // cameraRots[1] = 3 * Math.PI / 2;
 
-        cameras[2] = new PhotonCamera("ApriltagCamera3");
-        offsets[2] = new Vector2(-8.525, 5.1);
-        cameraRots[2] = Math.PI;
+        cameras[0] = new PhotonCamera("ApriltagCamera3");
+        offsets[0] = new Vector2(-8.525, 5.1);
+        cameraRots[0] = 3.0 * Math.PI / 2.0;
 
-        cameras[3] = new PhotonCamera("ApriltagCamera2");
-        offsets[3] = new Vector2(8.525, 5.1);
-        cameraRots[3] = 0;
+        // cameras[3] = new PhotonCamera("ApriltagCamera2");
+        // offsets[3] = new Vector2(8.525, 5.1);
+        // cameraRots[3] = 0;
     }
 
     /**
@@ -79,29 +83,36 @@ public class VisionManager {
      * @return Vector2 representing the robot's position on the field.
      */
     public static Vector2 getPosition() throws Exception {
+        System.out.println("ye its runnnin");
 
         Vector2 posSum = new Vector2();
         int nTargets = 0;
 
         for (int i = 0; i < camNum; i++) {
-
-            PhotonPipelineResult cameraResult = cameras[i].getLatestResult();
-            PhotonTrackedTarget target = cameraResult.getBestTarget();
-            
-            // Throw away any frames without a target
-            if (target == null) {
-                continue;
+            Vector2 offset;
+            int id;
+            if (RobotBase.isSimulation()) {
+                offset = new Vector2(0.80, -1.71);
+                offset.x = -offset.x;
+                if (DriverStation.getAlliance().get() == Alliance.Red) {
+                    offset.y = -offset.y;
+                }
+                id = 8;
+            } else {
+                PhotonPipelineResult cameraResult = cameras[i].getLatestResult();
+                PhotonTrackedTarget target = cameraResult.getBestTarget();
+                // Throw away any frames without a target
+                if (target == null) {
+                    continue;
+                }
+                id = target.getFiducialId();
+                if (id > 16 || id < 1) 
+                    continue;
+                //We have a valid target
+                Transform3d transform = target.getBestCameraToTarget();
+                offset = new Vector2(-transform.getY(), transform.getX());
             }
 
-            int id = target.getFiducialId();
-            if (id > 16 || id < 1) 
-                continue;
-
-            //We have a valid target
-            Transform3d transform = target.getBestCameraToTarget();
-
-            // offset is the vector from the center of the robot to the apriltag
-            Vector2 offset = new Vector2(-transform.getY(), transform.getX());
             // Convert to inches
             offset = offset.mul(39.3701);
             // Compensate for the angle of the camera
@@ -112,6 +123,11 @@ public class VisionManager {
             offset = offset.add(offsets[0]);
             // Make vector in field space instead of robot space
             offset = toFieldSpace(offset, Pigeon.getRotationRad(), id);
+            offset.y = -offset.y;
+            if (DriverStation.getAlliance().get() == Alliance.Red) {
+                // offset.x = -offset.x;
+                offset.y = -offset.y;
+            }
 
             // Adding pos to average it out
             posSum = posSum.add(offset);
