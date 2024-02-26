@@ -174,13 +174,13 @@ public final class Intake {
      * Runs the handoff
      */
     public static void runHandoff() {
-        topPID.setReference(-0.8, ControlType.kDutyCycle);
-        bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+        topPID.setReference(-0.9, ControlType.kDutyCycle);
+        bottomPID.setReference(-0.9, ControlType.kDutyCycle);
     }
 
     public static void eject() {
-        topPID.setReference(0.8, ControlType.kDutyCycle);
-        bottomPID.setReference(0.8, ControlType.kDutyCycle);
+        topPID.setReference(1, ControlType.kDutyCycle);
+        bottomPID.setReference(1, ControlType.kDutyCycle);
     }
 
     public static void no() {

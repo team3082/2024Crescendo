@@ -291,10 +291,9 @@ public final class Shooter {
         double top = topMotor.getSelectedSensorVelocity() * VelToRPM;
         double bottom = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
 
-        double velDeadband = deadband * RPMToVel;
-        double err2 = Math.abs(bottom - targetVelocity * VelToRPM);
         double err = Math.abs(top - targetVelocity * VelToRPM);
-        return err < velDeadband;
+        double err2 = Math.abs(bottom - targetVelocity * VelToRPM);
+        return err <= deadband && err2 <= deadband;
     }
 
     /**
