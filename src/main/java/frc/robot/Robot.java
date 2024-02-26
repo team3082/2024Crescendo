@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
     Intake.init();
     AutoSelector.setup();
     Telemetry.init();
-    // SwervePosition.disableVision();
+    SwervePosition.enableVision();
   }
 
   @Override
@@ -102,7 +102,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    //SwervePosition.updateAveragePosVision();
+    SwervePosition.updateAveragePosVision();
     // System.out.println(SwervePosition.getPosition().toString());
     // if(Robot.isReal())
     //   BannerLight.setTagInView(VisionManager.hasTarget());
