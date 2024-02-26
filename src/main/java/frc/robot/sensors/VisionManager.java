@@ -106,7 +106,7 @@ public class VisionManager {
 
                 //We have a valid target
                 Transform3d transform = target.getBestCameraToTarget();
-                offset = new Vector2(transform.getX(), transform.getY());
+                offset = new Vector2(transform.getX(), transform.getY()).mul(Constants.METERSTOINCHES);
             }
 
             // tbh this confuses me but its not too jank now
