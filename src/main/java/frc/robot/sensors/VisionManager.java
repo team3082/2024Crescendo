@@ -1,5 +1,7 @@
 package frc.robot.sensors;
 
+import javax.swing.GroupLayout.Alignment;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -9,6 +11,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Constants;
 import frc.robot.utils.Vector2;
 
 public class VisionManager {
@@ -78,29 +81,17 @@ public class VisionManager {
      * in inches, with (0, 0) in the center of the field.
      * @return Vector2 representing the robot's position on the field.
      */
-    public static Vector2 getPosition() throws Exception {
+    public static Vector2 getPosition() {
 
         Vector2 posSum = new Vector2();
         int nTargets = 0;
 
         for (int i = 0; i < camNum; i++) {
-
             Vector2 offset;
-            int id;
-
+            int tagID;
             if (RobotBase.isSimulation()) {
-
-                offset = new Vector2(0.80, -1.71);
-                offset.x = -offset.x;
-
-                if (DriverStation.getAlliance().get() == Alliance.Red)
-                    offset.y = -offset.y;
-
-                id = 8;
-
-                if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id))
-                    offset.y = -offset.y;
-
+                offset = new Vector2(1.71, 0.8).mul(Constants.METERSTOINCHES);
+                tagID = 8;
             } else {
                 PhotonPipelineResult cameraResult = cameras[i].getLatestResult();
                 PhotonTrackedTarget target = cameraResult.getBestTarget();
@@ -109,43 +100,40 @@ public class VisionManager {
                 if (target == null)
                     continue;
 
-                id = target.getFiducialId();
-                if (id > 16 || id < 1) 
+                tagID = target.getFiducialId();
+                if (tagID > 16 || tagID < 1) 
                     continue;
 
                 //We have a valid target
                 Transform3d transform = target.getBestCameraToTarget();
-                offset = new Vector2(-transform.getY(), transform.getX());
-
-                offset.x = -offset.x;
-    
-                if (DriverStation.getAlliance().get() == Alliance.Red)
-                    offset.y = -offset.y;
-
-                if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id))
-                    offset.y = -offset.y;
+                offset = new Vector2(transform.getX(), transform.getY());
             }
 
-            // Convert to inches
-            offset = offset.mul(39.3701);
-            // Compensate for the angle of the camera
-            offset.y *= Math.cos(Math.toRadians(15));
-            // Point vector axes forward relative to robot
-            offset = offset.rotate(Math.PI / 2 - cameraRots[0]);
-            // Compensate for the camera's position on the robot
-            offset = offset.add(offsets[0]);
-            // Make vector in field space instead of robot space
-            offset = toFieldSpace(offset, Pigeon.getRotationRad(), id);
-            offset.y = -offset.y;
+            // tbh this confuses me but its not too jank now
+            if (DriverStation.getAlliance().get() == Alliance.Blue) {
+                offset.y *= -1;
+            }
+            if (DriverStation.getAlliance().get() == Alliance.Red) {
+                offset.x *= -1;
+            }
 
-            if (DriverStation.getAlliance().get() == Alliance.Red && isTagFriendly(id))
-                offset.y = -offset.y;
+            double thetaRobot = Pigeon.getRotationRad();
+            double thetaCamYaw = 3.0 * Math.PI / 2.0;
 
-            if (DriverStation.getAlliance().get() == Alliance.Blue && !isTagFriendly(id))
-                offset.y = -offset.y;
+            // rotate the offset from tag to get position away from tag
+            offset = offset.rotate(-thetaRobot + thetaCamYaw + Math.PI / 2.0);
+            
+            // add the offset from the tag to the ops of the tag to get global coordinates
+            Vector2 tagPos = getTagPos(tagID);
+            Vector2 pos = tagPos.add(offset);
+
+            // this is cuz of how the robot coord system works
+            if (DriverStation.getAlliance().get() == Alliance.Blue) {
+                pos.y *= -1;
+            }
 
             // Adding pos to average it out
-            posSum = posSum.add(offset);
+            posSum = posSum.add(pos);
             nTargets++;
         }
 
@@ -154,8 +142,9 @@ public class VisionManager {
         if (nTargets > 0) {
             return posSum.div(nTargets);
         }
+        return posSum.div(nTargets);
 
-        throw new Exception("No targets found!");
+        // throw new Exception("No targets found!");
     }
 
     /**
@@ -210,6 +199,9 @@ public class VisionManager {
      */
     private static Vector2 toFieldSpace(Vector2 offset, double pigeonAngle, int tagID) {
         offset = offset.mul(-1);
+        if (DriverStation.getAlliance().get() == Alliance.Blue) {
+            pigeonAngle = 2.0 * Math.PI - pigeonAngle;
+        }
         Vector2 tagRelOffset = offset.rotate(pigeonAngle - Math.PI / 2);
 
         // We want to flip the X of the offset from the tag, but not the position of the tag itself.
@@ -274,8 +266,8 @@ public class VisionManager {
         // LEAVE IT LIKE THIS SO WE DON'T FLIP APRIL TAG POSITIONS
         Vector2 v = new Vector2(aprilTags[tagID].x, aprilTags[tagID].y);
         
-        if(!isTagFriendly(tagID))
-            v.y *= -1; //If it's enemy make tag y positive
+        // if(!isTagFriendly(tagID))
+        //     v.y *= -1; //If it's enemy make tag y positive
         return v;
     }
 }
