@@ -10,6 +10,7 @@ public class Beambreak {
     private final LaserCan sensor;
     /**The minimum distance in which the beam is not broken in mm*/
     private final double distThreshold;
+    private boolean isBroken;
 
     public Beambreak(int canID, double distThreshold) {
         this.sensor = new LaserCan(canID);
@@ -34,16 +35,21 @@ public class Beambreak {
         }
     }
 
-    public boolean isBroken() {
+    public void update() {
         if (RobotBase.isSimulation()) {
-            return true;
+            this.isBroken = true;
         } else {
             Measurement measurement = sensor.getMeasurement();
             //if the measurement is funny, we don't consider it. I don't feel like throwing an exception or logging rn
             if (measurement.status != LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
-                return false;
+                this.isBroken = false;
+            } else {
+                this.isBroken = measurement.distance_mm < distThreshold;
             }
-            return measurement.distance_mm < distThreshold;
         }
+    }
+
+    public boolean isBroken() {
+        return this.isBroken;
     }
 }

@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
     RTime.updateAbsolute();
     RTime.update();
     Telemetry.update(false);
-    Intake.beambreak.isBroken();
+    Intake.beambreak.update();
   }
 
   @Override
