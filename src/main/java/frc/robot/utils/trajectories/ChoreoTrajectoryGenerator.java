@@ -42,7 +42,7 @@ public class ChoreoTrajectoryGenerator{
         while(true){
             i++;
             System.out.println(i);
-            if(new File(Filesystem.getDeployDirectory(), "/deploy/choreo/" + fileName + "." + i + ".traj").isFile()){
+            if(new File(Filesystem.getDeployDirectory(), "/choreo/" + fileName + "." + i + ".traj").isFile()){
                 continue;
             }
             break;
@@ -71,7 +71,7 @@ public class ChoreoTrajectoryGenerator{
 
 
     private synchronized static DiscreteTraj parseTrajectory(String fileName){
-        File f = new File(Filesystem.getDeployDirectory(), "/deploy/choreo/" + fileName + ".traj");
+        File f = new File(Filesystem.getDeployDirectory(), "/choreo/" + fileName + ".traj");
         List<ChoreoState> choreoStates = null;
 
         try{
@@ -94,7 +94,7 @@ public class ChoreoTrajectoryGenerator{
      * populates a hash map with all of the 
     */
     public static synchronized void parseAll(){
-        File dir = new File(Filesystem.getDeployDirectory(), "deploy/choreo");
+        File dir = new File(Filesystem.getDeployDirectory(), "choreo");
 
         final File[] files = dir.listFiles((s) -> Pattern.matches(".*\\.\\d+\\.\\w+$", s.getName()) && s.isFile());
         choreoTrajectories = new HashMap<>(files.length * 3);//idk what the best size for a hashmap is. hopefully this is good
