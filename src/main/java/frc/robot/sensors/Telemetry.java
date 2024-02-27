@@ -90,19 +90,6 @@ public class Telemetry {
     private static MechanismRoot2d shooterRoot = subsystems.getRoot("Shooter", 20, 10);
     private static MechanismLigament2d shooterPivot = shooterRoot.append(new MechanismLigament2d("Shooter", 10, 180));
 
-    // cool swerve visualization n stuff
-    private static Mechanism2d customField = new Mechanism2d(900, 500);
-    private static MechanismRoot2d fieldSwerveMod0Root = customField.getRoot("fieldSwerveMod0", 0, 0);
-    private static MechanismLigament2d fieldSwerveMod0 = fieldSwerveMod0Root.append(new MechanismLigament2d("fieldSwerveMod0", 0, 0));
-    private static MechanismRoot2d fieldSwerveMod1Root = customField.getRoot("fieldSwerveMod1", 0, 0);
-    private static MechanismLigament2d fieldSwerveMod1 = fieldSwerveMod1Root.append(new MechanismLigament2d("fieldSwerveMod1", 0, 0));
-    private static MechanismRoot2d fieldSwerveMod2Root = customField.getRoot("fieldSwerveMod2", 0, 0);
-    private static MechanismLigament2d fieldSwerveMod2 = fieldSwerveMod2Root.append(new MechanismLigament2d("fieldSwerveMod2", 0, 0));
-    private static MechanismRoot2d fieldSwerveMod3Root = customField.getRoot("fieldSwerveMod3", 0, 0);
-    private static MechanismLigament2d fieldSwerveMod3 = fieldSwerveMod3Root.append(new MechanismLigament2d("fieldSwerveMod3", 0, 0));
-    private static MechanismRoot2d fieldSwerveMovementRoot = customField.getRoot("Field Movement Vector", 0, 0);
-    private static MechanismLigament2d fieldSwerveMovement = fieldSwerveMovementRoot.append(new MechanismLigament2d("Field Movement Vector", 0, 0));
-    
     // swerve states
     private static Mechanism2d swerveMods = new Mechanism2d(40, 40);
     private static MechanismRoot2d swerveMod0Root = swerveMods.getRoot("SwerveMod0", 0, 0);
@@ -134,7 +121,6 @@ public class Telemetry {
     private static final GenericEntry FLYWHEELTARGETRPM = shooter.add("Flywheel Targeted RPM", Shooter.targetVelocity * ShooterConstants.VelToRPM).getEntry();
     private static final GenericEntry TOPVECTOR = shooter.add("Top Flywheel Vector", OI.topVector).getEntry();
     private static final GenericEntry BOTTOMVECTOR = shooter.add("Bottom Flywheel Vector", OI.bottomVector).getEntry();
-    // private static final GenericEntry FLYWHEELATVEL = shooter.add("Flywheel At Velocity", Shooter.canShoot()).getEntry();
 
     // Climber
     private static final GenericEntry LEFTCLIMBERSTATE = climber.add("Left Climber State", ClimberManager.leftClimber.climberControlState.name()).getEntry();
@@ -150,7 +136,6 @@ public class Telemetry {
 
         // Input other misc values into Shuffleboard.
         robotTab.add("Field View", field);
-        robotTab.add("Custom Field", customField);
         robotTab.add("Swerve", swerveMods);
         robotTab.add("Subsystems", subsystems);
         robotTab.add("Auto Selector", AutoSelector.autoChooser);
@@ -185,45 +170,13 @@ public class Telemetry {
         System.out.println(color + fullMessage + ANSI_RESET);
     }
 
-    /**
-     * Log a message to the console. Same as a print statement, however this has color, and it is prefixed with a timestamp.
-     * The name of the class that called this function is automatically detected and printed as well.
-     * @param severity The severity of the message as a string. This changes the color of the message.
-     * @param message The message to send to the console.
-     */
-    public static void log(Severity severity, String message) {
-        String caller = Thread.currentThread().getStackTrace()[2].getClassName();
-        log(severity, caller, message);
-    }
-
-    /**
-     * Updates and reads from telemetry. Should be called each frame
-     * @param compMode whether we should enable a lightweight version of telemetry for competition. 
-     * This is just so we don't hog network bandwidth,
-     * and it still gives us decently important information.
-     */
-    public static void update(boolean compMode) {
-
+    public static void updateField() {
         // -1 if we're on the red alliance, 1 if we're on the blue alliance
         Optional<Alliance> alliance = DriverStation.getAlliance();
         int allianceMultiplier = (alliance.isEmpty() || alliance.get() == Alliance.Red ? -1 : 1);
 
         swervePos.setString(SwervePosition.getPosition().toString());
-
-        TOPFLYWHEELRPM.setDouble(Shooter.topRPM);
-        BOTTOMFLYWHEELRPM.setDouble(Shooter.bottomRPM);
-        FLYWHEELTARGETRPM.setDouble(Shooter.targetVelocity * ShooterConstants.VelToRPM);
-
-        TOPVECTOR.setDouble(OI.topVector);
-        BOTTOMVECTOR.setDouble(OI.bottomVector);
-
-        pivotAngle.setDouble(ShooterPivot.actualPos);
-        pivotTargetAngle.setDouble(ShooterPivot.targetPos);
-       // FLYWHEELATVEL.setBoolean(Shooter.canShoot());
-
-        LEFTCLIMBERSTATE.setString(ClimberManager.leftClimber.climberControlState.name());
-        RIGHTCLIMBERSTATE.setString(ClimberManager.rightClimber.climberControlState.name());
-
+        
         if (RobotBase.isSimulation()) {
             // Allow the user to drag the robot around if we're in simulation mode
             Vector2 modifiedSimPos = new frc.robot.utils.Vector2(field.getRobotPose().getX(), field.getRobotPose().getY());
@@ -249,7 +202,31 @@ public class Telemetry {
         // Store the field position for the next frame to check if it has been manually changed
         prevSimPos = fieldPosMeters;
         prevSimRot = rotation;
+    }
 
+    public static void updateShooter() {
+        TOPFLYWHEELRPM.setDouble(Shooter.topRPM);
+        BOTTOMFLYWHEELRPM.setDouble(Shooter.bottomRPM);
+        FLYWHEELTARGETRPM.setDouble(Shooter.targetVelocity * ShooterConstants.VelToRPM);
+
+        TOPVECTOR.setDouble(OI.topVector);
+        BOTTOMVECTOR.setDouble(OI.bottomVector);
+
+        pivotAngle.setDouble(ShooterPivot.actualPos);
+        pivotTargetAngle.setDouble(ShooterPivot.targetPos);
+        // FLYWHEELATVEL.setBoolean(Shooter.canShoot());
+
+        shooterPivot.setAngle(180 - Math.toDegrees(ShooterPivot.simAng));
+        shooterPivot.setLength((Shooter.simVel / 250) + 2);
+        shooterPivot.setColor(new Color8Bit(255, 0, 0));
+    }
+
+    public static void updateClimber() {
+        LEFTCLIMBERSTATE.setString(ClimberManager.leftClimber.climberControlState.name());
+        RIGHTCLIMBERSTATE.setString(ClimberManager.rightClimber.climberControlState.name());
+    }
+
+    public static void updateSwerve() {
         // Move PID: X
         SwervePID.xPID.kP = moveP.getDouble(0);
         SwervePID.xPID.kI = moveI.getDouble(0);
@@ -268,50 +245,8 @@ public class Telemetry {
         SwervePID.rotPID.kD = rotD.getDouble(0);
         SwervePID.rotPID.deadband = rotDeadBand.getDouble(0);
 
-        // Shooter
-        // Shooter.targetVelocity = FLYWHEELTARGETRPM.getDouble(0) * RPMToVel;
-        // ShooterPivot.targetPos = Math.toRadians(pivotTargetAngle.getDouble(35));
-        // OI.topVector = TOPVECTOR.getDouble(0) * RPMToVel;
-        // OI.bottomVector = BOTTOMVECTOR.getDouble(0) * RPMToVel;
-
-        // Tuning.Shooter.FLYWHEELKD = FLYWHEELKD.getDouble(0);
-        // Tuning.Shooter.FLYWHEELKF = FLYWHEELKF.getDouble(0);
-        // Tuning.Shooter.PIVOT_AFF_SCALAR = PIVOTAFF.getDouble(0);
-
-        // shooter visualization
-        // intakePivot.setAngle(Math.toDegrees(Intake.getIntakeAngleRad()));
-        shooterPivot.setAngle(180 - Math.toDegrees(ShooterPivot.simAng));
-        shooterPivot.setLength((Shooter.simVel / 250) + 2);
-        shooterPivot.setColor(new Color8Bit(255, 0, 0));
-
         // cool swerve visualization stuff that looks cool and i really like
         double modDist = Math.sqrt(Math.pow(Constants.Swerve.SWERVEMODX0, 2) + Math.pow(Constants.Swerve.SWERVEMODY0, 2));
-        
-        fieldSwerveMod0Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + 3 * Math.PI / 4) + 450 + SwervePosition.getPosition().y,
-         modDist * Math.sin(Pigeon.getRotationRad() + 3 * Math.PI / 4) + 250 + -SwervePosition.getPosition().x);
-        fieldSwerveMod0.setAngle(Math.toDegrees(SwerveManager.mods[0].getSteerAngle() + Pigeon.getRotationRad()) - 180); 
-        fieldSwerveMod0.setLength(SwerveManager.mods[0].getDriveVelocity() / 30);
-
-        fieldSwerveMod1Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + 1 * Math.PI / 4) + 450 + SwervePosition.getPosition().y,
-         modDist * Math.sin(Pigeon.getRotationRad() + 1 * Math.PI / 4) + 250 + -SwervePosition.getPosition().x);
-        fieldSwerveMod1.setAngle(Math.toDegrees(SwerveManager.mods[1].getSteerAngle() + Pigeon.getRotationRad()) - 180);
-        fieldSwerveMod1.setLength(SwerveManager.mods[1].getDriveVelocity() / 30);
-
-        fieldSwerveMod2Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + -1 * Math.PI / 4) + 450 + SwervePosition.getPosition().y, 
-         modDist * Math.sin(Pigeon.getRotationRad() + -1 * Math.PI / 4) + 250 + -SwervePosition.getPosition().x);
-        fieldSwerveMod2.setAngle(Math.toDegrees(SwerveManager.mods[2].getSteerAngle() + Pigeon.getRotationRad()) - 180);
-        fieldSwerveMod2.setLength(SwerveManager.mods[2].getDriveVelocity() / 30);
-
-        fieldSwerveMod3Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + -3 * Math.PI / 4) + 450 + SwervePosition.getPosition().y, 
-         modDist * Math.sin(Pigeon.getRotationRad() + -3 * Math.PI / 4) + 250 + -SwervePosition.getPosition().x);
-        fieldSwerveMod3.setAngle(Math.toDegrees(SwerveManager.mods[3].getSteerAngle() + Pigeon.getRotationRad()) - 180);
-        fieldSwerveMod3.setLength(SwerveManager.mods[3].getDriveVelocity() / 30);
-
-        fieldSwerveMovementRoot.setPosition(450 + SwervePosition.getPosition().y, 250 + -SwervePosition.getPosition().x);
-        fieldSwerveMovement.setAngle(Math.toDegrees(SwerveManager.getRobotDriveVelocity().atan2() + Pigeon.getRotationRad()) - 180);
-        fieldSwerveMovement.setLength(SwerveManager.getRobotDriveVelocity().mag() / 30);
-        fieldSwerveMovement.setColor(new Color8Bit(255, 0, 0));
-
 
         swerveMod0Root.setPosition(modDist * Math.cos(Pigeon.getRotationRad() + 3 * Math.PI / 4) + 20,
          modDist * Math.sin(Pigeon.getRotationRad() + 3 * Math.PI / 4) + 20);
@@ -337,5 +272,29 @@ public class Telemetry {
         swerveMovement.setAngle(Math.toDegrees(SwerveManager.getRobotDriveVelocity().atan2() + Pigeon.getRotationRad()) - 180);
         swerveMovement.setLength(SwerveManager.getRobotDriveVelocity().mag() / 60);
         swerveMovement.setColor(new Color8Bit(255, 0, 0));
+    }
+
+    /**
+     * Log a message to the console. Same as a print statement, however this has color, and it is prefixed with a timestamp.
+     * The name of the class that called this function is automatically detected and printed as well.
+     * @param severity The severity of the message as a string. This changes the color of the message.
+     * @param message The message to send to the console.
+     */
+    public static void log(Severity severity, String message) {
+        String caller = Thread.currentThread().getStackTrace()[2].getClassName();
+        log(severity, caller, message);
+    }
+
+    /**
+     * Updates and reads from telemetry. Should be called each frame
+     * @param compMode whether we should enable a lightweight version of telemetry for competition. 
+     * This is just so we don't hog network bandwidth,
+     * and it still gives us decently important information.
+     */
+    public static void update(boolean compMode) {
+        updateField();
+        updateSwerve();
+        updateClimber();
+        updateShooter();
     }
 }

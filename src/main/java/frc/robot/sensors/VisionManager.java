@@ -192,30 +192,6 @@ public class VisionManager {
     }
 
     /**
-     * Convert from a vector from center of robot to tag that is relative to robot rotation to
-     * a vector from center of field to the robot relative to field rotation
-     * @param offset the vector from the center of the robot to the tag, relative to the robot rotation
-     * @param pigeonAngle the yaw of the pigeon in radians
-     * @param tagID the ID of the AprilTag detected
-     * @return a vector from the center of the field to the robot, relative to the field rotation
-     */
-    private static Vector2 toFieldSpace(Vector2 offset, double pigeonAngle, int tagID) {
-        offset = offset.mul(-1);
-        if (DriverStation.getAlliance().get() == Alliance.Blue) {
-            pigeonAngle = 2.0 * Math.PI - pigeonAngle;
-        }
-        Vector2 tagRelOffset = offset.rotate(pigeonAngle - Math.PI / 2);
-
-        // We want to flip the X of the offset from the tag, but not the position of the tag itself.
-        if (DriverStation.getAlliance().get() == Alliance.Red)
-                tagRelOffset.x *= -1;
-        
-        Vector2 absolutePos = getTagPos(tagID).add(tagRelOffset);
-
-        return absolutePos;
-    }
-
-    /**
      * Check if a tag is "friendly" - whether or not
      * the tag is on our alliance's side of the field.
      * @param tagID The ID of the tag to check.
