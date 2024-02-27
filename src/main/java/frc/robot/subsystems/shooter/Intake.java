@@ -209,6 +209,13 @@ public final class Intake {
         // System.out.println(suckState.name());
     }
 
+    /** Manually sets the intake to ground & continues to intake */
+    public static void manualIntake() {
+        topPID.setReference(-0.5, ControlType.kDutyCycle);
+        bottomPID.setReference(-0.5, ControlType.kDutyCycle);
+        Intake.setState(IntakeState.GROUND);
+    }
+
     /**
      * Runs the handoff
      */

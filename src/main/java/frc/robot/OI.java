@@ -50,6 +50,7 @@ public class OI {
     // Shooter
     static final int switchShooterMode  = LogitechF310.BUTTON_LEFT_BUMPER;
     static final int setManualShoot     = LogitechF310.BUTTON_Y;
+    static final int setManualIntake    = LogitechF310.BUTTON_B;
 
     // Climber
     static final int zeroClimber        = LogitechF310.BUTTON_X;
@@ -66,6 +67,7 @@ public class OI {
     public static ShooterMode currentShooterMode = ShooterMode.SPEAKER_MANUAL;
     public static boolean manualFireSet = true;
     public static boolean manualClimbSet = true;
+    public static boolean manualIntake = false;
 
     public static int lastPOV = -1;
 
@@ -107,13 +109,14 @@ public class OI {
         // INTAKE
 
         if (driverStick.getRawAxis(intake) > 0.5) {
-            Intake.suck();
-            // TODO slow the drive if intaking
+            if (!manualIntake)
+                Intake.suck();
+            else
+                Intake.manualIntake();
             kBoostCoefficient = 0.4;
         } else {
             if (!Shooter.firing())
                 Intake.setState(IntakeState.STOW);
-            
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
@@ -218,6 +221,9 @@ public class OI {
         if (operatorStick.getRawButtonPressed(zeroClimber)) {
             ClimberManager.zero();
         }
+
+        if (operatorStick.getRawButton(setManualIntake))
+            manualIntake = !manualIntake;
 
         if (operatorStick.getRawButtonPressed(setManualClimb)) {
             manualClimbSet = true;
