@@ -18,15 +18,10 @@ public class AutoSelector {
      */
     public static void setup() {
         autoChooser.setDefaultOption("No Auto", "No Auto");
-        autoChooser.addOption("4 Piece Amp", "4 Piece Amp");
-        autoChooser.addOption("4 Piece Source", "4 Piece Source");
-        autoChooser.addOption("3 Piece Middle Amp", "3 Piece Middle Amp");
-        autoChooser.addOption("3 Piece Middle Source", "3 Piece Middle Source");
-        autoChooser.addOption("Choreo Test", "Choreo Test");
-        autoChooser.addOption("Bezier Curve Test", "Bezier Curve Test");
-        autoChooser.addOption("Bounce Test", "Bounce Test");
         autoChooser.addOption("4 Piece Middle", "4 Piece Middle");
-        autoChooser.addOption("Test", "Test");
+        autoChooser.addOption("Two Piece Middle", "Two Piece Middle");
+        autoChooser.addOption("Three Piece Middle", "Three Piece Middle");
+        autoChooser.addOption("Three Piece Right", "Three Piece Right");
     }
 
     /**
@@ -42,42 +37,20 @@ public class AutoSelector {
                 CommandAuto.init(Commands.none());     
             break;
 
-            case "4 Piece Amp":
-                CommandAuto.init(CommandAuto.fourPieceAmpSide());
-            break;
-
-            case "4 Piece Source":
-                CommandAuto.init(CommandAuto.fourPieceSourceSide());
-            break;
-
-            case "3 Piece Middle Amp":
-            
-                CommandAuto.init(CommandAuto.threePieceMiddleAmpSide());
-            break;
-
-            case "3 Piece Middle Source":
-                CommandAuto.init(CommandAuto.threePieceMiddleSourceSide());
-            break;
-
-            case "Choreo Test":
-                //Auto.choreoTest();
-                CommandAuto.init(CommandAuto.choreoTest());
-            break;
-
-            case "Bezier Curve Test":
-                CommandAuto.init(CommandAuto.bezierCurveAutoTest());
-            break;
-
-            case "Bounce Test":
-                CommandAuto.init(CommandAuto.bounceTest());
-            break;
-            
             case "4 Piece Middle":
-               CommandAuto.init(CommandAuto.fourMiddle());
+               CommandAuto.init(CommandAuto.fourPieceMiddle());
             break;
 
-            case "Test":
-                CommandAuto.init(CommandAuto.test2());
+            case "Two Piece Middle":
+                CommandAuto.init(CommandAuto.twoPieceMiddle());
+            break;
+
+            case "Three Piece Middle":
+                CommandAuto.init(CommandAuto.ThreePieceMiddle());
+            break;
+
+            case "Three Piece Right":
+                CommandAuto.init(CommandAuto.threePieceRight());
             break;
         }
     }
