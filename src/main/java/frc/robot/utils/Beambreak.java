@@ -15,7 +15,6 @@ public class Beambreak {
     public Beambreak(int canID, double distThreshold) {
         this.sensor = new LaserCan(canID);
         this.distThreshold = distThreshold;
-
         try {
             //Setting max distance lower if possible for more accurate measurements
             if (this.distThreshold < 1300) {

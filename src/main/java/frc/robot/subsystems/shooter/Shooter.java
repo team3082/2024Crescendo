@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 
@@ -119,6 +120,7 @@ public final class Shooter {
 
         switch (shooterMode) {
             case FIRING:
+                Intake.setState(IntakeState.FEED);
                 if (atVelocity) {
                     Intake.runHandoff(); // fire if we are ready
                 } else { // otherwise keep revvin till we are
@@ -130,6 +132,7 @@ public final class Shooter {
             break;
 
             case REVVING:
+                Intake.setState(IntakeState.FEED);
                 // Rev the flywheel up to our set velocity
                 if (varied)
                     setVariedVelocity(targetTop, targetBottom);

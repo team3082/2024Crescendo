@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.FireShooter;
 import frc.robot.auto.commands.ChoreoFollow;
 import frc.robot.auto.commands.FollowBezierCurve;
@@ -79,11 +80,11 @@ public class CommandAuto {
     }
 
     public static Command test2() {
-      SwervePosition.setPosition(new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
+      // SwervePosition.setPosition(new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
       return new SequentialCommandGroup(
           new ParallelCommandGroup(
             // Shoot preloaded from subwoofer
-            new SetShooterAngle(Math.toRadians(58.8)),
+            new SetShooterAngle(Math.toRadians(57)),
             new SetShooterVelocity(3500)
           ),
           new FireShooter(),
@@ -94,14 +95,53 @@ public class CommandAuto {
           new ParallelCommandGroup(
             new SetIntake(IntakeState.GROUND),
             new ChoreoFollow("2 Piece Middle.1"),
-            new SetShooterAngle(Math.toRadians(58.8)),
-            new SetShooterVelocity(3500)
+            new SetShooterVelocity(3200)
           ),
           new ChoreoFollow("2 Piece Middle.2"),
-          new FireShooter(),
-          new SetShooterAngle(30)
-          //new ClearActive()
+          new WaitCommand(0.1),
+          new SetShooterAngle(Math.toRadians(57)),
+          new FireShooter()
       );
+  }
+
+  public static Command fourMiddle() {
+    return new SequentialCommandGroup(
+      new ParallelCommandGroup(
+            new SetShooterAngle(Math.toRadians(57)),
+            new SetShooterVelocity(3500)
+          ),
+        new FireShooter(),
+
+      new ParallelCommandGroup(
+            new SetIntake(IntakeState.GROUND),
+            new ChoreoFollow("4Middle.1"),
+            new SetShooterVelocity(3200)
+          ),
+        new ChoreoFollow("4Middle.2"),
+        new WaitCommand(0.1),
+        new SetShooterAngle(Math.toRadians(57)),
+        new FireShooter(),
+
+      new ParallelCommandGroup(
+            new SetIntake(IntakeState.GROUND),
+            new ChoreoFollow("4Middle.3"),
+            new SetShooterVelocity(3200)
+        ),
+        new ChoreoFollow("4Middle.4"),
+        new WaitCommand(0.1),
+        new SetShooterAngle(Math.toRadians(56)),
+        new FireShooter(),
+
+      new ParallelCommandGroup(
+            new SetIntake(IntakeState.GROUND),
+            new ChoreoFollow("4Middle.5"),
+            new SetShooterVelocity(3200)
+        ),
+      new ChoreoFollow("4Middle.6"),
+        new WaitCommand(0.1),
+        new SetShooterAngle(Math.toRadians(54.8)),
+        new FireShooter()
+    );
   }
 
     public static Command test() {

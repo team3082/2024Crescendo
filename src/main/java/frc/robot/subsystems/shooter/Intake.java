@@ -120,6 +120,10 @@ public final class Intake {
             case BALANCE:
                 stow();
             break;
+            case FEED:
+                feed();
+            break;
+
         }
     }
 
@@ -161,8 +165,42 @@ public final class Intake {
         if (hasPiece) {
             topPID.setReference(0.0, ControlType.kDutyCycle);
             bottomPID.setReference(0.0, ControlType.kDutyCycle);
-            Intake.setState(IntakeState.STOW);
-            reallyHasPiece = true;
+            if (RTime.now() >= suckTime + 0.15) {
+                if (suckTime != 0.0) {
+                    reallyHasPiece = true;
+                    Intake.setState(IntakeState.STOW);
+                }
+            }
+        } else {
+            topPID.setReference(-0.5, ControlType.kDutyCycle);
+            bottomPID.setReference(-0.5, ControlType.kDutyCycle);
+            Intake.setState(IntakeState.GROUND);
+        }
+        // System.out.println(suckState.name());
+    }
+
+    public static void autoSuck() {
+        // tracks if beambreak is brokey
+        if (beambreak.isBroken()) {
+            if (hasPiece == false){
+                suckTime = RTime.now();
+            }
+            hasPiece = true;
+        } else if (!beambreak.isBroken()) {
+            hasPiece = false;
+            reallyHasPiece = false;
+        }
+
+        // if it has the piece it can intake if it doesnt it cant
+        if (hasPiece) {
+            topPID.setReference(0.0, ControlType.kDutyCycle);
+            bottomPID.setReference(0.0, ControlType.kDutyCycle);
+            if (RTime.now() >= suckTime + 0.25) {
+                if (suckTime != 0.0) {
+                    reallyHasPiece = true;
+                    Intake.setState(IntakeState.STOW);
+                }
+            }
         } else {
             topPID.setReference(-0.5, ControlType.kDutyCycle);
             bottomPID.setReference(-0.5, ControlType.kDutyCycle);
@@ -195,6 +233,10 @@ public final class Intake {
         bottomPID.setReference(INTAKESTRENGTH, ControlType.kDutyCycle);
     }
 
+    private static void feed() {
+        pivotMotor.set(TalonFXControlMode.MotionMagic, FEED_INTAKE_ANGLE);
+    }
+
     public static boolean pieceGrabbed() {
         return beambreak.isBroken();
     }
@@ -220,6 +262,7 @@ public final class Intake {
         STOW,
         GROUND,
         SOURCE,
-        BALANCE
+        BALANCE,
+        FEED
     }
 }

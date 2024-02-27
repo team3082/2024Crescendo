@@ -15,7 +15,7 @@ public class SwervePosition {
 
     // Smoothly correct field position based on vision output. VISION_CORRECTION_FACTOR should range from 0.0 to
     // 1.0, representing the speed at which we blend from the odometry output to the output of the vision. 
-    static final double VISION_CORRECTION_FACTOR = 0.1;
+    static final double VISION_CORRECTION_FACTOR = 0.3;
 
     private static Vector2 position;
     private static Vector2 absVelocity;

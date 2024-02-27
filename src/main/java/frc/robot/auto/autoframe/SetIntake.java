@@ -15,12 +15,15 @@ public class SetIntake extends Autoframe {
 
     @Override
     public void start() {
+        Intake.autoSuck();
     }
 
     @Override
     public void update() {
-        Intake.suck();        
+        Intake.autoSuck();        
         if (Intake.reallyHasPiece) {
+            Intake.reallyHasPiece = false;
+            Intake.suckTime = 0;
             Intake.setState(IntakeState.STOW);
             Intake.no();
             this.done = true;
