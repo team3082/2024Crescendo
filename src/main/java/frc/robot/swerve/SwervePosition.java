@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.Robot;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.VisionManager;
 import frc.robot.utils.RTime;
@@ -15,13 +16,13 @@ public class SwervePosition {
 
     // Smoothly correct field position based on vision output. VISION_CORRECTION_FACTOR should range from 0.0 to
     // 1.0, representing the speed at which we blend from the odometry output to the output of the vision. 
-    static final double VISION_CORRECTION_FACTOR = 0.1;
+    static final double VISION_CORRECTION_FACTOR = 0.3;
 
     private static Vector2 position;
     private static Vector2 absVelocity;
     private static Vector2 lastAbsVelocity;
 
-    private static boolean correctWithVision = true;
+    private static boolean correctWithVision = false;
 
     public static void init() {
         absVelocity     = new Vector2();
@@ -30,7 +31,8 @@ public class SwervePosition {
     }
 
     public static void enableVision() {
-        correctWithVision = true;
+        if(Robot.isReal())
+            correctWithVision = true;
     }
 
     public static void disableVision() {

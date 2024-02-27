@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 
@@ -51,7 +52,7 @@ public final class Shooter {
 
     public static double handoffLiveTime = 0.0;
 
-    public static final double deadband = 25.0;
+    public static final double deadband = 50.0;
     
     public static void init() {
         ShooterPivot.init();
@@ -119,6 +120,7 @@ public final class Shooter {
 
         switch (shooterMode) {
             case FIRING:
+                Intake.setState(IntakeState.FEED);
                 if (atVelocity) {
                     Intake.runHandoff(); // fire if we are ready
                 } else { // otherwise keep revvin till we are
@@ -130,6 +132,7 @@ public final class Shooter {
             break;
 
             case REVVING:
+                Intake.setState(IntakeState.FEED);
                 // Rev the flywheel up to our set velocity
                 if (varied)
                     setVariedVelocity(targetTop, targetBottom);
@@ -291,10 +294,9 @@ public final class Shooter {
         double top = topMotor.getSelectedSensorVelocity() * VelToRPM;
         double bottom = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
 
-        double velDeadband = deadband * RPMToVel;
-        double err2 = Math.abs(bottom - targetVelocity * VelToRPM);
         double err = Math.abs(top - targetVelocity * VelToRPM);
-        return err < velDeadband;
+        double err2 = Math.abs(bottom - targetVelocity * VelToRPM);
+        return err <= deadband && err2 <= deadband;
     }
 
     /**

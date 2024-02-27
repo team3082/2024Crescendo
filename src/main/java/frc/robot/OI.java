@@ -111,7 +111,9 @@ public class OI {
             // TODO slow the drive if intaking
             kBoostCoefficient = 0.4;
         } else {
-            Intake.setState(IntakeState.STOW);
+            if (!Shooter.firing())
+                Intake.setState(IntakeState.STOW);
+            
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
@@ -120,7 +122,8 @@ public class OI {
         double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
         double manualRPM = 3500.0;
-        double manualAngle = 61.0;
+        // double manualAngle = 32.0;
+        double manualAngle = 57.0;
         
         if (drive.mag() < 0.125)
             drive = new Vector2();

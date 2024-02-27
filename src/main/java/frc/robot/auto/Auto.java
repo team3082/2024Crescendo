@@ -69,7 +69,7 @@ public class Auto {
             // Set intake to ground, intake for 3 seconds
             // while driving to piece, go back to subwoofer,
             // wait till Choreo is finished and then shoot.
-            new SetIntake(IntakeState.GROUND),
+            new SetIntake(),
             new ChoreoFollow("2 Piece Middle.1"),
             new ChoreoFollow("2 Piece Middle.2"),
             // new SetShooterAngle(Math.toRadians(58.8)),
@@ -108,17 +108,17 @@ public class Auto {
         Pigeon.setYawRad(start.theta);
 
         queueFrames(
-            new SetIntake(IntakeState.GROUND),
+            new SetIntake(),
             new ChoreoFollow("4 Piece Center.1"),
             new SetShooterAngle(Math.PI/4),
             // new SetShoot(),
             new ChoreoFollow("4 Piece Center.2"),
-            new SetIntake(IntakeState.GROUND),
+            new SetIntake(),
             new ChoreoFollow("4 Piece Center.3"),
             new SetShooterAngle(Math.PI/4),
             // new SetShoot(),
             new ChoreoFollow("4 Piece Center.4"),
-            new SetIntake(IntakeState.GROUND),
+            new SetIntake(),
             new ChoreoFollow("4 Piece Center.5"),
             new SetShooterAngle(Math.PI/4),
             // new SetShoot(),
@@ -141,7 +141,7 @@ public class Auto {
             new SetShooterVelocity(1000), // add velocity
             // new SetShoot(),
 
-            new SetIntake(IntakeState.GROUND), // puts down intake until the piece is grabbed
+            new SetIntake(), // puts down intake until the piece is grabbed
             new SetShooterAngle(Math.PI / 4), // add angle
             new SetShooterVelocity(2000), // add velocity
             // go to second piece
@@ -149,7 +149,7 @@ public class Auto {
             new FollowBezierCurve(curve1, 1.0),
             // new SetShoot(), // shoot current piece
 
-            new SetIntake(IntakeState.GROUND), // puts down intake until the piece is grabbed
+            new SetIntake(), // puts down intake until the piece is grabbed
             new SetShooterAngle(Math.PI / 5), // add angle
             new SetShooterVelocity(3000), // add velocity
             // // go to third piece
@@ -157,7 +157,7 @@ public class Auto {
             new FollowBezierCurve(curve2, 1.0),
             // new SetShoot(), // shoot current piece
 
-            new SetIntake(IntakeState.GROUND), // puts down intake until the piece is grabbed
+            new SetIntake(), // puts down intake until the piece is grabbed
             new SetShooterAngle(Math.PI / 6), // add angle
             new SetShooterVelocity(4000), // add velocity
             // go to fourth piece

@@ -8,7 +8,7 @@ public class SetIntake extends Command {
     frc.robot.auto.autoframe.SetIntake setIntake;
 
     public SetIntake(IntakeState state){
-        setIntake = new frc.robot.auto.autoframe.SetIntake(state);
+        setIntake = new frc.robot.auto.autoframe.SetIntake();
     }
 
     @Override

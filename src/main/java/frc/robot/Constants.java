@@ -68,7 +68,7 @@ public final class Constants {
 
         // CAN ID: Beambreak
         public static final int LASER_ID = 0;
-        public static final double LASER_BREAK_DIST= 250.0;
+        public static final double LASER_BREAK_DIST= 200.0;
 
         // CANCoder offset
         public static final double INTAKE_OFFSET = 0;
@@ -86,7 +86,8 @@ public final class Constants {
 
         public static final double INROBOT_INTAKE_ANGLE = 300;//in ticks
         public static final double SOURCE_INTAKE_ANGLE = 0;
-        public static final double GROUND_INTAKE_ANGLE = 30000;
+        public static final double GROUND_INTAKE_ANGLE = 31500;
+        public static final double FEED_INTAKE_ANGLE = 7500;
 
         public static final double FLIPUP_TIME = 0.1;
     }

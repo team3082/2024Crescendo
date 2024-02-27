@@ -6,7 +6,7 @@ import frc.robot.utils.RTime;
 
 public class FireShooter extends Autoframe {
     double startTime;
-    double exitTime = 1.2;
+    double exitTime = 1.5;
 
     public FireShooter() {
         blocking = false;

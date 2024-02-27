@@ -68,7 +68,7 @@ public class VisionManager {
         // cameraRots[1] = 3 * Math.PI / 2;
 
         cameras[0] = new PhotonCamera("ApriltagCamera3");
-        offsets[0] = new Vector2(4, 5.350);
+        offsets[0] = new Vector2(-4, 5.350);
         cameraRots[0] = 3.0 * Math.PI / 2.0;
 
         // cameras[3] = new PhotonCamera("ApriltagCamera2");
@@ -91,7 +91,7 @@ public class VisionManager {
             int tagID;
 
             if (RobotBase.isSimulation()) {
-                offset = new Vector2(1.71, 0.8).mul(Constants.METERSTOINCHES);
+                offset = new Vector2(1.67, 0.58).mul(Constants.METERSTOINCHES);
                 tagID = 8;
             } else {
                 PhotonPipelineResult cameraResult = cameras[i].getLatestResult();
@@ -107,8 +107,11 @@ public class VisionManager {
 
                 // We have a valid target
                 Transform3d transform = target.getBestCameraToTarget();
-                offset = new Vector2(transform.getX(), transform.getY()).mul(Constants.METERSTOINCHES);
+                offset = new Vector2(transform.getX()* Math.cos(Math.toRadians(15)), transform.getY()).mul(Constants.METERSTOINCHES);
             }
+
+            offset.x += -4.0;
+            offset.y -= 5.350;
 
             // tbh this confuses me but its not too jank now
             if (DriverStation.getAlliance().get() == Alliance.Blue)
@@ -116,6 +119,7 @@ public class VisionManager {
 
             if (DriverStation.getAlliance().get() == Alliance.Red)
                 offset.x *= -1;
+
 
             double thetaRobot = Pigeon.getRotationRad();
             double thetaCamYaw = 3.0 * Math.PI / 2.0;

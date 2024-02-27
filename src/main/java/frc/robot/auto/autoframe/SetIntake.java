@@ -6,25 +6,24 @@ import frc.robot.utils.RTime;
 
 public class SetIntake extends Autoframe {
     double timeDelay;
-    IntakeState s;
+    double suckTime;
+    boolean hasPiece;
 
-    public SetIntake(IntakeState state) {
+    public SetIntake() {
         blocking = false;
-        s = state;
     }
 
     @Override
     public void start() {
-        Intake.setState(s);
-        if (s == IntakeState.GROUND)
-            Intake.suck();
-        this.timeDelay = RTime.now();
+        Intake.autoSuck();
     }
 
     @Override
     public void update() {
-        Intake.suck();        
+        Intake.autoSuck();        
         if (Intake.reallyHasPiece) {
+            Intake.reallyHasPiece = false;
+            Intake.suckTime = 0;
             Intake.setState(IntakeState.STOW);
             Intake.no();
             this.done = true;
