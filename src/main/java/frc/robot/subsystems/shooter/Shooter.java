@@ -121,7 +121,7 @@ public final class Shooter {
         switch (shooterMode) {
             case FIRING:
                 Intake.setState(IntakeState.FEED);
-                if (atVelocity) {
+                if (atVelocity && Intake.state == IntakeState.FEED) {
                     Intake.runHandoff(); // fire if we are ready
                 } else { // otherwise keep revvin till we are
                     if (varied)
@@ -132,7 +132,6 @@ public final class Shooter {
             break;
 
             case REVVING:
-                Intake.setState(IntakeState.FEED);
                 // Rev the flywheel up to our set velocity
                 if (varied)
                     setVariedVelocity(targetTop, targetBottom);

@@ -25,7 +25,7 @@ public final class Intake {
     public static SparkPIDController bottomPID;
     public static Beambreak beambreak;
 
-    private static IntakeState state = IntakeState.STOW;
+    public static IntakeState state = IntakeState.STOW;
 
     public static void init() {
 
