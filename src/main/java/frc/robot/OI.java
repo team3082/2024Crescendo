@@ -132,7 +132,7 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SHOOTER
 
-        if (driverStick.getRawButton(eject)) Intake.eject();
+        if (driverStick.getRawButton(eject)) Shooter.eject();
 
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
@@ -242,6 +242,8 @@ public class OI {
 
         if(operatorStick.getRawButtonPressed(BUTTON_RIGHT_BUMPER)){
             currentShooterMode = ShooterMode.AMP;
+        } else {
+            currentShooterMode = ShooterMode.SPEAKER_MANUAL;
         }
     }
 }

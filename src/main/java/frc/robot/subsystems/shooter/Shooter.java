@@ -121,7 +121,7 @@ public final class Shooter {
         switch (shooterMode) {
             case FIRING:
                 Intake.setState(IntakeState.FEED);
-                if (atVelocity && Intake.state == IntakeState.FEED) {
+                if (atVelocity) {
                     Intake.runHandoff(); // fire if we are ready
                 } else { // otherwise keep revvin till we are
                     if (varied)
@@ -143,6 +143,7 @@ public final class Shooter {
                 // Run the shooter forward, and the handoff/intake backwards.
                 topMotor.set(TalonFXControlMode.PercentOutput, 0.8);
                 bottomMotor.set(TalonFXControlMode.Follower, topMotor.getDeviceID());
+                Intake.eject();
             break;
 
             case DISABLED:
@@ -158,7 +159,6 @@ public final class Shooter {
      * @param newVelocity Velocity in RPM
      */
     private static void setVelocity(double newVelocity) {
-        varied = false;
         targetVelocity = newVelocity;
         simVel = newVelocity;
         topMotor.set(TalonFXControlMode.Velocity, targetVelocity);
@@ -170,7 +170,6 @@ public final class Shooter {
      * Allows us to vector the wheels for amp/trap scoring.
      */
     private static void setVariedVelocity(double topSpeed, double bottomSpeed) {
-        varied = true;
         targetTop = topSpeed;
         targetBottom = bottomSpeed;
         topMotor.set(TalonFXControlMode.Velocity, targetTop);
@@ -188,7 +187,7 @@ public final class Shooter {
         double noteVel = 0; // Initial velocity of the note
 
         double shooterAngle = Math.atan(Math.pow(noteVel, 2) / (g * ftPos) - Math.sqrt((Math.pow(noteVel, 2) * (Math.pow(noteVel, 2) - 2 * g * targetHeight)) / (Math.pow(g, 2) * Math.pow(ftPos, 2)) - 1)); // terrible! ew! 🤢 (DO NOT CHANGE)
-        // ShooterPivot.setPosition(shooterAngle);
+        ShooterPivot.setPosition(shooterAngle);
     }
 
     /**
@@ -214,7 +213,7 @@ public final class Shooter {
         
         double shooterAngle = Math.atan2(dz, Math.sqrt(Math.pow(shooterdx,2) + Math.pow(shooterdy, 2)));
         double shooterSpeed = Math.sqrt(Math.pow(dz,2) + Math.pow(shooterdx,2) + Math.pow(shooterdy, 2));
-        double swerveAngle = Math.atan2(shooterdy,shooterdx);
+        double swerveAngle = Math.atan2(shooterdy, shooterdx);
         return new double[] {shooterAngle, shooterSpeed, swerveAngle};
     }
 
@@ -229,13 +228,14 @@ public final class Shooter {
             speakerPos = new Vector2(56.78, -327.13);
 
         dist = Math.hypot(SwervePosition.getPosition().x - speakerPos.x, SwervePosition.getPosition().y - speakerPos.y);
-        // setShooterForDist(dist);
+        setShooterForDist(dist);
     }
 
     /**
      * Rev the shooter to a specified RPM.
      */
     public static void revTo(double rpm) {
+        varied = false;
         targetVelocity = rpm * RPMToVel;
         shooterMode = ShooterStatus.REVVING;
     }
@@ -248,6 +248,7 @@ public final class Shooter {
      * Rev the shooter to a specified RPM.
      */
     public static void revToVaried(double top, double bottom) {
+        varied = true;
         targetTop = top * RPMToVel;
         targetBottom = bottom * RPMToVel;
         shooterMode = ShooterStatus.REVVING;
