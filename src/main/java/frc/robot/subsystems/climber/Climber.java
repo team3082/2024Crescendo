@@ -81,19 +81,19 @@ public class Climber {
 
         switch (this.climberControlState) {
             case MANUAL_EXTENDING:
-                manualExtend();
+                extend();
             break;
 
             case MANUAL_PULLING:
-                manualPull();
+                pull();
             break;
 
             case AUTO_EXTENDING:
-                autoExtend();        
+                // autoExtend();        
             break;
 
             case AUTO_PULLING:
-                autoPull();
+                // autoPull();
             break;
 
             case ZEROING:
@@ -116,7 +116,7 @@ public class Climber {
     }
 
     // extend until max extension reached
-    public void manualExtend() {
+    public void extend() {
         if (this.motor.getSelectedSensorPosition() >= MAX_EXTENSION_TICKS) {
             this.motor.neutralOutput();
         } else {
@@ -125,7 +125,7 @@ public class Climber {
     }
 
     // pull unless magnet is tripped
-    public void manualPull() {
+    public void pull() {
         System.out.println("hall sensor: " + this.sensor.get());
         if (!(this.sensor.get())) {
             // System.out.println("nuetral");
@@ -135,18 +135,28 @@ public class Climber {
         }
     }
 
-    public void autoExtend() {
-        this.motor.set(ControlMode.Position, MAX_EXTENSION_TICKS);
+    //going in with no protection
+    public void manualPull(){
+        this.motor.set(ControlMode.PercentOutput, -0.2);
     }
 
-    public void autoPull() {
-        this.motor.set(ControlMode.Position, 0);
-        if ((this.motor.getSelectedSensorPosition() <= this.motor.getActiveTrajectoryPosition() + 100) // this deadband is in ticks
-         && (this.motor.getSelectedSensorPosition() >= this.motor.getActiveTrajectoryPosition() - 100)) {
-            this.climberControlState = ClimberControlState.BRAKED;
-            brake();
-        }
+    //pulling out
+    public void manualExtend(){
+        this.motor.set(ControlMode.PercentOutput, 0.2);
     }
+
+    // public void autoExtend() {
+    //     this.motor.set(ControlMode.Position, MAX_EXTENSION_TICKS);
+    // }
+
+    // public void autoPull() {
+    //     this.motor.set(ControlMode.Position, 0);
+    //     if ((this.motor.getSelectedSensorPosition() <= this.motor.getClosedLoopTarget() + 100) // this deadband is in ticks
+    //      && (this.motor.getSelectedSensorPosition() >= this.motor.getClosedLoopTarget() - 100)) {
+    //         this.climberControlState = ClimberControlState.BRAKED;
+    //         brake();
+    //     }
+    // }
 
     /**
      * Pull until the sensor sees the magnet

@@ -1,6 +1,7 @@
 package frc.robot;
 
 import static frc.robot.Tuning.OI.*;
+import static frc.controllermaps.LogitechF310.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
@@ -40,23 +41,10 @@ public class OI {
     static final int intake        = LogitechF310.AXIS_LEFT_TRIGGER;
 
     // Others
-    static final int lock          = LogitechF310.BUTTON_A;
+    static final int lock          = LogitechF310.BUTTON_X;
     static final int zero          = LogitechF310.BUTTON_Y;
 
     /*-------------------------------------------------------------------*/
-
-    // Operator Controls
-
-    // Shooter
-    static final int switchShooterMode  = LogitechF310.BUTTON_LEFT_BUMPER;
-    static final int setManualShoot     = LogitechF310.BUTTON_Y;
-    static final int setManualIntake    = LogitechF310.BUTTON_B;
-
-    // Climber
-    static final int zeroClimber        = LogitechF310.BUTTON_X;
-    static final int setManualClimb     = LogitechF310.BUTTON_A;
-    static final int climberUp          = LogitechF310.DPAD_UP;
-    static final int climberDown        = LogitechF310.DPAD_DOWN;
 
     static private enum ShooterMode {
         SPEAKER,
@@ -214,77 +202,46 @@ public class OI {
     }
 
     public static void operatorInput() {
-        
-        // CLIMBER
-
-        // X
-        if (operatorStick.getRawButtonPressed(zeroClimber)) {
+        //=====CLIMBER=====
+        if(operatorStick.getRawButtonPressed(BUTTON_A)){
             ClimberManager.zero();
         }
 
-        if (operatorStick.getRawButton(setManualIntake))
-            manualIntake = !manualIntake;
-
-        if (operatorStick.getRawButtonPressed(setManualClimb)) {
-            manualClimbSet = true;
-        }
-        if (true) {
-            // DPAD UP
-            if (operatorStick.getPOV() == climberUp) {
-                ClimberManager.manualExtend();
-                System.out.println("extending");
-            } 
-            // DPAD DOWN
-            else if (operatorStick.getPOV() == climberDown) {
-                ClimberManager.manualPull();
-                System.out.println("pulling");
+        if(operatorStick.getRawAxis(AXIS_LEFT_TRIGGER) + operatorStick.getRawAxis(AXIS_RIGHT_TRIGGER) < 0.2){
+            if(operatorStick.getPOV() == DPAD_DOWN){
+                ClimberManager.pull();
+            }else if(operatorStick.getPOV() == DPAD_UP){
+                ClimberManager.extend();
             }
-            // NO CLIMBER INPUT
-            else {
-                ClimberManager.brake();
-            }
-        } else {
-            // DPAD UP
-            if (operatorStick.getPOV() == climberUp && operatorStick.getPOV() != lastPOV) {
-                ClimberManager.autoExtend();
-            } 
-            // DPAD DOWN
-            else if (operatorStick.getPOV() == climberDown && operatorStick.getPOV() != lastPOV) {
-                ClimberManager.autoPull();
-            }
+        }else{
+            if(operatorStick.getPOV() == DPAD_DOWN && operatorStick.getRawAxis(AXIS_LEFT_TRIGGER) > 0.2)
+                ClimberManager.leftClimber.manualPull();
+            if(operatorStick.getPOV() == DPAD_UP && operatorStick.getRawAxis(AXIS_LEFT_TRIGGER) > 0.2)
+                ClimberManager.leftClimber.manualExtend();
+            if(operatorStick.getPOV() == DPAD_DOWN && operatorStick.getRawAxis(AXIS_RIGHT_TRIGGER) > 0.2)
+                ClimberManager.rightClimber.manualPull();
+            if(operatorStick.getPOV() == DPAD_UP && operatorStick.getRawAxis(AXIS_RIGHT_TRIGGER) > 0.2)
+                ClimberManager.rightClimber.manualExtend();
         }
 
-        /*--------------------------------------------------------------------------------------------------------*/
-        // SHOOTER
+        //=====INTAKE======
 
-        // Y
-        if (operatorStick.getRawButtonPressed(setManualShoot)) {
-            manualFireSet = !(manualFireSet);
-            if (manualFireSet && currentShooterMode == ShooterMode.SPEAKER) {
-                currentShooterMode = ShooterMode.SPEAKER_MANUAL;
-            } else if (!(manualFireSet) && currentShooterMode == ShooterMode.SPEAKER_MANUAL) {
-                currentShooterMode = ShooterMode.SPEAKER;
-            }
+        if(operatorStick.getRawButtonPressed(BUTTON_X)){
+            manualIntake = true;
         }
 
-        // RIGHT BUMPER
-        if (operatorStick.getRawButtonPressed(switchShooterMode)) {
-            switch (currentShooterMode) {
-                case AMP:
-                    currentShooterMode = manualFireSet ? ShooterMode.SPEAKER_MANUAL : ShooterMode.SPEAKER;
-                break;
-                case SPEAKER:
-                    currentShooterMode = ShooterMode.AMP;
-                break;
-                case SPEAKER_MANUAL:
-                    currentShooterMode = ShooterMode.AMP;
-                break;
-
-                default:
-                break;
-            }
+        if(operatorStick.getRawButtonPressed(BUTTON_Y)){
+            manualIntake = false;
         }
 
-        lastPOV = operatorStick.getPOV();
+        //=====SHOOTER=====
+
+        if(operatorStick.getRawButtonPressed(BUTTON_LEFT_BUMPER)){
+            currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+        }
+
+        if(operatorStick.getRawButtonPressed(BUTTON_RIGHT_BUMPER)){
+            currentShooterMode = ShooterMode.AMP;
+        }
     }
 }
