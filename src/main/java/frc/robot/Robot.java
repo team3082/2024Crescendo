@@ -10,6 +10,7 @@ import frc.robot.auto.AutoSelector;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
+import frc.robot.subsystems.BannerLight;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
@@ -53,6 +54,7 @@ public class Robot extends TimedRobot {
     Intake.init();
     AutoSelector.setup();
     Telemetry.init();
+    BannerLight.init();
     SwervePosition.enableVision();
   }
 
@@ -72,6 +74,7 @@ public class Robot extends TimedRobot {
 	  CommandScheduler.getInstance().enable();
     AutoSelector.run();
     SwervePosition.enableVision();
+    BannerLight.setAmpMode();
   }
 
   @Override

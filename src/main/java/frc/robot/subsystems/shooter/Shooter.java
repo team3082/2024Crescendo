@@ -48,7 +48,7 @@ public final class Shooter {
 
     public static double temp;
 
-    public static boolean varied = false;
+    public static boolean varied = true;
 
     public static double handoffLiveTime = 0.0;
 

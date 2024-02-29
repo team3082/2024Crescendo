@@ -67,7 +67,7 @@ public class VisionManager {
         // offsets[1] = new Vector2(-4, 2.475);
         // cameraRots[1] = 3 * Math.PI / 2;
 
-        cameras[0] = new PhotonCamera("ApriltagCamera3");
+        cameras[0] = new PhotonCamera("ApriltagCamera2");
         offsets[0] = new Vector2(-4, 5.350);
         cameraRots[0] = 3.0 * Math.PI / 2.0;
 

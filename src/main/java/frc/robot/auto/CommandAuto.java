@@ -24,6 +24,17 @@ import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 
 public class CommandAuto {
+  public enum PieceCount{
+    TWO,
+    THREE,
+    FOUR
+  }
+
+  public enum AutoSide{
+    RIGHT,
+    LEFT,
+    MIDDLE
+  }
   public static void init(Command command) {
     new SequentialCommandGroup(command, stop()).schedule();
   }
@@ -32,7 +43,9 @@ public class CommandAuto {
     CommandScheduler.getInstance().run();
   }
 
-  public static Command twoPieceMiddle() {
+  public static Command twoPiece(String choreoFollow) {
+    SwervePosition.setPosition(
+        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
     return new SequentialCommandGroup(
         new ParallelCommandGroup(
             // Shoot preloaded from subwoofer
@@ -46,10 +59,10 @@ public class CommandAuto {
         // wait till Choreo is finished and then shoot.
         new ParallelCommandGroup(
             new SetIntake(IntakeState.GROUND),
-            new ChoreoFollow("2 Piece Middle.1"),
+            new ChoreoFollow(choreoFollow + ".1"),
             new SetShooterVelocity(3200)
           ),
-        new ChoreoFollow("2 Piece Middle.2"),
+        new ChoreoFollow(choreoFollow + ".2"),
         new WaitCommand(0.1),
         new SetShooterAngle(Math.toRadians(57)),
         new FireShooter()
@@ -57,6 +70,8 @@ public class CommandAuto {
   }
 
   public static Command fourPieceMiddle() {
+    SwervePosition.setPosition(
+        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
     return new SequentialCommandGroup(
         new ParallelCommandGroup(
             new SetShooterAngle(Math.toRadians(57)),
@@ -95,7 +110,7 @@ public class CommandAuto {
         new FireShooter());
   }
 
-  public static Command ThreePieceMiddle() {
+  public static Command ThreePiece(String choreoFollow) {
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
     return new SequentialCommandGroup(
@@ -106,21 +121,21 @@ public class CommandAuto {
         new FireShooter(),
         new ParallelCommandGroup(
             new SetIntake(IntakeState.GROUND),
-            new ChoreoFollow("3 Piece Middle.1")
+            new ChoreoFollow(choreoFollow + ".1")
           ),
         new ParallelCommandGroup(
             new SetShooterAngle(Math.toRadians(59.8)),
-            new ChoreoFollow("3 Piece Middle.2"),
+            new ChoreoFollow(choreoFollow + ".2"),
             new SetShooterVelocity(3500)
           ),
         new FireShooter(),
         new ParallelCommandGroup(
             new SetIntake(IntakeState.GROUND),
-            new ChoreoFollow("3 Piece Middle.3")
+            new ChoreoFollow(choreoFollow + ".3")
           ),
         new ParallelCommandGroup(
             new SetShooterAngle(Math.toRadians(59.8)),
-            new ChoreoFollow("3 Piece Middle.4"),
+            new ChoreoFollow(choreoFollow + ".4"),
             new SetShooterVelocity(3500)
           ),
         new FireShooter());
@@ -206,6 +221,16 @@ public class CommandAuto {
       new WaitCommand(0.1),
       new SetShooterAngle(Math.toRadians(57)), // Angle shooter
       new FireShooter() // Fire shooter!
+    );
+  }
+
+  public static Command onePieceStationary(){
+    return new SequentialCommandGroup(
+      new ParallelCommandGroup(
+            new SetShooterAngle(Math.toRadians(57)),
+            new SetShooterVelocity(3500)
+          ),
+        new FireShooter()
     );
   }
 

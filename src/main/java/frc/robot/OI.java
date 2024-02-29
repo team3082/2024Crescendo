@@ -63,7 +63,7 @@ public class OI {
         AMP
     }
 
-    public static ShooterMode currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+    public static ShooterMode currentShooterMode = ShooterMode.AMP;
     public static boolean manualFireSet = true;
     public static boolean manualClimbSet = true;
 

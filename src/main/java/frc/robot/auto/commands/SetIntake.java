@@ -1,5 +1,6 @@
 package frc.robot.auto.commands;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 
@@ -23,6 +24,6 @@ public class SetIntake extends Command {
 
     @Override
     public boolean isFinished(){
-        return setIntake.done;
+        return setIntake.done || RobotBase.isSimulation();
     }
 }

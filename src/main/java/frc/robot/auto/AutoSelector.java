@@ -19,9 +19,13 @@ public class AutoSelector {
     public static void setup() {
         autoChooser.setDefaultOption("No Auto", "No Auto");
         autoChooser.addOption("4 Piece Middle", "4 Piece Middle");
-        autoChooser.addOption("Two Piece Middle", "Two Piece Middle");
         autoChooser.addOption("Three Piece Middle", "Three Piece Middle");
         autoChooser.addOption("Three Piece Right", "Three Piece Right");
+        autoChooser.addOption("Three Piece Left", "Three Piece Left");
+        autoChooser.addOption("Two Piece Middle", "Two Piece Middle");
+        autoChooser.addOption("Two Piece Right", "Two Piece Right");
+        autoChooser.addOption("Two Piece Left", "Two Piece Left");
+        autoChooser.addOption("One Piece", "One Piece");
     }
 
     /**
@@ -42,15 +46,30 @@ public class AutoSelector {
             break;
 
             case "Two Piece Middle":
-                CommandAuto.init(CommandAuto.twoPieceMiddle());
+                CommandAuto.init(CommandAuto.twoPiece("2 Piece Middle"));
+            break;
+
+            case "Two Piece Right":
+                CommandAuto.init(CommandAuto.twoPiece("2 Piece Right"));
+            break;
+
+            case "Two Piece Left":
+                CommandAuto.init(CommandAuto.twoPiece("2 Piece Left"));
             break;
 
             case "Three Piece Middle":
-                CommandAuto.init(CommandAuto.ThreePieceMiddle());
+                CommandAuto.init(CommandAuto.ThreePiece("3 Piece Middle"));
             break;
 
             case "Three Piece Right":
-                CommandAuto.init(CommandAuto.threePieceRight());
+                CommandAuto.init(CommandAuto.ThreePiece("3 Piece Right"));
+            break;
+
+            case "Three Piece Left":
+                CommandAuto.init(CommandAuto.ThreePiece("3 Piece Left"));
+            break;
+            case "One Piece":
+                CommandAuto.init(CommandAuto.onePieceStationary());
             break;
         }
     }
