@@ -72,8 +72,8 @@ public class Auto {
             new SetIntake(),
             new ChoreoFollow("2 Piece Middle.1"),
             new ChoreoFollow("2 Piece Middle.2"),
-            // new SetShooterAngle(Math.toRadians(58.8)),
-            // new SetShooterVelocity(2650),
+            new SetShooterAngle(Math.toRadians(58.8)),
+            //new SetShooterVelocity(2650),
             // new FireShooter(),
             new ClearActive(),
         };

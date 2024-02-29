@@ -1,6 +1,7 @@
 package frc.robot.auto.autoframe;
 
 import frc.robot.subsystems.shooter.Intake;
+import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.utils.RTime;
 
@@ -16,6 +17,7 @@ public class SetIntake extends Autoframe {
     @Override
     public void start() {
         Intake.autoSuck();
+        // Shooter.disable();
     }
 
     @Override
@@ -28,5 +30,6 @@ public class SetIntake extends Autoframe {
             Intake.no();
             this.done = true;
         }
+        System.out.println(this.done);
     }
 }

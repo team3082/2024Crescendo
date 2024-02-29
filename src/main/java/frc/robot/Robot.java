@@ -74,7 +74,6 @@ public class Robot extends TimedRobot {
 	  CommandScheduler.getInstance().enable();
     AutoSelector.run();
     SwervePosition.enableVision();
-    BannerLight.setAmpMode();
   }
 
   @Override
@@ -107,6 +106,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     SwervePosition.updateAveragePosVision();
+    BannerLight.setTagInView(VisionManager.hasTarget());
     // System.out.println(SwervePosition.getPosition().toString());
     // if(Robot.isReal())
     //   BannerLight.setTagInView(VisionManager.hasTarget());

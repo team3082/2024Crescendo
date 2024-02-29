@@ -1,5 +1,7 @@
 package frc.robot.auto;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -58,15 +60,15 @@ public class AutoSelector {
             break;
 
             case "Three Piece Middle":
-                CommandAuto.init(CommandAuto.ThreePiece("3 Piece Middle"));
+                CommandAuto.init(CommandAuto.ThreePiece("3 Piece Middle", 90));
             break;
 
             case "Three Piece Right":
-                CommandAuto.init(CommandAuto.ThreePiece("3 Piece Right"));
+                CommandAuto.init(CommandAuto.ThreePiece("3 Piece Right",DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150));
             break;
 
             case "Three Piece Left":
-                CommandAuto.init(CommandAuto.ThreePiece("3 Piece Left"));
+                CommandAuto.init(CommandAuto.ThreePiece("3 Piece Left",DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30));
             break;
             case "One Piece":
                 CommandAuto.init(CommandAuto.onePieceStationary());

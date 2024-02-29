@@ -140,8 +140,10 @@ public class OI {
 
         // ONLY align if we are in auto-fire mode
         // silly things 🤣😁
-        // if (shooterAutoFire && !shooterManualFire) {
-        //     SwerveManager.moveAndRotateTo(drive, arr[2]);
+        // if (shooterFire && !manualFireSet) {
+        //     double speakerRot = SwervePosition.getAngleOffsetToTarget(new Vector2());
+        //     SwervePID.setDestRot(speakerRot);
+        //     rotate = SwervePID.updateOutputRot();
         // }
 
         // checks current shooter mode and sets the angle and velocities accordingly
@@ -156,7 +158,7 @@ public class OI {
                  // manual for now, change to auto when tuned
                  // use the arr variable above for that
                 case SPEAKER:
-                    ShooterPivot.setPosition(Math.toRadians(manualAngle));
+                    Shooter.setShooterAngleForSpeaker();
                     Shooter.revTo(manualRPM);
                     Shooter.shoot();
                 break;

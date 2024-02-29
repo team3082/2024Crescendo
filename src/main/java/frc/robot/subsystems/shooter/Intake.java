@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 
+import frc.robot.subsystems.BannerLight;
 import frc.robot.utils.Beambreak;
 import frc.robot.utils.RTime;
 
@@ -123,20 +124,23 @@ public final class Intake {
             case FEED:
                 feed();
             break;
-
         }
+
+        BannerLight.update();
     }
 
     private static void stow() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);
         topPID.setReference(0, ControlType.kDutyCycle);
         bottomPID.setReference(0, ControlType.kDutyCycle);
+        System.out.println("stow");
     }
 
     private static void ground() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, GROUND_INTAKE_ANGLE);
         topPID.setReference(-0.35, ControlType.kDutyCycle);
         bottomPID.setReference(-0.35, ControlType.kDutyCycle);
+        System.out.println("ground");
     }
 
     public enum SuckState {
@@ -195,6 +199,7 @@ public final class Intake {
         if (hasPiece) {
             topPID.setReference(0.0, ControlType.kDutyCycle);
             bottomPID.setReference(0.0, ControlType.kDutyCycle);
+            System.out.println("i have a piece");
             if (RTime.now() >= suckTime + 0.25) {
                 if (suckTime != 0.0) {
                     reallyHasPiece = true;
@@ -222,11 +227,13 @@ public final class Intake {
     public static void runHandoff() {
         topPID.setReference(-1, ControlType.kDutyCycle);
         bottomPID.setReference(-1, ControlType.kDutyCycle);
+        System.out.println("handoff");
     }
 
     public static void eject() {
         topPID.setReference(1, ControlType.kDutyCycle);
         bottomPID.setReference(1, ControlType.kDutyCycle);
+        System.out.println("eject");
     }
 
     public static void no() {
@@ -242,6 +249,7 @@ public final class Intake {
 
     private static void feed() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, FEED_INTAKE_ANGLE);
+        System.out.println("feed");
     }
 
     public static boolean pieceGrabbed() {

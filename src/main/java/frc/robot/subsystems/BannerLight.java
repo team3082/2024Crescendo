@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
+import frc.robot.subsystems.shooter.Intake;
 
 public class BannerLight {
 
@@ -30,6 +31,13 @@ public class BannerLight {
         gray.set(grayState);
         black.set(blackState);
         white.set(whiteState);
+    }
+
+    public static void update() {
+        if (Intake.reallyHasPiece)
+            setLeftClimb();
+        else
+            red();
     }
 
     //set light to indicate to human player where to toss the high note
@@ -89,6 +97,10 @@ public class BannerLight {
         }else {
             setState(false, false, true, false);
         }
+    }
+
+    public static void red() {
+        setState(false, false, true, false);
     }
 
     public static void off() {

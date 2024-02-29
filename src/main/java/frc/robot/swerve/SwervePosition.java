@@ -118,7 +118,7 @@ public class SwervePosition {
     public static double getAngleOffsetToTarget(Vector2 desiredPosition){
         Vector2 currentPos = getPosition();
         Vector2 dif = new Vector2(desiredPosition.y - currentPos.y, desiredPosition.x - currentPos.x);
-        return Math.PI/2 - dif.atan2();
+        return Math.PI / 2 - dif.atan2();
     }
 
     /**
