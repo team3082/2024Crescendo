@@ -25,7 +25,7 @@ public final class Intake {
     public static SparkPIDController bottomPID;
     public static Beambreak beambreak;
 
-    private static IntakeState state = IntakeState.STOW;
+    public static IntakeState state = IntakeState.STOW;
 
     public static void init() {
 
@@ -207,6 +207,13 @@ public final class Intake {
             Intake.setState(IntakeState.GROUND);
         }
         // System.out.println(suckState.name());
+    }
+
+    /** Manually sets the intake to ground & continues to intake */
+    public static void manualIntake() {
+        topPID.setReference(-0.5, ControlType.kDutyCycle);
+        bottomPID.setReference(-0.5, ControlType.kDutyCycle);
+        Intake.setState(IntakeState.GROUND);
     }
 
     /**
