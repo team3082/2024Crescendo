@@ -21,7 +21,7 @@ public class FireShooter extends Autoframe {
     public void update() {
         if (RTime.now() > startTime + exitTime && Shooter.canShoot() || RobotBase.isSimulation()) {
             this.done = true;
-            Shooter.disable();
+            // Shooter.disable();
         } else {
             Shooter.shoot();
         }

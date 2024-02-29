@@ -110,7 +110,7 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
 
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
-        double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
+        double rotate = driverStick.getRawAxis(rotateX) * -ROTSPEED;
 
         double manualRPM = 3500.0;
         // double manualAngle = 32.0;

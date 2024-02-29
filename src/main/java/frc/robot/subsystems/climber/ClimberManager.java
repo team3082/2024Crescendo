@@ -25,9 +25,9 @@ public final class ClimberManager {
         // leftClimber.climberControlState = ClimberControlState.MANUAL_EXTENDING;
         // rightClimber.climberControlState = ClimberControlState.MANUAL_EXTENDING;
         // System.out.println("left");
-        leftClimber.extend();
+        leftClimber.manualExtend();
         // System.out.println("right");
-        rightClimber.extend();
+        rightClimber.manualExtend();
         
     }
 

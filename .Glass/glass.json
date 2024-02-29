@@ -29,6 +29,11 @@
       "/Shuffleboard/SmartDashboard/Swerve": "Mechanism2d"
     },
     "windows": {
+      "/Shuffleboard/SmartDashboard/Auto Selector": {
+        "window": {
+          "visible": true
+        }
+      },
       "/Shuffleboard/SmartDashboard/Field View": {
         "bottom": 544,
         "builtin": "2024 Crescendo",

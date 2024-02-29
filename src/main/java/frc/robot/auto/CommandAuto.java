@@ -113,7 +113,7 @@ public class CommandAuto {
   }
 
   public static Command ThreePiece(String choreoFollow, double angle) {
-        Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 60 : 120);
+        Pigeon.setYaw(angle);
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
     return new SequentialCommandGroup(
