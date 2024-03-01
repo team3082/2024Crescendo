@@ -12,6 +12,7 @@ public class DiscreteTraj implements SwerveTrajectory{
     protected ArrayList<DiscreteSwerveState> path;
 
     @Override
+    //TODO Fix flip on red
     public DiscreteSwerveState endState(){
         DiscreteSwerveState blueState = path.get(path.size() - 1);
         if(DriverStation.getAlliance().get() == Alliance.Red){
@@ -21,6 +22,7 @@ public class DiscreteTraj implements SwerveTrajectory{
     }
 
     @Override
+    //TODO Fix flip on red
     public SwerveState startState(){
         DiscreteSwerveState blueState = path.get(0);
         if(RobotBase.isReal())
@@ -35,6 +37,7 @@ public class DiscreteTraj implements SwerveTrajectory{
         return endState().time;
     }
 
+    //TODO Fix flip on red
     public SwerveState get(double t){
         if(t > this.length()){
             return endState();
@@ -55,6 +58,7 @@ public class DiscreteTraj implements SwerveTrajectory{
         SwerveState b = path.get(posa+1);
         double deltaT = t - path.get(posa).time;
         SwerveState blueState= a.interpolate(b, deltaT);
+        //return blueState;
         return (DriverStation.getAlliance().get() == Alliance.Red) ? blueState.flip() : blueState;
     }
 

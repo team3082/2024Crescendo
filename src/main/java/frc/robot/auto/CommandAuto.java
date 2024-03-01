@@ -75,6 +75,7 @@ public class CommandAuto {
     Pigeon.setYaw(90);
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
+        String choreoPath = DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? "2 Piece Middle RED" : "2 Piece Middle";
         return new SequentialCommandGroup(
           new ParallelCommandGroup(
             // Shoot preloaded from subwoofer
@@ -82,19 +83,19 @@ public class CommandAuto {
             new SetShooterVelocity(3500)
           ),
           new FireShooter(),
-
           // Set intake to ground, intake for 3 seconds
           // while driving to piece, go back to subwoofer,
           // wait till Choreo is finished and then shoot.
-          new ParallelDeadlineGroup(
-            new SequentialCommandGroup(
-              new ChoreoFollow("2 Piece Middle.1"),
-              new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
-            ),
+          new ParallelCommandGroup(
+            new ChoreoFollow(choreoPath + ".1"),
+            // new SequentialCommandGroup(
+            //   new ChoreoFollow(choreoPath + ".1"),
+            //   new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
+            // ),
             new SetIntake(IntakeState.GROUND)
           ),
           new SetShooterVelocity(3200),
-          new ChoreoFollow("2 Piece Middle.2"),
+          new ChoreoFollow(choreoPath + ".2"),
           new WaitCommand(0.1),
           new SetShooterAngle(Math.toRadians(57)),
           new FireShooter()
@@ -102,6 +103,7 @@ public class CommandAuto {
   }
   public static Command twoPieceAmp() {
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
+    String choreoPath = DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? "2 Piece Left RED" : "2 Piece Left";
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
         return new SequentialCommandGroup(
@@ -111,19 +113,20 @@ public class CommandAuto {
             new SetShooterVelocity(3500)
           ),
           new FireShooter(),
-
+          
           // Set intake to ground, intake for 3 seconds
           // while driving to piece, go back to subwoofer,
           // wait till Choreo is finished and then shoot.
-          new ParallelDeadlineGroup(
-            new SequentialCommandGroup(
-              new ChoreoFollow("2 Piece Left.1"),
-              new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
-            ),
+          new ParallelCommandGroup(
+            new ChoreoFollow(choreoPath + ".1"),
+            // new SequentialCommandGroup(
+            //   new ChoreoFollow(choreoPath + ".1"),
+            //   new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
+            // ),
             new SetIntake(IntakeState.GROUND)
           ),
           new SetShooterVelocity(3200),
-          new ChoreoFollow("2 Piece Left.2"),
+          new ChoreoFollow(choreoPath + ".2"),
           new WaitCommand(0.1),
           new SetShooterAngle(Math.toRadians(57)),
           new FireShooter()
@@ -132,6 +135,7 @@ public class CommandAuto {
 
   public static Command twoPieceSource() {
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
+    String choreoPath = DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? "2 Piece Right RED" : "2 Piece Right";
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
         return new SequentialCommandGroup(
@@ -141,19 +145,19 @@ public class CommandAuto {
             new SetShooterVelocity(3500)
           ),
           new FireShooter(),
-
           // Set intake to ground, intake for 3 seconds
           // while driving to piece, go back to subwoofer,
           // wait till Choreo is finished and then shoot.
-          new ParallelDeadlineGroup(
-            new SequentialCommandGroup(
-              new ChoreoFollow("2 Piece Right.1"),
-              new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
-            ),
+          new ParallelCommandGroup(
+            new ChoreoFollow(choreoPath + ".1"),
+            // new SequentialCommandGroup(
+            //   new ChoreoFollow(choreoPath + ".1"),
+            //   new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
+            // ),
             new SetIntake(IntakeState.GROUND)
           ),
           new SetShooterVelocity(3200),
-          new ChoreoFollow("2 Piece Right.2"),
+          new ChoreoFollow(choreoPath + ".2"),
           new WaitCommand(0.1),
           new SetShooterAngle(Math.toRadians(57)),
           new FireShooter()
