@@ -122,7 +122,8 @@ public final class Shooter {
             case FIRING:
                 Intake.setState(IntakeState.FEED);
                 if (atVelocity) {
-                    Intake.runHandoff(); // fire if we are ready
+                    if (!DriverStation.isAutonomous())
+                        Intake.runHandoff(); // fire if we are ready
                 } else { // otherwise keep revvin till we are
                     if (varied)
                         setVariedVelocity(targetTop, targetBottom);

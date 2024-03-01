@@ -120,7 +120,7 @@ public class Climber {
         if (this.motor.getSelectedSensorPosition() >= MAX_EXTENSION_TICKS) {
             this.motor.neutralOutput();
         } else {
-            this.motor.set(ControlMode.PercentOutput, 0.8);
+            this.motor.set(ControlMode.PercentOutput, 0.5);
         }
     }
 
@@ -131,7 +131,7 @@ public class Climber {
             // System.out.println("nuetral");
             this.motor.neutralOutput();
         } else {
-            this.motor.set(ControlMode.PercentOutput, -0.8);
+            this.motor.set(ControlMode.PercentOutput, -0.5);
         }
     }
 

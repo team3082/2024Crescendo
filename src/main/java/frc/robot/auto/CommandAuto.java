@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -122,19 +123,25 @@ public class CommandAuto {
             new SetShooterVelocity(3500)
           ),
         new FireShooter(),
-        new ParallelCommandGroup(
-            new SetIntake(IntakeState.GROUND),
-            new ChoreoFollow(choreoFollow + ".1")
+        new ParallelDeadlineGroup(
+          new SequentialCommandGroup(
+            new ChoreoFollow(choreoFollow + ".1"),
+            new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
+          ),
+          new SetIntake(IntakeState.GROUND)
           ),
         new ParallelCommandGroup(
+          new ChoreoFollow(choreoFollow + ".2"),
             new SetShooterAngle(Math.toRadians(59.8)),
-            new ChoreoFollow(choreoFollow + ".2"),
             new SetShooterVelocity(3500)
           ),
         new FireShooter(),
-        new ParallelCommandGroup(
-            new SetIntake(IntakeState.GROUND),
-            new ChoreoFollow(choreoFollow + ".3")
+        new ParallelDeadlineGroup(
+            new SequentialCommandGroup(
+            new ChoreoFollow(choreoFollow + ".3"),
+            new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
+          ),
+            new SetIntake(IntakeState.GROUND)
           ),
         new ParallelCommandGroup(
             new SetShooterAngle(Math.toRadians(59.8)),

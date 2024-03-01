@@ -1,15 +1,16 @@
 package frc.robot.auto.autoframe;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.utils.RTime;
 
 public class FireShooter extends Autoframe {
     double startTime;
-    double exitTime = 0.4;
+    double exitTime = 1.2;
 
     public FireShooter() {
-        blocking = false;
+        blocking = true;
     }
 
     @Override
@@ -23,6 +24,7 @@ public class FireShooter extends Autoframe {
             this.done = true;
             // Shooter.disable();
         } else {
+            Intake.runHandoff();
             Shooter.shoot();
         }
     }

@@ -214,16 +214,21 @@ public class OI {
                 ClimberManager.pull();
             }else if(operatorStick.getPOV() == DPAD_UP){
                 ClimberManager.extend();
+            }else {
+                ClimberManager.brake();
             }
         }else{
             if(operatorStick.getPOV() == DPAD_DOWN && operatorStick.getRawAxis(AXIS_LEFT_TRIGGER) > 0.2)
                 ClimberManager.leftClimber.manualPull();
-            if(operatorStick.getPOV() == DPAD_UP && operatorStick.getRawAxis(AXIS_LEFT_TRIGGER) > 0.2)
+            else if(operatorStick.getPOV() == DPAD_UP && operatorStick.getRawAxis(AXIS_LEFT_TRIGGER) > 0.2)
                 ClimberManager.leftClimber.manualExtend();
-            if(operatorStick.getPOV() == DPAD_DOWN && operatorStick.getRawAxis(AXIS_RIGHT_TRIGGER) > 0.2)
+            else if(operatorStick.getPOV() == DPAD_DOWN && operatorStick.getRawAxis(AXIS_RIGHT_TRIGGER) > 0.2)
                 ClimberManager.rightClimber.manualPull();
-            if(operatorStick.getPOV() == DPAD_UP && operatorStick.getRawAxis(AXIS_RIGHT_TRIGGER) > 0.2)
+            else if(operatorStick.getPOV() == DPAD_UP && operatorStick.getRawAxis(AXIS_RIGHT_TRIGGER) > 0.2)
                 ClimberManager.rightClimber.manualExtend();
+            else 
+                ClimberManager.brake();
+            
         }
 
         //=====INTAKE======
