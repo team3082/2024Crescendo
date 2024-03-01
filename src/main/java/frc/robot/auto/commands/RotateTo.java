@@ -11,6 +11,7 @@ public class RotateTo extends Command{
       @Override
       public void initialize(){
         rotateTo.start();
+        System.out.println(Pigeon.getRotationRad());
         //SwervePID.setDestRot(rad);
         //System.out.println("Rot " + SwervePID.updateOutputRot());
       }

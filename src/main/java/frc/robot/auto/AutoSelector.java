@@ -22,11 +22,10 @@ public class AutoSelector {
         autoChooser.setDefaultOption("No Auto", "No Auto");
         autoChooser.addOption("4 Piece Middle", "4 Piece Middle");
         autoChooser.addOption("Three Piece Middle", "Three Piece Middle");
-        autoChooser.addOption("Three Piece Right", "Three Piece Right");
-        autoChooser.addOption("Three Piece Left", "Three Piece Left");
+        autoChooser.addOption("Three Piece Source", "Three Piece Source");
         autoChooser.addOption("Two Piece Middle", "Two Piece Middle");
-        autoChooser.addOption("Two Piece Right", "Two Piece Right");
-        autoChooser.addOption("Two Piece Left", "Two Piece Left");
+        autoChooser.addOption("Two Piece Source", "Two Piece Source");
+        autoChooser.addOption("Two Piece Amp", "Two Piece Amp");
         autoChooser.addOption("One Piece", "One Piece");
     }
 
@@ -48,28 +47,25 @@ public class AutoSelector {
             break;
 
             case "Two Piece Middle":
-                CommandAuto.init(CommandAuto.twoPiece("2 Piece Middle"));
+                CommandAuto.init(CommandAuto.twoPieceMid());
             break;
 
-            case "Two Piece Right":
-                CommandAuto.init(CommandAuto.twoPiece("2 Piece Right"));
+            case "Two Piece Source":
+                CommandAuto.init(CommandAuto.twoPieceSource());
             break;
 
-            case "Two Piece Left":
-                CommandAuto.init(CommandAuto.twoPiece("2 Piece Left"));
+            case "Two Piece Amp":
+                CommandAuto.init(CommandAuto.twoPieceAmp());
             break;
 
             case "Three Piece Middle":
-                CommandAuto.init(CommandAuto.ThreePiece("3 Piece Middle", 90));
+                CommandAuto.init(CommandAuto.threePieceMiddle());
             break;
 
-            case "Three Piece Right":
-                CommandAuto.init(CommandAuto.ThreePiece("3 Piece Right",DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150));
+            case "Three Piece Source":
+                CommandAuto.init(CommandAuto.threePieceSource());
             break;
-
-            case "Three Piece Left":
-                CommandAuto.init(CommandAuto.ThreePiece("3 Piece Left",DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30));
-            break;
+            
             case "One Piece":
                 CommandAuto.init(CommandAuto.onePieceStationary());
             break;
