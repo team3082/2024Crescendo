@@ -18,13 +18,20 @@ public class AutoSelector {
      */
     public static void setup() {
         autoChooser.setDefaultOption("No Auto", "No Auto");
-        autoChooser.addOption("4 Piece Amp", "4 Piece Amp");
-        autoChooser.addOption("4 Piece Source", "4 Piece Source");
-        autoChooser.addOption("3 Piece Middle Amp", "3 Piece Middle Amp");
-        autoChooser.addOption("3 Piece Middle Source", "3 Piece Middle Source");
-        autoChooser.addOption("Choreo Test", "Choreo Test");
-        autoChooser.addOption("Bezier Curve Test", "Bezier Curve Test");
-        autoChooser.addOption("Bounce Test", "Bounce Test");
+        autoChooser.addOption("1 Piece Middle", "1 Piece Middle");
+        autoChooser.addOption("1 Piece Source", "1 Piece Source");
+        autoChooser.addOption("1 Piece Amp", "1 Piece Amp");
+        autoChooser.addOption("2 Piece Middle", "2 Piece Middle");
+        autoChooser.addOption("2 Piece Source", "2 Piece Source");
+        autoChooser.addOption("2 Piece Amp", "2 Piece Amp");
+        autoChooser.addOption("2 Piece Source Far", "2 Piece Source Far");
+        autoChooser.addOption("2 Piece Amp Far", "2 Piece Amp Far");
+        autoChooser.addOption("3 Piece Source", "3 Piece Source");
+        autoChooser.addOption("3 Piece Amp", "3 Piece Amp");
+        autoChooser.addOption("3 Piece Source Half Far", "3 Piece Source Half Far");
+        autoChooser.addOption("3 Piece Amp Half Far", "3 Piece Amp Half Far");
+        autoChooser.addOption("3 Piece Source Far", "3 Piece Source Far");
+        autoChooser.addOption("3 Piece Amp Far", "3 Piece Amp Far");
         autoChooser.addOption("4 Piece Middle", "4 Piece Middle");
         autoChooser.addOption("Test", "Test");
     }
@@ -42,43 +49,67 @@ public class AutoSelector {
                 CommandAuto.init(Commands.none());     
             break;
 
-            case "4 Piece Amp":
-                CommandAuto.init(CommandAuto.fourPieceAmpSide());
+            case "1 Piece Middle":
+                CommandAuto.init(CommandAuto.onePieceMiddle());
             break;
 
-            case "4 Piece Source":
-                CommandAuto.init(CommandAuto.fourPieceSourceSide());
+            case "1 Piece Source":
+                CommandAuto.init(CommandAuto.onePieceSource());
             break;
 
-            case "3 Piece Middle Amp":
+            case "1 Piece Amp":
+                CommandAuto.init(CommandAuto.onePieceAmp());
+            break;
+
+            case "2 Piece Middle":
+                CommandAuto.init(CommandAuto.twoPieceMiddle());
+            break;
+
+            case "2 Piece Source":
+                CommandAuto.init(CommandAuto.twoPieceSource());
+            break;
+
+            case "2 Piece Amp":
+                CommandAuto.init(CommandAuto.twoPieceAmp());
+            break;
+
+            case "2 Piece Source Far":
+                CommandAuto.init(CommandAuto.twoPieceSourceFar());
+            break;
+
+            case "2 Piece Amp Far":
+                CommandAuto.init(CommandAuto.twoPieceAmpFar());
+            break;
+
+            case "3 Piece Source":
+                CommandAuto.init(CommandAuto.threePieceSource());
+            break;
+
+            case "3 Piece Amp":
+                CommandAuto.init(CommandAuto.threePieceAmp());
+            break;
+
+            case "3 Piece Source Half Far":
+                CommandAuto.init(CommandAuto.threePieceSourceHalfFar());
+            break;
+
+            case "3 Piece Amp Half Far":
+                CommandAuto.init(CommandAuto.threePieceAmpHalfFar());
+            break;
+
+            case "3 Piece Source Far":
+                CommandAuto.init(CommandAuto.threePieceSourceFar());
+            break;
             
-                CommandAuto.init(CommandAuto.threePieceMiddleAmpSide());
-            break;
-
-            case "3 Piece Middle Source":
-                CommandAuto.init(CommandAuto.threePieceMiddleSourceSide());
-            break;
-
-            case "Choreo Test":
-                //Auto.choreoTest();
-                CommandAuto.init(CommandAuto.choreoTest());
-            break;
-
-            case "Bezier Curve Test":
-                CommandAuto.init(CommandAuto.bezierCurveAutoTest());
-            break;
-
-            case "Bounce Test":
-                CommandAuto.init(CommandAuto.bounceTest());
+            case "3 Piece Amp Far":
+                CommandAuto.init(CommandAuto.threePieceAmpFar());
             break;
             
             case "4 Piece Middle":
-               CommandAuto.init(CommandAuto.fourMiddle());
+               CommandAuto.init(CommandAuto.fourPieceMiddle());
             break;
-
             case "Test":
-                CommandAuto.init(CommandAuto.test2());
-            break;
+                CommandAuto.init(CommandAuto.testCommand());
         }
     }
 }
