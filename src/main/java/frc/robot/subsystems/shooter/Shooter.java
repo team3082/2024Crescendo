@@ -55,7 +55,7 @@ public final class Shooter {
     public static final double deadband = 50.0;
     
     public static void init() {
-        ShooterPivot.init();
+        // ShooterPivot.init();
 
         topMotor = new TalonFX(TOPFLYWHEEL_ID, "CANivore");
         bottomMotor = new TalonFX(BOTTOMFLYWHEEL_ID, "CANivore");
@@ -107,7 +107,7 @@ public final class Shooter {
 
     public static void update() {
         // Update our pivot & intake
-        ShooterPivot.update();
+        // ShooterPivot.update();
         Intake.update();
 
         // Get our vars

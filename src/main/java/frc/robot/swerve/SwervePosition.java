@@ -47,9 +47,9 @@ public class SwervePosition {
 
         // Flip the x component of our velocity if we're on the red alliance
         // I still don't know why, but we don't need to do this in simulation mode
-        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
-        if (alliance == Alliance.Red)
-            vel.x *= -1;
+        // Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
+        // if (alliance == Alliance.Red)
+        //     vel.x *= -1;
         
         lastAbsVelocity = absVelocity; 
         absVelocity = vel;

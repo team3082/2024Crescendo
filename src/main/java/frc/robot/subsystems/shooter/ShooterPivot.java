@@ -90,7 +90,11 @@ public final class ShooterPivot {
      * angled straight up is PI / 2
      */
     public double getPosition() {
-        return ticksToRad(motor.getSelectedSensorPosition());
+        try {
+            return ticksToRad(motor.getSelectedSensorPosition());
+        } catch (Exception e) {
+            return 0.0;
+        }
     }
 
     private static double ticksToRad(double motorPos) {
@@ -114,7 +118,11 @@ public final class ShooterPivot {
         if (RobotBase.isSimulation()) {
             return true;
         }
-        return radToTicks(motor.getSelectedSensorPosition()) < radToTicks(targetPos) + Math.toRadians(1.2) || radToTicks(motor.getSelectedSensorPosition()) > radToTicks(targetPos) - Math.toRadians(1.2);
+        try {
+            return radToTicks(motor.getSelectedSensorPosition()) < radToTicks(targetPos) + Math.toRadians(1.2) || radToTicks(motor.getSelectedSensorPosition()) > radToTicks(targetPos) - Math.toRadians(1.2);
+        } catch (Exception e) {
+            return true;
+        }
     }
     
     public static void update() {

@@ -67,7 +67,7 @@ public class VisionManager {
         // offsets[1] = new Vector2(-4, 2.475);
         // cameraRots[1] = 3 * Math.PI / 2;
 
-        cameras[0] = new PhotonCamera("ApriltagCamera3");
+        cameras[0] = new PhotonCamera("ApriltagCamera2");
         offsets[0] = new Vector2(-4, 5.350);
         cameraRots[0] = 3.0 * Math.PI / 2.0;
 
@@ -107,7 +107,7 @@ public class VisionManager {
 
                 // We have a valid target
                 Transform3d transform = target.getBestCameraToTarget();
-                offset = new Vector2(transform.getX()* Math.cos(Math.toRadians(15)), transform.getY()).mul(Constants.METERSTOINCHES);
+                offset = new Vector2(transform.getX()* Math.cos(Math.toRadians(15)), transform.getY() - 0.36).mul(Constants.METERSTOINCHES);
             }
 
             offset.x += -4.0;

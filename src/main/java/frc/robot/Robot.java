@@ -112,13 +112,13 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     Intake.enableCoast();
-    ShooterPivot.enableCoast();
+    // ShooterPivot.enableCoast();
   }
 
   @Override
   public void testPeriodic() {
     Intake.setCoast();
-    ShooterPivot.setCoast();
+    // ShooterPivot.setCoast();
   }
 
   @Override
