@@ -31,6 +31,7 @@ public class AutoSelector {
         autoChooser.addOption("3 Piece Source Half Far", "3 Piece Source Half Far");
         autoChooser.addOption("3 Piece Amp Half Far", "3 Piece Amp Half Far");
         autoChooser.addOption("3 Piece Source Far", "3 Piece Source Far");
+        // TODO
         autoChooser.addOption("3 Piece Amp Far", "3 Piece Amp Far");
         autoChooser.addOption("4 Piece Middle", "4 Piece Middle");
         autoChooser.addOption("Test", "Test");
