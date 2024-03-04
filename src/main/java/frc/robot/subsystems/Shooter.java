@@ -6,9 +6,7 @@ import eggshell.constructors.motor.MotorInterface.MotorControlType;
 import eggshell.constructors.motor.MotorInterface.PositionType;
 
 public class Shooter {
-    private Motor topFlywheel;
-    private Motor bottomFlywheel;
-    private Motor pivot;
+    private Motor topFlywheel, bottomFlywheel, pivot;
     private AbsoluteEncoder pivotEncoder;
     private double targetTopVelocity, targetBottomVelocity, targetAngle;
 

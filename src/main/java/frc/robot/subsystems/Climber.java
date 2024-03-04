@@ -6,6 +6,7 @@ import eggshell.constructors.motor.Motor;
 public class Climber {
     private Motor leftClimber, rightClimber;
     private LimitSwitch leftHallSensor, rightHallSensor;
+    
     public Climber(Motor leftClimber, LimitSwitch leftHallSensor, Motor rightClimber, LimitSwitch rightHallSensor) {
         this.leftClimber = leftClimber;
         this.leftHallSensor = leftHallSensor;
@@ -18,7 +19,7 @@ public class Climber {
     }
 
     public void manualPull() {
-        
+
     }
 
     public void manualExtend() {

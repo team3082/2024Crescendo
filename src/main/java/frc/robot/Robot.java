@@ -13,14 +13,14 @@ import eggshell.constructors.swerve.SwerveConstants;
 import eggshell.constructors.swerve.SwerveManager;
 import eggshell.constructors.swerve.SwerveModule;
 import eggshell.constructors.timeofflight.LaserCAN;
-import eggshell.constructors.vision.CameraInterface;
 import eggshell.constructors.vision.PhotonCamera;
 import eggshell.constructors.vision.VisionManager;
-import eggshell.controls.Controller;
 import eggshell.utils.Vector2;
+
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Climber;
+import frc.robot.Auto;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 public class Robot extends TimedRobot {
@@ -45,33 +45,33 @@ public class Robot extends TimedRobot {
 			new SwerveModule(
 				new TalonFXP6(Constants.Swerve.FL_STEER_ID, Constants.Swerve.STEER_CONFIG),
 				new TalonFXP6(Constants.Swerve.FL_DRIVE_ID, Constants.Swerve.DRIVE_CONFIG),
-				new CANCoderP6(Constants.Swerve.FL_STEER_ID)
+				new CANCoderP6(Constants.Swerve.FL_STEER_ID, Constants.Swerve.FL_OFFSET, false)
 			), 
 			new SwerveModule(
 				new TalonFXP6(Constants.Swerve.FR_STEER_ID, Constants.Swerve.STEER_CONFIG),
 				new TalonFXP6(Constants.Swerve.FR_DRIVE_ID, Constants.Swerve.DRIVE_CONFIG),
-				new CANCoderP6(Constants.Swerve.FL_STEER_ID)
+				new CANCoderP6(Constants.Swerve.FR_STEER_ID, Constants.Swerve.FR_OFFSET, false)
 			), 
 			new SwerveModule(
 				new TalonFXP6(Constants.Swerve.BL_STEER_ID, Constants.Swerve.STEER_CONFIG),
 				new TalonFXP6(Constants.Swerve.BL_DRIVE_ID, Constants.Swerve.DRIVE_CONFIG),
-				new CANCoderP6(Constants.Swerve.FL_STEER_ID)
+				new CANCoderP6(Constants.Swerve.BL_STEER_ID, Constants.Swerve.BL_OFFSET, false)
 			), 
 			new SwerveModule(
 				new TalonFXP6(Constants.Swerve.BR_STEER_ID, Constants.Swerve.STEER_CONFIG),
 				new TalonFXP6(Constants.Swerve.BR_DRIVE_ID, Constants.Swerve.DRIVE_CONFIG),
-				new CANCoderP6(Constants.Swerve.FL_STEER_ID)
+				new CANCoderP6(Constants.Swerve.BR_STEER_ID, Constants.Swerve.BR_OFFSET, false)
 			), 
-			new Pigeon2P6(), 
+			new Pigeon2P6(Constants.Swerve.GYRO_ID), 
 			new SwerveConstants(new Vector2(26, 26), SwerveConstants.SwerveModule.MK4I_L3)
 		);
 
 		// Shooter
 		shooter = new Shooter(
-			new TalonFXP6(0, null),
-			new TalonFXP6(0, null),
-			new TalonFXP6(0, null),
-			new CANCoderP6(0)
+			new TalonFXP6(Constants.Shooter.TOP_FLYWHEEL_ID, Constants.Shooter.TOP_FLYWHEEL_CONFIG),
+			new TalonFXP6(Constants.Shooter.BOTTOM_FLYWHEEL_ID, Constants.Shooter.BOTTOM_FLYWHEEL_CONFIG),
+			new TalonFXP6(Constants.Shooter.PIVOT_ID, Constants.Shooter.PIVOT_CONFIG, Constants.Shooter.PIVOT_MOTION_MAGIC_CONFIG),
+			new CANCoderP6(Constants.Shooter.PIVOT_ID, Constants.Shooter.PIVOT_OFFSET, false)
 		);
 
 		// Intake
