@@ -1,7 +1,7 @@
 package frc.robot;
 
 import eggshell.constructors.motor.MotorConfig;
-import eggshell.constructors.motor.MotionMagicConfig;
+import eggshell.constructors.motor.ctre.MotionMagicConfig;
 import eggshell.constructors.swerve.SwerveConstants;
 
 public class Constants {

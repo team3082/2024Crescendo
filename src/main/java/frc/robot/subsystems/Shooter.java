@@ -2,8 +2,8 @@ package frc.robot.subsystems;
 
 import eggshell.constructors.absoluteEncoder.AbsoluteEncoder;
 import eggshell.constructors.motor.Motor;
-import eggshell.constructors.motor.MotorInterface.MotorControlType;
-import eggshell.constructors.motor.MotorInterface.PositionType;
+import eggshell.constructors.motor.Motor.MotorControlType;
+import eggshell.constructors.motor.Motor.PositionType;
 
 public class Shooter {
     private Motor topFlywheel, bottomFlywheel, pivot;
@@ -18,9 +18,9 @@ public class Shooter {
     }
 
     public void update() {
-        this.topFlywheel.set(MotorControlType.SPEED_RPM, this.targetTopVelocity);
-        this.bottomFlywheel.set(MotorControlType.SPEED_RPM, this.targetBottomVelocity);
-        this.pivot.set(MotorControlType.POSITION_RADIANS, this.targetAngle);
+        this.topFlywheel.set(MotorControlType.VELOCITY, this.targetTopVelocity);
+        this.bottomFlywheel.set(MotorControlType.VELOCITY, this.targetBottomVelocity);
+        this.pivot.set(MotorControlType.POSITION, this.targetAngle);
     }
 
     public void setVelocity(double rpm) {
