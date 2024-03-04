@@ -50,6 +50,7 @@ public class Constants {
             DRIVE_DEADBAND, 
             false
         );
+        
         public static final MotorConfig STEER_CONFIG = new MotorConfig(
             true, 
             true, 
@@ -72,6 +73,6 @@ public class Constants {
     }
 
     public class Climber {
-        
+
     }
 }

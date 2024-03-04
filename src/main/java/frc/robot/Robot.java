@@ -6,14 +6,18 @@ package frc.robot;
 
 import eggshell.constructors.absoluteEncoder.CANCoderP6;
 import eggshell.constructors.gyro.Pigeon2P6;
+import eggshell.constructors.limitswitch.ThriftyHallEffect;
 import eggshell.constructors.motor.SparkMax;
 import eggshell.constructors.motor.TalonFXP6;
 import eggshell.constructors.swerve.SwerveConstants;
 import eggshell.constructors.swerve.SwerveManager;
 import eggshell.constructors.swerve.SwerveModule;
 import eggshell.constructors.timeofflight.LaserCAN;
+import eggshell.constructors.vision.CameraInterface;
+import eggshell.constructors.vision.PhotonCamera;
 import eggshell.constructors.vision.VisionManager;
 import eggshell.controls.Controller;
+import eggshell.utils.Vector2;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Climber;
@@ -59,7 +63,7 @@ public class Robot extends TimedRobot {
 				new CANCoderP6(Constants.Swerve.FL_STEER_ID)
 			), 
 			new Pigeon2P6(), 
-			new SwerveConstants(26, 26, SwerveConstants.SwerveModule.MK4I_L3)
+			new SwerveConstants(new Vector2(26, 26), SwerveConstants.SwerveModule.MK4I_L3)
 		);
 
 		// Shooter
@@ -81,11 +85,15 @@ public class Robot extends TimedRobot {
 		// Climber
 		climber = new Climber(
 			new TalonFXP6(0, null),
-			new TalonFXP6(0, null)
+			new ThriftyHallEffect(0),
+			new TalonFXP6(0, null),
+			new ThriftyHallEffect(1)
 		);
 
 		// Vision
-		visionManager = new VisionManager();
+		visionManager = new VisionManager(
+			new PhotonCamera[] {}
+		);
 	}
 
 	@Override
