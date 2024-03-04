@@ -6,31 +6,38 @@ package frc.robot;
 
 import eggshell.constructors.absoluteEncoder.CANCoderP6;
 import eggshell.constructors.gyro.Pigeon2P6;
+import eggshell.constructors.motor.SparkMax;
 import eggshell.constructors.motor.TalonFXP6;
 import eggshell.constructors.swerve.SwerveConstants;
 import eggshell.constructors.swerve.SwerveManager;
 import eggshell.constructors.swerve.SwerveModule;
+import eggshell.constructors.timeofflight.LaserCAN;
+import eggshell.constructors.vision.VisionManager;
+import eggshell.controls.Controller;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Climber;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 public class Robot extends TimedRobot {
-	public SwerveManager swerveManager;
-	public Shooter shooter;
-	public Intake intake;
-	public Climber climber;
+	public static SwerveManager swerveManager;
+	public static Shooter shooter;
+	public static Intake intake;
+	public static Climber climber;
+	public static VisionManager visionManager;
+	public static OI input;
 
 	@Override
 	public void robotInit() {
+		// ensure everything starts up properly
 		try {
-		Thread.sleep(5000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
-		e.printStackTrace();
+			e.printStackTrace();
 		}
 
 		// Swerve
-		this.swerveManager = new SwerveManager(
+		swerveManager = new SwerveManager(
 			new SwerveModule(
 				new TalonFXP6(Constants.Swerve.FL_STEER_ID, Constants.Swerve.STEER_CONFIG),
 				new TalonFXP6(Constants.Swerve.FL_DRIVE_ID, Constants.Swerve.DRIVE_CONFIG),
@@ -56,12 +63,29 @@ public class Robot extends TimedRobot {
 		);
 
 		// Shooter
-
+		shooter = new Shooter(
+			new TalonFXP6(0, null),
+			new TalonFXP6(0, null),
+			new TalonFXP6(0, null),
+			new CANCoderP6(0)
+		);
 
 		// Intake
-
+		intake = new Intake(
+			new SparkMax(0, null),
+			new SparkMax(0, null),
+			new TalonFXP6(0, null),
+			new LaserCAN()
+		);
 
 		// Climber
+		climber = new Climber(
+			new TalonFXP6(0, null),
+			new TalonFXP6(0, null)
+		);
+
+		// Vision
+		visionManager = new VisionManager();
 	}
 
 	@Override
@@ -77,7 +101,9 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {}
 
 	@Override
-	public void teleopPeriodic() {}
+	public void teleopPeriodic() {
+		input.update();
+	}
 
 	@Override
 	public void disabledInit() {}

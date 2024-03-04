@@ -62,4 +62,16 @@ public class Constants {
             false
         );
     }
+
+    public class Shooter {
+
+    }
+
+    public class Intake {
+
+    }
+
+    public class Climber {
+        
+    }
 }
