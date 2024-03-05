@@ -1,5 +1,7 @@
 package frc.robot;
 
+import au.grapplerobotics.LaserCan.RangingMode;
+import au.grapplerobotics.LaserCan.RegionOfInterest;
 import eggshell.constructors.motor.ctre.CTREMotorConfig;
 import eggshell.constructors.motor.rev.RevMotorConfig;
 import eggshell.constructors.swerve.SwerveConstants;
@@ -167,7 +169,7 @@ public class Constants {
         public static final boolean BOTTOM_BELT_FLIPPED = false;
         public static final boolean BOTTOM_BELT_BRAKED = false;
 
-        public static final RevMotorConfig BOTTOM_FLYWHEEL_CONFIG = new RevMotorConfig (
+        public static final RevMotorConfig BOTTOM_BELT_CONFIG = new RevMotorConfig (
             BOTTOM_BELT_FLIPPED,
             BOTTOM_BELT_BRAKED,
             1.0
@@ -177,13 +179,15 @@ public class Constants {
         public static final boolean TOP_BELT_FLIPPED = false;
         public static final boolean TOP_BELT_BRAKED = false;
 
-        public static final RevMotorConfig TOP_FLYWHEEL_CONFIG = new RevMotorConfig (
+        public static final RevMotorConfig TOP_BELT_CONFIG = new RevMotorConfig (
             TOP_BELT_FLIPPED,
             TOP_BELT_BRAKED,
             1.0
         );
 
-        
+        public static final int BEAMBREAK_ID = 0;
+        public static final RangingMode BEAMBREAK_RANGE_MODE = RangingMode.SHORT;
+        public static final RegionOfInterest BEAMBREAK_REGION_OF_INTEREST = new RegionOfInterest(8, 8, 2, 2);
     }
 
     public class Climber {

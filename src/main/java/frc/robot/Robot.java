@@ -23,6 +23,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Climber;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+
 public class Robot extends TimedRobot {
 	public static SwerveManager swerveManager;
 	public static Shooter shooter;
@@ -76,10 +77,10 @@ public class Robot extends TimedRobot {
 
 		// Intake
 		intake = new Intake(
-			new RevSparkMax(0, null),
-			new RevSparkMax(0, null),
-			new CTRETalonFX(0, null),
-			new LaserCAN()
+			new RevSparkMax(Constants.Intake.TOP_BELT_ID, Constants.Intake.TOP_BELT_CONFIG),
+			new RevSparkMax(Constants.Intake.BOTTOM_BELT_ID, Constants.Intake.BOTTOM_BELT_CONFIG),
+			new CTRETalonFX(Constants.Intake.PIVOT_ID, Constants.Intake.PIVOT_CONFIG),
+			new LaserCAN(Constants.Intake.BEAMBREAK_ID, Constants.Intake.BEAMBREAK_RANGE_MODE, Constants.Intake.BEAMBREAK_REGION_OF_INTEREST)
 		);
 
 		// Climber
@@ -92,7 +93,12 @@ public class Robot extends TimedRobot {
 
 		// Vision
 		visionManager = new VisionManager(
-			new PhotonCamera[] {}
+			new PhotonCamera[] {
+				new PhotonCamera(),
+				new PhotonCamera(),
+				new PhotonCamera(),
+				new PhotonCamera()
+			}
 		);
 	}
 
@@ -111,6 +117,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		input.update();
+		swerveManager.update();
+		shooter.update();
+		intake.update();
+		climber.update();
 	}
 
 	@Override

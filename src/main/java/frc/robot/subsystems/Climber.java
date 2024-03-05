@@ -14,6 +14,10 @@ public class Climber {
         this.rightHallSensor = rightHallSensor;
     }
 
+    public void update() {
+        
+    }
+
     public void zero() {
 
     }

@@ -13,4 +13,8 @@ public class Intake {
         this.pivot = pivot;
         this.beamBreak = beamBreak;
     }
+
+    public void update() {
+        
+    }
 }
