@@ -1,7 +1,7 @@
 package frc.robot;
 
-import eggshell.constructors.motor.MotorConfig;
-import eggshell.constructors.motor.ctre.MotionMagicConfig;
+import eggshell.constructors.motor.ctre.CTREMotorConfig;
+import eggshell.constructors.motor.rev.RevMotorConfig;
 import eggshell.constructors.swerve.SwerveConstants;
 
 public class Constants {
@@ -46,7 +46,7 @@ public class Constants {
         public static final double ROTATION_D = 0.0;
         public static final double ROTATION_F = 0.0;
         
-        public static final MotorConfig DRIVE_CONFIG = new MotorConfig (
+        public static final CTREMotorConfig DRIVE_CONFIG = new CTREMotorConfig (
             true, 
             true, 
             SwerveConstants.SwerveModule.MK4I_L3.steerRatio, 
@@ -58,7 +58,7 @@ public class Constants {
             false
         );
 
-        public static final MotorConfig STEER_CONFIG = new MotorConfig (
+        public static final CTREMotorConfig STEER_CONFIG = new CTREMotorConfig (
             true, 
             true, 
             SwerveConstants.SwerveModule.MK4I_L3.steerRatio, 
@@ -74,28 +74,26 @@ public class Constants {
     public class Shooter {
         public static final int PIVOT_ID = 0;
         public static final double PIVOT_OFFSET = 0.0;
-
-        public static final MotorConfig PIVOT_CONFIG = new MotorConfig (
-            false,
-            true,
-            50.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.001,
-            false
-        );
-
+        public static final boolean PIVOT_FLIPPED = false;
+        public static final boolean PIVOT_BRAKED = false;
+        public static final double PIVOT_RATIO = 50.0;
+        public static final double PIVOT_DEADBAND = 0.001;
         public static final double PIVOT_VELOCITY = 0.0;
         public static final double PIVOT_ACCELERATION = 0.0;
         public static final double PIVOT_JERK = 0.0;
 
-        public static final MotionMagicConfig PIVOT_MOTION_MAGIC_CONFIG = new MotionMagicConfig (
+        public static final CTREMotorConfig PIVOT_CONFIG = new CTREMotorConfig (
+            PIVOT_FLIPPED,
+            PIVOT_BRAKED,
+            PIVOT_RATIO,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            PIVOT_DEADBAND,
+            false,
             PIVOT_VELOCITY,
             PIVOT_ACCELERATION,
-            0.0,
-            0.0,
             PIVOT_JERK
         );
 
@@ -105,7 +103,7 @@ public class Constants {
         public static final double TOP_FLYWHEEL_D = 0.0;
         public static final double TOP_FLYWHEEL_F = 0.0;
 
-        public static final MotorConfig TOP_FLYWHEEL_CONFIG = new MotorConfig (
+        public static final CTREMotorConfig TOP_FLYWHEEL_CONFIG = new CTREMotorConfig (
             false, 
             false, 
             1.0,
@@ -118,15 +116,18 @@ public class Constants {
         );
 
         public static final int BOTTOM_FLYWHEEL_ID = 0;
+        public static final boolean BOTTOM_FLYWHEEL_FLIPPED = false;
+        public static final boolean BOTTOM_FLYWHEEL_BRAKED = false;
+        public static final double BOTTOM_FLYWHEEL_RATIO = 1.0;
         public static final double BOTTOM_FLYWHEEL_P = 0.0;
         public static final double BOTTOM_FLYWHEEL_I = 0.0;
         public static final double BOTTOM_FLYWHEEL_D = 0.0;
         public static final double BOTTOM_FLYWHEEL_F = 0.0;
 
-        public static final MotorConfig BOTTOM_FLYWHEEL_CONFIG = new MotorConfig(
-            false, 
-            false, 
-            1.0,
+        public static final CTREMotorConfig BOTTOM_FLYWHEEL_CONFIG = new CTREMotorConfig(
+            BOTTOM_FLYWHEEL_FLIPPED, 
+            BOTTOM_FLYWHEEL_BRAKED, 
+            BOTTOM_FLYWHEEL_RATIO,
             BOTTOM_FLYWHEEL_P, 
             BOTTOM_FLYWHEEL_I, 
             BOTTOM_FLYWHEEL_D, 
@@ -137,7 +138,52 @@ public class Constants {
     }
 
     public class Intake {
+        public static final int PIVOT_ID = 0;
+        public static final double PIVOT_OFFSET = 0.0;
+        public static final boolean PIVOT_FLIPPED = false;
+        public static final boolean PIVOT_BRAKED = false;
+        public static final double PIVOT_RATIO = 50.0;
+        public static final double PIVOT_DEADBAND = 0.001;
+        public static final double PIVOT_VELOCITY = 0.0;
+        public static final double PIVOT_ACCELERATION = 0.0;
+        public static final double PIVOT_JERK = 0.0;
 
+        public static final CTREMotorConfig PIVOT_CONFIG = new CTREMotorConfig (
+            PIVOT_FLIPPED,
+            PIVOT_BRAKED,
+            PIVOT_RATIO,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            PIVOT_DEADBAND,
+            false,
+            PIVOT_VELOCITY,
+            PIVOT_ACCELERATION,
+            PIVOT_JERK
+        );
+
+        public static final int BOTTOM_BELT_ID = 0;
+        public static final boolean BOTTOM_BELT_FLIPPED = false;
+        public static final boolean BOTTOM_BELT_BRAKED = false;
+
+        public static final RevMotorConfig BOTTOM_FLYWHEEL_CONFIG = new RevMotorConfig (
+            BOTTOM_BELT_FLIPPED,
+            BOTTOM_BELT_BRAKED,
+            1.0
+        );
+
+        public static final int TOP_BELT_ID = 0;
+        public static final boolean TOP_BELT_FLIPPED = false;
+        public static final boolean TOP_BELT_BRAKED = false;
+
+        public static final RevMotorConfig TOP_FLYWHEEL_CONFIG = new RevMotorConfig (
+            TOP_BELT_FLIPPED,
+            TOP_BELT_BRAKED,
+            1.0
+        );
+
+        
     }
 
     public class Climber {

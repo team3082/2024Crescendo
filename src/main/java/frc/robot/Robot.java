@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
 		shooter = new Shooter(
 			new CTRETalonFX(Constants.Shooter.TOP_FLYWHEEL_ID, Constants.Shooter.TOP_FLYWHEEL_CONFIG),
 			new CTRETalonFX(Constants.Shooter.BOTTOM_FLYWHEEL_ID, Constants.Shooter.BOTTOM_FLYWHEEL_CONFIG),
-			new CTRETalonFX(Constants.Shooter.PIVOT_ID, Constants.Shooter.PIVOT_CONFIG, Constants.Shooter.PIVOT_MOTION_MAGIC_CONFIG),
+			new CTRETalonFX(Constants.Shooter.PIVOT_ID, Constants.Shooter.PIVOT_CONFIG),
 			new CANCoderP6(Constants.Shooter.PIVOT_ID, Constants.Shooter.PIVOT_OFFSET, Direction.CLOCKWISE)
 		);
 
