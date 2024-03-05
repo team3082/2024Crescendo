@@ -7,10 +7,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
 import frc.robot.sensors.Pigeon;
 import frc.robot.subsystems.climber.ClimberManager;
-import frc.robot.subsystems.shooter.Intake;
-import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterPivot;
-import frc.robot.subsystems.shooter.Intake.IntakeState;
+import frc.robot.subsystems.shooter.ShooterManager;
+import frc.robot.subsystems.shooter.ShooterManager.ShooterState;
+import frc.robot.subsystems.shooter.ShooterManager.TargetMethod;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwerveModule;
 import frc.robot.swerve.SwervePID;
@@ -55,7 +54,6 @@ public class OI {
     public static ShooterMode currentShooterMode = ShooterMode.AMP;
     public static boolean manualFireSet = true;
     public static boolean manualClimbSet = true;
-    public static boolean manualIntake = false;
 
     public static int lastPOV = -1;
 
@@ -97,14 +95,10 @@ public class OI {
         // INTAKE
 
         if (driverStick.getRawAxis(intake) > 0.5) {
-            if (!manualIntake)
-                Intake.suck();
-            else
-                Intake.manualIntake();
+            ShooterManager.setState(ShooterState.INTAKE);
             kBoostCoefficient = 0.4;
         } else {
-            if (!Shooter.firing())
-                Intake.setState(IntakeState.STOW);
+            ShooterManager.setState(ShooterState.STOW);
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
@@ -132,49 +126,24 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SHOOTER
 
-        if (driverStick.getRawButton(eject)) Shooter.eject();
-
-        // Auto-rev and fire
-        boolean shooterFire = driverStick.getRawButton(fireShooter);
-        double[] arr = Shooter.getDesiredShooterPos(SwervePosition.getPosition(), SwerveManager.getRobotDriveVelocity());
-
-        // ONLY align if we are in auto-fire mode
-        // silly things 🤣😁
-        // if (shooterFire && !manualFireSet) {
-        //     double speakerRot = SwervePosition.getAngleOffsetToTarget(new Vector2());
-        //     SwervePID.setDestRot(speakerRot);
-        //     rotate = SwervePID.updateOutputRot();
-        // }
+        if (driverStick.getRawButton(eject)) ShooterManager.setState(ShooterState.EJECT);
 
         // checks current shooter mode and sets the angle and velocities accordingly
-        if (shooterFire) {
+        if (driverStick.getRawButton(fireShooter)) {
             switch (currentShooterMode) {
                 case AMP:
-                    ShooterPivot.setPosition(Math.toRadians(55.0));
-                    Shooter.revToVaried(topVector, bottomVector);
-                    Shooter.shoot();
-                break;
-
-                 // manual for now, change to auto when tuned
-                 // use the arr variable above for that
-                case SPEAKER:
-                    Shooter.setShooterAngleForSpeaker();
-                    Shooter.revTo(manualRPM);
-                    Shooter.shoot();
+                    ShooterManager.setTargetMethod(TargetMethod.AMP);
+                    ShooterManager.setState(ShooterState.SHOOT);
                 break;
 
                 case SPEAKER_MANUAL:
-                    ShooterPivot.setPosition(Math.toRadians(manualAngle));
-                    Shooter.revTo(manualRPM);
-                    Shooter.shoot();
+                    ShooterManager.setTargetMethod(TargetMethod.SUB);
+                    ShooterManager.setState(ShooterState.SHOOT);
                 break;
             
                 default:
                 break;
             }
-        } else {
-            ShooterPivot.setPosition(Math.toRadians(30.0)); // stow shooter
-            Shooter.disable(); // Leave the shooter off if not in use
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
@@ -232,14 +201,6 @@ public class OI {
         }
 
         //=====INTAKE======
-
-        if(operatorStick.getRawButtonPressed(BUTTON_X)){
-            manualIntake = true;
-        }
-
-        if(operatorStick.getRawButtonPressed(BUTTON_Y)){
-            manualIntake = false;
-        }
 
         //=====SHOOTER=====
 

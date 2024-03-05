@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
-import frc.robot.subsystems.shooter.Intake;
 
 public class BannerLight {
 
@@ -34,9 +33,9 @@ public class BannerLight {
     }
 
     public static void update() {
-        if (Intake.reallyHasPiece)
-            setLeftClimb();
-        else
+        // if (Intake.reallyHasPiece)
+        //     setLeftClimb();
+        // else
             red();
     }
 

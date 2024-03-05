@@ -15,7 +15,7 @@ import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import edu.wpi.first.wpilibj.RobotBase;
 
 @SuppressWarnings("removal")
-public final class ShooterPivot {
+final class ShooterPivot {
 
     private static TalonFX motor;
     private static CANCoder absEncoder;
@@ -115,6 +115,10 @@ public final class ShooterPivot {
             return true;
         }
         return radToTicks(motor.getSelectedSensorPosition()) < radToTicks(targetPos) + Math.toRadians(1.2) || radToTicks(motor.getSelectedSensorPosition()) > radToTicks(targetPos) - Math.toRadians(1.2);
+    }
+
+    public static void stow(){
+        motor.neutralOutput();
     }
     
     public static void update() {

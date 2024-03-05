@@ -18,8 +18,6 @@ import frc.robot.OI;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.auto.AutoSelector;
 import frc.robot.subsystems.climber.ClimberManager;
-import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -116,9 +114,9 @@ public class Telemetry {
     private static final GenericEntry rotDeadBand = rotTab.add("Rot Deadband", SwervePID.rotDead).getEntry();
 
     // Shooter
-    private static final GenericEntry TOPFLYWHEELRPM = shooter.add("Top Flywheel RPM", Shooter.topRPM).getEntry();
-    private static final GenericEntry BOTTOMFLYWHEELRPM = shooter.add("Bottom Flywheel RPM", Shooter.bottomRPM).getEntry();
-    private static final GenericEntry FLYWHEELTARGETRPM = shooter.add("Flywheel Targeted RPM", Shooter.targetVelocity * ShooterConstants.VelToRPM).getEntry();
+    // private static final GenericEntry TOPFLYWHEELRPM = shooter.add("Top Flywheel RPM", Shooter.topRPM).getEntry();
+    // private static final GenericEntry BOTTOMFLYWHEELRPM = shooter.add("Bottom Flywheel RPM", Shooter.bottomRPM).getEntry();
+    // private static final GenericEntry FLYWHEELTARGETRPM = shooter.add("Flywheel Targeted RPM", Shooter.targetVelocity * ShooterConstants.VelToRPM).getEntry();
     private static final GenericEntry TOPVECTOR = shooter.add("Top Flywheel Vector", OI.topVector).getEntry();
     private static final GenericEntry BOTTOMVECTOR = shooter.add("Bottom Flywheel Vector", OI.bottomVector).getEntry();
 
@@ -126,8 +124,8 @@ public class Telemetry {
     private static final GenericEntry LEFTCLIMBERSTATE = climber.add("Left Climber State", ClimberManager.leftClimber.climberControlState.name()).getEntry();
     private static final GenericEntry RIGHTCLIMBERSTATE = climber.add("Right Climber State", ClimberManager.rightClimber.climberControlState.name()).getEntry();
 
-    private static final GenericEntry pivotAngle = shooter.add("Pivot Angle", ShooterPivot.actualPos).getEntry();
-    private static final GenericEntry pivotTargetAngle = shooter.add("Pivot Target Angle", ShooterPivot.targetPos).getEntry();
+    // private static final GenericEntry pivotAngle = shooter.add("Pivot Angle", ShooterPivot.actualPos).getEntry();
+    // private static final GenericEntry pivotTargetAngle = shooter.add("Pivot Target Angle", ShooterPivot.targetPos).getEntry();
 
     // SwervePosition
     private static final GenericEntry swervePos = pos.add("Swerve Position", SwervePosition.getPosition().toString()).getEntry();
@@ -204,22 +202,22 @@ public class Telemetry {
         prevSimRot = rotation;
     }
 
-    public static void updateShooter() {
-        TOPFLYWHEELRPM.setDouble(Shooter.topRPM);
-        BOTTOMFLYWHEELRPM.setDouble(Shooter.bottomRPM);
-        FLYWHEELTARGETRPM.setDouble(Shooter.targetVelocity * ShooterConstants.VelToRPM);
+    // public static void updateShooter() {
+    //     TOPFLYWHEELRPM.setDouble(Shooter.topRPM);
+    //     BOTTOMFLYWHEELRPM.setDouble(Shooter.bottomRPM);
+    //     FLYWHEELTARGETRPM.setDouble(Shooter.targetVelocity * ShooterConstants.VelToRPM);
 
-        TOPVECTOR.setDouble(OI.topVector);
-        BOTTOMVECTOR.setDouble(OI.bottomVector);
+    //     TOPVECTOR.setDouble(OI.topVector);
+    //     BOTTOMVECTOR.setDouble(OI.bottomVector);
 
-        pivotAngle.setDouble(ShooterPivot.actualPos);
-        pivotTargetAngle.setDouble(ShooterPivot.targetPos);
-        // FLYWHEELATVEL.setBoolean(Shooter.canShoot());
+    //     pivotAngle.setDouble(ShooterPivot.actualPos);
+    //     pivotTargetAngle.setDouble(ShooterPivot.targetPos);
+    //     // FLYWHEELATVEL.setBoolean(Shooter.canShoot());
 
-        shooterPivot.setAngle(180 - Math.toDegrees(ShooterPivot.simAng));
-        shooterPivot.setLength((Shooter.simVel / 250) + 2);
-        shooterPivot.setColor(new Color8Bit(255, 0, 0));
-    }
+    //     shooterPivot.setAngle(180 - Math.toDegrees(ShooterPivot.simAng));
+    //     shooterPivot.setLength((Shooter.simVel / 250) + 2);
+    //     shooterPivot.setColor(new Color8Bit(255, 0, 0));
+    // }
 
     public static void updateClimber() {
         LEFTCLIMBERSTATE.setString(ClimberManager.leftClimber.climberControlState.name());
@@ -295,6 +293,6 @@ public class Telemetry {
         updateField();
         updateSwerve();
         updateClimber();
-        updateShooter();
+        // updateShooter();
     }
 }

@@ -18,7 +18,7 @@ import frc.robot.utils.Beambreak;
 import frc.robot.utils.RTime;
 
 @SuppressWarnings("removal")
-public final class Intake {
+final class Intake {
     
     private static TalonFX pivotMotor;
     private static CANSparkMax topBeltMotor, bottomBeltMotor; // bottom = handoff too
@@ -98,11 +98,6 @@ public final class Intake {
        pivotMotor.setSelectedSensorPosition(0);
     }
 
-    public static void killHandoff() {
-        Shooter.handoffLiveTime = 0;
-        state = IntakeState.STOW;
-    }
-
     private static double ticksToRad(double angleTicks) {
         return angleTicks / 2048.0 / INTAKERATIO * Math.PI * 2.0;
     }
@@ -125,6 +120,8 @@ public final class Intake {
                 feed();
             break;
         }
+
+        beambreak.update();
 
         BannerLight.update();
     }

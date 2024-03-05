@@ -1,5 +1,7 @@
 package frc.robot;
 
+import static frc.robot.Constants.ShooterConstants.RPMToVel;
+
 public class Tuning {
     //Swerve
     public static final double MOVEP = 2;
@@ -68,18 +70,19 @@ public class Tuning {
 
         public static double PIVOT_AFF_GRAVITY = 0.0;
         public static double PIVOT_AFF_SPRING = 0.0;
- 
-        public static final double SPEAKER_SPEED_TOP = 0.0; //in motorticks per 100ms
-        public static final double SPEAKER_SPEED_BOTTOM = 0.0;
-
-        public static final double AMP_SPEED_TOP = 0.0;
-        public static final double AMP_SPEED_BOTTOM = 0.0;
-
-        public static final double AMP_WHEEL_SPEED_DEADBAND = 0.0;
-        public static final double SPEAKER_WHEEL_SPEED_DEADBAND = 0.0;
-        public static final double VELOCITY_WHEEL_SPEED_DEADBAND = 0.0;
-
+        
         // public static final double SHOOTER_STOW_ANGLE = 0.0;
+        public static final double SUB_ANGLE = Math.toRadians(53.0);
+        public static final double PODIUM_ANGLE = Math.toRadians(30.0);
+        public static final double AMP_ANGLE = Math.toRadians(50.0);
+        
+        public static final double FLYWHEELSPEED = 4000 * RPMToVel;
+        public static final double FLYWHEELIDLE = 1000 * RPMToVel;
+
+        public static final double AMP_SPEED_TOP = 500 * RPMToVel;
+        public static final double AMP_SPEED_BOTTOM = 600 * RPMToVel;
+
+        public static final double FLYWHEELDEADBAND = 5 * RPMToVel;
     }
 
     public static final class Climbers {

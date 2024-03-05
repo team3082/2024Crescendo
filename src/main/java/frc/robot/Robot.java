@@ -6,16 +6,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.auto.Auto;
 import frc.robot.auto.AutoSelector;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
 import frc.robot.subsystems.BannerLight;
 import frc.robot.subsystems.climber.ClimberManager;
-import frc.robot.subsystems.shooter.Intake;
-import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterPivot;
+import frc.robot.subsystems.shooter.ShooterManager;
+import frc.robot.subsystems.shooter.ShooterManager.ShooterState;
+import frc.robot.subsystems.shooter.ShooterManager.TargetMethod;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -51,8 +50,8 @@ public class Robot extends TimedRobot {
     ClimberManager.init();
     ChoreoTrajectoryGenerator.init();
     ChoreoTrajectoryGenerator.parseAll();
-    Shooter.init();
-    Intake.init();
+    ShooterManager.init();
+    ShooterManager.setTargetMethod(TargetMethod.SUB);
     AutoSelector.setup();
     Telemetry.init();
     BannerLight.init();
@@ -65,7 +64,6 @@ public class Robot extends TimedRobot {
     RTime.updateAbsolute();
     RTime.update();
     Telemetry.update(false);
-    Intake.beambreak.update();
   }
 
   @Override
@@ -82,7 +80,7 @@ public class Robot extends TimedRobot {
    //  Auto.update();
     SwervePosition.update();
     CommandAuto.update();
-    Shooter.update();
+    ShooterManager.update();
   }
 
   @Override
@@ -93,7 +91,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    Shooter.update();
+    ShooterManager.update();
     SwervePosition.update();
     OI.userInput();
     // ClimberManager.update();
@@ -116,14 +114,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    Intake.enableCoast();
-    ShooterPivot.enableCoast();
+    ShooterManager.setState(ShooterState.DISABLED);
+    ShooterManager.update();
   }
 
   @Override
   public void testPeriodic() {
-    Intake.setCoast();
-    ShooterPivot.setCoast();
   }
 
   @Override
