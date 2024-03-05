@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import eggshell.constructors.limitswitch.LimitSwitch;
 import eggshell.constructors.motor.Motor;
 
@@ -15,7 +16,7 @@ public class Climber {
     }
 
     public void update() {
-        
+
     }
 
     public void zero() {

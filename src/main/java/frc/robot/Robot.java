@@ -100,10 +100,15 @@ public class Robot extends TimedRobot {
 				new PhotonVisionCamera(Constants.Vision.CAMERA_NAME_4, Constants.Vision.CAMERA_CONFIG_4)
 			}
 		);
+
+		// Telemetry
+		Telemetry.init();
 	}
 
 	@Override
-	public void robotPeriodic() {}
+	public void robotPeriodic() {
+		Telemetry.update();
+	}
 
 	@Override
 	public void autonomousInit() {}
