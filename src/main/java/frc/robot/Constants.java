@@ -5,6 +5,8 @@ import au.grapplerobotics.LaserCan.RegionOfInterest;
 import eggshell.constructors.motor.ctre.CTREMotorConfig;
 import eggshell.constructors.motor.rev.RevMotorConfig;
 import eggshell.constructors.swerve.SwerveConstants;
+import eggshell.constructors.vision.PhotonVisionConfig;
+import eggshell.utils.Vector2;
 
 public class Constants {
     public class Swerve {
@@ -191,6 +193,101 @@ public class Constants {
     }
 
     public class Climber {
+        public static final int LEFT_HALL_ID = 0;
+        public static final int LEFT_CLIMBER_ID = 0;
+        public static final boolean LEFT_CLIMBER_FLIPPED = false;
+        public static final boolean LEFT_CLIMBER_BRAKED = true;
+        public static final double LEFT_CLIMBER_P = 0.0;
+        public static final double LEFT_CLIMBER_I = 0.0;
+        public static final double LEFT_CLIMBER_D = 0.0;
+        public static final double LEFT_CLIMBER_DEADBAND = 0.0;
 
+        public static final CTREMotorConfig LEFT_CLIMBER_CONFIG = new CTREMotorConfig(
+            LEFT_CLIMBER_FLIPPED,
+            LEFT_CLIMBER_BRAKED,
+            1.0,
+            LEFT_CLIMBER_P,
+            LEFT_CLIMBER_I,
+            LEFT_CLIMBER_D,
+            0.0,
+            LEFT_CLIMBER_DEADBAND,
+            false
+        );
+
+        public static final int RIGHT_HALL_ID = 1;
+        public static final int RIGHT_CLIMBER_ID = 0;
+        public static final boolean RIGHT_CLIMBER_FLIPPED = false;
+        public static final boolean RIGHT_CLIMBER_BRAKED = true;
+        public static final double RIGHT_CLIMBER_P = 0.0;
+        public static final double RIGHT_CLIMBER_I = 0.0;
+        public static final double RIGHT_CLIMBER_D = 0.0;
+        public static final double RIGHT_CLIMBER_DEADBAND = 0.0;
+
+        public static final CTREMotorConfig RIGHT_CLIMBER_CONFIG = new CTREMotorConfig(
+            RIGHT_CLIMBER_FLIPPED,
+            RIGHT_CLIMBER_BRAKED,
+            1.0,
+            RIGHT_CLIMBER_P,
+            RIGHT_CLIMBER_I,
+            RIGHT_CLIMBER_D,
+            0.0,
+            RIGHT_CLIMBER_DEADBAND,
+            false
+        );
+
+    }
+
+    public class Vision {
+        public static final String CAMERA_NAME_1 = "Apriltag1";
+        public static final Vector2 CAMERA_OFFSET_1 = new Vector2();
+        public static final Vector2 CAMERA_OUTPUT_OFFSET_1 = new Vector2();
+        public static final double CAMERA_YAW_1 = 0.0;
+        public static final double CAMERA_PITCH_1 = 0.0;
+
+        public static final PhotonVisionConfig CAMERA_CONFIG_1 = new PhotonVisionConfig(
+            CAMERA_OFFSET_1,
+            CAMERA_OUTPUT_OFFSET_1,
+            CAMERA_YAW_1,
+            CAMERA_PITCH_1
+        );
+
+        public static final String CAMERA_NAME_2 = "Apriltag1";
+        public static final Vector2 CAMERA_OFFSET_2 = new Vector2();
+        public static final Vector2 CAMERA_OUTPUT_OFFSET_2 = new Vector2();
+        public static final double CAMERA_YAW_2 = 0.0;
+        public static final double CAMERA_PITCH_2 = 0.0;
+
+        public static final PhotonVisionConfig CAMERA_CONFIG_2 = new PhotonVisionConfig(
+            CAMERA_OFFSET_2,
+            CAMERA_OUTPUT_OFFSET_2,
+            CAMERA_YAW_2,
+            CAMERA_PITCH_2
+        );
+
+        public static final String CAMERA_NAME_3 = "Apriltag1";
+        public static final Vector2 CAMERA_OFFSET_3 = new Vector2();
+        public static final Vector2 CAMERA_OUTPUT_OFFSET_3 = new Vector2();
+        public static final double CAMERA_YAW_3 = 0.0;
+        public static final double CAMERA_PITCH_3 = 0.0;
+
+        public static final PhotonVisionConfig CAMERA_CONFIG_3 = new PhotonVisionConfig(
+            CAMERA_OFFSET_3,
+            CAMERA_OUTPUT_OFFSET_3,
+            CAMERA_YAW_3,
+            CAMERA_PITCH_3
+        );
+
+        public static final String CAMERA_NAME_4 = "Apriltag1";
+        public static final Vector2 CAMERA_OFFSET_4 = new Vector2();
+        public static final Vector2 CAMERA_OUTPUT_OFFSET_4 = new Vector2();
+        public static final double CAMERA_YAW_4 = 0.0;
+        public static final double CAMERA_PITCH_4 = 0.0;
+
+        public static final PhotonVisionConfig CAMERA_CONFIG_4 = new PhotonVisionConfig(
+            CAMERA_OFFSET_4,
+            CAMERA_OUTPUT_OFFSET_4,
+            CAMERA_YAW_4,
+            CAMERA_PITCH_4
+        );
     }
 }

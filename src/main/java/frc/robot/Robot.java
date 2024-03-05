@@ -14,7 +14,7 @@ import eggshell.constructors.swerve.SwerveConstants;
 import eggshell.constructors.swerve.SwerveManager;
 import eggshell.constructors.swerve.SwerveModule;
 import eggshell.constructors.timeofflight.LaserCAN;
-import eggshell.constructors.vision.PhotonCamera;
+import eggshell.constructors.vision.PhotonVisionCamera;
 import eggshell.constructors.vision.VisionManager;
 import eggshell.utils.Vector2;
 
@@ -85,19 +85,19 @@ public class Robot extends TimedRobot {
 
 		// Climber
 		climber = new Climber(
-			new CTRETalonFX(0, null),
-			new ThriftyHallEffect(0),
-			new CTRETalonFX(0, null),
-			new ThriftyHallEffect(1)
+			new CTRETalonFX(Constants.Climber.LEFT_CLIMBER_ID, Constants.Climber.LEFT_CLIMBER_CONFIG),
+			new ThriftyHallEffect(Constants.Climber.LEFT_HALL_ID),
+			new CTRETalonFX(Constants.Climber.RIGHT_CLIMBER_ID, Constants.Climber.RIGHT_CLIMBER_CONFIG),
+			new ThriftyHallEffect(Constants.Climber.RIGHT_HALL_ID)
 		);
 
 		// Vision
 		visionManager = new VisionManager(
-			new PhotonCamera[] {
-				new PhotonCamera(),
-				new PhotonCamera(),
-				new PhotonCamera(),
-				new PhotonCamera()
+			new PhotonVisionCamera[] {
+				new PhotonVisionCamera(Constants.Vision.CAMERA_NAME_1, Constants.Vision.CAMERA_CONFIG_1),
+				new PhotonVisionCamera(Constants.Vision.CAMERA_NAME_2, Constants.Vision.CAMERA_CONFIG_2),
+				new PhotonVisionCamera(Constants.Vision.CAMERA_NAME_3, Constants.Vision.CAMERA_CONFIG_3),
+				new PhotonVisionCamera(Constants.Vision.CAMERA_NAME_4, Constants.Vision.CAMERA_CONFIG_4)
 			}
 		);
 	}
@@ -109,7 +109,11 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {}
 
 	@Override
-	public void autonomousPeriodic() {}
+	public void autonomousPeriodic() {
+		swerveManager.update();
+		shooter.update();
+		intake.update();
+	}
 
 	@Override
 	public void teleopInit() {}
