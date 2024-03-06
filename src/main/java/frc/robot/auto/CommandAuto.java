@@ -1,5 +1,8 @@
 package frc.robot.auto;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -13,11 +16,14 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.auto.commands.FireShooter;
 import frc.robot.auto.commands.ChoreoFollow;
 import frc.robot.auto.commands.SetIntake;
+import frc.robot.auto.commands.SetIntakeFeedPos;
 import frc.robot.auto.commands.SetShooterAngle;
 import frc.robot.auto.commands.SetShooterVelocity;
+import frc.robot.sensors.Pigeon;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
+import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 
 public class CommandAuto {
@@ -43,18 +49,31 @@ public class CommandAuto {
 
   // starts in middle, shoots preload
   public static Command onePieceMiddle() {
+    SwervePosition.setPosition(
+        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -275));
+    Pigeon.setYaw(90);
+    
+    Intake.setState(IntakeState.FEED);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       new ParallelCommandGroup(
             // new SetShooterAngle(Math.toRadians(57)),
             new SetShooterVelocity(3500)
           ),
-        new FireShooter()
+        new FireShooter(),
+        new WaitCommand(9.5),
+        new ChoreoFollow("2 Piece Middle.1")
     );
   }
 
   // starts on source side, shoots preload
   public static Command onePieceSource() {
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       new ParallelCommandGroup(
             // new SetShooterAngle(Math.toRadians(57)),
             new SetShooterVelocity(3500)
@@ -69,7 +88,11 @@ public class CommandAuto {
 
   // starts on amp side, shoots preload
   public static Command onePieceAmp() {
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       new ParallelCommandGroup(
             // new SetShooterAngle(Math.toRadians(57)),
             new SetShooterVelocity(3500)
@@ -84,7 +107,12 @@ public class CommandAuto {
 
   // starts in middle, shoots preload, grabs the middle close piece, shoots
   public static Command twoPieceMiddle() {
+    SwervePosition.setPosition(
+        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -275));
+    Pigeon.setYaw(90);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       // shoot preload
       new ParallelCommandGroup(
         // new SetShooterAngle(Math.toRadians(57)),
@@ -99,7 +127,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("2 Piece Middle.2"),
 
@@ -112,7 +140,11 @@ public class CommandAuto {
 
   // starts on source side, shoots preload, grabs the source close piece, shoots
   public static Command twoPieceSource() {
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       // shoot preload
       new ParallelCommandGroup(
         // new SetShooterAngle(Math.toRadians(57)),
@@ -127,7 +159,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("2 Piece Source.2"),
 
@@ -140,7 +172,11 @@ public class CommandAuto {
 
   // starts on amp side, shoots preload, grabs the amp close piece, shoots
   public static Command twoPieceAmp() {
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       // shoot preload
       new ParallelCommandGroup(
         // new SetShooterAngle(Math.toRadians(57)),
@@ -155,7 +191,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("2 Piece Amp.2"),
 
@@ -168,7 +204,11 @@ public class CommandAuto {
 
   // starts on source side, shoots preload, grabs far piece on source side, shoots
   public static Command twoPieceSourceFar() {
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       // shoot preload
       new ParallelCommandGroup(
         // new SetShooterAngle(Math.toRadians(57)),
@@ -183,7 +223,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("2 Piece Far Source.2"),
 
@@ -196,7 +236,11 @@ public class CommandAuto {
 
   // starts on amp side, shoots preload, grabs far piece on amp side, shoots
   public static Command twoPieceAmpFar() {
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       // shoot preload
       new ParallelCommandGroup(
         // new SetShooterAngle(Math.toRadians(57)),
@@ -211,7 +255,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("2 Piece Far Amp.2"),
 
@@ -224,7 +268,11 @@ public class CommandAuto {
 
   // starts on source side, shoots preload, grabs far, shoots, grabs far, shoots
   public static Command threePieceSourceFar() {
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       // shoot preload
       new ParallelCommandGroup(
         // new SetShooterAngle(Math.toRadians(57)),
@@ -239,7 +287,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Far Source.2"),
 
@@ -254,7 +302,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Far Source.4"),
       // shoot
@@ -272,7 +320,11 @@ public class CommandAuto {
 
   // starts on source side, shoots preload, grabs source close piece, shoots, grabs far piece, shoots
   public static Command threePieceSourceHalfFar() {
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       // shoot preload
       new ParallelCommandGroup(
         // new SetShooterAngle(Math.toRadians(57)),
@@ -287,7 +339,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Half Source.2"),
 
@@ -302,7 +354,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Half Source.4"),
       // shoot
@@ -313,7 +365,11 @@ public class CommandAuto {
 
   // starts on amp side, shoots preload, grabs amp side close piece, shoots, grabs far piece, shoots
   public static Command threePieceAmpHalfFar() {
+    SwervePosition.setPosition(new Vector2(100 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       // shoot preload
       new ParallelCommandGroup(
         // new SetShooterAngle(Math.toRadians(57)),
@@ -328,7 +384,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Half Amp.2"),
 
@@ -343,7 +399,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Half Amp.4"),
       // shoot
@@ -354,7 +410,11 @@ public class CommandAuto {
 
   // starts on source side, shoots preload, grabs source close piece, shoots, grabs middle close piece, shoots
   public static Command threePieceSource() {
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       // shoot preload
       new ParallelCommandGroup(
         // new SetShooterAngle(Math.toRadians(57)),
@@ -369,7 +429,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Source.2"),
 
@@ -384,7 +444,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Source.4"),
       // shoot
@@ -396,7 +456,11 @@ public class CommandAuto {
 
   // starts on amp side, shoots preload, grabs amp close piece, shoots, grabs far piece, shoots
   public static Command threePieceAmp() {
+    SwervePosition.setPosition(new Vector2(100 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(.2),
       // shoot preload
       new ParallelCommandGroup(
         // new SetShooterAngle(Math.toRadians(57)),
@@ -411,7 +475,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Amp.2"),
 
@@ -426,7 +490,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Amp.4"),
       // shoot
@@ -436,11 +500,16 @@ public class CommandAuto {
   }
 
   public static Command fourPieceMiddle() {
+    SwervePosition.setPosition(
+        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -275));
+    Pigeon.setYaw(90);
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
       new ParallelCommandGroup(
-            new SetShooterAngle(Math.toRadians(57)),
-            new SetShooterVelocity(3500)
-          ),
+        new SetShooterAngle(Math.toRadians(57)),
+        new SetShooterVelocity(4200)
+        ),
+        new WaitCommand(0.2),
         new FireShooter(),
 
      new ParallelDeadlineGroup(
@@ -449,7 +518,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(4200)
       ),
         new ChoreoFollow("4Middle.2"),
         new WaitCommand(0.1),
@@ -462,7 +531,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(4200)
       ),
         new ChoreoFollow("4Middle.4"),
         new WaitCommand(0.1),
@@ -474,7 +543,7 @@ public class CommandAuto {
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(IntakeState.GROUND),
-        new SetShooterVelocity(3200)
+        new SetShooterVelocity(4200)
       ),
       new ChoreoFollow("4Middle.6"),
         new WaitCommand(0.1),
@@ -485,6 +554,8 @@ public class CommandAuto {
 
   public static Command testCommand(){
     return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       new ParallelDeadlineGroup(
         new WaitCommand(10.0), 
         new RunCommand(() -> System.out.println("Running")).withTimeout(3.0)

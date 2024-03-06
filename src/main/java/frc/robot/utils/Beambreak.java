@@ -39,11 +39,15 @@ public class Beambreak {
             this.isBroken = true;
         } else {
             Measurement measurement = sensor.getMeasurement();
+            try{
             //if the measurement is funny, we don't consider it. I don't feel like throwing an exception or logging rn
             if (measurement.status != LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
                 this.isBroken = false;
             } else {
                 this.isBroken = measurement.distance_mm < distThreshold;
+            }
+            } catch (Exception e){
+                System.out.println("Beambreak Null");
             }
         }
     }

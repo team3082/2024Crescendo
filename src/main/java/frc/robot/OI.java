@@ -63,7 +63,7 @@ public class OI {
         AMP
     }
 
-    public static ShooterMode currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+    private static ShooterMode currentShooterMode = ShooterMode.SPEAKER_MANUAL;
     public static boolean manualFireSet = true;
     public static boolean manualClimbSet = true;
 
@@ -109,11 +109,10 @@ public class OI {
         if (driverStick.getRawAxis(intake) > 0.5) {
             Intake.suck();
             // TODO slow the drive if intaking
-            kBoostCoefficient = 0.4;
+            kBoostCoefficient = 0.6;
         } else {
             if (!Shooter.firing())
-                Intake.setState(IntakeState.STOW);
-            
+                Intake.setState(IntakeState.STOW); 
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
@@ -121,9 +120,9 @@ public class OI {
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
-        double manualRPM = 3500.0;
+        double manualRPM = 4200.0;
         // double manualAngle = 32.0;
-        double manualAngle = 57.0;
+        double manualAngle = 58.0;
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
@@ -145,20 +144,13 @@ public class OI {
 
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
-        double[] arr = Shooter.getDesiredShooterPos(SwervePosition.getPosition(), SwerveManager.getRobotDriveVelocity());
-
-        // ONLY align if we are in auto-fire mode
-        // silly things 🤣😁
-        // if (shooterAutoFire && !shooterManualFire) {
-        //     SwerveManager.moveAndRotateTo(drive, arr[2]);
-        // }
 
         // checks current shooter mode and sets the angle and velocities accordingly
         if (shooterFire) {
             switch (currentShooterMode) {
                 case AMP:
                     ShooterPivot.setPosition(Math.toRadians(55.0));
-                    Shooter.revToVaried(topVector, bottomVector);
+                    Shooter.revToVaried(530.0, 700.0);
                     Shooter.shoot();
                 break;
 
@@ -252,32 +244,32 @@ public class OI {
         // SHOOTER
 
         // Y
-        if (operatorStick.getRawButtonPressed(setManualShoot)) {
-            manualFireSet = !(manualFireSet);
-            if (manualFireSet && currentShooterMode == ShooterMode.SPEAKER) {
-                currentShooterMode = ShooterMode.SPEAKER_MANUAL;
-            } else if (!(manualFireSet) && currentShooterMode == ShooterMode.SPEAKER_MANUAL) {
-                currentShooterMode = ShooterMode.SPEAKER;
-            }
-        }
+        // if (operatorStick.getRawButtonPressed(setManualShoot)) {
+        //     manualFireSet = !(manualFireSet);
+        //     if (manualFireSet && currentShooterMode == ShooterMode.SPEAKER) {
+        //         currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+        //     } else if (!(manualFireSet) && currentShooterMode == ShooterMode.SPEAKER_MANUAL) {
+        //         currentShooterMode = ShooterMode.SPEAKER;
+        //     }
+        // }
 
-        // RIGHT BUMPER
-        if (operatorStick.getRawButtonPressed(switchShooterMode)) {
-            switch (currentShooterMode) {
-                case AMP:
-                    currentShooterMode = manualFireSet ? ShooterMode.SPEAKER_MANUAL : ShooterMode.SPEAKER;
-                break;
-                case SPEAKER:
-                    currentShooterMode = ShooterMode.AMP;
-                break;
-                case SPEAKER_MANUAL:
-                    currentShooterMode = ShooterMode.AMP;
-                break;
+        // // RIGHT BUMPER
+        // if (operatorStick.getRawButtonPressed(switchShooterMode)) {
+        //     switch (currentShooterMode) {
+        //         case AMP:
+        //             currentShooterMode = manualFireSet ? ShooterMode.SPEAKER_MANUAL : ShooterMode.SPEAKER;
+        //         break;
+        //         case SPEAKER:
+        //             currentShooterMode = ShooterMode.SPEAKER_;
+        //         break;
+        //         case SPEAKER_MANUAL:
+        //             currentShooterMode = ShooterMode.AMP;
+        //         break;
 
-                default:
-                break;
-            }
-        }
+        //         default:
+        //         break;
+        //     }
+        // }
 
         lastPOV = operatorStick.getPOV();
     }

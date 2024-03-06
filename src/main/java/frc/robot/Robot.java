@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
     SwervePosition.init();
     SwervePID.init();
     Pigeon.setYaw(90);
-    VisionManager.init();
+    // VisionManager.init();
     ClimberManager.init();
     ChoreoTrajectoryGenerator.init();
     ChoreoTrajectoryGenerator.parseAll();
@@ -53,16 +53,21 @@ public class Robot extends TimedRobot {
     Intake.init();
     AutoSelector.setup();
     Telemetry.init();
-    SwervePosition.enableVision();
+    // SwervePosition.enableVision();
   }
 
   @Override
   public void robotPeriodic() {
+    try {
     Pigeon.update();
     RTime.updateAbsolute();
     RTime.update();
     Telemetry.update(false);
     Intake.beambreak.update();
+    } catch (Exception e) {
+      System.out.println("oopsies" + e.toString());
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -71,28 +76,39 @@ public class Robot extends TimedRobot {
     Pigeon.setYaw(90);
 	  CommandScheduler.getInstance().enable();
     AutoSelector.run();
-    SwervePosition.enableVision();
+    // SwervePosition.enableVision();
   }
 
   @Override
   public void autonomousPeriodic() {
+    try {
     SwervePosition.update();
     CommandAuto.update();
     Shooter.update();
+    } catch (Exception e) {
+      System.out.println("oopsies" + e.toString());
+      e.printStackTrace();
+    }
   }
 
   @Override
   public void teleopInit() {
     OI.init();
-    SwervePosition.enableVision();
+    // SwervePosition.enableVision();
   }
 
   @Override
   public void teleopPeriodic() {
+    try {
+    // System.out.println("yo");
     Shooter.update();
     SwervePosition.update();
     OI.userInput();
     // ClimberManager.update();
+    } catch (Exception e) {
+      System.out.println("oopsies" + e.toString());
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -103,7 +119,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    SwervePosition.updateAveragePosVision();
+    // SwervePosition.updateAveragePosVision();
     // System.out.println(SwervePosition.getPosition().toString());
     // if(Robot.isReal())
     //   BannerLight.setTagInView(VisionManager.hasTarget());
@@ -112,13 +128,19 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     Intake.enableCoast();
-    // ShooterPivot.enableCoast();
+    // // ShooterPivot.enableCoast();
   }
 
   @Override
   public void testPeriodic() {
+    Shooter.revToVaried(530, 700);
+    ShooterPivot.setPosition(Math.toRadians(55.0));
+    if (Shooter.canShoot())
+      Intake.runHandoff();
+
+    Shooter.update();
     Intake.setCoast();
-    // ShooterPivot.setCoast();
+    // // ShooterPivot.setCoast();
   }
 
   @Override

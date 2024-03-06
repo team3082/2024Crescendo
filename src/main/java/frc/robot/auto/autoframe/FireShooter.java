@@ -6,7 +6,7 @@ import frc.robot.utils.RTime;
 
 public class FireShooter extends Autoframe {
     double startTime;
-    double exitTime = 1.5;
+    double exitTime = 0.7;
 
     public FireShooter() {
         blocking = false;
@@ -14,12 +14,12 @@ public class FireShooter extends Autoframe {
 
     @Override
     public void start() {
-        startTime = RTime.now();
+        startTime = RTime.now(); 
     }
 
     @Override
     public void update() {
-        if (RTime.now() > startTime + exitTime && Shooter.canShoot() || RobotBase.isSimulation()) {
+        if (RTime.now() > startTime + exitTime && Shooter.canShoot()|| RobotBase.isSimulation()) {
             this.done = true;
         } else {
             Shooter.shoot();
