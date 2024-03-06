@@ -2,9 +2,6 @@ package frc.robot.utils.trajectories;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.utils.swerve.DiscreteSwerveState;
 import frc.robot.utils.swerve.SwerveState;
 

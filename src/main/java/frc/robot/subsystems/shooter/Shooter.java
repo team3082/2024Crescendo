@@ -15,10 +15,11 @@ public final class Shooter {
 
     // Status of the shooter
     public static enum ShooterStatus {
-        DISABLED, // aka a dead shooter
-        REVVING, // actively revving up to our target velocity
-        FIRING, // handoff pumping note into the shooter
-        EJECT  // force-ejecting piece, regardless of our current status
+        DISABLED,  // aka a dead shooter
+        REVVING,  // actively revving up to our target velocity
+        FIRING,  // handoff pumping note into the shooter
+        EJECT,  // force-ejecting piece, regardless of our current status
+        PASSING // passing note from source to wing as quick as possible
     }
 
     // Status of the handoff
@@ -130,7 +131,20 @@ public final class Shooter {
             case EJECT:
                 // Run the shooter forward, and the handoff/intake backwards.
                 topMotor.set(TalonFXControlMode.PercentOutput, 0.8);
-                bottomMotor.set(TalonFXControlMode.Follower, topMotor.getDeviceID());
+                bottomMotor.set(TalonFXControlMode.PercentOutput, 0.8);
+                Intake.eject();
+            break;
+
+            case PASSING:
+                // Set intake
+                Intake.setState(IntakeState.FEED);
+                // Set shooter wheels
+                topMotor.set(TalonFXControlMode.PercentOutput, 0.8);
+                bottomMotor.set(TalonFXControlMode.PercentOutput, 0.8);
+                // Set shooter angle (should be low someone double check)
+                ShooterPivot.setPosition(28.0);
+                // Run handoff
+                Intake.runHandoff();
             break;
 
             case DISABLED:
@@ -178,11 +192,17 @@ public final class Shooter {
     }
 
     /**
-     * Shoots the gamepiece regardless of whether 
-     * or not the arm and wheels are ready.
+     * Eject the shooter
      */
-    public static void forceShoot() { 
+    public static void eject() {
         shooterMode = ShooterStatus.EJECT;
+    }
+
+    /** 
+     * Pass the note in our intake to our wing.
+     */
+    public static void pass() {
+        shooterMode = ShooterStatus.PASSING;
     }
 
     /**
@@ -191,13 +211,6 @@ public final class Shooter {
     public static void disable() {
         shooterMode = ShooterStatus.DISABLED;
         handoffMode = HandoffStatus.DISABLED;
-    }
-
-    /**
-     * Eject the shooter
-     */
-    public static void eject() {
-        shooterMode = ShooterStatus.EJECT;
     }
 
     /**

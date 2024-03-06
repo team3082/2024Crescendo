@@ -11,9 +11,7 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
-import frc.robot.swerve.SwerveModule;
 import frc.robot.swerve.SwervePID;
-import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.RMath;
 
@@ -30,7 +28,7 @@ public class OI {
 
     // Shooter
     /** Auto-adjust angle and vector wheel velocities for amp shooting. */
-    static final int amp    = LogitechF310.BUTTON_LEFT_BUMPER;
+    static final int amp           = LogitechF310.BUTTON_LEFT_BUMPER;
     /** Automatically adjusts angle & velocity for speaker */
     static final int fireShooter   = LogitechF310.BUTTON_RIGHT_BUMPER;
     /** Ejects the gamepiece without regard for our field position */
@@ -40,7 +38,7 @@ public class OI {
     static final int intake        = LogitechF310.AXIS_LEFT_TRIGGER;
 
     // Others
-    static final int lock          = LogitechF310.BUTTON_A;
+    static final int pass          = LogitechF310.BUTTON_A;
     static final int zero          = LogitechF310.BUTTON_Y;
 
     /*-------------------------------------------------------------------*/
@@ -57,13 +55,6 @@ public class OI {
     static final int climberUp          = LogitechF310.DPAD_UP;
     static final int climberDown        = LogitechF310.DPAD_DOWN;
 
-    static private enum ShooterMode {
-        SPEAKER,
-        SPEAKER_MANUAL,
-        AMP
-    }
-
-    private static ShooterMode currentShooterMode = ShooterMode.SPEAKER_MANUAL;
     public static boolean manualFireSet = true;
     public static boolean manualClimbSet = true;
 
@@ -139,34 +130,34 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SHOOTER
 
-        if (driverStick.getRawButton(eject)) Intake.eject();
-
-        // Auto-rev and fire
-        boolean shooterFire = driverStick.getRawButton(fireShooter);
-        boolean ampFire = driverStick.getRawButton(amp);
-
-        // TODO: find cleaner way if this isn't the cleanest
-        if (shooterFire) {
+        // Shooting automatically
+        if (driverStick.getRawButton(fireShooter)) {
             ShooterPivot.setPosition(Math.toRadians(manualAngle));
             Shooter.revTo(manualRPM);
             Shooter.shoot();
-        } else if (ampFire) {
+        
+        // Amp shooting
+        } else if (driverStick.getRawButton(amp)) {
             ShooterPivot.setPosition(Math.toRadians(55.0));
             Shooter.revTo(530.0, 700.0);
             Shooter.shoot();
+
+        // Ejecting piece out of robot
+        } else if (driverStick.getRawButton(eject)) {
+            Shooter.eject();
+
+        // Passing note from source to wing
+        } else if (driverStick.getRawButton(pass)) {
+            Shooter.pass();
+
+        // Stow & leave the shooter off if not in use
         } else {
-            ShooterPivot.setPosition(Math.toRadians(30.0)); // stow shooter
-            Shooter.disable(); // Leave the shooter off if not in use
+            ShooterPivot.setPosition(Math.toRadians(30.0));
+            Shooter.disable();
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
-
-        if (driverStick.getRawButton(lock)) {
-            for (SwerveModule module: SwerveManager.mods) {
-                module.rotateToRad((module.pos.atan2()));
-            }
-        }
 
         // Swerving and a steering! Zoom!
         switch (YAWRATEFEEDBACKSTATUS) {

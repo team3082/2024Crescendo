@@ -1,7 +1,5 @@
 package frc.robot.sensors;
 
-import javax.swing.GroupLayout.Alignment;
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
