@@ -100,11 +100,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     try {
-    // System.out.println("yo");
-    Shooter.update();
-    SwervePosition.update();
-    OI.userInput();
-    // ClimberManager.update();
+      Shooter.update();
+      SwervePosition.update();
+      OI.userInput();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();
@@ -133,12 +131,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-    Shooter.revToVaried(530, 700);
-    ShooterPivot.setPosition(Math.toRadians(55.0));
-    if (Shooter.canShoot())
-      Intake.runHandoff();
+    // Shooter.revTo(530, 700);
+    // ShooterPivot.setPosition(Math.toRadians(55.0));
+    // if (Shooter.canShoot())
+    //   Intake.runHandoff();
 
-    Shooter.update();
+    // Shooter.update();
     Intake.setCoast();
     // // ShooterPivot.setCoast();
   }

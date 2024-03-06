@@ -29,9 +29,9 @@ public class OI {
     static final int boost         = LogitechF310.AXIS_RIGHT_TRIGGER;
 
     // Shooter
-    /** Pre-rev the shooter to a velocity for somewhere in the field */
-    static final int revShooter    = LogitechF310.BUTTON_LEFT_BUMPER;
-    /** Automatically adjusts angle & velocity for both amp and speaker or goes to manual angle/velocity if in manual mode */
+    /** Auto-adjust angle and vector wheel velocities for amp shooting. */
+    static final int amp    = LogitechF310.BUTTON_LEFT_BUMPER;
+    /** Automatically adjusts angle & velocity for speaker */
     static final int fireShooter   = LogitechF310.BUTTON_RIGHT_BUMPER;
     /** Ejects the gamepiece without regard for our field position */
     static final int eject         = LogitechF310.BUTTON_B;
@@ -121,7 +121,6 @@ public class OI {
         double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
         double manualRPM = 4200.0;
-        // double manualAngle = 32.0;
         double manualAngle = 58.0;
         
         if (drive.mag() < 0.125)
@@ -144,33 +143,17 @@ public class OI {
 
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
+        boolean ampFire = driverStick.getRawButton(amp);
 
-        // checks current shooter mode and sets the angle and velocities accordingly
+        // TODO: find cleaner way if this isn't the cleanest
         if (shooterFire) {
-            switch (currentShooterMode) {
-                case AMP:
-                    ShooterPivot.setPosition(Math.toRadians(55.0));
-                    Shooter.revToVaried(530.0, 700.0);
-                    Shooter.shoot();
-                break;
-
-                 // manual for now, change to auto when tuned
-                 // use the arr variable above for that
-                case SPEAKER:
-                    ShooterPivot.setPosition(Math.toRadians(manualAngle));
-                    Shooter.revTo(manualRPM);
-                    Shooter.shoot();
-                break;
-
-                case SPEAKER_MANUAL:
-                    ShooterPivot.setPosition(Math.toRadians(manualAngle));
-                    Shooter.revTo(manualRPM);
-                    Shooter.shoot();
-                break;
-            
-                default:
-                break;
-            }
+            ShooterPivot.setPosition(Math.toRadians(manualAngle));
+            Shooter.revTo(manualRPM);
+            Shooter.shoot();
+        } else if (ampFire) {
+            ShooterPivot.setPosition(Math.toRadians(55.0));
+            Shooter.revTo(530.0, 700.0);
+            Shooter.shoot();
         } else {
             ShooterPivot.setPosition(Math.toRadians(30.0)); // stow shooter
             Shooter.disable(); // Leave the shooter off if not in use
@@ -214,62 +197,20 @@ public class OI {
         if (operatorStick.getRawButtonPressed(setManualClimb)) {
             manualClimbSet = true;
         }
-        if (true) {
-            // DPAD UP
-            if (operatorStick.getPOV() == climberUp) {
-                ClimberManager.manualExtend();
-                System.out.println("extending");
-            } 
-            // DPAD DOWN
-            else if (operatorStick.getPOV() == climberDown) {
-                ClimberManager.manualPull();
-                System.out.println("pulling");
-            }
-            // NO CLIMBER INPUT
-            else {
-                ClimberManager.brake();
-            }
-        } else {
-            // DPAD UP
-            if (operatorStick.getPOV() == climberUp && operatorStick.getPOV() != lastPOV) {
-                ClimberManager.autoExtend();
-            } 
-            // DPAD DOWN
-            else if (operatorStick.getPOV() == climberDown && operatorStick.getPOV() != lastPOV) {
-                ClimberManager.autoPull();
-            }
+        // DPAD UP
+        if (operatorStick.getPOV() == climberUp) {
+            ClimberManager.manualExtend();
+            System.out.println("extending");
+        } 
+        // DPAD DOWN
+        else if (operatorStick.getPOV() == climberDown) {
+            ClimberManager.manualPull();
+            System.out.println("pulling");
         }
-
-        /*--------------------------------------------------------------------------------------------------------*/
-        // SHOOTER
-
-        // Y
-        // if (operatorStick.getRawButtonPressed(setManualShoot)) {
-        //     manualFireSet = !(manualFireSet);
-        //     if (manualFireSet && currentShooterMode == ShooterMode.SPEAKER) {
-        //         currentShooterMode = ShooterMode.SPEAKER_MANUAL;
-        //     } else if (!(manualFireSet) && currentShooterMode == ShooterMode.SPEAKER_MANUAL) {
-        //         currentShooterMode = ShooterMode.SPEAKER;
-        //     }
-        // }
-
-        // // RIGHT BUMPER
-        // if (operatorStick.getRawButtonPressed(switchShooterMode)) {
-        //     switch (currentShooterMode) {
-        //         case AMP:
-        //             currentShooterMode = manualFireSet ? ShooterMode.SPEAKER_MANUAL : ShooterMode.SPEAKER;
-        //         break;
-        //         case SPEAKER:
-        //             currentShooterMode = ShooterMode.SPEAKER_;
-        //         break;
-        //         case SPEAKER_MANUAL:
-        //             currentShooterMode = ShooterMode.AMP;
-        //         break;
-
-        //         default:
-        //         break;
-        //     }
-        // }
+        // NO CLIMBER INPUT
+        else {
+            ClimberManager.brake();
+        }
 
         lastPOV = operatorStick.getPOV();
     }
