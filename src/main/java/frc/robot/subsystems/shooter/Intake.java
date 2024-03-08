@@ -53,8 +53,8 @@ public final class Intake {
         topBeltMotor = new CANSparkMax(31, MotorType.kBrushless);
         topBeltMotor.restoreFactoryDefaults();
         topBeltMotor.setIdleMode(IdleMode.kCoast);
-        topBeltMotor.enableVoltageCompensation(9.6);
-        topBeltMotor.setSmartCurrentLimit(20);
+        topBeltMotor.enableVoltageCompensation(10);
+        topBeltMotor.setSmartCurrentLimit(35);
         topBeltMotor.setCANTimeout(30);
 
         topPID = topBeltMotor.getPIDController();
@@ -66,12 +66,12 @@ public final class Intake {
         bottomBeltMotor = new CANSparkMax(30, MotorType.kBrushless);
         bottomBeltMotor.restoreFactoryDefaults();
         bottomBeltMotor.setIdleMode(IdleMode.kCoast);
-        bottomBeltMotor.enableVoltageCompensation(9.8);
-        bottomBeltMotor.setSmartCurrentLimit(20); // works harder than the top motor
+        bottomBeltMotor.enableVoltageCompensation(10);
+        bottomBeltMotor.setSmartCurrentLimit(35); // works harder than the top motor
         bottomBeltMotor.setCANTimeout(30);
 
         bottomPID = bottomBeltMotor.getPIDController();
-
+// 
         bottomPID.setP(0.005);
         bottomPID.setI(0);
         bottomPID.setD(0.001);

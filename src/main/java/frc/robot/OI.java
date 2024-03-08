@@ -254,22 +254,20 @@ public class OI {
         // }
 
         // // RIGHT BUMPER
-        // if (operatorStick.getRawButtonPressed(switchShooterMode)) {
-        //     switch (currentShooterMode) {
-        //         case AMP:
-        //             currentShooterMode = manualFireSet ? ShooterMode.SPEAKER_MANUAL : ShooterMode.SPEAKER;
-        //         break;
-        //         case SPEAKER:
-        //             currentShooterMode = ShooterMode.SPEAKER_;
-        //         break;
-        //         case SPEAKER_MANUAL:
-        //             currentShooterMode = ShooterMode.AMP;
-        //         break;
+        if (operatorStick.getRawButton(switchShooterMode)) {
+            switch (currentShooterMode) {
+                case AMP:
+                    currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+                break;
+                case SPEAKER_MANUAL:
+                    currentShooterMode = ShooterMode.AMP;
+                break;
 
-        //         default:
-        //         break;
-        //     }
-        // }
+                default:
+                    currentShooterMode = ShooterMode.AMP;
+                break;
+            }
+        }
 
         lastPOV = operatorStick.getPOV();
     }

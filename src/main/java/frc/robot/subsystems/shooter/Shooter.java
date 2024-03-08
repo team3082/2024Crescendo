@@ -123,23 +123,16 @@ public final class Shooter {
         switch (shooterMode) {
             case FIRING:
                 Intake.setState(IntakeState.FEED);
-                if (atVelocity) {
+                if (atVelocity && ShooterPivot.atPos()) {
                     Intake.runHandoff();
-                } else {
-                    if (varied)
-                    setVariedVelocity(targetTop, targetBottom);
-                else
-                    setVelocity(targetVelocity);
                 }
+                setVariedVelocity(targetTop, targetBottom);
             break;
 
             case REVVING:
                 Intake.setState(IntakeState.FEED);
                 // Rev the flywheel up to our set velocity
-                if (varied)
-                    setVariedVelocity(targetTop, targetBottom);
-                else
-                    setVelocity(targetVelocity);
+                setVariedVelocity(targetTop, targetBottom);
             break;
 
             case EJECT:
@@ -152,6 +145,8 @@ public final class Shooter {
                 topMotor.set(TalonFXControlMode.Disabled, 0.0);
                 bottomMotor.set(TalonFXControlMode.Disabled, 0.0);
                 targetVelocity = 0.0;
+                targetTop = 0.0;
+                targetBottom = 0.0;
             break;
         }
     }
@@ -183,6 +178,8 @@ public final class Shooter {
      */
     public static void revTo(double rpm) {
         varied = false;
+        targetTop = rpm * RPMToVel;
+        targetBottom = rpm * RPMToVel;
         targetVelocity = rpm * RPMToVel;
         shooterMode = ShooterStatus.REVVING;
     }
@@ -241,8 +238,11 @@ public final class Shooter {
         double top = topMotor.getSelectedSensorVelocity() * VelToRPM;
         double bottom = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
 
-        double err = Math.abs(top - targetVelocity * VelToRPM);
-        double err2 = Math.abs(bottom - targetVelocity * VelToRPM);
+
+        double err = Math.abs(top - targetTop * VelToRPM);
+        double err2 = Math.abs(bottom - targetBottom * VelToRPM);
+
+
         return err <= deadband && err2 <= deadband;
     }
 

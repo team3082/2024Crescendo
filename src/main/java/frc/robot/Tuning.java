@@ -21,9 +21,9 @@ public class Tuning {
      public static final double SWERVE_ROT_D = 0;
  
      // TODO Tune
-     public static final double SWERVE_TRJ_PPOS = 0.015;
+     public static final double SWERVE_TRJ_PPOS = 0.03;
      public static final double SWERVE_TRJ_IPOS = 0.00;
-     public static final double SWERVE_TRJ_DPOS = 0.001;
+     public static final double SWERVE_TRJ_DPOS = 0.002;
 
      public static final double SWERVE_TRJ_PROT = 0.1;
      public static final double SWERVE_TRJ_IROT = 0.0;

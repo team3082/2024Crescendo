@@ -3,6 +3,7 @@ package frc.robot.subsystems.shooter;
 import static frc.robot.Constants.ShooterConstants.*;
 import static frc.robot.Tuning.ShooterTuning.*;
 
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -118,15 +119,12 @@ public final class ShooterPivot {
         if (RobotBase.isSimulation()) {
             return true;
         }
-        try {
-            return radToTicks(motor.getSelectedSensorPosition()) < radToTicks(targetPos) + Math.toRadians(1.2) || radToTicks(motor.getSelectedSensorPosition()) > radToTicks(targetPos) - Math.toRadians(1.2);
-        } catch (Exception e) {
-            return true;
-        }
+
+        return motor.getSelectedSensorPosition() < radToTicks(targetPos) + radToTicks(Math.toRadians(1.2)) && motor.getSelectedSensorPosition() > radToTicks(targetPos) - radToTicks(Math.toRadians(1.2));
     }
     
     public static void update() {
-        motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos));
+        motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos), DemandType.ArbitraryFeedForward, 0.01);
         actualPos = ticksToRad(motor.getSelectedSensorPosition());
     }
 
