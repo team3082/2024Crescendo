@@ -15,11 +15,10 @@ public final class Shooter {
 
     // Status of the shooter
     public static enum ShooterStatus {
-        DISABLED,  // aka a dead shooter
-        REVVING,  // actively revving up to our target velocity
-        FIRING,  // handoff pumping note into the shooter
-        EJECT,  // force-ejecting piece, regardless of our current status
-        PASSING // passing note from source to wing as quick as possible
+        DISABLED, // aka a dead shooter
+        REVVING, // actively revving up to our target velocity
+        FIRING, // handoff pumping note into the shooter
+        EJECT  // force-ejecting piece, regardless of our current status
     }
 
     // Status of the handoff
@@ -44,11 +43,9 @@ public final class Shooter {
 
     public static double temp;
 
-    public static boolean varied = false;
-
     public static double handoffLiveTime = 0.0;
 
-    public static final double deadband = 25.0;
+    public static final double deadband = 50.0;
     
     public static void init() {
         ShooterPivot.init();
@@ -111,6 +108,7 @@ public final class Shooter {
         bottomRPM = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
 
         temp = topMotor.getTemperature();
+
         boolean atVelocity = canShoot();
 
         switch (shooterMode) {
@@ -131,20 +129,7 @@ public final class Shooter {
             case EJECT:
                 // Run the shooter forward, and the handoff/intake backwards.
                 topMotor.set(TalonFXControlMode.PercentOutput, 0.8);
-                bottomMotor.set(TalonFXControlMode.PercentOutput, 0.8);
-                Intake.eject();
-            break;
-
-            case PASSING:
-                // Set intake
-                Intake.setState(IntakeState.FEED);
-                // Set shooter wheels
-                topMotor.set(TalonFXControlMode.PercentOutput, 0.8);
-                bottomMotor.set(TalonFXControlMode.PercentOutput, 0.8);
-                // Set shooter angle (should be low someone double check)
-                ShooterPivot.setPosition(28.0);
-                // Run handoff
-                Intake.runHandoff();
+                bottomMotor.set(TalonFXControlMode.Follower, topMotor.getDeviceID());
             break;
 
             case DISABLED:
@@ -158,30 +143,47 @@ public final class Shooter {
     }
 
     /**
-     * Set individual velocities for each of the motors.
+     * Set the desired velocity for our shooter to maintain.
+     * @param newVelocity Velocity in RPM
      */
-    private static void setVelocity(double topSpeed, double bottomSpeed) {
-        topMotor.set(TalonFXControlMode.Velocity, topSpeed);
-        bottomMotor.set(TalonFXControlMode.Velocity, bottomSpeed);
+    private static void setVelocity(double newVelocity) {
+        targetVelocity = newVelocity;
+        simVel = newVelocity;
+        topMotor.set(TalonFXControlMode.Velocity, targetVelocity);
+        bottomMotor.set(TalonFXControlMode.Velocity, targetVelocity);
+    }
+
+    /**
+     * Set individual velocities for each of the motors.
+     * Allows us to vector the wheels for amp/trap scoring.
+     */
+    private static void setVariedVelocity(double topSpeed, double bottomSpeed) {
+        targetTop = topSpeed;
+        targetBottom = bottomSpeed;
+        topMotor.set(TalonFXControlMode.Velocity, targetTop);
+        bottomMotor.set(TalonFXControlMode.Velocity, targetBottom);
     }
 
     /**
      * Rev the shooter to a specified RPM.
      */
     public static void revTo(double rpm) {
-        varied = false;
         targetTop = rpm * RPMToVel;
         targetBottom = rpm * RPMToVel;
         targetVelocity = rpm * RPMToVel;
         shooterMode = ShooterStatus.REVVING;
     }
 
+    public static void setIntakeMode(HandoffStatus status) {
+        handoffMode = status;
+    }
+
     /**
-     * Rev the flywheels to individual RPMs.
+     * Rev the shooter to a specified RPM.
      */
-    public static void revTo(double topRPM, double bottomRPM) {
-        targetTop = topRPM * RPMToVel;
-        targetBottom = bottomRPM * RPMToVel;
+    public static void revToVaried(double top, double bottom) {
+        targetTop = top * RPMToVel;
+        targetBottom = bottom * RPMToVel;
         shooterMode = ShooterStatus.REVVING;
     }
 
@@ -195,17 +197,11 @@ public final class Shooter {
     }
 
     /**
-     * Eject the shooter
+     * Shoots the gamepiece regardless of whether 
+     * or not the arm and wheels are ready.
      */
-    public static void eject() {
+    public static void forceShoot() { 
         shooterMode = ShooterStatus.EJECT;
-    }
-
-    /** 
-     * Pass the note in our intake to our wing.
-     */
-    public static void pass() {
-        shooterMode = ShooterStatus.PASSING;
     }
 
     /**
@@ -214,6 +210,13 @@ public final class Shooter {
     public static void disable() {
         shooterMode = ShooterStatus.DISABLED;
         handoffMode = HandoffStatus.DISABLED;
+    }
+
+    /**
+     * Eject the shooter
+     */
+    public static void eject() {
+        shooterMode = ShooterStatus.EJECT;
     }
 
     /**
