@@ -203,6 +203,35 @@ public class OI {
             ClimberManager.brake();
         }
 
+        /*--------------------------------------------------------------------------------------------------------*/
+        // SHOOTER
+
+        // Y
+        // if (operatorStick.getRawButtonPressed(setManualShoot)) {
+        //     manualFireSet = !(manualFireSet);
+        //     if (manualFireSet && currentShooterMode == ShooterMode.SPEAKER) {
+        //         currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+        //     } else if (!(manualFireSet) && currentShooterMode == ShooterMode.SPEAKER_MANUAL) {
+        //         currentShooterMode = ShooterMode.SPEAKER;
+        //     }
+        // }
+
+        // // RIGHT BUMPER
+        if (operatorStick.getRawButton(switchShooterMode)) {
+            switch (currentShooterMode) {
+                case AMP:
+                    currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+                break;
+                case SPEAKER_MANUAL:
+                    currentShooterMode = ShooterMode.AMP;
+                break;
+
+                default:
+                    currentShooterMode = ShooterMode.AMP;
+                break;
+            }
+        }
+
         lastPOV = operatorStick.getPOV();
     }
 }
