@@ -15,7 +15,7 @@ public class Odometry {
      */
     private static Vector2 position;
     //a lock to make sure that position isn't being retrieved and updated at the same time
-    private static Object positionLock;
+    private static Object positionLock = new Object();
 
     private static double lastLoopTimeStamp;
 
@@ -23,6 +23,10 @@ public class Odometry {
     private static double previousPigeonAngle = Double.NaN;
 
     public static void init(){
+        odomThread.interrupt();
+        lastLoopTimeStamp = Timer.getFPGATimestamp();
+        position = new Vector2();
+
         odomThread.setName("odometry");
         odomThread.setDaemon(true);
         odomThread.start();
@@ -66,7 +70,7 @@ public class Odometry {
                 }
                 
                 try {
-                    sleep(5);
+                    sleep(7);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

@@ -27,7 +27,9 @@ public class SwervePosition {
         absVelocity     = new Vector2();
         lastAbsVelocity = new Vector2();
         position        = new Vector2();
-    }
+        lastOdomPos     = new Vector2();
+        Odometry.init();
+        }
 
     public static void enableVision() {
         correctWithVision = true;
