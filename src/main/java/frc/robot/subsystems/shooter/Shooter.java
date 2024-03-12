@@ -138,6 +138,7 @@ public final class Shooter {
                 targetVelocity = 0.0;
                 targetTop = 0.0;
                 targetBottom = 0.0;
+                ShooterPivot.disable();
             break;
         }
     }
@@ -146,22 +147,9 @@ public final class Shooter {
      * Set the desired velocity for our shooter to maintain.
      * @param newVelocity Velocity in RPM
      */
-    private static void setVelocity(double newVelocity) {
-        targetVelocity = newVelocity;
-        simVel = newVelocity;
-        topMotor.set(TalonFXControlMode.Velocity, targetVelocity);
-        bottomMotor.set(TalonFXControlMode.Velocity, targetVelocity);
-    }
-
-    /**
-     * Set individual velocities for each of the motors.
-     * Allows us to vector the wheels for amp/trap scoring.
-     */
     private static void setVariedVelocity(double topSpeed, double bottomSpeed) {
-        targetTop = topSpeed;
-        targetBottom = bottomSpeed;
-        topMotor.set(TalonFXControlMode.Velocity, targetTop);
-        bottomMotor.set(TalonFXControlMode.Velocity, targetBottom);
+        topMotor.set(TalonFXControlMode.Velocity, topSpeed);
+        bottomMotor.set(TalonFXControlMode.Velocity, bottomSpeed);
     }
 
     /**
@@ -181,7 +169,7 @@ public final class Shooter {
     /**
      * Rev the shooter to a specified RPM.
      */
-    public static void revToVaried(double top, double bottom) {
+    public static void revTo(double top, double bottom) {
         targetTop = top * RPMToVel;
         targetBottom = bottom * RPMToVel;
         shooterMode = ShooterStatus.REVVING;

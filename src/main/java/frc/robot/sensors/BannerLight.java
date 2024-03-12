@@ -1,6 +1,8 @@
 package frc.robot.sensors;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.OI;
 import frc.robot.Robot;
 
 public class BannerLight {
@@ -26,7 +28,16 @@ public class BannerLight {
 
     public static void updateAuto() {}
 
-    public static void updateTeleop() {}
+    public static void updateTeleop() {
+        if (DriverStation.isTeleopEnabled()) {
+            if (OI.currentShooterMode == OI.ShooterMode.AMP)
+                setAmp();
+            else
+                setSpeaker();
+        } else {
+            setStale();
+        }
+    }
 
     public static void setState(boolean brownState, boolean grayState, boolean blackState, boolean whiteState) {
         brown.set(brownState);
@@ -45,7 +56,7 @@ public class BannerLight {
     }
 
     // Cyan Solid
-    public static void setClimbing() {
+    public static void setStale() {
         setState(true, true, true, true);
     }
 
@@ -75,12 +86,12 @@ public class BannerLight {
     }
 
     // Magenta/Red Chase
-    public static void setManualSpeakerNoPieceGround() {
+    public static void setAmp() {
         setState(false, true, true, false);
     }
 
     // Magenta/Cyan Chase
-    public static void setManualSpeakerNoPieceSource() {
+    public static void setSpeaker() {
         setState(false, true, true, true);
     }
 

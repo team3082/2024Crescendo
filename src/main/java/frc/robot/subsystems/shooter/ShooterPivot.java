@@ -14,6 +14,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.OI;
 
 @SuppressWarnings("removal")
 public final class ShooterPivot {
@@ -113,19 +114,35 @@ public final class ShooterPivot {
     public static void setPosition(double pos) {
         targetPos = pos;
         simAng = pos;
+        isDisabled = false;
     }
     
     public static boolean atPos() {
-        if (RobotBase.isSimulation()) {
+        if (RobotBase.isSimulation())
             return true;
-        }
+
+        if (isDisabled)
+            return false;
 
         return motor.getSelectedSensorPosition() < radToTicks(targetPos) + radToTicks(Math.toRadians(1.2)) && motor.getSelectedSensorPosition() > radToTicks(targetPos) - radToTicks(Math.toRadians(1.2));
     }
     
     public static void update() {
-        motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos), DemandType.ArbitraryFeedForward, 0.01);
+        if (isDisabled) {
+            motor.neutralOutput();
+        } else {
+            if (OI.currentShooterMode == OI.ShooterMode.AMP)
+                motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos), DemandType.ArbitraryFeedForward, 0.03);
+            else
+                motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos), DemandType.ArbitraryFeedForward, 0.01);
+        }
         actualPos = ticksToRad(motor.getSelectedSensorPosition());
+    }
+
+    private static boolean isDisabled = true;
+
+    public static void disable() {
+        isDisabled = true;
     }
 
     public static void enableCoast() {
@@ -134,5 +151,6 @@ public final class ShooterPivot {
 
     public static void setCoast() {
         motor.neutralOutput();
+        isDisabled = true;
     }
 }

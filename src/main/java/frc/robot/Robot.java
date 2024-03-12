@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.AutoSelector;
+import frc.robot.sensors.BannerLight;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.Telemetry;
 import frc.robot.sensors.VisionManager;
@@ -53,6 +54,7 @@ public class Robot extends TimedRobot {
     Intake.init();
     AutoSelector.setup();
     Telemetry.init();
+    BannerLight.init();
     // SwervePosition.enableVision();
   }
 
@@ -103,6 +105,7 @@ public class Robot extends TimedRobot {
       Shooter.update();
       SwervePosition.update();
       OI.userInput();
+      BannerLight.updateTeleop();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();

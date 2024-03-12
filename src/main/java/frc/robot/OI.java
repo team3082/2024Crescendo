@@ -3,6 +3,7 @@ package frc.robot;
 import static frc.robot.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.controllermaps.LogitechF310;
 import frc.robot.sensors.Pigeon;
 import frc.robot.subsystems.climber.ClimberManager;
@@ -13,7 +14,6 @@ import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwerveModule;
 import frc.robot.swerve.SwervePID;
-import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.RMath;
 
@@ -57,13 +57,13 @@ public class OI {
     static final int climberUp          = LogitechF310.DPAD_UP;
     static final int climberDown        = LogitechF310.DPAD_DOWN;
 
-    static private enum ShooterMode {
+    static public enum ShooterMode {
         SPEAKER,
         SPEAKER_MANUAL,
         AMP
     }
 
-    private static ShooterMode currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+    public static ShooterMode currentShooterMode = ShooterMode.SPEAKER_MANUAL;
     public static boolean manualFireSet = true;
     public static boolean manualClimbSet = true;
 
@@ -110,7 +110,13 @@ public class OI {
             Intake.suck();
             // TODO slow the drive if intaking
             kBoostCoefficient = 0.6;
+
+            if (Intake.reallyHasPiece)
+                driverStick.setRumble(RumbleType.kBothRumble, 0.9);
+            else 
+                driverStick.setRumble(RumbleType.kBothRumble, 0.0);
         } else {
+            driverStick.setRumble(RumbleType.kBothRumble, 0.0);
             if (!Shooter.firing())
                 Intake.setState(IntakeState.STOW); 
         }
@@ -122,7 +128,7 @@ public class OI {
 
         double manualRPM = 4200.0;
         // double manualAngle = 32.0;
-        double manualAngle = 58.0;
+        double manualAngle = 56.0;
         
         if (drive.mag() < 0.125)
             drive = new Vector2();
@@ -150,7 +156,7 @@ public class OI {
             switch (currentShooterMode) {
                 case AMP:
                     ShooterPivot.setPosition(Math.toRadians(55.0));
-                    Shooter.revToVaried(530.0, 700.0);
+                    Shooter.revTo(480.0, 700.0);
                     Shooter.shoot();
                 break;
 
@@ -172,8 +178,8 @@ public class OI {
                 break;
             }
         } else {
-            ShooterPivot.setPosition(Math.toRadians(30.0)); // stow shooter
-            Shooter.disable(); // Leave the shooter off if not in use
+            // Shooter.disable(); // Leave the shooter off if not in use
+            Shooter.revTo(1000.0); // nominal velocity for driving cross-field
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
@@ -254,16 +260,13 @@ public class OI {
         // }
 
         // // RIGHT BUMPER
-        if (operatorStick.getRawButton(switchShooterMode)) {
+        if (operatorStick.getRawButtonPressed(switchShooterMode)) {
             switch (currentShooterMode) {
                 case AMP:
                     currentShooterMode = ShooterMode.SPEAKER_MANUAL;
                 break;
+                
                 case SPEAKER_MANUAL:
-                    currentShooterMode = ShooterMode.AMP;
-                break;
-
-                default:
                     currentShooterMode = ShooterMode.AMP;
                 break;
             }
