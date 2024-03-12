@@ -21,7 +21,6 @@ public class TrajectoryFollow extends Autoframe{
 
     public void start(){
         tStart = RTime.now();
-        System.out.println(tStart);
     }
 
     public void update(){

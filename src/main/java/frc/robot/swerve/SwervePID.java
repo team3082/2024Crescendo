@@ -80,7 +80,6 @@ public class SwervePID {
         if(RobotBase.isReal())
             return rotPID.updateOutput(Pigeon.getRotationRad());
         else{
-            System.out.println("Set Dest");
             Pigeon.setSimulatedRot(rotPID.getDest());
             return rotPID.updateOutput(Pigeon.getRotationRad());
         }

@@ -50,7 +50,6 @@ public final class ShooterPivot {
         // Zero internal encoder
         motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor,0,30);
         double absPosition = absEncoder.getAbsolutePosition(); // In rotations of the pivot itself
-        System.out.println(absPosition * 360);
         motor.setSelectedSensorPosition(((absPosition - PIVOT_OFFSET) / 360.0) * 2048.0 * shooterGearRatio, 0, 30);
 
         try {

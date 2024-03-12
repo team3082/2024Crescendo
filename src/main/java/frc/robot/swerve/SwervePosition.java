@@ -7,6 +7,7 @@ import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.VisionManager;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
+import frc.robot.utils.swerve.SwerveMath;
 
 public class SwervePosition {
 
@@ -37,10 +38,15 @@ public class SwervePosition {
     public static void update() {
 
         // Derive our velocity 
-        Vector2 vel = SwerveManager.getRobotDriveVelocity();
+        Vector2 robotVel = SwerveManager.getRobotDriveVelocity();
+        double rot = Pigeon.getRotationRad();
+        double deltaRot = Pigeon.getDeltaRotRad();
+
+        //divided by 50 to get to the length of a single frame, multiplied to return it to seconds
+        Vector2 correctedRobotVel = SwerveMath.poseExponentiation(robotVel.div(50), rot - deltaRot, deltaRot).mul(50);
 
         // Rotate our velocity to be local to the field
-        vel = vel.rotate(Pigeon.getRotationRad() - Math.PI / 2);
+        Vector2 fieldVel = correctedRobotVel.rotate(Pigeon.getRotationRad() - Math.PI / 2);
 
         // Flip the x component of our velocity if we're on the red alliance
         // I still don't know why, but we don't need to do this in simulation mode
@@ -49,7 +55,7 @@ public class SwervePosition {
         //     vel.x *= -1;
         
         lastAbsVelocity = absVelocity; 
-        absVelocity = vel;
+        absVelocity = fieldVel;
 
         // Integrate our velocity to find our position
         position = position.add(absVelocity.add(lastAbsVelocity).mul(0.5 * RTime.deltaTime()));
