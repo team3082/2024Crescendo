@@ -43,10 +43,10 @@ public class SwervePosition {
         double deltaRot = Pigeon.getDeltaRotRad();
 
         //divided by 50 to get to the length of a single frame, multiplied to return it to seconds
-        Vector2 correctedRobotVel = SwerveMath.poseExponentiation(robotVel.div(50), rot - deltaRot, deltaRot).mul(50);
+        Vector2 correctedVel = SwerveMath.poseExponentiation(robotVel.div(50), rot - deltaRot, deltaRot).mul(50);
 
         // Rotate our velocity to be local to the field
-        Vector2 fieldVel = correctedRobotVel.rotate(Pigeon.getRotationRad() - Math.PI / 2);
+        // Vector2 fieldVel = correctedRobotVel.rotate(Pigeon.getRotationRad() - Math.PI / 2);
 
         // Flip the x component of our velocity if we're on the red alliance
         // I still don't know why, but we don't need to do this in simulation mode
@@ -55,7 +55,7 @@ public class SwervePosition {
         //     vel.x *= -1;
         
         lastAbsVelocity = absVelocity; 
-        absVelocity = fieldVel;
+        absVelocity = correctedVel;
 
         // Integrate our velocity to find our position
         position = position.add(absVelocity.add(lastAbsVelocity).mul(0.5 * RTime.deltaTime()));
