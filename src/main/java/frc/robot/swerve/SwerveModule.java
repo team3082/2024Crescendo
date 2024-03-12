@@ -9,6 +9,7 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
+import frc.robot.Robot;
 import frc.robot.utils.Vector2;
 
 import edu.wpi.first.wpilibj.RobotBase;
@@ -159,10 +160,28 @@ public class SwerveModule {
         return steer.getSelectedSensorPosition() / ticksPerRotationSteer * Math.PI * 2 + Math.PI / 2;
     }
 
+    private double lastSteerAngle = Double.NaN;
+
+    public double getSteerDelta() {
+        if(lastSteerAngle == Double.NaN){
+            lastSteerAngle = getSteerAngle();
+            return 0.0;
+        }
+        double ret = getSteerAngle() - lastSteerAngle;
+        lastSteerAngle = getSteerAngle();
+        return ret;
+
+    }
+
+    /**
+     * returns the current velocity of the drive motor in inches per second
+     * @return
+     */
     public double getDriveVelocity() {
         if (RobotBase.isSimulation()) {
             return simDriveVel * 10 / ticksPerRotationDrive * (4 * Math.PI);
         }
+        //the 10 is there to convert from units per 100ms to units per second
         return drive.getSelectedSensorVelocity() * 10 / ticksPerRotationDrive * (4 * Math.PI);
     }
 }

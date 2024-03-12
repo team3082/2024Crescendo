@@ -5,6 +5,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveInstruction;
+import frc.robot.utils.swerve.SwerveMath;
 
 import static frc.robot.Constants.Swerve.*;
 import static frc.robot.Tuning.OI.KDYAW;
@@ -142,6 +143,24 @@ public final class SwerveManager {
         }
 
         return velSum.div(mods.length);
+    }
+
+    /**
+     * finds the robots velocity by performing pose exponentiation on each of the swerve mods,
+     * and returning the average change
+     * @return
+     */
+    public static Vector2 getRobotDriveVelocityModExponentiation(){
+        Vector2 velSum = new Vector2();
+        for (SwerveModule mod : mods){
+            double dtheta = mod.getSteerDelta();
+            double thetaf = mod.getSteerAngle();
+            //divided by 50 to get the change per frame instead of seconds
+            double dpos = mod.getDriveVelocity() / 50;
+            velSum.add(SwerveMath.poseExponentiation(dpos, thetaf - dtheta, dtheta));
+        }
+        // multiplied by 50 to return to inches per second
+        return velSum.div(mods.length).mul(50);
     }
 
     /** locks the robots angle to a specific angle but allows free translation */

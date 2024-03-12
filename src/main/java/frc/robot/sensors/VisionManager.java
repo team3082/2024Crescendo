@@ -223,7 +223,6 @@ public class VisionManager {
      * @param tagID The ID of the tag to check.
      */
     public static boolean isTagFriendly(int tagID) {
-        System.out.println(tagID);
         switch (DriverStation.getAlliance().get()) {
             case Red:
                 for (int n : redTags) {

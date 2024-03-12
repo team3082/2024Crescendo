@@ -41,7 +41,6 @@ public class ChoreoTrajectoryGenerator{
         //searching for the number of segments in the deploy trajectory
         while(true){
             i++;
-            System.out.println(i);
             if(new File(Filesystem.getDeployDirectory(), "/choreo/" + fileName + "." + i + ".traj").isFile()){
                 continue;
             }
@@ -57,7 +56,6 @@ public class ChoreoTrajectoryGenerator{
                 for(int j = 1; j < numSegments + 1; j++){
                     DiscreteTraj traj = parseTrajectory(fileName + "." + j);
                     queue.add(traj);
-                    System.out.println(System.currentTimeMillis() - start);
                 }
             }
         };
@@ -118,7 +116,6 @@ public class ChoreoTrajectoryGenerator{
 
                     DiscreteTraj traj = new DiscreteTraj(new ArrayList<DiscreteSwerveState>(choreoStates.stream().map((s) -> toSwerveState(s)).toList()));
                     choreoTrajectories.put(simpleName, traj);
-                    System.out.println(System.currentTimeMillis() - start);
                 }
             }
         };
