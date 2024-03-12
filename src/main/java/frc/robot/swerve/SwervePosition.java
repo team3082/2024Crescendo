@@ -21,6 +21,8 @@ public class SwervePosition {
 
     private static boolean correctWithVision = true;
 
+    private static Vector2 lastOdomPos;
+
     public static void init() {
         absVelocity     = new Vector2();
         lastAbsVelocity = new Vector2();
@@ -37,28 +39,19 @@ public class SwervePosition {
 
     public static void update() {
 
-        // Derive our velocity 
-        Vector2 robotVel = SwerveManager.getRobotDriveVelocity();
-        double rot = Pigeon.getRotationRad();
-        double deltaRot = Pigeon.getDeltaRotRad();
+        Vector2 odometryPos = Odometry.getPosition();
 
-        //divided by 50 to get to the length of a single frame, multiplied to return it to seconds
-        Vector2 correctedVel = SwerveMath.poseExponentiation(robotVel.div(50), rot - deltaRot, deltaRot).mul(50);
+        Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
 
-        // Rotate our velocity to be local to the field
-        // Vector2 fieldVel = correctedRobotVel.rotate(Pigeon.getRotationRad() - Math.PI / 2);
-
-        // Flip the x component of our velocity if we're on the red alliance
-        // I still don't know why, but we don't need to do this in simulation mode
-        // Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
-        // if (alliance == Alliance.Red)
-        //     vel.x *= -1;
         
-        lastAbsVelocity = absVelocity; 
-        absVelocity = correctedVel;
+        position = position.add(odometryInnovation);
+        
+        lastOdomPos = odometryPos;
+        
+        lastAbsVelocity = absVelocity;
 
-        // Integrate our velocity to find our position
-        position = position.add(absVelocity.add(lastAbsVelocity).mul(0.5 * RTime.deltaTime()));
+        absVelocity = odometryInnovation.div(RTime.deltaTime());
+
 
         if (correctWithVision) {
             try {

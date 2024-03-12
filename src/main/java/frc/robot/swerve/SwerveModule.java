@@ -162,6 +162,9 @@ public class SwerveModule {
 
     private double lastSteerAngle = Double.NaN;
 
+    /**
+     * only call this once per frame
+     */
     public double getSteerDelta() {
         if(lastSteerAngle == Double.NaN){
             lastSteerAngle = getSteerAngle();
@@ -183,5 +186,14 @@ public class SwerveModule {
         }
         //the 10 is there to convert from units per 100ms to units per second
         return drive.getSelectedSensorVelocity() * 10 / ticksPerRotationDrive * (4 * Math.PI);
+    }
+
+    public double getDrivePosition(){
+        if(RobotBase.isReal()){
+            return drive.getSelectedSensorPosition() / ticksPerRotationDrive * (4 * Math.PI);
+        }
+
+        //TODO need this to make it work in sim
+        return 0.0;
     }
 }
