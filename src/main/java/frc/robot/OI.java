@@ -220,7 +220,6 @@ public class OI {
         if (operatorStick.getRawButtonPressed(setManualClimb)) {
             manualClimbSet = true;
         }
-        if (true) {
             // DPAD UP
             if (operatorStick.getPOV() == climberUp) {
                 ClimberManager.manualExtend();
@@ -235,7 +234,6 @@ public class OI {
             else {
                 ClimberManager.brake();
             }
-        } else {
             // DPAD UP
             if (operatorStick.getPOV() == climberUp && operatorStick.getPOV() != lastPOV) {
                 ClimberManager.autoExtend();
@@ -244,22 +242,8 @@ public class OI {
             else if (operatorStick.getPOV() == climberDown && operatorStick.getPOV() != lastPOV) {
                 ClimberManager.autoPull();
             }
-        }
 
-        /*--------------------------------------------------------------------------------------------------------*/
-        // SHOOTER
-
-        // Y
-        // if (operatorStick.getRawButtonPressed(setManualShoot)) {
-        //     manualFireSet = !(manualFireSet);
-        //     if (manualFireSet && currentShooterMode == ShooterMode.SPEAKER) {
-        //         currentShooterMode = ShooterMode.SPEAKER_MANUAL;
-        //     } else if (!(manualFireSet) && currentShooterMode == ShooterMode.SPEAKER_MANUAL) {
-        //         currentShooterMode = ShooterMode.SPEAKER;
-        //     }
-        // }
-
-        // // RIGHT BUMPER
+        // RIGHT BUMPER
         if (operatorStick.getRawButtonPressed(switchShooterMode)) {
             switch (currentShooterMode) {
                 case AMP:
