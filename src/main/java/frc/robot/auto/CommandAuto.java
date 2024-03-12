@@ -81,7 +81,7 @@ public class CommandAuto {
         new FireShooter(),
       new ParallelCommandGroup(
         new ChoreoFollow("1 Piece Source.1"),
-        new SetIntake(IntakeState.GROUND)
+        new SetIntake()
       )
     );
   }
@@ -100,7 +100,7 @@ public class CommandAuto {
         new FireShooter(),
       new ParallelCommandGroup(
         new ChoreoFollow("1 Piece Amp.1"),
-        new SetIntake(IntakeState.GROUND)
+        new SetIntake()
       )
     );
   }
@@ -126,7 +126,7 @@ public class CommandAuto {
           new ChoreoFollow("2 Piece Middle.1"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("2 Piece Middle.2"),
@@ -158,7 +158,7 @@ public class CommandAuto {
           new ChoreoFollow("2 Piece Source.1"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("2 Piece Source.2"),
@@ -190,7 +190,7 @@ public class CommandAuto {
           new ChoreoFollow("2 Piece Amp.1"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("2 Piece Amp.2"),
@@ -222,7 +222,7 @@ public class CommandAuto {
           new ChoreoFollow("2 Piece Far Source.1"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("2 Piece Far Source.2"),
@@ -254,7 +254,7 @@ public class CommandAuto {
           new ChoreoFollow("2 Piece Far Amp.1"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("2 Piece Far Amp.2"),
@@ -286,7 +286,7 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Far Source.1"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Far Source.2"),
@@ -301,7 +301,7 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Far Source.3"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Far Source.4"),
@@ -338,7 +338,7 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Half Source.1"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Half Source.2"),
@@ -353,7 +353,7 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Half Source.3"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Half Source.4"),
@@ -383,7 +383,7 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Half Amp.1"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Half Amp.2"),
@@ -398,7 +398,7 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Half Amp.3"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Half Amp.4"),
@@ -428,7 +428,7 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Source.1"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Source.2"),
@@ -443,7 +443,7 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Source.3"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Source.4"),
@@ -474,7 +474,7 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Amp.1"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Amp.2"),
@@ -489,7 +489,7 @@ public class CommandAuto {
           new ChoreoFollow("3 Piece Amp.3"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(3500)
       ),
       new ChoreoFollow("3 Piece Amp.4"),
@@ -517,7 +517,7 @@ public class CommandAuto {
           new ChoreoFollow("4Middle.1"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(4200)
       ),
         new ChoreoFollow("4Middle.2"),
@@ -530,7 +530,7 @@ public class CommandAuto {
           new ChoreoFollow("4Middle.3"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(4200)
       ),
         new ChoreoFollow("4Middle.4"),
@@ -542,7 +542,7 @@ public class CommandAuto {
           new ChoreoFollow("4Middle.5"),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
-        new SetIntake(IntakeState.GROUND),
+        new SetIntake(),
         new SetShooterVelocity(4200)
       ),
       new ChoreoFollow("4Middle.6"),

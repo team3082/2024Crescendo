@@ -8,7 +8,7 @@ public class SetIntake extends Command {
     double simDelay;
     frc.robot.auto.autoframe.SetIntake setIntake;
 
-    public SetIntake(IntakeState state){
+    public SetIntake(){
         setIntake = new frc.robot.auto.autoframe.SetIntake();
     }
 
