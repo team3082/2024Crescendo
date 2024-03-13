@@ -178,14 +178,7 @@ public class OI {
                 break;
             }
         } else {
-            // set shooter down and if its down enough turn it off
-            if (ShooterPivot.getPosRad() > Math.toRadians(30)) {
-                ShooterPivot.setPosition(Math.toRadians(30));
-            }
-            else {
-                ShooterPivot.neutral();
-            }
-            Shooter.revTo(1000.0); // nominal velocity for driving cross-field
+            Shooter.neutral();
         }
 
         /*--------------------------------------------------------------------------------------------------------*/

@@ -18,7 +18,8 @@ public final class Shooter {
         DISABLED, // aka a dead shooter
         REVVING, // actively revving up to our target velocity
         FIRING, // handoff pumping note into the shooter
-        EJECT  // force-ejecting piece, regardless of our current status
+        EJECT,  // force-ejecting piece, regardless of our current status
+        NEUTRAL
     }
 
     // Status of the handoff
@@ -26,7 +27,7 @@ public final class Shooter {
         DISABLED, // lying in wait until at velocity
         FEED,    // actively feeding piece to shooter
         EJECT,  // rejecting piece through intake
-        STOP   // aka a dead handoff
+        STOP   // aka a dead handoff  
     }
 
     public static ShooterStatus shooterMode;
@@ -140,6 +141,13 @@ public final class Shooter {
                 targetBottom = 0.0;
                 ShooterPivot.disable();
             break;
+
+            case NEUTRAL:
+                targetVelocity = 1000.0;
+                targetTop = 1000.0;
+                targetBottom = 1000.0;
+                neutral();
+                ShooterPivot.neutral();
         }
     }
 
@@ -192,11 +200,15 @@ public final class Shooter {
         shooterMode = ShooterStatus.EJECT;
     }
 
+    public static void neutral() {
+        revTo(1000, 1000);
+    }
+
     /**
      * Disable the shooter & handoff.
      */
-    public static void nuetral() {
-        shooterMode = ShooterStatus.DISABLED;
+    public static void setNeutral() {
+        shooterMode = ShooterStatus.NEUTRAL;
         handoffMode = HandoffStatus.DISABLED;
     }
 

@@ -90,7 +90,7 @@ public final class ShooterPivot {
      * Pointed straight forward is 0 (impossible to reach),
      * angled straight up is PI / 2
      */
-    public double getPosition() {
+    public static double getPosition() {
         try {
             return ticksToRad(motor.getSelectedSensorPosition());
         } catch (Exception e) {
@@ -125,10 +125,6 @@ public final class ShooterPivot {
 
         return motor.getSelectedSensorPosition() < radToTicks(targetPos) + radToTicks(Math.toRadians(1.2)) && motor.getSelectedSensorPosition() > radToTicks(targetPos) - radToTicks(Math.toRadians(1.2));
     }
-
-    public static double getPosRad() {
-        return ticksToRad(motor.getSelectedSensorPosition());
-    }
     
     public static void update() {
         if (isDisabled) {
@@ -144,8 +140,15 @@ public final class ShooterPivot {
 
     private static boolean isDisabled = true;
 
+    /*
+     * turn off the pivot motor
+     */
     public static void neutral() {
-        motor.neutralOutput();
+        if (getPosition() < Math.toRadians(30)) {
+            motor.neutralOutput();
+        } else {
+            setPosition(Math.toRadians(30));
+        }
     }
 
     public static void disable() {
