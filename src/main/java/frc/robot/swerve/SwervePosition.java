@@ -3,6 +3,9 @@ package frc.robot.swerve;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.sensors.Pigeon;
 import frc.robot.sensors.VisionManager;
 import frc.robot.utils.RTime;
@@ -44,7 +47,7 @@ public class SwervePosition {
 
         // Flip the x component of our velocity if we're on the red alliance
         // I still don't know why, but we don't need to do this in simulation mode
-        // Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
+        Alliance alliance = RobotBase.isSimulation() ?  Alliance.Blue : DriverStation.getAlliance().get();
         // if (alliance == Alliance.Red)
         //     vel.x *= -1;
         
@@ -90,14 +93,6 @@ public class SwervePosition {
             Vector2 visionPos = VisionManager.getPosition();
             Vector2 adjustment = visionPos.sub(position).mul(correctionMultiplier);
             position = position.add(adjustment);
-        } catch(Exception e) { }
-    }
-
-    public static void updateAverageRotVision() {
-        try {
-            double visionRot = VisionManager.getRotation();
-            double adjustment = (visionRot - Pigeon.getRotationRad()) * correctionMultiplier;
-            Pigeon.setYawRad(Pigeon.getRotationRad() + adjustment);
         } catch(Exception e) { }
     }
 
