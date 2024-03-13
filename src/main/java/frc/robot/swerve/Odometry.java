@@ -20,14 +20,13 @@ public class Odometry {
     private static double lastLoopTimeStamp;
 
     private static double[] previousDrivePositions = new double[mods.length];
-    private static double previousPigeonAngle = Double.NaN;
+    private static double previousPigeonAngle;
 
     public static void init(){
-        odomThread.interrupt();
         lastLoopTimeStamp = Timer.getFPGATimestamp();
-        position = new Vector2();
+        position = new Vector2(0.0,0.0);
+        previousPigeonAngle = Pigeon.getRotationRad();
 
-        odomThread.setName("odometry");
         odomThread.setDaemon(true);
         odomThread.start();
     }
@@ -61,7 +60,8 @@ public class Odometry {
                     deltaAngle = pigeonAngle - previousPigeonAngle;
                 }
                 
-                Vector2 innovation = SwerveMath.poseExponentiation(meanDisp, previousPigeonAngle, deltaAngle);
+                //lil fix
+                Vector2 innovation = SwerveMath.poseExponentiation(meanDisp, previousPigeonAngle - Math.PI/2.0, deltaAngle);
                 
                 previousPigeonAngle = pigeonAngle;
 

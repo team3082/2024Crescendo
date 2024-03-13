@@ -24,12 +24,12 @@ public class SwervePosition {
     private static Vector2 lastOdomPos;
 
     public static void init() {
-        absVelocity     = new Vector2();
-        lastAbsVelocity = new Vector2();
-        position        = new Vector2();
-        lastOdomPos     = new Vector2();
+        absVelocity     = new Vector2(0.0,0.0);
+        lastAbsVelocity = new Vector2(0.0,0.0);
+        position        = new Vector2(0.0,0.0);
+        lastOdomPos     = new Vector2(0.0,0.0);
         Odometry.init();
-        }
+    }
 
     public static void enableVision() {
         correctWithVision = true;
@@ -44,7 +44,6 @@ public class SwervePosition {
         Vector2 odometryPos = Odometry.getPosition();
 
         Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
-
         
         position = position.add(odometryInnovation);
         
