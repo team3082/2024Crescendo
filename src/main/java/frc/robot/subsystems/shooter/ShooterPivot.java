@@ -125,6 +125,10 @@ public final class ShooterPivot {
 
         return motor.getSelectedSensorPosition() < radToTicks(targetPos) + radToTicks(Math.toRadians(1.2)) && motor.getSelectedSensorPosition() > radToTicks(targetPos) - radToTicks(Math.toRadians(1.2));
     }
+
+    public static double getPosRad() {
+        return ticksToRad(motor.getSelectedSensorPosition());
+    }
     
     public static void update() {
         if (isDisabled) {
@@ -140,12 +144,13 @@ public final class ShooterPivot {
 
     private static boolean isDisabled = true;
 
-    public static void disable() {
-        isDisabled = true;
+    public static void neutral() {
+        motor.neutralOutput();
     }
 
-    public static void enableCoast() {
+    public static void disable() {
         motor.setNeutralMode(NeutralMode.Coast);
+        motor.neutralOutput();
     }
 
     public static void setCoast() {

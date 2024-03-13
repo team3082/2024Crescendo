@@ -195,7 +195,7 @@ public final class Shooter {
     /**
      * Disable the shooter & handoff.
      */
-    public static void disable() {
+    public static void nuetral() {
         shooterMode = ShooterStatus.DISABLED;
         handoffMode = HandoffStatus.DISABLED;
     }
@@ -235,5 +235,10 @@ public final class Shooter {
      */
     public static boolean firing() {
         return shooterMode == ShooterStatus.FIRING;
+    }
+
+    public static void disable() {
+        topMotor.neutralOutput();
+        bottomMotor.neutralOutput();
     }
 }

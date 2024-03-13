@@ -15,6 +15,7 @@ import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
+import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -128,20 +129,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    Intake.enableCoast();
-    // // ShooterPivot.enableCoast();
+    Intake.disable();
+    ShooterPivot.disable();
+    Shooter.disable();
   }
 
   @Override
   public void testPeriodic() {
-    // Shooter.revTo(530, 700);
-    // ShooterPivot.setPosition(Math.toRadians(55.0));
-    // if (Shooter.canShoot())
-    //   Intake.runHandoff();
 
-    // Shooter.update();
-    Intake.setCoast();
-    // // ShooterPivot.setCoast();
   }
 
   @Override

@@ -123,6 +123,8 @@ public final class Intake {
             case FEED:
                 feed();
             break;
+            case DISABLED:
+                pivotMotor.neutralOutput();
 
         }
     }
@@ -250,11 +252,8 @@ public final class Intake {
         return ticksToRad(pivotMotor.getSelectedSensorPosition());
     }
 
-    public static void enableCoast() {
+    public static void disable() {
         pivotMotor.setNeutralMode(NeutralMode.Coast);
-    }
-
-    public static void setCoast() {
         pivotMotor.neutralOutput();
     }
 
@@ -263,6 +262,7 @@ public final class Intake {
         GROUND,
         SOURCE,
         BALANCE,
-        FEED
+        FEED,
+        DISABLED
     }
 }
