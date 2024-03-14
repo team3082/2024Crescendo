@@ -144,7 +144,7 @@ public final class ShooterPivot {
      * turn off the pivot motor
      */
     public static void neutral() {
-        if (getPosition() < Math.toRadians(30)) {
+        if (getPosition() < Math.toRadians(35)) {
             motor.neutralOutput();
         } else {
             setPosition(Math.toRadians(30));
