@@ -245,6 +245,8 @@ public final class Intake {
 
     /** Returns if the intake has a piece based solely off the motors' current draw. */
     public static boolean motorHasPiece() {
+        // Want to be active ONLY in ground,
+        // otherwise it would go off when we are stowed lol
         return (state == IntakeState.GROUND && topBeltMotor.getOutputCurrent() >= 0.0 && bottomBeltMotor.getOutputCurrent() >= 0.0);
     }
 

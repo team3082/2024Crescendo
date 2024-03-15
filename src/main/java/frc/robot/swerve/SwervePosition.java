@@ -42,17 +42,13 @@ public class SwervePosition {
     public static void update() {
 
         Vector2 odometryPos = Odometry.getPosition();
-
         Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
         
         position = position.add(odometryInnovation);
-        
         lastOdomPos = odometryPos;
-        
         lastAbsVelocity = absVelocity;
 
         absVelocity = odometryInnovation.div(RTime.deltaTime());
-
 
         if (correctWithVision) {
             try {
