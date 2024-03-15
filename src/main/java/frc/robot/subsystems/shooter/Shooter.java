@@ -80,8 +80,8 @@ public final class Shooter {
         bottomMotor.config_kD(0, 0);
         bottomMotor.config_kF(0, 1023.0 * 0.7 / 12121.0);
 
-        topMotor.configVoltageCompSaturation(11.5);
-        bottomMotor.configVoltageCompSaturation(11.5);
+        topMotor.configVoltageCompSaturation(10);
+        bottomMotor.configVoltageCompSaturation(10);
         topMotor.enableVoltageCompensation(true);
         bottomMotor.enableVoltageCompensation(true);
 
