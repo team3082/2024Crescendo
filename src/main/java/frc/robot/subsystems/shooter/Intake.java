@@ -153,7 +153,7 @@ public final class Intake {
 
     public static void suck() {
         // tracks if beambreak is brokey
-        if (beambreak.isBroken()) {
+        if (beambreak.isBroken() || motorHasPiece()) {
             if (hasPiece == false){
                 suckTime = RTime.now();
             }
@@ -183,7 +183,7 @@ public final class Intake {
 
     public static void autoSuck() {
         // tracks if beambreak is brokey
-        if (beambreak.isBroken()) {
+        if (beambreak.isBroken() || motorHasPiece()) {
             if (hasPiece == false){
                 suckTime = RTime.now();
             }
@@ -243,6 +243,10 @@ public final class Intake {
         return beambreak.isBroken();
     }
 
+    /** Returns if the intake has a piece based solely off the motors' current draw. */
+    public static boolean motorHasPiece() {
+        return (state == IntakeState.GROUND && topBeltMotor.getOutputCurrent() >= 0.0 && bottomBeltMotor.getOutputCurrent() >= 0.0);
+    }
 
     public static void setState(IntakeState newState) {
         state = newState;
