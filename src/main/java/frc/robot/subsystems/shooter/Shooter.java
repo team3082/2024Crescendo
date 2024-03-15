@@ -118,13 +118,13 @@ public final class Shooter {
                 if (atVelocity && ShooterPivot.atPos()) {
                     Intake.runHandoff();
                 }
-                setVariedVelocity(targetTop, targetBottom);
+                setVelocity(targetTop, targetBottom);
             break;
 
             case REVVING:
                 Intake.setState(IntakeState.FEED);
                 // Rev the flywheel up to our set velocity
-                setVariedVelocity(targetTop, targetBottom);
+                setVelocity(targetTop, targetBottom);
             break;
 
             case EJECT:
@@ -155,7 +155,7 @@ public final class Shooter {
      * Set the desired velocity for our shooter to maintain.
      * @param newVelocity Velocity in RPM
      */
-    private static void setVariedVelocity(double topSpeed, double bottomSpeed) {
+    private static void setVelocity(double topSpeed, double bottomSpeed) {
         topMotor.set(TalonFXControlMode.Velocity, topSpeed);
         bottomMotor.set(TalonFXControlMode.Velocity, bottomSpeed);
     }
@@ -227,10 +227,8 @@ public final class Shooter {
         double top = topMotor.getSelectedSensorVelocity() * VelToRPM;
         double bottom = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
 
-
         double err = Math.abs(top - targetTop * VelToRPM);
         double err2 = Math.abs(bottom - targetBottom * VelToRPM);
-
 
         return err <= deadband && err2 <= deadband;
     }
