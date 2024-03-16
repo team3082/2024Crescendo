@@ -1,19 +1,24 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.RPM;
 import static frc.robot.configs.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.controllermaps.LogitechF310;
 import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.configs.ShooterSettings;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
+import frc.robot.subsystems.shooter.ShooterTables;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwerveModule;
 import frc.robot.swerve.SwervePID;
+import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.RMath;
 
@@ -151,6 +156,11 @@ public class OI {
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
 
+        // Assumes we are pressed up against subwoofer
+        Vector2 speakerPos = new Vector2();
+
+        ShooterSettings shooterSettings = ShooterTables.calculate(SwervePosition.getPosition().sub(speakerPos).mag() / 12.0);
+
         // checks current shooter mode and sets the angle and velocities accordingly
         if (shooterFire) {
             switch (currentShooterMode) {
@@ -163,8 +173,8 @@ public class OI {
                  // manual for now, change to auto when tuned
                  // use the arr variable above for that
                 case SPEAKER:
-                    ShooterPivot.setPosition(Math.toRadians(manualAngle));
-                    Shooter.revTo(manualRPM);
+                    ShooterPivot.setPosition(shooterSettings.getAngle().in(Degrees));
+                    Shooter.revTo(shooterSettings.getVelocity().in(RPM));
                     Shooter.shoot();
                 break;
 

@@ -49,7 +49,7 @@ public final class Constants {
         // CANCoder offset
         public static final double PIVOT_OFFSET = 45.615 - 17.0;
 
-        public static final double TARGET_OFFSET = 4.0; // safety factor
+        public static final double TARGET_OFFSET = 0.0; // safety factor, if needed
         
         //COMposition
         public static final Vector2 SHOOTER_COM_POS = new Vector2(0,0); //position of the com relative to the pivot point. the angle is what really matters

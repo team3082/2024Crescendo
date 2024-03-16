@@ -23,7 +23,7 @@ public class ShooterTables {
     public static InterpolatingDoubleTreeMap speedsDistanceMap; // RPM
     public static InterpolatingDoubleTreeMap angleDistanceMap; // Degrees
 
-    private final ShooterSettings shooterSettings = new ShooterSettings();
+    private static final ShooterSettings shooterSettings = new ShooterSettings();
 
     /**
      * Initialize with previously defined points.
@@ -42,7 +42,7 @@ public class ShooterTables {
     * @param distance our distance to the target
     * @return the desired shooter settings.
     */
-    public ShooterSettings calculate(double distance) {
+    public static ShooterSettings calculate(double distance) {
         shooterSettings.distance.mut_replace(distance, Inches);
         shooterSettings.angle.mut_replace(angleDistanceMap.get(distance), Degrees);
         shooterSettings.velocity.mut_replace(speedsDistanceMap.get(distance), RPM);
