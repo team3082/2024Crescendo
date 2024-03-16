@@ -1,7 +1,7 @@
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.Constants.Intake.*;
-import static frc.robot.Tuning.Intake.*;
+import static frc.robot.configs.Constants.Intake.*;
+import static frc.robot.configs.Tuning.Intake.*;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;

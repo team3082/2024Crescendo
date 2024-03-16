@@ -1,4 +1,4 @@
-package frc.robot.sensors;
+package frc.robot.subsystems.sensors;
 
 import java.util.Optional;
 
@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
-import frc.robot.Constants;
 import frc.robot.OI;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.auto.AutoSelector;
+import frc.robot.configs.Constants;
+import frc.robot.configs.Constants.ShooterConstants;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;

@@ -1,11 +1,11 @@
 package frc.robot;
 
-import static frc.robot.Tuning.OI.*;
+import static frc.robot.configs.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.controllermaps.LogitechF310;
-import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;

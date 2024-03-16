@@ -1,6 +1,6 @@
 package frc.robot.auto.autoframe;
 
-import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;

@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.configs;
 
 public class Tuning {
     //Swerve

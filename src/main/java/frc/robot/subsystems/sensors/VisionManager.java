@@ -1,4 +1,4 @@
-package frc.robot.sensors;
+package frc.robot.subsystems.sensors;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -9,7 +9,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.Constants;
+import frc.robot.configs.Constants;
 import frc.robot.utils.Vector2;
 
 public class VisionManager {

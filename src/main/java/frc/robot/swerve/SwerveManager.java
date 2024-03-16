@@ -2,13 +2,13 @@ package frc.robot.swerve;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveMath;
 
-import static frc.robot.Constants.Swerve.*;
-import static frc.robot.Tuning.OI.KDYAW;
+import static frc.robot.configs.Constants.Swerve.*;
+import static frc.robot.configs.Tuning.OI.KDYAW;
 
 public final class SwerveManager {
     

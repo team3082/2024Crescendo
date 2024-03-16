@@ -5,10 +5,10 @@ import frc.robot.utils.PIDController;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.BezierCurve;
 
-import static frc.robot.Tuning.MOVEDEAD;
+import static frc.robot.configs.Tuning.MOVEDEAD;
 
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.Tuning;
+import frc.robot.configs.Tuning;
 
 public class FollowBezierCurve extends Autoframe{
     public BezierCurve trajectory;

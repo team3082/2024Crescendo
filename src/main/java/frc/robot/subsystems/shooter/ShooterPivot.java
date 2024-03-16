@@ -1,7 +1,7 @@
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.Constants.ShooterConstants.*;
-import static frc.robot.Tuning.ShooterTuning.*;
+import static frc.robot.configs.Constants.ShooterConstants.*;
+import static frc.robot.configs.Tuning.ShooterTuning.*;
 
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;

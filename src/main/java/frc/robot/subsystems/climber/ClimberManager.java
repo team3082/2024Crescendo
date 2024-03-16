@@ -1,6 +1,6 @@
 package frc.robot.subsystems.climber;
 
-import static frc.robot.Constants.Climber.*;
+import static frc.robot.configs.Constants.Climber.*;
 
 import frc.robot.subsystems.climber.Climber.ClimberControlState;
 

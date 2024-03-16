@@ -1,4 +1,4 @@
-package frc.robot.sensors;
+package frc.robot.subsystems.sensors;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;

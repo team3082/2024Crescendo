@@ -1,11 +1,25 @@
-package frc.robot;
+package frc.robot.configs;
+
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.RPM;
+import static frc.robot.configs.Constants.ShooterConstants.TARGET_OFFSET;
+
+import java.util.List;
 
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import frc.robot.subsystems.shooter.ShooterTables;
 import frc.robot.utils.Vector2;
 
 public final class Constants {
+
+    public static void init() {
+        ShooterTables.init(List.of(
+            new ShooterSettings().distance(Inches.of(0.0).minus(Inches.of(TARGET_OFFSET))).velocity(RPM.of(0.0)).angle(Degrees.of(0))
+        ));
+    }
 
     public static final class Climber {
         public static final int RIGHT_MOTOR_ID = 21;
@@ -34,6 +48,8 @@ public final class Constants {
 
         // CANCoder offset
         public static final double PIVOT_OFFSET = 45.615 - 17.0;
+
+        public static final double TARGET_OFFSET = 4.0; // safety factor
         
         //COMposition
         public static final Vector2 SHOOTER_COM_POS = new Vector2(0,0); //position of the com relative to the pivot point. the angle is what really matters

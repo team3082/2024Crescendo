@@ -1,7 +1,7 @@
 package frc.robot.swerve;
 
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveMath;
 

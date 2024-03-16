@@ -1,6 +1,6 @@
 package frc.robot.utils.followers;
 
-import frc.robot.Tuning;
+import frc.robot.configs.Tuning;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveState;
