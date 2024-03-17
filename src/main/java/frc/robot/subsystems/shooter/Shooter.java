@@ -131,6 +131,7 @@ public final class Shooter {
                 // Run the shooter forward, and the handoff/intake backwards.
                 topMotor.set(TalonFXControlMode.PercentOutput, 0.8);
                 bottomMotor.set(TalonFXControlMode.Follower, topMotor.getDeviceID());
+                Intake.eject();
             break;
 
             case DISABLED:

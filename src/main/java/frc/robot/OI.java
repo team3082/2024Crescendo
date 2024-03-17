@@ -74,6 +74,7 @@ public class OI {
     public static boolean manualFireSet = true;
     public static boolean manualClimbSet = true;
     public static boolean aligning = false;
+    public static boolean ejecting = false;
 
     public static int lastPOV = -1;
 
@@ -149,7 +150,10 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SHOOTER
 
-        if (driverStick.getRawButton(eject)) Shooter.eject();
+        if (driverStick.getRawButton(eject))
+            ejecting = true;
+        else
+            ejecting = false;
 
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
@@ -189,7 +193,10 @@ public class OI {
             }
         } else {
             aligning = false;
-            Shooter.neutral();
+            if (!ejecting) 
+                Shooter.neutral();
+            else
+                Shooter.eject();
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
