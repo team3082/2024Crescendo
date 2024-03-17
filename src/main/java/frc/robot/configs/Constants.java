@@ -16,8 +16,8 @@ import frc.robot.utils.Vector2;
 public final class Constants {
 
     public static void init() {
-        ShooterTables.init(List.of(
-            new ShooterSettings().distance(Inches.of(0.0).minus(Inches.of(TARGET_OFFSET))).velocity(RPM.of(0.0)).angle(Degrees.of(0))
+        ShooterTables.init(List.of(        // How far away we are         // Safety factor                    // Speed of the shooter         // Angle of shooter pivot
+            new ShooterSettings().distance(Inches.of(0.0).minus(Inches.of(TARGET_OFFSET))).velocity(RPM.of(4000.0)).angle(Degrees.of(56.0))
         ));
     }
 
