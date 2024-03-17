@@ -10,10 +10,7 @@ import static edu.wpi.first.units.Units.*;
  * 
  * This class should be only one object, constantly mutated during each call.
  * This reduces complexity as its easy to track down one wrong class,
- * rather than several made.
- * 
- * This can be tuned at home, however we should take some time at MURA
- * to tune as our speaker/sub aren't the most accurate.
+ * rather than several made. It also cuts down on RAM usage for the roboRIO.
  */
 public class ShooterSettings {
 
@@ -44,7 +41,7 @@ public class ShooterSettings {
     return angle;
   }
 
-  /** Gets the distance to the target */
+  /** Gets the robot's distance to the target. */
   public Measure<Distance> getDistance() {
     return distance;
   }

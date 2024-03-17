@@ -4,7 +4,9 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RPM;
 import static frc.robot.configs.Tuning.OI.*;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.controllermaps.LogitechF310;
 import frc.robot.subsystems.sensors.Pigeon;
@@ -71,6 +73,7 @@ public class OI {
     public static ShooterMode currentShooterMode = ShooterMode.SPEAKER_MANUAL;
     public static boolean manualFireSet = true;
     public static boolean manualClimbSet = true;
+    public static boolean aligning = false;
 
     public static int lastPOV = -1;
 
@@ -127,58 +130,55 @@ public class OI {
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
+        // SETUP
 
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
         double manualRPM = 4000.0;
-        // double manualAngle = 32.0;
         double manualAngle = 56.0;
-        
-        if (drive.mag() < 0.125)
+
+        if (drive.mag() < 0.125) 
             drive = new Vector2();
         else
             drive = RMath.smoothJoystick2(drive).mul(kBoostCoefficient);
 
-        if (Math.abs(rotate) < 0.005) {
+        if (Math.abs(rotate) < 0.005) 
             rotate = 0;
-            int POV = driverStick.getPOV();
-            if (POV != -1) {
-                SwervePID.setDestRot(Math.PI / 2.0 - Math.toRadians(POV - 180));
-            }
-        }
 
         /*--------------------------------------------------------------------------------------------------------*/
         // SHOOTER
 
-        if (driverStick.getRawButton(eject)) Intake.eject();
+        if (driverStick.getRawButton(eject)) Shooter.eject();
 
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
 
-        // Assumes we are pressed up against subwoofer
-        Vector2 speakerPos = new Vector2();
-
+        // Not the exact pos of the speaker. Rather, the position of the robot's
+        // center of rotation when pressed up against the subwoofer.
+        // I don't remember if this already flips for the alliance. Someone double check.
+        Vector2 speakerPos = DriverStation.getAlliance().get() == Alliance.Red ? new Vector2() : new Vector2();
         ShooterSettings shooterSettings = ShooterTables.calculate(SwervePosition.getPosition().sub(speakerPos).mag() / 12.0);
 
         // checks current shooter mode and sets the angle and velocities accordingly
         if (shooterFire) {
             switch (currentShooterMode) {
                 case AMP:
+                    aligning = false;
                     ShooterPivot.setPosition(Math.toRadians(55.0));
                     Shooter.revTo(480.0, 700.0);
                     Shooter.shoot();
                 break;
 
-                 // manual for now, change to auto when tuned
-                 // use the arr variable above for that
                 case SPEAKER:
-                    ShooterPivot.setPosition(shooterSettings.getAngle().in(Degrees));
+                    aligning = true;
+                    ShooterPivot.setPosition(Math.toRadians(shooterSettings.getAngle().in(Degrees)));
                     Shooter.revTo(shooterSettings.getVelocity().in(RPM));
                     Shooter.shoot();
                 break;
 
                 case SPEAKER_MANUAL:
+                    aligning = false;
                     ShooterPivot.setPosition(Math.toRadians(manualAngle));
                     Shooter.revTo(manualRPM);
                     Shooter.shoot();
@@ -188,6 +188,7 @@ public class OI {
                 break;
             }
         } else {
+            aligning = false;
             Shooter.neutral();
         }
 
@@ -200,20 +201,25 @@ public class OI {
             }
         }
 
-        // Swerving and a steering! Zoom!
-        switch (YAWRATEFEEDBACKSTATUS) {
-            case 0:
-                SwerveManager.rotateAndDrive(rotate, drive);
-            return;
-            case 1:
-                if (rotate == 0)
-                    SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
-                else
+        if (!aligning) {
+            // Swerving and a steering! Zoom!
+            switch (YAWRATEFEEDBACKSTATUS) {
+                case 0:
                     SwerveManager.rotateAndDrive(rotate, drive);
-            return;
-            case 2:
-                SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
-            return;
+                return;
+                case 1:
+                    if (rotate == 0)
+                        SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
+                    else
+                        SwerveManager.rotateAndDrive(rotate, drive);
+                return;
+                case 2:
+                    SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
+                return;
+            }
+        } else {
+            // Allows free translation while locking the robot's angle to the speaker.
+            SwerveManager.moveAndRotateTo(drive, speakerPos.sub(SwervePosition.getPosition()).norm().atan2());
         }
     }
 

@@ -49,6 +49,16 @@ public final class SwerveManager {
         rotateAndDrive(correctedRotSpeed, move);
     }
 
+    
+    /** 
+     * Locks the robot's angle to a specific angle, but allows free translation.
+     */
+    public static void moveAndRotateTo(Vector2 move, double toAngle) {
+        SwervePID.rotPID.setDest(toAngle);
+        double rotation = SwervePID.rotPID.updateOutput(Pigeon.getRotationRad());
+        rotateAndDrive(rotation, move);
+    }
+
     public static void rotateAndDrive(double rotSpeed, Vector2 move) {
         movement = move;
         double heading = Pigeon.getRotationRad();
@@ -161,13 +171,6 @@ public final class SwerveManager {
         }
         // multiplied by 50 to return to inches per second
         return velSum.div(mods.length).mul(50);
-    }
-
-    /** locks the robots angle to a specific angle but allows free translation */
-    public static void moveAndRotateTo(Vector2 move, double toAngle) {
-        SwervePID.rotPID.setDest(toAngle);
-        double rotation = SwervePID.rotPID.updateOutput(Pigeon.getRotationRad());
-        rotateAndDrive(rotation, move);
     }
 
     /**

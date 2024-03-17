@@ -148,6 +148,7 @@ public final class Shooter {
                 targetBottom = 1000.0;
                 neutral();
                 ShooterPivot.neutral();
+            break;
         }
     }
 
