@@ -9,6 +9,8 @@ import java.util.List;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.subsystems.shooter.ShooterTables;
 import frc.robot.utils.Vector2;
 
@@ -203,6 +205,26 @@ public final class Constants {
         }
 
     }
+
+    //a transform mapping from the aprilTag reference frame to the fields reference frame assuming red alliance
+    public static final Transform3d[] aprilTagsToField = new Transform3d[]{
+        new Transform3d( -152.00,  -268.07, 53.38, new Rotation3d( 0, 0,  1 * Math.PI / 6)),
+        new Transform3d( -126.85,  -311.60, 53.38, new Rotation3d( 0, 0,  1 * Math.PI / 6)),
+        new Transform3d (34.50,  -327.10, 57.13, new Rotation3d( 0, 0,  1 * Math.PI / 2)),
+        new Transform3d( 56.78,  -327.10, 57.13, new Rotation3d( 0, 0,  1 * Math.PI / 2)),
+        new Transform3d(161.36,  -253.15, 53.38, new Rotation3d( 0, 0,  1 * Math.PI / 1)),
+        new Transform3d(161.36, 253.15, 53.38, new Rotation3d( 0, 0,  1 * Math.PI / 1)),
+        new Transform3d( 56.78, 327.10, 57.13, new Rotation3d( 0, 0,  3 * Math.PI / 2)),
+        new Transform3d( 34.50, 327.10, 57.13, new Rotation3d( 0, 0,  3 * Math.PI / 2)),
+        new Transform3d( -126.85, 311.60, 53.38, new Rotation3d( 0, 0, -1 * Math.PI / 6)),
+        new Transform3d( -152.00, 268.07, 53.38, new Rotation3d( 0, 0, -1 * Math.PI / 6)),
+        new Transform3d(  -15.50,  -143.00, 52.00, new Rotation3d( 0, 0,  7 * Math.PI / 6)),
+        new Transform3d( 15.50,  -143.00, 52.00, new Rotation3d( 0, 0, -1 * Math.PI / 6)),
+        new Transform3d(  0.00,  -116.13, 52.00, new Rotation3d( 0, 0,  1 * Math.PI / 2)),
+        new Transform3d(  0.00, 116.13, 52.00, new Rotation3d( 0, 0,  3 * Math.PI / 2)),
+        new Transform3d( 15.50, 143.00, 52.00, new Rotation3d( 0, 0,  1 * Math.PI / 6)),
+        new Transform3d(  -15.50, 143.00, 52.00, new Rotation3d( 0, 0,  5 * Math.PI / 6))
+    };
 
     
     public static final double METERSTOINCHES = 39.3701;
