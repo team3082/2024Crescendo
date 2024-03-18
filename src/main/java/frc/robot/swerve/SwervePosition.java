@@ -59,7 +59,7 @@ public class SwervePosition {
         }
     }
 
-    public static final double correctionMultiplier = 0.1;
+    public static final double correctionMultiplier = 0.02;
 
     /**
      * Returns array of the robot's angle and distance in INCHES based of manual calculations
@@ -89,13 +89,13 @@ public class SwervePosition {
         } catch(Exception e) { }
     }
 
-    public static void updateAverageRotVision() {
-        try {
-            double visionRot = VisionManager.getRotation();
-            double adjustment = (visionRot - Pigeon.getRotationRad()) * correctionMultiplier;
-            Pigeon.setYawRad(Pigeon.getRotationRad() + adjustment);
-        } catch(Exception e) { }
-    }
+    // public static void updateAverageRotVision() {
+    //     try {
+    //         double visionRot = VisionManager.getRotation();
+    //         double adjustment = (visionRot - Pigeon.getRotationRad()) * correctionMultiplier;
+    //         Pigeon.setYawRad(Pigeon.getRotationRad() + adjustment);
+    //     } catch(Exception e) { }
+    // }
 
     /**
      * Recalibrates the SwervePosition based on a position on the field. Should only be used when vision is disabled,
