@@ -10,7 +10,6 @@ import frc.robot.auto.AutoSelector;
 import frc.robot.subsystems.sensors.BannerLight;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.sensors.Telemetry;
-import frc.robot.subsystems.sensors.VisionManager;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;

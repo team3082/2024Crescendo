@@ -1,5 +1,7 @@
 package frc.robot.subsystems.sensors;
 
+import java.util.Optional;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
@@ -25,7 +27,7 @@ public class VisionManager {
     }
 
 
-    public static Vector2 getPosition(){
+    public static Optional<Vector2> getPosition(){
         Vector2 poseSum = new Vector2();
         int numUpdates = 0;
         for(PhotonPoseEstimator pe : cameras){
@@ -42,10 +44,11 @@ public class VisionManager {
         }
 
         if(numUpdates == 0){
-            return null;
+            return Optional.empty();
         }
 
-        return poseSum.div(numUpdates);
+        //return average position
+        return Optional.of(poseSum.div(numUpdates));
     }
 
     public static double getRotation(){

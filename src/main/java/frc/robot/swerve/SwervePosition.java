@@ -8,12 +8,15 @@ import frc.robot.subsystems.sensors.VisionManager;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveMath;
+import java.util.Optional;
 
 public class SwervePosition {
 
     // Smoothly correct field position based on vision output. VISION_CORRECTION_FACTOR should range from 0.0 to
     // 1.0, representing the speed at which we blend from the odometry output to the output of the vision. 
     static final double VISION_CORRECTION_FACTOR = 0.3;
+
+    private static final String Optional = null;
 
     private static Vector2 position;
     private static Vector2 absVelocity;
@@ -51,11 +54,12 @@ public class SwervePosition {
         absVelocity = odometryInnovation.div(RTime.deltaTime());
 
         if (correctWithVision) {
-            try {
-                Vector2 visionPos = VisionManager.getPosition();
-                Vector2 posError = visionPos.sub(position);
+            Optional<Vector2> visionPos = VisionManager.getPosition();
+
+            if(visionPos.isPresent()){
+                Vector2 posError = visionPos.get().sub(position);
                 position = position.add(posError.mul(VISION_CORRECTION_FACTOR));
-            } catch(Exception e) { }
+            }
         }
     }
 
@@ -83,9 +87,12 @@ public class SwervePosition {
 
     public static void updateAveragePosVision() {
         try {
-            Vector2 visionPos = VisionManager.getPosition();
-            Vector2 adjustment = visionPos.sub(position).mul(correctionMultiplier);
-            position = position.add(adjustment);
+            Optional<Vector2> visionPos = VisionManager.getPosition();
+
+            if(visionPos.isPresent()){
+                Vector2 posError = visionPos.get().sub(position);
+                position = position.add(posError.mul(correctionMultiplier));
+            }
         } catch(Exception e) { }
     }
 

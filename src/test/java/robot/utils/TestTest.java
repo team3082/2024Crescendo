@@ -4,12 +4,9 @@ import org.junit.jupiter.api.*;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import frc.robot.configs.Constants;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTest {
     
