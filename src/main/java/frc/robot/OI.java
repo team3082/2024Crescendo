@@ -2,6 +2,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RPM;
+import static frc.robot.configs.Constants.ShooterConstants.speakerPos;
 import static frc.robot.configs.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -158,11 +159,6 @@ public class OI {
 
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
-
-        // Not the exact pos of the speaker. Rather, the position of the robot's
-        // center of rotation when pressed up against the subwoofer.
-        // I don't remember if this already flips for the alliance. Someone double check.
-        Vector2 speakerPos = DriverStation.getAlliance().get() == Alliance.Red ? new Vector2() : new Vector2();
         ShooterSettings shooterSettings = ShooterTables.calculate(SwervePosition.getPosition().sub(speakerPos).mag() / 12.0);
 
         // checks current shooter mode and sets the angle and velocities accordingly
@@ -181,6 +177,13 @@ public class OI {
                     Shooter.revTo(shooterSettings.getVelocity().in(RPM));
                     Shooter.shoot();
                 break;
+
+                // For shooting while moving
+                // case SPEAKER:
+                //     aligning = true;
+                //     Shooter.fireWhileMoving();
+                //     Shooter.shoot();
+                // break;
 
                 case SPEAKER_MANUAL:
                     aligning = false;
