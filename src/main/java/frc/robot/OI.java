@@ -2,6 +2,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.Radians;
 import static frc.robot.configs.Constants.ShooterConstants.speakerPos;
 import static frc.robot.configs.Tuning.OI.*;
 
@@ -173,7 +174,7 @@ public class OI {
 
                 case SPEAKER:
                     aligning = true;
-                    ShooterPivot.setPosition(Math.toRadians(shooterSettings.getAngle().in(Degrees)));
+                    ShooterPivot.setPosition(shooterSettings.getAngle().in(Radians));
                     Shooter.revTo(shooterSettings.getVelocity().in(RPM));
                     Shooter.shoot();
                 break;

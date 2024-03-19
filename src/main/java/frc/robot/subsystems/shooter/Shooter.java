@@ -198,7 +198,7 @@ public final class Shooter {
         settings = ShooterTables.calculate(predictedDistance);
 
         // The desired angle of the shooter's pivot
-        double angle = Math.toRadians(settings.getAngle().in(Degrees));
+        double angle = settings.getAngle().in(Radians);
 
         // If the angle is impossible to reach, negative, or infinite, just ignore the calculations
         if (Double.isInfinite(angle) || Double.isNaN(angle) || angle >= Math.toRadians(63.0) || angle <= Math.toRadians(17.0)) {
