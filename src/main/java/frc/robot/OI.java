@@ -55,7 +55,8 @@ public class OI {
     // Operator Controls
 
     // Shooter
-    static final int switchShooterMode  = LogitechF310.BUTTON_LEFT_BUMPER;
+    static final int switchAmpMode      = LogitechF310.BUTTON_LEFT_BUMPER;
+    static final int switchShooterMode  = LogitechF310.BUTTON_RIGHT_BUMPER;
     static final int setManualShoot     = LogitechF310.BUTTON_Y;
 
     // Climber
@@ -265,8 +266,8 @@ public class OI {
                 ClimberManager.autoPull();
             }
 
-        // RIGHT BUMPER
-        if (operatorStick.getRawButtonPressed(switchShooterMode)) {
+        // LEFT BUMPER
+        if (operatorStick.getRawButtonPressed(switchAmpMode)) {
             switch (currentShooterMode) {
                 case AMP:
                     currentShooterMode = ShooterMode.SPEAKER_MANUAL;
@@ -277,6 +278,19 @@ public class OI {
                 break;
             }
         }
+
+        // RIGHT BUMPER
+        // if (operatorStick.getRawButtonPressed(switchShooterMode)) {
+        //     switch (currentShooterMode) {
+        //         case SPEAKER:
+        //             currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+        //         break;
+                
+        //         case SPEAKER_MANUAL:
+        //             currentShooterMode = ShooterMode.SPEAKER;
+        //         break;
+        //     }
+        // }
 
         lastPOV = operatorStick.getPOV();
     }
