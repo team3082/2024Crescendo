@@ -201,7 +201,7 @@ public final class Shooter {
         double angle = Math.toRadians(settings.getAngle().in(Degrees));
 
         // If the angle is impossible to reach, negative, or infinite, just ignore the calculations
-        if (Double.isInfinite(angle) || Double.isNaN(angle) || angle >= Math.toRadians(63.0)) {
+        if (Double.isInfinite(angle) || Double.isNaN(angle) || angle >= Math.toRadians(63.0) || angle <= Math.toRadians(17.0)) {
             Telemetry.log(Telemetry.Severity.WARNING, "Auto-fire calculations impossible, shooter disabled.");
             neutral();
         } else {
