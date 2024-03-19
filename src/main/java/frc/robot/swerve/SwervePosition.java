@@ -22,7 +22,7 @@ public class SwervePosition {
     private static Vector2 absVelocity;
     private static Vector2 lastAbsVelocity;
 
-    private static boolean correctWithVision = true;
+    private static boolean correctWithVision = false;
 
     private static Vector2 lastOdomPos;
 

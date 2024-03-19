@@ -154,9 +154,9 @@ public final class Shooter {
             break;
 
             case NEUTRAL:
-                targetVelocity = 1000.0;
-                targetTop = 1000.0;
-                targetBottom = 1000.0;
+                targetVelocity = 3000.0;
+                targetTop = 3000.0;
+                targetBottom = 3000.0;
                 neutral();
                 ShooterPivot.neutral();
             break;

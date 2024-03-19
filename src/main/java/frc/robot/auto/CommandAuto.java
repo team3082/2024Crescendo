@@ -505,7 +505,7 @@ public class CommandAuto {
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
       new ParallelCommandGroup(
-        new SetShooterAngle(Math.toRadians(54)),
+        new SetShooterAngle(Math.toRadians(50)),
         new SetShooterVelocity(4200)
         ),
         new WaitCommand(0.2),
@@ -521,7 +521,7 @@ public class CommandAuto {
       ),
         new ChoreoFollow("4Middle.2"),
         new WaitCommand(0.1),
-        new SetShooterAngle(Math.toRadians(54)),
+        new SetShooterAngle(Math.toRadians(50)),
         new FireShooter(),
 
       new ParallelDeadlineGroup(
@@ -534,7 +534,7 @@ public class CommandAuto {
       ),
         new ChoreoFollow("4Middle.4"),
         new WaitCommand(0.1),
-        new SetShooterAngle(Math.toRadians(54)),
+        new SetShooterAngle(Math.toRadians(50)),
         new FireShooter(),
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
@@ -546,7 +546,7 @@ public class CommandAuto {
       ),
       new ChoreoFollow("4Middle.6"),
         new WaitCommand(0.1),
-        new SetShooterAngle(Math.toRadians(54.8)),
+        new SetShooterAngle(Math.toRadians(50)),
         new FireShooter()
     );
   }
