@@ -20,8 +20,8 @@ import static edu.wpi.first.units.Units.*;
  */
 public class ShooterTables {
     
-    public static InterpolatingDoubleTreeMap speedsDistanceMap; // RPM
-    public static InterpolatingDoubleTreeMap angleDistanceMap; // Degrees
+    public static InterpolatingDoubleTreeMap speedsDistanceMap = new InterpolatingDoubleTreeMap(); // RPM
+    public static InterpolatingDoubleTreeMap angleDistanceMap = new InterpolatingDoubleTreeMap(); // Degrees
 
     private static final ShooterSettings shooterSettings = new ShooterSettings();
 
