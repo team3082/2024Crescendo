@@ -1,6 +1,7 @@
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.Constants.ShooterConstants.*;
+import static edu.wpi.first.units.Units.*;
+import static frc.robot.configs.Constants.ShooterConstants.*;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -8,7 +9,15 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.configs.ShooterSettings;
+import frc.robot.subsystems.sensors.Telemetry;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
+import frc.robot.swerve.SwerveManager;
+import frc.robot.swerve.SwervePosition;
+import frc.robot.utils.Vector2;
 
 @SuppressWarnings("removal")
 public final class Shooter {
@@ -119,19 +128,20 @@ public final class Shooter {
                 if (atVelocity && ShooterPivot.atPos()) {
                     Intake.runHandoff();
                 }
-                setVariedVelocity(targetTop, targetBottom);
+                setVelocity(targetTop, targetBottom);
             break;
 
             case REVVING:
                 Intake.setState(IntakeState.FEED);
                 // Rev the flywheel up to our set velocity
-                setVariedVelocity(targetTop, targetBottom);
+                setVelocity(targetTop, targetBottom);
             break;
 
             case EJECT:
                 // Run the shooter forward, and the handoff/intake backwards.
                 topMotor.set(TalonFXControlMode.PercentOutput, 0.8);
                 bottomMotor.set(TalonFXControlMode.Follower, topMotor.getDeviceID());
+                Intake.eject();
             break;
 
             case DISABLED:
@@ -149,6 +159,56 @@ public final class Shooter {
                 targetBottom = 1000.0;
                 neutral();
                 ShooterPivot.neutral();
+            break;
+        }
+    }
+
+    /**
+     * Rev the shooter & angle the pivot to a calculated
+     * ShooterSettings table representing our desired
+     * conditions when the drivetrain is actively moving.
+     * 
+     * OI will slow down the translation & rotation of the robot
+     * when this function is active (i.e, when we are moving and shooting at the same time).
+     */
+    public static void fireWhileMoving() {
+        Vector2 robotPos = SwervePosition.getPosition(); // Current position of the robot
+        Vector2 robotVel = SwerveManager.getRobotDriveVelocity(); // Current velocity of the robot's drivetrain
+
+        // Get our distance between the robot & the speaker
+        double distance = robotPos.sub(speakerPos).mag() / 12.0;
+
+        // Calculate our shooter settings based off that distance
+        ShooterSettings settings = ShooterTables.calculate(distance);
+
+        // We treat both the shooter and the speaker as moving masses
+        // This math was done on a napkin at work
+        double timeToImpact = 0.0005 * distance / settings.getVelocity().in(RPM);
+
+        // Calculate the predicted offset of the speaker relative to our moving mass
+        // This was also scribbled on a napkin at work
+        Vector2 predictedOffset = new Vector2(robotVel.x * timeToImpact, robotVel.y * timeToImpact);
+
+        // Using the predicted offset, calculate the predicted location of the speaker
+        Vector2 predictedPos = speakerPos.sub(predictedOffset);
+
+        // Calculate the FINAL distance between both moving masses
+        double predictedDistance = robotPos.sub(predictedPos).mag() / 12.0;
+
+        // Mutate the settings based off the final predicted distance
+        settings = ShooterTables.calculate(predictedDistance);
+
+        // The desired angle of the shooter's pivot
+        double angle = settings.getAngle().in(Radians);
+
+        // If the angle is impossible to reach, negative, or infinite, just ignore the calculations
+        if (Double.isInfinite(angle) || Double.isNaN(angle) || angle >= Math.toRadians(63.0) || angle <= Math.toRadians(17.0)) {
+            Telemetry.log(Telemetry.Severity.WARNING, "Auto-fire calculations impossible, shooter disabled.");
+            neutral();
+        } else {
+            // Aim & rev to the desired velocity! Bazinga!
+            ShooterPivot.setPosition(angle);
+            revTo(settings.getVelocity().in(RPM));
         }
     }
 
@@ -156,7 +216,7 @@ public final class Shooter {
      * Set the desired velocity for our shooter to maintain.
      * @param newVelocity Velocity in RPM
      */
-    private static void setVariedVelocity(double topSpeed, double bottomSpeed) {
+    private static void setVelocity(double topSpeed, double bottomSpeed) {
         topMotor.set(TalonFXControlMode.Velocity, topSpeed);
         bottomMotor.set(TalonFXControlMode.Velocity, bottomSpeed);
     }
@@ -228,10 +288,8 @@ public final class Shooter {
         double top = topMotor.getSelectedSensorVelocity() * VelToRPM;
         double bottom = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
 
-
         double err = Math.abs(top - targetTop * VelToRPM);
         double err2 = Math.abs(bottom - targetBottom * VelToRPM);
-
 
         return err <= deadband && err2 <= deadband;
     }

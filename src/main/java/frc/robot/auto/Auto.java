@@ -8,7 +8,7 @@ import java.util.Queue;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.auto.autoframe.*;
-import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;

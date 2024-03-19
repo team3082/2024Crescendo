@@ -3,8 +3,8 @@ package frc.robot.swerve;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.sensors.Pigeon;
-import frc.robot.sensors.VisionManager;
+import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.subsystems.sensors.VisionManager;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveMath;
@@ -42,17 +42,13 @@ public class SwervePosition {
     public static void update() {
 
         Vector2 odometryPos = Odometry.getPosition();
-
         Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
         
         position = position.add(odometryInnovation);
-        
         lastOdomPos = odometryPos;
-        
         lastAbsVelocity = absVelocity;
 
         absVelocity = odometryInnovation.div(RTime.deltaTime());
-
 
         if (correctWithVision) {
             try {

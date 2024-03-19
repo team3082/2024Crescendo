@@ -19,7 +19,7 @@ import frc.robot.auto.commands.SetIntake;
 import frc.robot.auto.commands.SetIntakeFeedPos;
 import frc.robot.auto.commands.SetShooterAngle;
 import frc.robot.auto.commands.SetShooterVelocity;
-import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;

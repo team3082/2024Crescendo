@@ -1,7 +1,7 @@
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.Constants.Intake.*;
-import static frc.robot.Tuning.Intake.*;
+import static frc.robot.configs.Constants.Intake.*;
+import static frc.robot.configs.Tuning.Intake.*;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -153,7 +153,7 @@ public final class Intake {
 
     public static void suck() {
         // tracks if beambreak is brokey
-        if (beambreak.isBroken()) {
+        if (beambreak.isBroken() || motorHasPiece()) {
             if (hasPiece == false){
                 suckTime = RTime.now();
             }
@@ -183,7 +183,7 @@ public final class Intake {
 
     public static void autoSuck() {
         // tracks if beambreak is brokey
-        if (beambreak.isBroken()) {
+        if (beambreak.isBroken() || motorHasPiece()) {
             if (hasPiece == false){
                 suckTime = RTime.now();
             }
@@ -243,6 +243,12 @@ public final class Intake {
         return beambreak.isBroken();
     }
 
+    /** Returns if the intake has a piece based solely off the motors' current draw. */
+    public static boolean motorHasPiece() {
+        // Want to be active ONLY in ground,
+        // otherwise it would go off when we are stowed lol
+        return (state == IntakeState.GROUND && topBeltMotor.getOutputCurrent() >= 0.0 && bottomBeltMotor.getOutputCurrent() >= 0.0);
+    }
 
     public static void setState(IntakeState newState) {
         state = newState;

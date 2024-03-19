@@ -1,16 +1,16 @@
 package frc.robot.swerve;
 
+import static frc.robot.configs.Tuning.*;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Robot;
-import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.RMath;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveInstruction;
-
-import static frc.robot.Tuning.*;
 
 public class SwervePID {
 

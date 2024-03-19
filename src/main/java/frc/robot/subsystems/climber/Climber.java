@@ -5,11 +5,11 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import static frc.robot.Constants.Climber.*;
+import static frc.robot.configs.Constants.Climber.*;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
-import static frc.robot.Tuning.Climbers.*;
+import static frc.robot.configs.Tuning.Climbers.*;
 
 @SuppressWarnings("removal")
 public class Climber {

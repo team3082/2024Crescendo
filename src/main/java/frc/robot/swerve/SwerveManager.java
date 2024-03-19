@@ -2,13 +2,13 @@ package frc.robot.swerve;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.sensors.Pigeon;
+import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveMath;
 
-import static frc.robot.Constants.Swerve.*;
-import static frc.robot.Tuning.OI.KDYAW;
+import static frc.robot.configs.Constants.Swerve.*;
+import static frc.robot.configs.Tuning.OI.KDYAW;
 
 public final class SwerveManager {
     
@@ -47,6 +47,16 @@ public final class SwerveManager {
         double yawRate = Pigeon.getDeltaRotRad();
         double correctedRotSpeed = rotSpeed + yawRate * KDYAW;
         rotateAndDrive(correctedRotSpeed, move);
+    }
+
+    
+    /** 
+     * Locks the robot's angle to a specific angle, but allows free translation.
+     */
+    public static void moveAndRotateTo(Vector2 move, double toAngle) {
+        SwervePID.rotPID.setDest(toAngle);
+        double rotation = SwervePID.rotPID.updateOutput(Pigeon.getRotationRad());
+        rotateAndDrive(rotation, move);
     }
 
     public static void rotateAndDrive(double rotSpeed, Vector2 move) {
@@ -161,13 +171,6 @@ public final class SwerveManager {
         }
         // multiplied by 50 to return to inches per second
         return velSum.div(mods.length).mul(50);
-    }
-
-    /** locks the robots angle to a specific angle but allows free translation */
-    public static void moveAndRotateTo(Vector2 move, double toAngle) {
-        SwervePID.rotPID.setDest(toAngle);
-        double rotation = SwervePID.rotPID.updateOutput(Pigeon.getRotationRad());
-        rotateAndDrive(rotation, move);
     }
 
     /**

@@ -6,7 +6,7 @@ import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveState;
 import frc.robot.utils.Vector2;
 
-import static frc.robot.Tuning.*;
+import static frc.robot.configs.Tuning.*;
 
 public class FPIDFollower extends PIDFollower {
 

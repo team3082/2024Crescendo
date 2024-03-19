@@ -1,7 +1,7 @@
 package frc.robot.utils.trajectories;
 
 import frc.robot.utils.Vector2;
-import frc.robot.Tuning;
+import frc.robot.configs.Tuning;
 
 public class BezierCurve{
 

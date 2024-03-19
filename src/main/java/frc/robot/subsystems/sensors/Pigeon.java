@@ -1,4 +1,4 @@
-package frc.robot.sensors;
+package frc.robot.subsystems.sensors;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 

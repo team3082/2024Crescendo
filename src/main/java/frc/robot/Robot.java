@@ -7,21 +7,21 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.AutoSelector;
-import frc.robot.sensors.BannerLight;
-import frc.robot.sensors.Pigeon;
-import frc.robot.sensors.Telemetry;
-import frc.robot.sensors.VisionManager;
+import frc.robot.subsystems.sensors.BannerLight;
+import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.subsystems.sensors.Telemetry;
+import frc.robot.subsystems.sensors.VisionManager;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
-import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
 import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
 import frc.robot.auto.CommandAuto;
+import frc.robot.configs.Constants;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+    Constants.init();
     Pigeon.init();
     Pigeon.zero();
     SwerveManager.init();
