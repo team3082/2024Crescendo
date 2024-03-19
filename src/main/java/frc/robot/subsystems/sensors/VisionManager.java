@@ -22,8 +22,10 @@ public class VisionManager {
 
         //transform must be in meters
         cameras = new PhotonPoseEstimator[]{
-            new PhotonPoseEstimator(aprilTags, PoseStrategy.AVERAGE_BEST_TARGETS, new PhotonCamera("AprilTagCamera2"), new Transform3d())//TODO find cameraposition in meters
+            new PhotonPoseEstimator(aprilTags, PoseStrategy.AVERAGE_BEST_TARGETS, new PhotonCamera("ApriltagCamera1"), new Transform3d(3,4,-22, new Rotation3d(0, Math.toRadians(15), 0.0)).div(Constants.METERSTOINCHES))//TODO find cameraposition in meters
         };
+
+        System.out.println("Num cameras: " + cameras.length);
     }
 
 
@@ -33,13 +35,15 @@ public class VisionManager {
         for(PhotonPoseEstimator pe : cameras){
             var estimate = pe.update();
             if(estimate.isEmpty()){
+                // System.out.println("Empty Measurement");
                 continue;
             }else{
                 //converting from wpilib coordinates to ours for red alliance
-                Vector2 robotposefromcamera = new Vector2(estimate.get().estimatedPose.getX(), estimate.get().estimatedPose.getY());
+                Vector2 robotposefromcamera = new Vector2(-estimate.get().estimatedPose.getX(), -estimate.get().estimatedPose.getY());
                 robotposefromcamera = robotposefromcamera.mul(Constants.METERSTOINCHES);
                 poseSum = poseSum.add(robotposefromcamera);
                 numUpdates++;
+                System.out.println("Robot Pose from camera: " + robotposefromcamera);
             }
         }
 

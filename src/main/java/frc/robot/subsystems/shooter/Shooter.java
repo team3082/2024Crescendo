@@ -203,6 +203,7 @@ public final class Shooter {
     }
 
     public static void neutral() {
+        ShooterPivot.neutral();
         revTo(1000, 1000);
     }
 
