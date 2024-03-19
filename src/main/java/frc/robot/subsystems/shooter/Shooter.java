@@ -182,7 +182,7 @@ public final class Shooter {
 
         // We treat both the shooter and the speaker as moving masses
         // This math was done on a napkin at work
-        double timeToImpact = 0.0005 * distance * settings.getVelocity().in(RPM);
+        double timeToImpact = 0.0005 * distance / settings.getVelocity().in(RPM);
 
         // Calculate the predicted offset of the speaker relative to our moving mass
         // This was also scribbled on a napkin at work
