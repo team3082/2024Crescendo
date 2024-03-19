@@ -9,6 +9,8 @@ import java.util.List;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.shooter.ShooterTables;
 import frc.robot.utils.Vector2;
 
@@ -67,6 +69,10 @@ public final class Constants {
         public static final double targetX = 56.7;
         public static final double targetY = -327.13;
         public static final double TARGETHEIGHT = 78.0;
+
+        // Not the exact pos of the speaker. Rather, the position of the robot's
+        // center of rotation when pressed up against the subwoofer.
+        public static final Vector2 speakerPos = DriverStation.getAlliance().get() == Alliance.Red ? new Vector2() : new Vector2();
 
         public static final double SHOOTERPOSZ = 0.0;//the height the the end of the shooter lies on average. I don't feel like calculating this as a function of shooter angle
     }
