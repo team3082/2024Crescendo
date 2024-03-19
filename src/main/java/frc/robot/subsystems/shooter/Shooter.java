@@ -56,8 +56,8 @@ public final class Shooter {
 
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.neutralDeadband = 0.01;
-        config.closedloopRamp = 0.5;
-        config.openloopRamp = 0.5;
+        config.closedloopRamp = 0.25;
+        config.openloopRamp = 0.25;
         config.nominalOutputForward = 0.01;
         config.nominalOutputReverse = 0.01;
         config.supplyCurrLimit = new SupplyCurrentLimitConfiguration(true, 40, 40, 0);
@@ -68,14 +68,15 @@ public final class Shooter {
         topMotor.setNeutralMode(NeutralMode.Coast);
         bottomMotor.setNeutralMode(NeutralMode.Coast);
 
-        topMotor.config_kP(0, 0.28);
-        topMotor.config_kI(0, 0.00017);
+        topMotor.config_kP(0, 0.0005);
+        topMotor.config_kI(0, 0.000);
         topMotor.configMaxIntegralAccumulator(0, 1500);
         topMotor.config_kD(0, 0);
         topMotor.config_kF(0, 1023.0 * 0.698 / 12185.0);
 
-        bottomMotor.config_kP(0, 0.265);
-        bottomMotor.config_kI(0, 0.00017);
+
+        bottomMotor.config_kP(0, 0.0005);
+        bottomMotor.config_kI(0, 0.000);
         bottomMotor.configMaxIntegralAccumulator(0, 1000);
         bottomMotor.config_kD(0, 0);
         bottomMotor.config_kF(0, 1023.0 * 0.7 / 12121.0);
