@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.FireShooter;
+import frc.robot.auto.commands.ForceFire;
 import frc.robot.auto.commands.ChoreoFollow;
 import frc.robot.auto.commands.SetIntake;
 import frc.robot.auto.commands.SetIntakeFeedPos;
@@ -20,6 +21,7 @@ import frc.robot.auto.commands.SetShooterAngle;
 import frc.robot.auto.commands.SetShooterVelocity;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.shooter.Intake;
+import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
@@ -548,6 +550,40 @@ public class CommandAuto {
         new WaitCommand(0.1),
         new SetShooterAngle(Math.toRadians(50)),
         new FireShooter()
+    );
+  }
+
+  public static Command fourPieceMiddle2(){
+    SwervePosition.setPosition(
+        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -275));
+    Pigeon.setYaw(90);
+    
+    return new SequentialCommandGroup(
+      new SetShooterAngle(Math.toRadians(50.0)).alongWith(
+      new SetShooterVelocity(4200),
+      new SetIntakeFeedPos()),
+      new ForceFire(0.4),
+      new ChoreoFollow("4Middle.1").deadlineWith(
+        new SetIntake(),
+        new SetShooterVelocity(4200)
+      ),
+      new ChoreoFollow("4Middle.2"),
+      new SetShooterAngle(Math.toRadians(50)),
+      new ForceFire(0.2).onlyIf(() -> Intake.reallyHasPiece),
+      new ChoreoFollow("4Middle.3").deadlineWith(
+        new SetIntake(),
+        new SetShooterVelocity(4200)
+      ),
+      new ChoreoFollow("4Middle.4"),
+      new SetShooterAngle(Math.toRadians(50)),
+      new ForceFire(0.2).onlyIf(() -> Intake.reallyHasPiece),
+      new ChoreoFollow("4Middle.5").deadlineWith(
+        new SetIntake(),
+        new SetShooterVelocity(4200)
+      ),
+      new ChoreoFollow("4Middle.6"),
+      new SetShooterAngle(Math.toRadians(50)),
+      new ForceFire(0.2).andThen(new InstantCommand(Shooter::disable))
     );
   }
 
