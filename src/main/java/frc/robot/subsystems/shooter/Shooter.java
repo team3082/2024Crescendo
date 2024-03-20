@@ -3,6 +3,7 @@ package frc.robot.subsystems.shooter;
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.configs.Constants.ShooterConstants.*;
 
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -55,7 +56,7 @@ public final class Shooter {
 
     public static double handoffLiveTime = 0.0;
 
-    public static final double deadband = 15.0;
+    public static final double deadband = 50.0;
     
     public static void init() {
         ShooterPivot.init();
@@ -77,14 +78,14 @@ public final class Shooter {
         topMotor.setNeutralMode(NeutralMode.Coast);
         bottomMotor.setNeutralMode(NeutralMode.Coast);
 
-        topMotor.config_kP(0, 0.0005);
+        topMotor.config_kP(0, 0.2);
         topMotor.config_kI(0, 0.000);
         topMotor.configMaxIntegralAccumulator(0, 1500);
         topMotor.config_kD(0, 0);
         topMotor.config_kF(0, 1023.0 * 0.698 / 12185.0);
 
 
-        bottomMotor.config_kP(0, 0.0005);
+        bottomMotor.config_kP(0, 0.2);
         bottomMotor.config_kI(0, 0.000);
         bottomMotor.configMaxIntegralAccumulator(0, 1000);
         bottomMotor.config_kD(0, 0);
@@ -145,8 +146,8 @@ public final class Shooter {
             break;
 
             case DISABLED:
-                topMotor.set(TalonFXControlMode.Disabled, 0.0);
-                bottomMotor.set(TalonFXControlMode.Disabled, 0.0);
+                topMotor.set(TalonFXControlMode.PercentOutput, 0.3);
+                bottomMotor.set(TalonFXControlMode.PercentOutput, 0.3);
                 targetVelocity = 0.0;
                 targetTop = 0.0;
                 targetBottom = 0.0;
@@ -154,9 +155,9 @@ public final class Shooter {
             break;
 
             case NEUTRAL:
-                targetVelocity = 3000.0;
-                targetTop = 3000.0;
-                targetBottom = 3000.0;
+                targetVelocity = 1000.0;
+                targetTop = 1000.0;
+                targetBottom = 1000.0;
                 neutral();
                 ShooterPivot.neutral();
             break;
@@ -266,7 +267,8 @@ public final class Shooter {
      */
     public static void neutral() {
         ShooterPivot.neutral();
-        revTo(1000, 1000);
+        shooterMode = ShooterStatus.DISABLED;
+        // revTo(1000, 1000);
     }
 
     /**
