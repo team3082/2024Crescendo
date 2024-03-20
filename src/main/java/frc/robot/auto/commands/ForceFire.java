@@ -36,7 +36,7 @@ public class ForceFire extends Command{
 
     @Override
     public boolean isFinished(){
-        return Timer.getFPGATimestamp() - startFireTime > 0.5;
+        return Timer.getFPGATimestamp() - startFireTime > 0.4;
     }
 
 }
