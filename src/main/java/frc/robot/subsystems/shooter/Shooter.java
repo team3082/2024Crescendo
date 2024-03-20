@@ -55,7 +55,7 @@ public final class Shooter {
 
     public static double handoffLiveTime = 0.0;
 
-    public static final double deadband = 50.0;
+    public static final double deadband = 15.0;
     
     public static void init() {
         ShooterPivot.init();
@@ -261,6 +261,9 @@ public final class Shooter {
         shooterMode = ShooterStatus.EJECT;
     }
 
+    /**
+     * Sets the shooter & pivot to neutral output.
+     */
     public static void neutral() {
         ShooterPivot.neutral();
         revTo(1000, 1000);
@@ -275,15 +278,15 @@ public final class Shooter {
     }
 
     /**
-     * Eject the shooter
+     * Eject the shooter.
      */
     public static void eject() {
         shooterMode = ShooterStatus.EJECT;
     }
 
     /**
-     * Can we fire a gamepiece?
-     * Checks the top flywheel first.
+     * Returns whether or not we can fire the shooter by 
+     * checking the velocities of both wheels.
      */
     public static boolean canShoot() {
         double top = topMotor.getSelectedSensorVelocity() * VelToRPM;

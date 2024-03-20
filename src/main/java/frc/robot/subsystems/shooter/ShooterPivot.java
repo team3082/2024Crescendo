@@ -123,7 +123,7 @@ public final class ShooterPivot {
         if (isDisabled)
             return false;
 
-        return motor.getSelectedSensorPosition() < radToTicks(targetPos) + radToTicks(Math.toRadians(1.2)) && motor.getSelectedSensorPosition() > radToTicks(targetPos) - radToTicks(Math.toRadians(1.2));
+        return motor.getSelectedSensorPosition() < radToTicks(targetPos) + radToTicks(Math.toRadians(0.5)) && motor.getSelectedSensorPosition() > radToTicks(targetPos) - radToTicks(Math.toRadians(0.5));
     }
     
     public static void update() {
