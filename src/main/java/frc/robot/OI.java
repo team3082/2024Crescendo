@@ -83,8 +83,8 @@ public class OI {
 
     static boolean isGround = false;
 
-    public static double topVector = 600;
-    public static double bottomVector = 1250;
+    public static double topVector = 400;
+    public static double bottomVector = 1100;
 
     /**
      * Initialize OI with preset joystick ports.
@@ -140,7 +140,7 @@ public class OI {
         double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
         double manualRPM = 4000.0;
-        double manualAngle = 51.0;
+        double manualAngle = 54.5;
 
         if (drive.mag() < 0.125) 
             drive = new Vector2();
@@ -189,7 +189,8 @@ public class OI {
                 case SPEAKER_MANUAL:
                     aligning = false;
                     ShooterPivot.setPosition(Math.toRadians(manualAngle));
-                    Shooter.revTo(manualRPM);
+                    // Shooter.revTo(manualRPM);
+                    Shooter.revTo(manualRPM + 100, manualRPM);
                     Shooter.shoot();
                 break;
             

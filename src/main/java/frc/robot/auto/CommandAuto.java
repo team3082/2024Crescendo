@@ -502,12 +502,12 @@ public class CommandAuto {
 
   public static Command fourPieceMiddle() {
     SwervePosition.setPosition(
-        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -275));
+        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
     Pigeon.setYaw(90);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
       new ParallelCommandGroup(
-        new SetShooterAngle(Math.toRadians(50)),
+        new SetShooterAngle(Math.toRadians(54)),
         new SetShooterVelocity(4200)
         ),
         new WaitCommand(0.2),
@@ -523,7 +523,7 @@ public class CommandAuto {
       ),
         new ChoreoFollow("4Middle.2"),
         new WaitCommand(0.1),
-        new SetShooterAngle(Math.toRadians(50)),
+        new SetShooterAngle(Math.toRadians(54)),
         new FireShooter(),
 
       new ParallelDeadlineGroup(
@@ -536,7 +536,7 @@ public class CommandAuto {
       ),
         new ChoreoFollow("4Middle.4"),
         new WaitCommand(0.1),
-        new SetShooterAngle(Math.toRadians(50)),
+        new SetShooterAngle(Math.toRadians(54)),
         new FireShooter(),
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
@@ -548,7 +548,7 @@ public class CommandAuto {
       ),
       new ChoreoFollow("4Middle.6"),
         new WaitCommand(0.1),
-        new SetShooterAngle(Math.toRadians(50)),
+        new SetShooterAngle(Math.toRadians(54)),
         new FireShooter()
     );
   }

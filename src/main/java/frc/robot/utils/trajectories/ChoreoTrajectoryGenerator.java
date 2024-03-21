@@ -11,8 +11,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.utils.swerve.DiscreteSwerveState;
+import frc.robot.utils.swerve.SwerveState;
 
 import static frc.robot.configs.Constants.METERSTOINCHES;
 
@@ -101,7 +104,6 @@ public class ChoreoTrajectoryGenerator{
             @Override
             public void run(){
                 for(File f : files){
-                    long start = System.currentTimeMillis();
                     List<ChoreoState> choreoStates = null;
                     String simpleName = f.toPath().getFileName().toString();
                     simpleName = simpleName.substring(0,simpleName.length() - 5);
@@ -114,7 +116,7 @@ public class ChoreoTrajectoryGenerator{
                         e.printStackTrace();
                     }
 
-                    DiscreteTraj traj = new DiscreteTraj(new ArrayList<DiscreteSwerveState>(choreoStates.stream().map((s) -> toSwerveState(s)).toList()));
+                    DiscreteTraj traj = new DiscreteTraj(new ArrayList<DiscreteSwerveState>(choreoStates.stream().map(s -> toSwerveState(s).flip()).toList()));
                     choreoTrajectories.put(simpleName, traj);
                 }
             }

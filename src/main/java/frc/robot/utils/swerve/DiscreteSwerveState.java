@@ -19,6 +19,18 @@ public class DiscreteSwerveState extends SwerveState implements Comparable<Doubl
         return Double.compare(time, arg0);
     }
 
+    @Override
+    public DiscreteSwerveState flip(){
+        return new DiscreteSwerveState(
+            -this.x,
+            this.y,
+            -(this.theta - Math.PI / 2.0) + Math.PI / 2.0,
+            -this.dx,
+            this.dy,
+            -this.dtheta,
+            time);
+    }
+
     
     
 }

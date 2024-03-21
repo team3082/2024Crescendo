@@ -240,7 +240,7 @@ public class Telemetry {
         }
 
         // Update field position and trajectory
-        Vector2 fieldPosMeters = new Vector2(SwervePosition.getPosition().y * allianceMultiplier, -SwervePosition.getPosition().x)
+        Vector2 fieldPosMeters = new Vector2(SwervePosition.getPosition().y * allianceMultiplier, allianceMultiplier * -SwervePosition.getPosition().x)
                 .add(new Vector2(325.62, 157.75))
                 .mul(IN_TO_M);
         Rotation2d rotation = Rotation2d.fromRadians(Pigeon.getRotationRad() - Math.PI / 2 * allianceMultiplier);

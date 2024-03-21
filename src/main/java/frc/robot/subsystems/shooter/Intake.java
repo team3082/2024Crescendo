@@ -37,12 +37,12 @@ public final class Intake {
         pivotMotor.configNeutralDeadband(0.01);
         pivotMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 30);
         
-        pivotMotor.config_kP(0, 0.1, 30);
+        pivotMotor.config_kP(0, 0.6, 30);
         pivotMotor.config_kI(0, 0.0, 30);
-        pivotMotor.config_kD(0, 0.02, 30);
+        pivotMotor.config_kD(0, 0.2, 30);
 
         pivotMotor.configMotionAcceleration(30000);
-        pivotMotor.configMotionCruiseVelocity(15000);
+        pivotMotor.configMotionCruiseVelocity(24000);
         pivotMotor.configMotionSCurveStrength(1);
 
         SupplyCurrentLimitConfiguration pivotCurrentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0 );
@@ -174,8 +174,8 @@ public final class Intake {
                 }
             }
         } else {
-            topPID.setReference(-0.5, ControlType.kDutyCycle);
-            bottomPID.setReference(-0.5, ControlType.kDutyCycle);
+            topPID.setReference(-0.8, ControlType.kDutyCycle);
+            bottomPID.setReference(-0.8, ControlType.kDutyCycle);
             Intake.setState(IntakeState.GROUND);
         }
         // System.out.println(suckState.name());
@@ -197,15 +197,15 @@ public final class Intake {
         if (hasPiece) {
             topPID.setReference(0.0, ControlType.kDutyCycle);
             bottomPID.setReference(0.0, ControlType.kDutyCycle);
-            if (RTime.now() >= suckTime + 0.15) {
+            if (RTime.now() >= suckTime + 0.05) {
                 if (suckTime != 0.0) {
                     reallyHasPiece = true;
                     Intake.setState(IntakeState.STOW);
                 }
             }
         } else {
-            topPID.setReference(-0.5, ControlType.kDutyCycle);
-            bottomPID.setReference(-0.5, ControlType.kDutyCycle);
+            topPID.setReference(-0.8, ControlType.kDutyCycle);
+            bottomPID.setReference(-0.8, ControlType.kDutyCycle);
             Intake.setState(IntakeState.GROUND);
         }
         // System.out.println(suckState.name());

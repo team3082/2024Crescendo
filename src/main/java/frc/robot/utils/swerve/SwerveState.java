@@ -126,7 +126,7 @@ public class SwerveState {
             -this.x,
             this.y,
             -(this.theta - Math.PI / 2.0) + Math.PI / 2.0,
-            this.dx,
+            -this.dx,
             this.dy,
             -this.dtheta
         );

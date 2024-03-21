@@ -1,6 +1,6 @@
 package frc.robot.configs;
 
-public class Tuning {
+public final class Tuning {
     //Swerve
     public static final double MOVEP = 2;
     public static final double MOVEI = 0.3;
@@ -21,11 +21,11 @@ public class Tuning {
      public static final double SWERVE_ROT_D = 0;
  
      // TODO Tune
-     public static final double SWERVE_TRJ_PPOS = 0.03;
+     public static final double SWERVE_TRJ_PPOS = 0.042;
      public static final double SWERVE_TRJ_IPOS = 0.00;
-     public static final double SWERVE_TRJ_DPOS = 0.0015;
+     public static final double SWERVE_TRJ_DPOS = 0.003;
 
-     public static final double SWERVE_TRJ_PROT = 0.25;
+     public static final double SWERVE_TRJ_PROT = 0.3;
      public static final double SWERVE_TRJ_IROT = 0.0;
      public static final double SWERVE_TRJ_DROT = 0.02;
 
@@ -60,7 +60,7 @@ public class Tuning {
         public static final double PIVOTKF = 0.0;
 
         public static final double PIVOT_CRUISE_VEL = 10000.0; // Ticks per 100ms
-        public static final double PIVOT_MAX_ACCEL = 8000.0; // In ticks per 100ms per second
+        public static final double PIVOT_MAX_ACCEL = 12000.0; // In ticks per 100ms per second
         public static final int PIVOT_JERK_STRENGTH = 1; // [0,8], higher number means lower jerk 
 
         public static final double PIVOT_DEADBAND_POS = 0.0; // In motorticks
