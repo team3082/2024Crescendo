@@ -51,7 +51,7 @@ public class CommandAuto {
   // starts in middle, shoots preload
   public static Command onePieceMiddle() {
     SwervePosition.setPosition(
-        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -275));
+        new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
     Pigeon.setYaw(90);
     
     Intake.setState(IntakeState.FEED);
@@ -70,7 +70,7 @@ public class CommandAuto {
 
   // starts on source side, shoots preload
   public static Command onePieceSource() {
-    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -89,7 +89,7 @@ public class CommandAuto {
 
   // starts on amp side, shoots preload
   public static Command onePieceAmp() {
-    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -109,7 +109,7 @@ public class CommandAuto {
   // starts in middle, shoots preload, grabs the middle close piece, shoots
   public static Command twoPieceMiddle() {
     SwervePosition.setPosition(
-        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -275));
+        new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
     Pigeon.setYaw(90);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -141,7 +141,7 @@ public class CommandAuto {
 
   // starts on source side, shoots preload, grabs the source close piece, shoots
   public static Command twoPieceSource() {
-    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -173,7 +173,7 @@ public class CommandAuto {
 
   // starts on amp side, shoots preload, grabs the amp close piece, shoots
   public static Command twoPieceAmp() {
-    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -205,7 +205,7 @@ public class CommandAuto {
 
   // starts on source side, shoots preload, grabs far piece on source side, shoots
   public static Command twoPieceSourceFar() {
-    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -237,7 +237,7 @@ public class CommandAuto {
 
   // starts on amp side, shoots preload, grabs far piece on amp side, shoots
   public static Command twoPieceAmpFar() {
-    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -269,7 +269,7 @@ public class CommandAuto {
 
   // starts on source side, shoots preload, grabs far, shoots, grabs far, shoots
   public static Command threePieceSourceFar() {
-    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -321,7 +321,7 @@ public class CommandAuto {
 
   // starts on source side, shoots preload, grabs source close piece, shoots, grabs far piece, shoots
   public static Command threePieceSourceHalfFar() {
-    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -366,7 +366,7 @@ public class CommandAuto {
 
   // starts on amp side, shoots preload, grabs amp side close piece, shoots, grabs far piece, shoots
   public static Command threePieceAmpHalfFar() {
-    SwervePosition.setPosition(new Vector2(100 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    SwervePosition.setPosition(new Vector2(100 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -411,7 +411,7 @@ public class CommandAuto {
 
   // starts on source side, shoots preload, grabs source close piece, shoots, grabs middle close piece, shoots
   public static Command threePieceSource() {
-    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -457,7 +457,7 @@ public class CommandAuto {
 
   // starts on amp side, shoots preload, grabs amp close piece, shoots, grabs far piece, shoots
   public static Command threePieceAmp() {
-    SwervePosition.setPosition(new Vector2(100 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -300));
+    SwervePosition.setPosition(new Vector2(100 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -502,7 +502,7 @@ public class CommandAuto {
 
   public static Command fourPieceMiddle() {
     SwervePosition.setPosition(
-        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
+        new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
     Pigeon.setYaw(90);
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -555,7 +555,7 @@ public class CommandAuto {
 
   public static Command fourPieceMiddle2(){
     SwervePosition.setPosition(
-        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
+        new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
     Pigeon.setYaw(90);
     
     return new SequentialCommandGroup(
