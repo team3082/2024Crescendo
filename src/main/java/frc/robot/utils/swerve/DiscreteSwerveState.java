@@ -31,6 +31,11 @@ public class DiscreteSwerveState extends SwerveState implements Comparable<Doubl
             time);
     }
 
+    @Override
+    public String toString(){
+        return super.toString() + String.format("%ntime: % .2f", time);
+    }
+
     
     
 }

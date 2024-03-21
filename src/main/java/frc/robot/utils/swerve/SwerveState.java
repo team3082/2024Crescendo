@@ -131,4 +131,18 @@ public class SwerveState {
             -this.dtheta
         );
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o.getClass() == SwerveState.class){
+            SwerveState other = (SwerveState) o;
+            return other.x == this.x &&
+                   other.y == this.y &&
+                   other.theta == this.theta &&
+                   other.dx == this.dx &&
+                   other.dy == this.dy &&
+                   other.dtheta == this.dtheta;
+        }
+        return false;
+    }
 }

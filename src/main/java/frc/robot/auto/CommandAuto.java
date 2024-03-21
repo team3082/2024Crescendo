@@ -555,7 +555,7 @@ public class CommandAuto {
 
   public static Command fourPieceMiddle2(){
     SwervePosition.setPosition(
-        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? -1 : -1), -275));
+        new Vector2(56.78 * (DriverStation.getAlliance().get() == Alliance.Red && RobotBase.isReal() ? 1 : -1), -275));
     Pigeon.setYaw(90);
     
     return new SequentialCommandGroup(

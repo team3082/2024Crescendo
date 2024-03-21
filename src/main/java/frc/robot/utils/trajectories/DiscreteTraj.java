@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import frc.robot.utils.swerve.DiscreteSwerveState;
 import frc.robot.utils.swerve.SwerveState;
+import java.util.stream.Stream;
 
 public class DiscreteTraj implements SwerveTrajectory{
+    private static final String Stream = null;
     protected ArrayList<DiscreteSwerveState> path;
 
     @Override
@@ -58,6 +60,14 @@ public class DiscreteTraj implements SwerveTrajectory{
 
     public DiscreteTraj(ArrayList<DiscreteSwerveState> path){
         this.path = path;
+    }
+
+    /**
+     * returns a new trajectory that is mirrored for the opposite alliance
+     * @return
+     */
+    public DiscreteTraj flip(){
+        return new DiscreteTraj(new ArrayList<>(path.stream().map(DiscreteSwerveState::flip).toList()));
     }
 
 }

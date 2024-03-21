@@ -116,7 +116,7 @@ public class ChoreoTrajectoryGenerator{
                         e.printStackTrace();
                     }
 
-                    DiscreteTraj traj = new DiscreteTraj(new ArrayList<DiscreteSwerveState>(choreoStates.stream().map(s -> toSwerveState(s).flip()).toList()));
+                    DiscreteTraj traj = new DiscreteTraj(new ArrayList<DiscreteSwerveState>(choreoStates.stream().map(s -> toSwerveState(s)).toList()));
                     choreoTrajectories.put(simpleName, traj);
                 }
             }

@@ -101,4 +101,13 @@ public class Vector2 {
         return this.sub(v).mag();
     }
 
+    @Override
+    public boolean equals(Object v){
+        if(v.getClass() == Vector2.class){
+            Vector2 other = (Vector2) v;
+            return other.x == this.x && other.y == this.y;
+        }
+        return false;
+    }
+
 }
