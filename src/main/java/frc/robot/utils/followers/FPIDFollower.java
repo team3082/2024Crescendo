@@ -24,9 +24,9 @@ public class FPIDFollower<T extends DiscreteTraj> extends PIDFollower<T> {
         this.kProt = f.kProt;
         this.feedForward = new Function<SecondOrderSwerveState, SwerveInstruction>() {
             public SwerveInstruction apply(SecondOrderSwerveState state) {
-                Vector2 ksdrive = new Vector2(state.dx, state.dy).norm().mul(kstrans);
-                Vector2 kvdrive = new Vector2(state.dx, state.dy).mul(kvtrans);
-                Vector2 kadrive = new Vector2(state.ddx, state.ddy).mul(katrans);
+                Vector2 ksdrive = new Vector2(state.dy, state.dx).norm().mul(kstrans);
+                Vector2 kvdrive = new Vector2(state.dy, state.dx).mul(kvtrans);
+                Vector2 kadrive = new Vector2(state.ddy, state.ddx).mul(katrans);
 
                 double kssteer = Math.signum(state.dtheta) * ksrot;
                 double kvsteer = state.dtheta * kvrot;

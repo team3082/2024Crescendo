@@ -135,8 +135,8 @@ public class OI {
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
-        double manualRPM = 4000.0;
-        double manualAngle = 54.5;
+        double manualRPM = 3800.0;
+        double manualAngle = 54;
 
         if (drive.mag() < 0.125) 
             drive = new Vector2();
@@ -186,7 +186,7 @@ public class OI {
                     aligning = false;
                     ShooterPivot.setPosition(Math.toRadians(manualAngle));
                     // Shooter.revTo(manualRPM);
-                    Shooter.revTo(manualRPM + 100, manualRPM);
+                    Shooter.revTo(manualRPM, manualRPM);
                     Shooter.shoot();
                 break;
             

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.AutoSelector;
@@ -18,6 +20,7 @@ import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
+import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
 import frc.robot.auto.CommandAuto;
 import frc.robot.configs.Constants;
@@ -57,6 +60,9 @@ public class Robot extends TimedRobot {
     Telemetry.init();
     BannerLight.init();
     // SwervePosition.enableVision();
+
+    SwervePosition.setPosition(
+        new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
   }
 
   @Override
@@ -97,7 +103,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     OI.init();
-    // SwervePosition.enableVision();
+    SwervePosition.setPosition(
+        new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
   }
 
   @Override
