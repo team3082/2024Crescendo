@@ -4,9 +4,10 @@ import frc.robot.configs.Tuning;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveState;
+import frc.robot.utils.trajectories.SwerveTrajectory;
 import frc.robot.utils.RMath;
 
-public class PIDFollower extends SwerveFollower {
+public class PIDFollower<T extends SwerveTrajectory> extends SwerveFollower<T> {
     protected double kPpos, kIpos,kDpos;
     protected double kProt, kIrot, kDrot;
     protected double[] intAccum = new double[3];

@@ -1,5 +1,6 @@
 package frc.robot.auto.autoframe;
 
+import frc.robot.utils.followers.FPIDFollower;
 import frc.robot.utils.followers.PIDFollower;
 import frc.robot.utils.trajectories.DiscreteTraj;
 
@@ -10,12 +11,12 @@ import java.util.Optional;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-public class ChoreoFollow extends TrajectoryFollow{
+public class ChoreoFollow extends TrajectoryFollow<FPIDFollower<DiscreteTraj>>{
     
     public final String trajName;
 
     public ChoreoFollow(String name) {
-        super(new PIDFollower());
+        super(new FPIDFollower<DiscreteTraj>());
 
         this.trajName = name;
         this.blocking = true;

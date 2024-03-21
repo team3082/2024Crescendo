@@ -3,11 +3,10 @@ package frc.robot.utils.trajectories;
 import java.util.ArrayList;
 
 import frc.robot.utils.swerve.DiscreteSwerveState;
+import frc.robot.utils.swerve.SecondOrderSwerveState;
 import frc.robot.utils.swerve.SwerveState;
-import java.util.stream.Stream;
 
 public class DiscreteTraj implements SwerveTrajectory{
-    private static final String Stream = null;
     protected ArrayList<DiscreteSwerveState> path;
 
     @Override
@@ -36,9 +35,10 @@ public class DiscreteTraj implements SwerveTrajectory{
         return endState().time;
     }
 
-    public SwerveState get(double t){
+    @Override
+    public SecondOrderSwerveState get(double t){
         if(t > this.length()){
-            return endState();
+            return new SecondOrderSwerveState(endState(), 0,0,0);//right now assumes zero acceleration, may need to fix later
         }
         int posa = path.size() -1;
         for(int i = 0; i < path.size(); i++){
@@ -48,14 +48,11 @@ public class DiscreteTraj implements SwerveTrajectory{
             }
         }
         if(posa >= path.size() - 1){
-            return endState();
+            return new SecondOrderSwerveState(endState(), 0,0,0);//right now assumes zero acceleration, may need to fix later
         }
-        SwerveState a = path.get(posa);
-        SwerveState b = path.get(posa+1);
-        double deltaT = t - path.get(posa).time;
-        SwerveState blueState= a.interpolate(b, deltaT);
-        // return (DriverStation.getAlliance().get() == Alliance.Red) ? blueState.flip() : blueState;
-        return blueState;
+        DiscreteSwerveState a = path.get(posa);
+        DiscreteSwerveState b = path.get(posa+1);
+        return a.interpolateSecondOrder(b, t);
     }
 
     public DiscreteTraj(ArrayList<DiscreteSwerveState> path){

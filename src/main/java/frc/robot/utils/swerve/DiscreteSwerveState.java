@@ -36,6 +36,30 @@ public class DiscreteSwerveState extends SwerveState implements Comparable<Doubl
         return super.toString() + String.format("%ntime: % .2f", time);
     }
 
+    /**
+     * Linearly interpolates between the points, and returns a SecondOrderSwerveState
+     */
+    public SecondOrderSwerveState interpolateSecondOrder(DiscreteSwerveState s, double t){
+        DiscreteSwerveState s0, sf;
+        if(this.time < s.time){
+            s0 = this;
+            sf = s;
+        }else{
+            s0 = s;
+            sf = this;
+        }
+
+        double deltaT = sf.time - s0.time;
+
+        SwerveState interState = s0.interpolate(sf, (t - s0.time) / deltaT);
+
+        double ddx = (sf.dx - s0.dx) / deltaT;
+        double ddy = (sf.dy - s0.dy) / deltaT;
+        double ddtheta = (sf.dtheta - s0.dtheta) / deltaT;
+
+        return new SecondOrderSwerveState(interState, ddx, ddy, ddtheta);
+    }
+
     
     
 }

@@ -11,12 +11,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.utils.swerve.DiscreteSwerveState;
-import frc.robot.utils.swerve.SwerveState;
-
 import static frc.robot.configs.Constants.METERSTOINCHES;
 
 public class ChoreoTrajectoryGenerator{

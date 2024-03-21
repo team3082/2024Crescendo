@@ -4,10 +4,10 @@ import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveState;
 import frc.robot.utils.trajectories.SwerveTrajectory;
 
-public abstract class SwerveFollower {
-    public SwerveTrajectory path;
+public abstract class SwerveFollower<T extends SwerveTrajectory> {
+    public T path;
 
-    public void setTrajectory(SwerveTrajectory traj) {
+    public void setTrajectory(T traj) {
         this.path = traj;
     }
     

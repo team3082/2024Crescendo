@@ -4,11 +4,12 @@ import frc.robot.swerve.SwervePID;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveState;
+import frc.robot.utils.trajectories.SwerveTrajectory;
 
 /**
  * currently assumes zero velocity at desired end point.
  */
-public class PurePursuit extends SwerveFollower {
+public class PurePursuit<T extends SwerveTrajectory> extends SwerveFollower<T> {
     //maybe inches, maybe some random distance
     private final double lookAheadDist;
     //in/s

@@ -8,12 +8,13 @@ import frc.robot.utils.Vector2;
 import frc.robot.utils.followers.SwerveFollower;
 import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveState;
+import frc.robot.utils.trajectories.SwerveTrajectory;
 
-public class TrajectoryFollow extends Autoframe{
-    public SwerveFollower controller;
+public class TrajectoryFollow<T extends SwerveFollower<? extends SwerveTrajectory>> extends Autoframe{
+    public T controller;
     public double tStart;
 
-    public TrajectoryFollow(SwerveFollower follower){
+    public TrajectoryFollow(T follower){
         this.controller = follower;
         this.done = false;
         this.blocking = true;
