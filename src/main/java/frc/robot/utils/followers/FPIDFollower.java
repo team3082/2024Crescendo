@@ -2,6 +2,8 @@ package frc.robot.utils.followers;
 
 import java.util.function.Function;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.utils.swerve.SecondOrderSwerveState;
 import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveState;
@@ -31,7 +33,12 @@ public class FPIDFollower<T extends DiscreteTraj> extends PIDFollower<T> {
                 double kssteer = Math.signum(state.dtheta) * ksrot;
                 double kvsteer = state.dtheta * kvrot;
                 double kasteer = state.ddtheta * karot;
-                return new SwerveInstruction(kssteer + kvsteer + kasteer, ksdrive.add(kvdrive).add(kadrive));
+                
+                Vector2 drive = ksdrive.add(kvdrive).add(kadrive);
+                if(DriverStation.getAlliance().get() == Alliance.Blue){
+                    drive = drive.rotate(Math.PI);
+                }
+                return new SwerveInstruction(kssteer + kvsteer + kasteer, drive);
             }
         };
     }

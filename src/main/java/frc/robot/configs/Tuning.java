@@ -25,16 +25,16 @@ public final class Tuning {
      public static final double SWERVE_TRJ_IPOS = 0.00;
      public static final double SWERVE_TRJ_DPOS = 0.0002;
 
-     public static final double SWERVE_TRJ_PROT = 0.0;
+     public static final double SWERVE_TRJ_PROT = 0.3;
      public static final double SWERVE_TRJ_IROT = 0.0;
-     public static final double SWERVE_TRJ_DROT = 0.0;
+     public static final double SWERVE_TRJ_DROT = 0.02;
 
      public static final double SWERVE_KSPOS = 0.00;
-     public static final double SWERVE_KVPOS = 0.8/150;
-     public static final double SWERVE_KAPOS = 0.0;
+     public static final double SWERVE_KVPOS = 0.8/180;
+     public static final double SWERVE_KAPOS = 0.00004;
 
-     public static final double SWERVE_KSROT = 0.005;
-     public static final double SWERVE_KVROT = 0.55 / (3.0 * Math.PI);
+     public static final double SWERVE_KSROT = 0.0;//0.005;
+     public static final double SWERVE_KVROT = 0.0;//0.55 / (3.0 * Math.PI);
      public static final double SWERVE_KAROT = 0.0;
  
      public static final int CURVE_RESOLUTION = 3000;

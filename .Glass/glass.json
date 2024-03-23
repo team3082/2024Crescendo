@@ -1,6 +1,17 @@
 {
   "NetworkTables": {
+    "retained": {
+      "Shuffleboard": {
+        "SmartDashboard": {
+          "open": true
+        },
+        "open": true
+      }
+    },
     "transitory": {
+      "LiveWindow": {
+        "open": true
+      },
       "Shuffleboard": {
         "Positions": {
           "open": true
@@ -22,8 +33,7 @@
         },
         "ApriltagCamera4": {
           "open": true
-        },
-        "open": true
+        }
       }
     },
     "types": {

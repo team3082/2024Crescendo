@@ -535,7 +535,7 @@ public class CommandAuto {
       ),
         new ChoreoFollow("4Middle.4"),
         new WaitCommand(0.1),
-        new SetShooterAngle(Math.toRadians(54)),
+        new SetShooterAngle(Math.toRadians(57.5)),
         new FireShooter(),
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
