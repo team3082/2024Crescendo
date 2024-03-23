@@ -1,6 +1,10 @@
 package frc.robot.utils.followers;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.configs.Tuning;
+import frc.robot.subsystems.sensors.Telemetry;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveState;
@@ -54,6 +58,8 @@ public class PIDFollower<T extends SwerveTrajectory> extends SwerveFollower<T> {
 
         Vector2 trans = new Vector2(error[0] * kPpos + -error[3] * kDpos + intAccum[0] * kIpos, error[1] * kPpos + -error[4] * kDpos + intAccum[1] * kIpos);
         double rot = kProt * error[2] + -kDrot * error[5] + kIrot * intAccum[2];
+        
+        Telemetry.desiredPos = new Pose2d(new Translation2d(desiredState.x, desiredState.y), Rotation2d.fromRadians(desiredState.theta));
         
         return new SwerveInstruction(rot, trans);
     }

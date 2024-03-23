@@ -2,8 +2,12 @@ package frc.robot.subsystems.sensors;
 
 import java.util.Optional;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -71,6 +75,7 @@ public class Telemetry {
     private static final ShuffleboardTab pos = Shuffleboard.getTab("Positions");
     private static final ShuffleboardTab shooter = Shuffleboard.getTab("Shooter");
     private static final ShuffleboardTab climber = Shuffleboard.getTab("Climber");
+    private static final ShuffleboardTab trajState = Shuffleboard.getTab("Trajectory State");
     // private static final ShuffleboardTab intake = Shuffleboard.getTab("Intake");
 
     // NetworkTable entries
@@ -82,6 +87,11 @@ public class Telemetry {
     private static final Field2d field = new Field2d();
     private static frc.robot.utils.Vector2 prevSimPos = new Vector2();
     private static Rotation2d prevSimRot = new Rotation2d();
+
+    // Trajectory State
+    private static final Field2d trajField = new Field2d();
+    public static Pose2d desiredPos;
+
 
     // mechanism visualization  
     private static Mechanism2d subsystems = new Mechanism2d(60, 60);
@@ -154,6 +164,7 @@ public class Telemetry {
         robotTab.add("Swerve", swerveMods);
         robotTab.add("Subsystems", subsystems);
         robotTab.add("Auto Selector", AutoSelector.autoChooser);
+        robotTab.add("Trajectory State", trajField);
     }
 
     /**
@@ -245,6 +256,17 @@ public class Telemetry {
                 .mul(IN_TO_M);
         Rotation2d rotation = Rotation2d.fromRadians(Pigeon.getRotationRad() - Math.PI / 2 * allianceMultiplier);
         field.setRobotPose(fieldPosMeters.x, fieldPosMeters.y, rotation);
+        
+        if(desiredPos != null){
+            // Update desired trajectory positions (convert to meters)
+            Vector2 trajPosMeters = new Vector2(desiredPos.getY() * allianceMultiplier, allianceMultiplier * -desiredPos.getX())
+                .add(new Vector2(325.62, 157.75))
+                .mul(IN_TO_M);
+            Rotation2d trajRotation = Rotation2d.fromRadians(desiredPos.getRotation().getRadians() - Math.PI / 2 * allianceMultiplier);
+            trajField.setRobotPose(trajPosMeters.x, trajPosMeters.y, trajRotation);
+        } else {
+            trajField.setRobotPose(fieldPosMeters.x, fieldPosMeters.y, rotation);
+        }
 
         // Store the field position for the next frame to check if it has been manually changed
         prevSimPos = fieldPosMeters;
