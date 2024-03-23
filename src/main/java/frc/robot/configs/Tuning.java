@@ -8,33 +8,28 @@ public final class Tuning {
     public static final double MOVEDEAD = 1.0;
     public static final double MOVEVELDEAD = 0.0;
     public static final double MOVEMAXSPEED = 0.0;
-    public static final double ROTP = 0.0;
-    public static final double ROTI = 0.0;
-    public static final double ROTD = 0.0;
-    public static final double ROTDEAD = 0.0;
-    public static final double ROTVELDEAD = 0.0;
-    public static final double ROTMAXSPEED = 0.0;
-
-     // TODO Tune
-     public static final double SWERVE_ROT_P = 0;
-     public static final double SWERVE_ROT_I = 0;
-     public static final double SWERVE_ROT_D = 0;
+    public static final double ROTP = 0.425;
+    public static final double ROTI = 0.005;
+    public static final double ROTD = 0.004;
+    public static final double ROTDEAD = 0.025;
+    public static final double ROTVELDEAD = 0.01;
+    public static final double ROTMAXSPEED = 0.5;
  
      // TODO Tune
      public static final double SWERVE_TRJ_PPOS = 0.005;
      public static final double SWERVE_TRJ_IPOS = 0.00;
      public static final double SWERVE_TRJ_DPOS = 0.0002;
 
-     public static final double SWERVE_TRJ_PROT = 0.2;
+     public static final double SWERVE_TRJ_PROT = 0.02;
      public static final double SWERVE_TRJ_IROT = 0.0;
-     public static final double SWERVE_TRJ_DROT = 0.02;
+     public static final double SWERVE_TRJ_DROT = 0.002;
 
      public static final double SWERVE_KSPOS = 0.00;
-     public static final double SWERVE_KVPOS = 0.8/180;
-     public static final double SWERVE_KAPOS = 0.00004;
+     public static final double SWERVE_KVPOS = 0.8/160;
+     public static final double SWERVE_KAPOS = 0.0007;
 
-     public static final double SWERVE_KSROT = 0.0;//0.005;
-     public static final double SWERVE_KVROT = 0.0;//0.55 / (3.0 * Math.PI);
+     public static final double SWERVE_KSROT = 0.005;//0.005;
+     public static final double SWERVE_KVROT = 0.45 / (3.0 * Math.PI);//0.55 / (3.0 * Math.PI);
      public static final double SWERVE_KAROT = 0.0;
  
      public static final int CURVE_RESOLUTION = 3000;

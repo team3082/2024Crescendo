@@ -1,14 +1,18 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Radians;
 import static frc.robot.configs.Constants.ShooterConstants.speakerPos;
 import static frc.robot.configs.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.controllermaps.LogitechF310;
 import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.subsystems.sensors.Telemetry;
 import frc.robot.configs.ShooterSettings;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
@@ -18,6 +22,7 @@ import frc.robot.subsystems.shooter.ShooterTables;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwerveModule;
+import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.RMath;
@@ -45,7 +50,7 @@ public class OI {
     static final int intake        = LogitechF310.AXIS_LEFT_TRIGGER;
 
     // Others
-    static final int lock          = LogitechF310.BUTTON_A;
+    static final int pass          = LogitechF310.BUTTON_A;
     static final int zero          = LogitechF310.BUTTON_Y;
 
     /*-------------------------------------------------------------------*/
@@ -56,6 +61,7 @@ public class OI {
     static final int switchAmpMode      = LogitechF310.BUTTON_LEFT_BUMPER;
     static final int switchShooterMode  = LogitechF310.BUTTON_RIGHT_BUMPER;
     static final int setManualShoot     = LogitechF310.BUTTON_Y;
+    static final int calibrate          = LogitechF310.BUTTON_B;
 
     // Climber
     static final int zeroClimber        = LogitechF310.BUTTON_X;
@@ -69,7 +75,7 @@ public class OI {
         AMP
     }
 
-    public static ShooterMode currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+    public static ShooterMode currentShooterMode = ShooterMode.SPEAKER;
     public static boolean manualFireSet = true;
     public static boolean manualClimbSet = true;
     public static boolean aligning = false;
@@ -116,9 +122,6 @@ public class OI {
 
         if (driverStick.getRawAxis(intake) > 0.5) {
             Intake.suck();
-            // TODO slow the drive if intaking
-            kBoostCoefficient = 0.6;
-
             if (Intake.reallyHasPiece)
                 driverStick.setRumble(RumbleType.kBothRumble, 0.9);
             else 
@@ -133,7 +136,13 @@ public class OI {
         // SETUP
 
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
-        double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
+        double rotate;
+        if (currentShooterMode == ShooterMode.SPEAKER && driverStick.getRawButton(fireShooter)) {
+            rotate = speakerPos.sub(SwervePosition.getPosition()).norm().mul(-1.0).atan2();
+            SwervePID.setDestRot(rotate);
+        } else {
+            rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
+        }
 
         double manualRPM = 3800.0;
         double manualAngle = 54.0;
@@ -156,7 +165,8 @@ public class OI {
 
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
-        ShooterSettings shooterSettings = ShooterTables.calculate(SwervePosition.getPosition().sub(speakerPos).mag() / 12.0);
+        ShooterSettings shooterSettings = ShooterTables.calculate(SwervePosition.getPosition().sub(speakerPos).mag() );
+        // Telemetry.log(Telemetry.Severity.INFO, "" + SwervePosition.getPosition().sub(speakerPos).mag());
 
         // checks current shooter mode and sets the angle and velocities accordingly
         if (shooterFire) {
@@ -169,7 +179,7 @@ public class OI {
                 break;
 
                 case SPEAKER:
-                    aligning = true;
+                    aligning = false;
                     ShooterPivot.setPosition(shooterSettings.getAngle().in(Radians));
                     Shooter.revTo(shooterSettings.getVelocity().in(RPM));
                     Shooter.shoot();
@@ -185,7 +195,6 @@ public class OI {
                 case SPEAKER_MANUAL:
                     aligning = false;
                     ShooterPivot.setPosition(Math.toRadians(manualAngle));
-                    // Shooter.revTo(manualRPM);
                     Shooter.revTo(manualRPM, manualRPM);
                     Shooter.shoot();
                 break;
@@ -204,32 +213,18 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
 
-        if (driverStick.getRawButton(lock)) {
-            for (SwerveModule module: SwerveManager.mods) {
-                module.rotateToRad((module.pos.atan2()));
-            }
-        }
+        // if (driverStick.getRawButton(lock)) {
+        //     for (SwerveModule module: SwerveManager.mods) {
+        //         module.rotateToRad((module.pos.atan2()));
+        //     }
+        // }
 
-        if (!aligning) {
-            // Swerving and a steering! Zoom!
-            switch (YAWRATEFEEDBACKSTATUS) {
-                case 0:
-                    SwerveManager.rotateAndDrive(rotate, drive);
-                return;
-                case 1:
-                    if (rotate == 0)
-                        SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
-                    else
-                        SwerveManager.rotateAndDrive(rotate, drive);
-                return;
-                case 2:
-                    SwerveManager.rotateAndDriveWithYawRateControl(rotate, drive);
-                return;
-            }
-        } else {
-            // Allows free translation while locking the robot's angle to the speaker.
-            SwerveManager.moveAndRotateTo(drive, speakerPos.sub(SwervePosition.getPosition()).norm().atan2());
-        }
+        if (currentShooterMode == ShooterMode.SPEAKER && driverStick.getRawButton(fireShooter))
+            //SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), drive);
+            SwerveManager.moveAndRotateTo(drive.mul(0.3), rotate);
+        else
+            // Swervin' and a steerin! Zoom!
+            SwerveManager.rotateAndDrive(rotate, drive);
     }
 
     public static void operatorInput() {
@@ -240,6 +235,12 @@ public class OI {
         if (operatorStick.getRawButtonPressed(zeroClimber)) {
             ClimberManager.zero();
         }
+
+        if (operatorStick.getRawButtonPressed(calibrate)) {
+            SwervePosition.setPosition(
+            new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275)
+            );
+        } 
 
         if (operatorStick.getRawButtonPressed(setManualClimb)) {
             manualClimbSet = true;

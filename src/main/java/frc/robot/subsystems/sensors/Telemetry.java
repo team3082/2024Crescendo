@@ -228,8 +228,8 @@ public class Telemetry {
         TOPVECTOR.setDouble(OI.topVector);
         BOTTOMVECTOR.setDouble(OI.bottomVector);
 
-        pivotAngle.setDouble(ShooterPivot.actualPos);
-        pivotTargetAngle.setDouble(ShooterPivot.targetPos);
+        pivotAngle.setDouble(Math.toDegrees(ShooterPivot.actualPos));
+        pivotTargetAngle.setDouble(Math.toDegrees(ShooterPivot.targetPos));
        // FLYWHEELATVEL.setBoolean(Shooter.canShoot());
 
         LEFTCLIMBERSTATE.setString(ClimberManager.leftClimber.climberControlState.name());

@@ -197,7 +197,7 @@ public final class Intake {
         if (hasPiece) {
             topPID.setReference(0.0, ControlType.kDutyCycle);
             bottomPID.setReference(0.0, ControlType.kDutyCycle);
-            if (RTime.now() >= suckTime + 0.05) {
+            if (RTime.now() >= suckTime + 0.1) {
                 if (suckTime != 0.0) {
                     reallyHasPiece = true;
                     Intake.setState(IntakeState.STOW);

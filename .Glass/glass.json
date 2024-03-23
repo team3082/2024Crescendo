@@ -43,6 +43,7 @@
       "/Shuffleboard/SmartDashboard/Field View": "Field2d",
       "/Shuffleboard/SmartDashboard/Subsystems": "Mechanism2d",
       "/Shuffleboard/SmartDashboard/Swerve": "Mechanism2d",
+      "/Shuffleboard/SmartDashboard/Trajectory State": "Field2d",
       "/SmartDashboard/Auto Choices": "String Chooser",
       "/SmartDashboard/Auto choices": "String Chooser",
       "/SmartDashboard/NAVX": "Gyro",

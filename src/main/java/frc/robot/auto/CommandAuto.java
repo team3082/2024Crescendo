@@ -275,7 +275,7 @@ public class CommandAuto {
       new WaitCommand(0.2),
       // shoot preload
       new ParallelCommandGroup(
-        // new SetShooterAngle(Math.toRadians(57)),
+        new SetShooterAngle(Math.toRadians(57)),
         new SetShooterVelocity(3500)
       ),
       new FireShooter(),
@@ -293,7 +293,7 @@ public class CommandAuto {
 
       // shoot
       new WaitCommand(0.1),
-      // new SetShooterAngle(Math.toRadians(57)),
+      new SetShooterAngle(Math.toRadians(57)),
       new FireShooter(),
 
        new ParallelDeadlineGroup(
@@ -307,7 +307,7 @@ public class CommandAuto {
       new ChoreoFollow("3 Piece Far Source.4"),
       // shoot
       new WaitCommand(0.1),
-      // new SetShooterAngle(Math.toRadians(57)),
+      new SetShooterAngle(Math.toRadians(57)),
       new FireShooter());
   }
 
@@ -586,6 +586,21 @@ public class CommandAuto {
     );
   }
 
+  public static Command fourMiddleFast(){
+    SwervePosition.setPosition(
+        new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
+    Pigeon.setYaw(90);
+    return new SequentialCommandGroup(
+        new ParallelCommandGroup(
+        new SetShooterAngle(Math.toRadians(54)),
+        new SetShooterVelocity(4200)
+        ),
+        new WaitCommand(0.2),
+        new FireShooter()
+    );
+      
+  }
+
   public static Command testCommand(){
     return new SequentialCommandGroup(
       new SetIntakeFeedPos(),
@@ -595,6 +610,7 @@ public class CommandAuto {
         new RunCommand(() -> System.out.println("Running")).withTimeout(3.0)
         ),
       new InstantCommand(() -> System.out.println("Done"))
+
     );
   }
 }

@@ -18,7 +18,14 @@ public final class Constants {
 
     public static void init() {
         ShooterTables.init(List.of(
-            new ShooterSettings().distance(Inches.of(0.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(56.0))
+            new ShooterSettings().distance(Inches.of(0.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(56.0)),
+            new ShooterSettings().distance(Inches.of(24.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(42.0)),
+            new ShooterSettings().distance(Inches.of(36.0 + 36.0)).velocity(RPM.of(4000)).angle(Degrees.of(40.2)),
+            new ShooterSettings().distance(Inches.of(48.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.0)),
+            new ShooterSettings().distance(Inches.of(60.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.0)),
+            new ShooterSettings().distance(Inches.of(72.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(32.5)),
+            new ShooterSettings().distance(Inches.of(84.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(30.5)),
+            new ShooterSettings().distance(Inches.of(96.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(29.0))
         ));
     }
 
@@ -72,7 +79,7 @@ public final class Constants {
 
         // Not the exact pos of the speaker. Rather, the position of the robot's
         // center of rotation when pressed up against the subwoofer.
-        public static final Vector2 speakerPos = DriverStation.getAlliance().get() == Alliance.Red ? new Vector2() : new Vector2();
+        public static final Vector2 speakerPos = new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275 - 36.0);
 
         public static final double SHOOTERPOSZ = 0.0;//the height the the end of the shooter lies on average. I don't feel like calculating this as a function of shooter angle
     }
