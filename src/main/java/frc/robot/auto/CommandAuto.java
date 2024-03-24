@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.FireShooter;
 import frc.robot.auto.commands.ForceFire;
+import frc.robot.auto.commands.Aim;
 import frc.robot.auto.commands.ChoreoFollow;
 import frc.robot.auto.commands.SetIntake;
 import frc.robot.auto.commands.SetIntakeFeedPos;
@@ -63,7 +64,7 @@ public class CommandAuto {
           ),
         new FireShooter(),
         new WaitCommand(9.5),
-        new ChoreoFollow("2 Piece Middle.1")
+        new ChoreoFollow("2 Piece Middle.1", 1.0)
     );
   }
 
@@ -80,7 +81,7 @@ public class CommandAuto {
           ),
         new FireShooter(),
       new ParallelCommandGroup(
-        new ChoreoFollow("1 Piece Source.1"),
+        new ChoreoFollow("1 Piece Source.1", 1.0),
         new SetIntake()
       )
     );
@@ -99,7 +100,7 @@ public class CommandAuto {
           ),
         new FireShooter(),
       new ParallelCommandGroup(
-        new ChoreoFollow("1 Piece Amp.1"),
+        new ChoreoFollow("1 Piece Amp.1", 1.0),
         new SetIntake()
       )
     );
@@ -123,13 +124,13 @@ public class CommandAuto {
       // grab piece
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("2 Piece Middle.1"),
+          new ChoreoFollow("2 Piece Middle.1", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("2 Piece Middle.2"),
+      new ChoreoFollow("2 Piece Middle.2", 1.0),
 
       // shoot
       new WaitCommand(0.1),
@@ -155,13 +156,13 @@ public class CommandAuto {
       // grab piece
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("2 Piece Source.1"),
+          new ChoreoFollow("2 Piece Source.1", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("2 Piece Source.2"),
+      new ChoreoFollow("2 Piece Source.2", 1.0),
 
       // shoot
       new WaitCommand(0.1),
@@ -187,13 +188,13 @@ public class CommandAuto {
       // grab piece
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("2 Piece Amp.1"),
+          new ChoreoFollow("2 Piece Amp.1", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("2 Piece Amp.2"),
+      new ChoreoFollow("2 Piece Amp.2", 1.0),
 
       // shoot
       new WaitCommand(0.1),
@@ -219,13 +220,13 @@ public class CommandAuto {
       // grab piece
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("2 Piece Far Source.1"),
+          new ChoreoFollow("2 Piece Far Source.1", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("2 Piece Far Source.2"),
+      new ChoreoFollow("2 Piece Far Source.2", 1.0),
 
       // shoot
       new WaitCommand(0.1),
@@ -251,13 +252,13 @@ public class CommandAuto {
       // grab piece
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("2 Piece Far Amp.1"),
+          new ChoreoFollow("2 Piece Far Amp.1", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("2 Piece Far Amp.2"),
+      new ChoreoFollow("2 Piece Far Amp.2", 1.0),
 
       // shoot
       new WaitCommand(0.1),
@@ -283,13 +284,13 @@ public class CommandAuto {
       // grab piece
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("3 Piece Far Source.1"),
+          new ChoreoFollow("3 Piece Far Source.1", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("3 Piece Far Source.2"),
+      new ChoreoFollow("3 Piece Far Source.2", 1.0),
 
       // shoot
       new WaitCommand(0.1),
@@ -298,13 +299,13 @@ public class CommandAuto {
 
        new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("3 Piece Far Source.3"),
+          new ChoreoFollow("3 Piece Far Source.3", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("3 Piece Far Source.4"),
+      new ChoreoFollow("3 Piece Far Source.4", 1.0),
       // shoot
       new WaitCommand(0.1),
       new SetShooterAngle(Math.toRadians(57)),
@@ -335,13 +336,13 @@ public class CommandAuto {
       // grab piece
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("3 Piece Half Source.1"),
+          new ChoreoFollow("3 Piece Half Source.1", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("3 Piece Half Source.2"),
+      new ChoreoFollow("3 Piece Half Source.2", 1.0),
 
       // shoot
       new WaitCommand(0.1),
@@ -350,13 +351,13 @@ public class CommandAuto {
 
        new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("3 Piece Half Source.3"),
+          new ChoreoFollow("3 Piece Half Source.3", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("3 Piece Half Source.4"),
+      new ChoreoFollow("3 Piece Half Source.4", 1.0),
       // shoot
       new WaitCommand(0.1),
       // new SetShooterAngle(Math.toRadians(57)),
@@ -380,13 +381,13 @@ public class CommandAuto {
       // grab piece
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("3 Piece Half Amp.1"),
+          new ChoreoFollow("3 Piece Half Amp.1", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("3 Piece Half Amp.2"),
+      new ChoreoFollow("3 Piece Half Amp.2", 1.0),
 
       // shoot
       new WaitCommand(0.1),
@@ -395,13 +396,13 @@ public class CommandAuto {
 
        new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("3 Piece Half Amp.3"),
+          new ChoreoFollow("3 Piece Half Amp.3", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("3 Piece Half Amp.4"),
+      new ChoreoFollow("3 Piece Half Amp.4", 1.0),
       // shoot
       new WaitCommand(0.1),
       // new SetShooterAngle(Math.toRadians(57)),
@@ -425,13 +426,13 @@ public class CommandAuto {
       // grab piece
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("3 Piece Source.1"),
+          new ChoreoFollow("3 Piece Source.1", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("3 Piece Source.2"),
+      new ChoreoFollow("3 Piece Source.2", 1.0),
 
       // shoot
       new WaitCommand(0.1),
@@ -440,13 +441,13 @@ public class CommandAuto {
 
        new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("3 Piece Source.3"),
+          new ChoreoFollow("3 Piece Source.3", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("3 Piece Source.4"),
+      new ChoreoFollow("3 Piece Source.4", 1.0),
       // shoot
       new WaitCommand(0.1),
       // new SetShooterAngle(Math.toRadians(57)),
@@ -471,13 +472,13 @@ public class CommandAuto {
       // grab piece
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("3 Piece Amp.1"),
+          new ChoreoFollow("3 Piece Amp.1", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("3 Piece Amp.2"),
+      new ChoreoFollow("3 Piece Amp.2", 1.0),
 
       // shoot
       new WaitCommand(0.1),
@@ -486,13 +487,13 @@ public class CommandAuto {
 
        new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("3 Piece Amp.3"),
+          new ChoreoFollow("3 Piece Amp.3", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(3500)
       ),
-      new ChoreoFollow("3 Piece Amp.4"),
+      new ChoreoFollow("3 Piece Amp.4", 1.0),
       // shoot
       new WaitCommand(0.1),
       // new SetShooterAngle(Math.toRadians(57)),
@@ -514,38 +515,38 @@ public class CommandAuto {
 
      new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("4Middle.1"),
+          new ChoreoFollow("4Middle.1", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(4200)
       ),
-        new ChoreoFollow("4Middle.2"),
+        new ChoreoFollow("4Middle.2", 1.0),
         new WaitCommand(0.1),
         new SetShooterAngle(Math.toRadians(54)),
         new FireShooter(),
 
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("4Middle.3"),
+          new ChoreoFollow("4Middle.3", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(4200)
       ),
-        new ChoreoFollow("4Middle.4"),
+        new ChoreoFollow("4Middle.4", 1.0),
         new WaitCommand(0.1),
         new SetShooterAngle(Math.toRadians(57.5)),
         new FireShooter(),
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-          new ChoreoFollow("4Middle.5"),
+          new ChoreoFollow("4Middle.5", 1.0),
           new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
         ),
         new SetIntake(),
         new SetShooterVelocity(4200)
       ),
-      new ChoreoFollow("4Middle.6"),
+      new ChoreoFollow("4Middle.6", 1.0),
         new WaitCommand(0.1),
         new SetShooterAngle(Math.toRadians(54)),
         new FireShooter()
@@ -562,25 +563,25 @@ public class CommandAuto {
       new SetShooterVelocity(4200),
       new SetIntakeFeedPos()),
       new ForceFire(0.4),
-      new ChoreoFollow("4Middle.1").deadlineWith(
+      new ChoreoFollow("4Middle.1", 1.0).deadlineWith(
         new SetIntake(),
         new SetShooterVelocity(4200)
       ),
-      new ChoreoFollow("4Middle.2"),
+      new ChoreoFollow("4Middle.2", 1.0),
       new SetShooterAngle(Math.toRadians(50)),
       new ForceFire(0.2).onlyIf(() -> Intake.reallyHasPiece),
-      new ChoreoFollow("4Middle.3").deadlineWith(
+      new ChoreoFollow("4Middle.3", 1.0).deadlineWith(
         new SetIntake(),
         new SetShooterVelocity(4200)
       ),
-      new ChoreoFollow("4Middle.4"),
+      new ChoreoFollow("4Middle.4", 1.0),
       new SetShooterAngle(Math.toRadians(50)),
       new ForceFire(0.2).onlyIf(() -> Intake.reallyHasPiece),
-      new ChoreoFollow("4Middle.5").deadlineWith(
+      new ChoreoFollow("4Middle.5", 1.0).deadlineWith(
         new SetIntake(),
         new SetShooterVelocity(4200)
       ),
-      new ChoreoFollow("4Middle.6"),
+      new ChoreoFollow("4Middle.6", 1.0),
       new SetShooterAngle(Math.toRadians(50)),
       new ForceFire(0.2).andThen(new InstantCommand(Shooter::disable))
     );
@@ -591,14 +592,31 @@ public class CommandAuto {
         new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
     Pigeon.setYaw(90);
     return new SequentialCommandGroup(
-        new ParallelCommandGroup(
+      new SetIntakeFeedPos(),
+      new ParallelCommandGroup(
         new SetShooterAngle(Math.toRadians(54)),
         new SetShooterVelocity(4200)
         ),
         new WaitCommand(0.2),
-        new FireShooter()
+        new FireShooter(), // Shoot first piece
+
+        new SetIntakeFeedPos(),
+        new ChoreoFollow("4MidFast.1", 1.0),
+        new ParallelCommandGroup(
+          new ChoreoFollow("4MidFast.2", 0.5),
+          new Aim().onlyIf(() -> Intake.reallyHasPiece) // Shoot second piece
+        ),
+        new WaitCommand(.5),
+
+        new SetIntakeFeedPos(),
+        new ChoreoFollow("4MidFast.3", 1.0),
+        new ParallelCommandGroup(
+          new ChoreoFollow("4MidFast.4", 0.5),
+          new Aim().onlyIf(() -> Intake.reallyHasPiece) // Shoot third piece
+      )
+
+      // TODO last piece (podium)
     );
-      
   }
 
   public static Command testCommand(){

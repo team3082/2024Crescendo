@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class ChoreoFollow extends Command{
     frc.robot.auto.autoframe.ChoreoFollow choreoFollow;
 
-    public ChoreoFollow(String name){
-       choreoFollow = new frc.robot.auto.autoframe.ChoreoFollow(name);
+    public ChoreoFollow(String name, double speed){
+       choreoFollow = new frc.robot.auto.autoframe.ChoreoFollow(name, speed);
     }
 
     @Override
