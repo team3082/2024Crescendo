@@ -31,11 +31,15 @@ public class BannerLight {
     public static void updateTeleop() {
         if (DriverStation.isTeleopEnabled()) {
             if (OI.currentShooterMode == OI.ShooterMode.AMP)
-                setAmp();
-            else
+                setSpeakerNoPieceSource();
+            
+            if (OI.currentShooterMode == OI.ShooterMode.SPEAKER)
                 setSpeaker();
+
+            if (OI.aligning == true)
+                setShotComplete();
         } else {
-            setStale();
+            setAmpNoPieceGround();
         }
     }
 

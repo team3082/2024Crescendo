@@ -16,16 +16,34 @@ import frc.robot.utils.Vector2;
 
 public final class Constants {
 
+    // The distance from the speaker's backing wall to the front of the subwoofer.
+    // I expect this to be different for each field setup, especially the real one.
+    public static final double kSpeakerOffset = 36.0;
+
     public static void init() {
+        // MURA FIELD
+
+        // ShooterTables.init(List.of(
+        //     new ShooterSettings().distance(Inches.of(0.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(56.0)),
+        //     new ShooterSettings().distance(Inches.of(24.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(42.0)),
+        //     new ShooterSettings().distance(Inches.of(36.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.2)),
+        //     new ShooterSettings().distance(Inches.of(48.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.0)),
+        //     new ShooterSettings().distance(Inches.of(60.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.0)),
+        //     new ShooterSettings().distance(Inches.of(72.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(32.5)),
+        //     new ShooterSettings().distance(Inches.of(84.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(30.5)),
+        //     new ShooterSettings().distance(Inches.of(96.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(29.0))
+        // ));
+
+        // COMMONS FIELD
         ShooterTables.init(List.of(
-            new ShooterSettings().distance(Inches.of(0.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(56.0)),
-            new ShooterSettings().distance(Inches.of(24.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(42.0)),
-            new ShooterSettings().distance(Inches.of(36.0 + 36.0)).velocity(RPM.of(4000)).angle(Degrees.of(40.2)),
-            new ShooterSettings().distance(Inches.of(48.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.0)),
-            new ShooterSettings().distance(Inches.of(60.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.0)),
-            new ShooterSettings().distance(Inches.of(72.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(32.5)),
-            new ShooterSettings().distance(Inches.of(84.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(30.5)),
-            new ShooterSettings().distance(Inches.of(96.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(29.0))
+            new ShooterSettings().distance(Inches.of(0.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(56.0)),
+            new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(42.0)),
+            new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.2)),
+            new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.0)),
+            new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.0)),
+            new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(32.5)),
+            new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(30.5)),
+            new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(29.0))
         ));
     }
 
@@ -153,6 +171,8 @@ public final class Constants {
 
         public static final double driveTrackwidth = 0.0;
         public static final double driveWheelbase = 0.0;
+
+        public static final double shootWhileMoveSpeed = 0.3;
     
         // The unadjusted maximum velocity of the robot, in inches per second.
         public static final double maxChassisVelocity = 6380.0 / 60.0 * 6.12 * (4.0 * Math.PI);

@@ -56,7 +56,7 @@ public final class SwerveManager {
     public static void moveAndRotateTo(Vector2 move, double toAngle) {
         SwervePID.rotPID.setDest(toAngle);
         double rotation = SwervePID.rotPID.updateOutput(Pigeon.getRotationRad());
-        rotateAndDrive(rotation, move);
+        rotateAndDrive(rotation, move.mul(shootWhileMoveSpeed));
     }
 
     public static void rotateAndDrive(double rotSpeed, Vector2 move) {

@@ -173,7 +173,7 @@ public final class Shooter {
         Vector2 robotVel = SwerveManager.getRobotDriveVelocity(); // Current velocity of the robot's drivetrain
 
         // Get our distance between the robot & the speaker
-        double distance = robotPos.sub(speakerPos).mag() / 12.0;
+        double distance = robotPos.sub(speakerPos).mag();
 
         // Calculate our shooter settings based off that distance
         ShooterSettings settings = ShooterTables.calculate(distance);
@@ -190,7 +190,7 @@ public final class Shooter {
         Vector2 predictedPos = speakerPos.sub(predictedOffset);
 
         // Calculate the FINAL distance between both moving masses
-        double predictedDistance = robotPos.sub(predictedPos).mag() / 12.0;
+        double predictedDistance = robotPos.sub(predictedPos).mag();
 
         // Mutate the settings based off the final predicted distance
         settings = ShooterTables.calculate(predictedDistance);

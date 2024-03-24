@@ -159,27 +159,22 @@ public class OI {
         // SHOOTER
 
         if (driverStick.getRawButton(eject))
-            ejecting = true;
-        else
-            ejecting = false;
+            Intake.eject();
 
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
-        ShooterSettings shooterSettings = ShooterTables.calculate(SwervePosition.getPosition().sub(speakerPos).mag() );
-        // Telemetry.log(Telemetry.Severity.INFO, "" + SwervePosition.getPosition().sub(speakerPos).mag());
+        ShooterSettings shooterSettings = ShooterTables.calculate(SwervePosition.getPosition().sub(speakerPos).mag()); // Inches away from speaker
 
         // checks current shooter mode and sets the angle and velocities accordingly
         if (shooterFire) {
             switch (currentShooterMode) {
                 case AMP:
-                    aligning = false;
                     ShooterPivot.setPosition(Math.toRadians(56.0));
                     Shooter.revTo(topVector, bottomVector);
                     Shooter.shoot();
                 break;
 
                 case SPEAKER:
-                    aligning = false;
                     ShooterPivot.setPosition(shooterSettings.getAngle().in(Radians));
                     Shooter.revTo(shooterSettings.getVelocity().in(RPM));
                     Shooter.shoot();
@@ -193,7 +188,6 @@ public class OI {
                 // break;
 
                 case SPEAKER_MANUAL:
-                    aligning = false;
                     ShooterPivot.setPosition(Math.toRadians(manualAngle));
                     Shooter.revTo(manualRPM, manualRPM);
                     Shooter.shoot();
@@ -203,11 +197,7 @@ public class OI {
                 break;
             }
         } else {
-            // aligning = false;
-            // if (!ejecting) 
-                Shooter.neutral();
-            // else
-            //     Shooter.eject();
+            Shooter.neutral();
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
@@ -219,12 +209,14 @@ public class OI {
         //     }
         // }
 
-        if (currentShooterMode == ShooterMode.SPEAKER && driverStick.getRawButton(fireShooter))
-            //SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), drive);
-            SwerveManager.moveAndRotateTo(drive.mul(0.3), rotate);
-        else
+        if (currentShooterMode == ShooterMode.SPEAKER && driverStick.getRawButton(fireShooter)) {
+            aligning = true;
+            SwerveManager.moveAndRotateTo(drive, rotate);
+        } else {
             // Swervin' and a steerin! Zoom!
             SwerveManager.rotateAndDrive(rotate, drive);
+            aligning = false;
+        }
     }
 
     public static void operatorInput() {
@@ -272,10 +264,10 @@ public class OI {
         if (operatorStick.getRawButtonPressed(switchAmpMode)) {
             switch (currentShooterMode) {
                 case AMP:
-                    currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+                    currentShooterMode = ShooterMode.SPEAKER;
                 break;
                 
-                case SPEAKER_MANUAL:
+                case SPEAKER:
                     currentShooterMode = ShooterMode.AMP;
                 break;
             }
