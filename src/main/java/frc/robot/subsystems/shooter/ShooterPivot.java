@@ -131,9 +131,9 @@ public final class ShooterPivot {
             motor.neutralOutput();
         } else {
             if (OI.currentShooterMode == OI.ShooterMode.AMP)
-                motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos), DemandType.ArbitraryFeedForward, 0.03);
+                motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos), DemandType.ArbitraryFeedForward, 0.025);
             else
-                motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos), DemandType.ArbitraryFeedForward, 0.04);
+                motor.set(TalonFXControlMode.MotionMagic, radToTicks(targetPos), DemandType.ArbitraryFeedForward, 0.03);
         }
         actualPos = ticksToRad(motor.getSelectedSensorPosition());
     }
