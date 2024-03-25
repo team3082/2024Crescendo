@@ -1,5 +1,6 @@
 package frc.robot.auto;
 
+import edu.wpi.first.cscore.AxisCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -316,6 +317,37 @@ public class CommandAuto {
   public static Command threePieceAmpFar() {
     return new SequentialCommandGroup(
       
+    );
+  }
+
+  public static Command amp145(){
+    SwervePosition.setPosition(new Vector2(96 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
+    Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
+    return new SequentialCommandGroup(
+      new ParallelCommandGroup(
+        new SetShooterAngle(Math.toRadians(54.0)),
+        new SetShooterVelocity(4000)
+      ),
+      new FireShooter(),
+      new ParallelDeadlineGroup(
+        new ChoreoFollow("amp145.1", 1.0),
+        new SetIntake()
+      ),
+      new ParallelDeadlineGroup(
+        new FireShooter(), new Aim()),
+      new FireShooter(),
+      new ParallelDeadlineGroup(
+        new ChoreoFollow("amp145.2", 1.0),
+        new SetIntake()),
+      new ChoreoFollow("amp145.3", 1.0),
+      new ParallelDeadlineGroup(
+        new FireShooter(), new Aim()),
+      new ParallelDeadlineGroup(
+        new ChoreoFollow("amp145.4", 1.0),
+        new SetIntake()),
+      new ChoreoFollow("amp145.5", 1.0),
+      new ParallelDeadlineGroup(
+        new FireShooter(), new Aim())
     );
   }
 

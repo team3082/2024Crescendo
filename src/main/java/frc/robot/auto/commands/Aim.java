@@ -7,6 +7,5 @@ public class Aim extends Command {
     @Override
     public void execute() {
         Shooter.fireWhileMoving();
-        Shooter.shoot();
     }
 }

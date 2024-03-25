@@ -187,12 +187,16 @@ public class SwerveModule {
         return drive.getSelectedSensorVelocity() * 10 / ticksPerRotationDrive * (4 * Math.PI);
     }
 
+    private double simDrivePosition;
+
     public double getDrivePosition(){
         if(RobotBase.isReal()){
             return drive.getSelectedSensorPosition() / ticksPerRotationDrive * (4 * Math.PI);
         }
+        //IF in sim
 
-        //TODO need this to make it work in sim
-        return 0.0;
+        //TODO this will only ever work with a 7 ms loop
+        simDrivePosition += getDriveVelocity() * 0.07 /10;//added fudge factor so it is somewhat accurate to real life
+        return simDrivePosition;
     }
 }

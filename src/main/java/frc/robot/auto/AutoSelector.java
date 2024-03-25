@@ -34,6 +34,7 @@ public class AutoSelector {
         // TODO
         autoChooser.addOption("3 Piece Amp Far", "3 Piece Amp Far");
         autoChooser.addOption("4 Piece Middle", "4 Piece Middle");
+        autoChooser.addOption("amp145", "amp145");
         autoChooser.addOption("Test", "Test");
     }
 
@@ -109,6 +110,9 @@ public class AutoSelector {
             case "4 Piece Middle":
                CommandAuto.init(CommandAuto.fourPieceMiddle());
             break;
+            case "amp145":
+                CommandAuto.init(CommandAuto.amp145());
+                break;
             case "Test":
                 CommandAuto.init(CommandAuto.testCommand());
         }
