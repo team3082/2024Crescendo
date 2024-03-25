@@ -8,9 +8,9 @@ public final class Tuning {
     public static final double MOVEDEAD = 1.0;
     public static final double MOVEVELDEAD = 0.0;
     public static final double MOVEMAXSPEED = 0.0;
-    public static final double ROTP = 0.425;
-    public static final double ROTI = 0.005;
-    public static final double ROTD = 0.004;
+    public static final double ROTP = 0.225;
+    public static final double ROTI = 0.0;
+    public static final double ROTD = 0.7;
     public static final double ROTDEAD = 0.025;
     public static final double ROTVELDEAD = 0.01;
     public static final double ROTMAXSPEED = 0.5;
