@@ -67,18 +67,13 @@
         "left": 46,
         "right": 1088,
         "top": 36,
-        "width": 16.541748046875,
-        "window": {
-          "visible": true
-        }
+        "width": 16.541748046875
       }
     }
   },
-  "NetworkTables Info": {
-    "visible": true
-  },
   "NetworkTables Settings": {
     "mode": "Client (NT4)",
-    "serverTeam": "3082"
+    "serverTeam": "3082",
+    "visible": false
   }
 }

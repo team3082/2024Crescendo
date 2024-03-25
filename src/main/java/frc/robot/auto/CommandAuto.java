@@ -333,15 +333,17 @@ public class CommandAuto {
         new ChoreoFollow("amp145.1", 1.0),
         new SetIntake()
       ),
+      new WaitCommand(0.25),
       new ParallelDeadlineGroup(
         new FireShooter(), new Aim()),
-      new FireShooter(),
+        
       new ParallelDeadlineGroup(
         new ChoreoFollow("amp145.2", 1.0),
         new SetIntake()),
       new ChoreoFollow("amp145.3", 1.0),
       new ParallelDeadlineGroup(
         new FireShooter(), new Aim()),
+
       new ParallelDeadlineGroup(
         new ChoreoFollow("amp145.4", 1.0),
         new SetIntake()),
