@@ -163,7 +163,6 @@ public class OI {
 
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
-        ShooterSettings shooterSettings = ShooterTables.calculate(SwervePosition.getPosition().sub(speakerPos).mag()); // Inches away from speaker
 
         // checks current shooter mode and sets the angle and velocities accordingly
         if (shooterFire) {
@@ -175,6 +174,7 @@ public class OI {
                 break;
 
                 // case SPEAKER:
+                //     ShooterSettings shooterSettings = ShooterTables.calculate(SwervePosition.getPosition().sub(speakerPos).mag());
                 //     ShooterPivot.setPosition(shooterSettings.getAngle().in(Radians));
                 //     Shooter.revTo(shooterSettings.getVelocity().in(RPM));
                 //     Shooter.shoot();
@@ -240,12 +240,10 @@ public class OI {
             // DPAD UP
             if (operatorStick.getPOV() == climberUp) {
                 ClimberManager.manualExtend();
-                System.out.println("extending");
             } 
             // DPAD DOWN
             else if (operatorStick.getPOV() == climberDown) {
                 ClimberManager.manualPull();
-                System.out.println("pulling");
             }
             // NO CLIMBER INPUT
             else {

@@ -35,6 +35,7 @@ public final class Constants {
         // ));
 
         // COMMONS FIELD
+        // (Distance of bumper from subwoofer) + (offset for distance from speaker to subwoofer)
         ShooterTables.init(List.of(
             new ShooterSettings().distance(Inches.of(0.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(58.0)),
             new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(46.0)),
