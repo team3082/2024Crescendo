@@ -54,7 +54,7 @@ public final class Tuning {
         public static double FLYWHEELKD = 0.0;
         public static double FLYWHEELKF = 0.0;
 
-        public static final double PIVOTKP = 0.07;
+        public static final double PIVOTKP = 0.12;
         public static final double PIVOTKI = 0.0;
         public static final double PIVOTKD = 0.008;
         public static final double PIVOTKF = 0.0;
