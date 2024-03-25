@@ -138,8 +138,8 @@ public class OI {
         Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate;
         if (currentShooterMode == ShooterMode.SPEAKER && driverStick.getRawButton(fireShooter)) {
+            // Face AWAY from speaker (Pigeon's POV) due to shooter being behind the robot
             rotate = speakerPos.sub(SwervePosition.getPosition()).norm().mul(-1.0).atan2();
-            SwervePID.setDestRot(rotate);
         } else {
             rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
         }
