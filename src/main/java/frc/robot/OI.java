@@ -174,18 +174,18 @@ public class OI {
                     Shooter.shoot();
                 break;
 
-                case SPEAKER:
-                    ShooterPivot.setPosition(shooterSettings.getAngle().in(Radians));
-                    Shooter.revTo(shooterSettings.getVelocity().in(RPM));
-                    Shooter.shoot();
-                break;
-
-                // For shooting while moving
                 // case SPEAKER:
-                //     aligning = true;
-                //     Shooter.fireWhileMoving();
+                //     ShooterPivot.setPosition(shooterSettings.getAngle().in(Radians));
+                //     Shooter.revTo(shooterSettings.getVelocity().in(RPM));
                 //     Shooter.shoot();
                 // break;
+
+                // For shooting while moving
+                case SPEAKER:
+                    aligning = true;
+                    Shooter.fireWhileMoving();
+                    Shooter.shoot();
+                break;
 
                 case SPEAKER_MANUAL:
                     ShooterPivot.setPosition(Math.toRadians(manualAngle));
