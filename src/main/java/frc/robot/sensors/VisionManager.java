@@ -1,15 +1,5 @@
 package frc.robot.sensors;
 
-import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
-
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.Constants;
 import frc.robot.utils.Vector2;
 
 public class VisionManager {
@@ -18,7 +8,7 @@ public class VisionManager {
 
     public static void init() {
         cameras = new Camera[] {
-            new Camera("Apriltag1", Math.PI / 2.0, Math.toRadians(15), new Vector2())
+            new Camera("Apriltag1", 3.0 * Math.PI / 2.0, Math.toRadians(23), new Vector2(-2, 5.5))
         };
     }
 

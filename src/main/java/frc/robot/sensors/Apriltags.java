@@ -1,5 +1,7 @@
 package frc.robot.sensors;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.utils.Vector2;
 
 public class Apriltags {
@@ -22,4 +24,12 @@ public class Apriltags {
         new Vector2(-15.46, 142.87),
         new Vector2(15.45, 142.87)
     };
+
+    public static Vector2 get(int id) {
+        Vector2 tagPos = aprilTags[id];
+        if (DriverStation.getAlliance().get() == Alliance.Red) {
+            tagPos.x *= -1; // might be y not x
+        }
+        return tagPos;
+    }
 }

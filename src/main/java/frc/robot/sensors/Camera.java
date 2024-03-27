@@ -4,7 +4,11 @@ import java.util.concurrent.ExecutionException;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
 import frc.robot.utils.Vector2;
 
@@ -44,7 +48,7 @@ public class Camera {
                 double robotRot = Pigeon.getRotationRad();
                 offset = new Vector2(offset.x * Math.cos(this.pitch), offset.y); // get the offset from the tag (forward dist, horizontal dist)
                 Vector2 relativeCameraPos = offset.rotate(this.yaw + robotRot + (Math.PI / 2.0)); // get the position of the camera relative to the tag
-                Vector2 globalCameraPos = relativeCameraPos.add(Apriltags.aprilTags[result.getFiducialId()]); // get the global position of the camera on the field
+                Vector2 globalCameraPos = relativeCameraPos.add(Apriltags.get(result.getFiducialId())); // get the global position of the camera on the field
                 Vector2 globalRobotPos = globalCameraPos.add(this.pos.rotate(robotRot + (Math.PI / 2.0))); // get the global position of the robot on the field
                 return globalRobotPos;
             }
