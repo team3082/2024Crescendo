@@ -14,14 +14,14 @@ public class RotationalPIDController extends PIDController{
 
     public RotationalPIDController(double p, double i, double d, double deadband, double velDeadband, double maxOutput){
         super(p,i,d,deadband,velDeadband,maxOutput);
-        this.minValue = -Math.PI;
-        this.maxValue = Math.PI;
-        range = Math.PI*2;
+        this.minValue = 0;
+        this.maxValue = 2 * Math.PI;
+        range = 2 * Math.PI;
     }
 
     @Override
     public void setDest(double dest){
-        dest = RMath.modulo(dest - minValue, range) + minValue;
+        super.setDest(RMath.modulo(dest - minValue, range) + minValue);
     }
 
     @Override
