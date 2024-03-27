@@ -5,6 +5,9 @@ import java.util.Optional;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -15,6 +18,8 @@ import frc.robot.utils.Vector2;
 
 public class VisionManager {
     private static PhotonPoseEstimator[] cameras;
+
+    private static double maxDetectionDist = 5.0; // Meters
 
     public static void init(){
         AprilTagFieldLayout aprilTags = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
@@ -33,6 +38,7 @@ public class VisionManager {
     public static Optional<Vector2> getPosition(){
         Vector2 poseSum = new Vector2();
         int numUpdates = 0;
+
         for(PhotonPoseEstimator pe : cameras){
             var estimate = pe.update();
             if(estimate.isEmpty()){
@@ -40,11 +46,23 @@ public class VisionManager {
                 continue;
             }else{
                 //converting from wpilib coordinates to ours for red alliance
-                Vector2 robotposefromcamera = new Vector2(-estimate.get().estimatedPose.getX(), -estimate.get().estimatedPose.getY());
-                robotposefromcamera = robotposefromcamera.mul(Constants.METERSTOINCHES);
-                poseSum = poseSum.add(robotposefromcamera);
-                numUpdates++;
-                System.out.println("Robot Pose from camera: " + robotposefromcamera);
+                estimate.get().targetsUsed.get(0).getBestCameraToTarget().getX();
+                boolean goodVal = true;
+                for (PhotonTrackedTarget target : estimate.get().targetsUsed) {
+                    Transform3d transform = target.getBestCameraToTarget();
+                    if (new Vector2(transform.getX(), transform.getY()).mag() > maxDetectionDist) {
+                        goodVal = false;
+                    }
+                }
+                if (goodVal) {
+                    Vector2 robotposefromcamera = new Vector2(-estimate.get().estimatedPose.getX(), -estimate.get().estimatedPose.getY());
+                    robotposefromcamera = robotposefromcamera.mul(Constants.METERSTOINCHES);
+                    poseSum = poseSum.add(robotposefromcamera);
+                    numUpdates++;
+                    System.out.println("Robot Pose from camera: " + robotposefromcamera);
+                } else {
+                    continue;
+                }
             }
         }
 
