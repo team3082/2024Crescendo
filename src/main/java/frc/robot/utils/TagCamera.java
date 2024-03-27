@@ -12,6 +12,8 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -24,7 +26,9 @@ public class TagCamera {
     private LinkedList<Vector2> previousErrors;
 
     public TagCamera(String name, Transform3d robotToCamera){
-        this.pe = new PhotonPoseEstimator(APRILTAGS, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera(name), robotToCamera);
+        AprilTagFieldLayout tags = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+        tags.setOrigin(FIELDORIGINWPI);
+        this.pe = new PhotonPoseEstimator(APRILTAGS, PoseStrategy.AVERAGE_BEST_TARGETS, new PhotonCamera(name), robotToCamera.div(METERSTOINCHES));
         previousErrors = new LinkedList<Vector2>();
     }
 
@@ -64,6 +68,7 @@ public class TagCamera {
             List<Double> ypos = previousErrors.stream().map(s -> s.y).toList();
 
             SimpleMatrix covariance = getCovariance(xpos, ypos);
+            System.out.println(pose);
 
             return Optional.of(new PoseEstimate(pose.x, pose.y, covariance));
             

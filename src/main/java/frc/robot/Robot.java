@@ -50,7 +50,6 @@ public class Robot extends TimedRobot {
     SwervePosition.init();
     SwervePID.init();
     Pigeon.setYaw(90);
-    // VisionManager.init();
     ClimberManager.init();
     ChoreoTrajectoryGenerator.init();
     ChoreoTrajectoryGenerator.parseAll();
@@ -59,7 +58,7 @@ public class Robot extends TimedRobot {
     AutoSelector.setup();
     Telemetry.init();
     BannerLight.init();
-    // SwervePosition.enableVision();
+    SwervePosition.enableVision();
 
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));

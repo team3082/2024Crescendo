@@ -255,7 +255,7 @@ public final class Constants {
         public static final Transform3d ROBOTTOCAMERA1 = new Transform3d(-5.5, -2, -22, new Rotation3d(0, Math.toRadians(23), 0.0));
 
         public static final SimpleMatrix INITIALCOV = SimpleMatrix.diag(1.0, 1.0);
-        public static final SimpleMatrix ODOCOV = SimpleMatrix.diag(0.05, 0.05);
+        public static final SimpleMatrix ODOCOV = SimpleMatrix.diag(0.005, 0.005);
     }
 
     

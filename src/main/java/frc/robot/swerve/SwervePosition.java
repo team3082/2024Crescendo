@@ -34,7 +34,6 @@ public class SwervePosition {
     private static Vector2 lastOdomPos;
 
     public static void init() {
-        APRILTAGS.setOrigin(FIELDORIGINWPI);
 
         cameras = new TagCamera[]{
             new TagCamera("ApriltagCamera1", ROBOTTOCAMERA1)
@@ -63,26 +62,30 @@ public class SwervePosition {
     }
 
     private static void innovateVision(){
-        for(TagCamera c : cameras){
-            Optional<PoseEstimate> opt = c.update(lastOdomPos);
-            if(opt.isEmpty()){
-                continue;
-            }
-            PoseEstimate pe = opt.get();
-            Vector2 estimatedPose = new Vector2(pe.x, pe.y);
+        // for(TagCamera c : cameras){
+        //     Optional<PoseEstimate> opt = c.update(lastOdomPos);
+        //     if(opt.isEmpty()){
+        //         continue;
+        //     }
+        //     PoseEstimate pe = opt.get();
+        //     Vector2 estimatedPose = new Vector2(pe.x, pe.y);
 
-            Vector2 innovVector = estimatedPose.sub(position);
-            SimpleMatrix innov = new SimpleMatrix(new double[]{innovVector.x, innovVector.y});
-            SimpleMatrix positionCol = new SimpleMatrix(new double[]{position.x, position.y});
+        //     Vector2 innovVector = estimatedPose.sub(position);
+        //     SimpleMatrix innov = new SimpleMatrix(new double[]{innovVector.x, innovVector.y});
+        //     SimpleMatrix positionCol = new SimpleMatrix(new double[]{position.x, position.y});
             
-            SimpleMatrix gain = covariance.mult(covariance.plus(pe.covariance).invert());
+        //     SimpleMatrix gain = covariance.mult(covariance.plus(pe.covariance).invert());
 
-            SimpleMatrix newPosition = positionCol.plus(gain.mult(innov));
+        //     SimpleMatrix newPosition = positionCol.plus(gain.mult(innov));
 
-            SimpleMatrix newCov = (SimpleMatrix.identity(2).minus(gain)).mult(covariance);
+        //     SimpleMatrix newCov = (SimpleMatrix.identity(2).minus(gain)).mult(covariance);
 
-            position = new Vector2(newPosition.get(0), newPosition.get(1));
-            covariance = newCov;
+        //     position = new Vector2(newPosition.get(0), newPosition.get(1));
+        //     covariance = newCov;
+        // }
+        Optional<PoseEstimate> opt = cameras[0].update(lastOdomPos);
+        if(opt.isPresent()){
+            position = new Vector2(opt.get().x, opt.get().y);
         }
     }
 
@@ -99,7 +102,7 @@ public class SwervePosition {
         innovateOdometry();
         
         if(correctWithVision){
-            innovateOdometry();
+            innovateVision();
         }
     }
 
