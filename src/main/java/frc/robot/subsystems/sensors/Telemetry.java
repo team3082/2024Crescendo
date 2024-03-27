@@ -4,10 +4,7 @@ import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -75,7 +72,7 @@ public class Telemetry {
     private static final ShuffleboardTab pos = Shuffleboard.getTab("Positions");
     private static final ShuffleboardTab shooter = Shuffleboard.getTab("Shooter");
     private static final ShuffleboardTab climber = Shuffleboard.getTab("Climber");
-    private static final ShuffleboardTab trajState = Shuffleboard.getTab("Trajectory State");
+    // private static final ShuffleboardTab trajState = Shuffleboard.getTab("Trajectory State");
     // private static final ShuffleboardTab intake = Shuffleboard.getTab("Intake");
 
     // NetworkTable entries

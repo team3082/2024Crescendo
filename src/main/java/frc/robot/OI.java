@@ -1,8 +1,5 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.RPM;
-import static edu.wpi.first.units.Units.Radians;
 import static frc.robot.configs.Constants.ShooterConstants.speakerPos;
 import static frc.robot.configs.Tuning.OI.*;
 
@@ -12,17 +9,12 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.controllermaps.LogitechF310;
 import frc.robot.subsystems.sensors.Pigeon;
-import frc.robot.subsystems.sensors.Telemetry;
-import frc.robot.configs.ShooterSettings;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
-import frc.robot.subsystems.shooter.ShooterTables;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
-import frc.robot.swerve.SwerveModule;
-import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.RMath;
