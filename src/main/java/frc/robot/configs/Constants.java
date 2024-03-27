@@ -9,6 +9,10 @@ import java.util.List;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.shooter.ShooterTables;
@@ -236,6 +240,14 @@ public final class Constants {
 
         }
 
+    }
+
+    public static class Vision{
+        public static final AprilTagFieldLayout APRILTAGS = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+        public static final Pose3d FIELDORIGIN = new Pose3d(8.267700, 4.078, 0, new Rotation3d(0,0,Math.PI/2));
+
+        public static final int MAXCAMERAQUEUELENGTH = 20;
+        public static final int MINCAMERAQUEUELENGTH = 5;
     }
 
     
