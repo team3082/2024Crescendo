@@ -5,9 +5,16 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.sensors.VisionManager;
+import frc.robot.utils.PoseEstimate;
 import frc.robot.utils.RTime;
+import frc.robot.utils.TagCamera;
 import frc.robot.utils.Vector2;
+
+import static frc.robot.configs.Constants.Odometry.*;
+
 import java.util.Optional;
+
+import org.ejml.simple.SimpleMatrix;
 
 public class SwervePosition {
 
@@ -16,19 +23,67 @@ public class SwervePosition {
     static final double VISION_CORRECTION_FACTOR = 0.1;
 
     private static Vector2 position;
+    private static SimpleMatrix covariance;
     private static Vector2 absVelocity;
     private static Vector2 lastAbsVelocity;
 
     private static boolean correctWithVision = false;
 
+    private static TagCamera[] cameras;
+
     private static Vector2 lastOdomPos;
 
     public static void init() {
+        APRILTAGS.setOrigin(FIELDORIGINWPI);
+
+        cameras = new TagCamera[]{
+            new TagCamera("ApriltagCamera1", ROBOTTOCAMERA1)
+        };
+
         absVelocity     = new Vector2(0.0,0.0);
         lastAbsVelocity = new Vector2(0.0,0.0);
         position        = new Vector2(0.0,0.0);
         lastOdomPos     = new Vector2(0.0,0.0);
+        covariance = INITIALCOV;
         Odometry.init();
+    }
+
+    private static void innovateOdometry(){
+        Vector2 odometryPos = Odometry.getPosition();
+        Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
+
+        position = position.add(odometryInnovation);
+        covariance = covariance.plus(ODOCOV);
+
+        
+        lastOdomPos = odometryPos;
+        lastAbsVelocity = absVelocity;
+
+        absVelocity = odometryInnovation.div(RTime.deltaTime());
+    }
+
+    private static void innovateVision(){
+        for(TagCamera c : cameras){
+            Optional<PoseEstimate> opt = c.update(lastOdomPos);
+            if(opt.isEmpty()){
+                continue;
+            }
+            PoseEstimate pe = opt.get();
+            Vector2 estimatedPose = new Vector2(pe.x, pe.y);
+
+            Vector2 innovVector = estimatedPose.sub(position);
+            SimpleMatrix innov = new SimpleMatrix(new double[]{innovVector.x, innovVector.y});
+            SimpleMatrix positionCol = new SimpleMatrix(new double[]{position.x, position.y});
+            
+            SimpleMatrix gain = covariance.mult(covariance.plus(pe.covariance).invert());
+
+            SimpleMatrix newPosition = positionCol.plus(gain.mult(innov));
+
+            SimpleMatrix newCov = (SimpleMatrix.identity(2).minus(gain)).mult(covariance);
+
+            position = new Vector2(newPosition.get(0), newPosition.get(1));
+            covariance = newCov;
+        }
     }
 
     public static void enableVision() {
@@ -41,23 +96,10 @@ public class SwervePosition {
 
     public static void update() {
 
-        Vector2 odometryPos = Odometry.getPosition();
-        Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
+        innovateOdometry();
         
-        position = position.add(odometryInnovation);
-        lastOdomPos = odometryPos;
-        lastAbsVelocity = absVelocity;
-
-        absVelocity = odometryInnovation.div(RTime.deltaTime());
-
-        if (correctWithVision) {
-            Optional<Vector2> visionPos = VisionManager.getPosition();
-
-            if(visionPos.isPresent()){
-                System.out.println("Vision exists");
-                Vector2 posError = visionPos.get().sub(position);
-                position = position.add(posError.mul(VISION_CORRECTION_FACTOR));
-            }
+        if(correctWithVision){
+            innovateOdometry();
         }
     }
 

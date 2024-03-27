@@ -8,20 +8,23 @@ import java.util.Optional;
 
 import org.ejml.simple.SimpleMatrix;
 import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-import static frc.robot.configs.Constants.Vision.*;
+import static frc.robot.configs.Constants.Odometry.*;
 
 public class TagCamera {
     private PhotonPoseEstimator pe;
     private LinkedList<Vector2> previousErrors;
 
-    public TagCamera(PhotonPoseEstimator pe){
-        this.pe = pe;
+    public TagCamera(String name, Transform3d robotToCamera){
+        this.pe = new PhotonPoseEstimator(APRILTAGS, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, new PhotonCamera(name), robotToCamera);
         previousErrors = new LinkedList<Vector2>();
     }
 
