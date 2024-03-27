@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.AutoSelector;
 import frc.robot.sensors.Pigeon;
@@ -32,8 +34,12 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
+  public static Alliance alliance;
+
   @Override
   public void robotInit() {
+    alliance = DriverStation.getAlliance().get();
     try {
       Thread.sleep(5000);
     } catch (InterruptedException e) {
@@ -45,7 +51,7 @@ public class Robot extends TimedRobot {
     SwervePosition.init();
     SwervePID.init();
     Pigeon.setYaw(90);
-    // VisionManager.init();
+    VisionManager.init();
     ClimberManager.init();
     ChoreoTrajectoryGenerator.init();
     ChoreoTrajectoryGenerator.parseAll();
@@ -53,7 +59,7 @@ public class Robot extends TimedRobot {
     Intake.init();
     AutoSelector.setup();
     Telemetry.init();
-    // SwervePosition.enableVision();
+    SwervePosition.enableVision();
   }
 
   @Override
@@ -64,6 +70,7 @@ public class Robot extends TimedRobot {
     RTime.update();
     Telemetry.update(false);
     Intake.beambreak.update();
+    // SwervePosition.update();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();
@@ -94,7 +101,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     OI.init();
-    // SwervePosition.enableVision();
+    SwervePosition.enableVision();
   }
 
   @Override

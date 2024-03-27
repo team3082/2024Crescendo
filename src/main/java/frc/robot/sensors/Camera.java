@@ -1,6 +1,8 @@
 package frc.robot.sensors;
 
+import java.sql.Driver;
 import java.util.concurrent.ExecutionException;
+
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -10,7 +12,11 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.utils.Vector2;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class Camera {
     public enum CameraMode {
@@ -40,16 +46,21 @@ public class Camera {
         } else {
             // do normal math shit
             PhotonTrackedTarget result = this.cam.getLatestResult().getBestTarget();
+            System.out.println("got result");
             if (result == null) {
                 throw new ExecutionException("no target", null);
             } else {
+                System.out.println("result not null");
                 Transform3d output = result.getBestCameraToTarget();
                 Vector2 offset = new Vector2(output.getX(), output.getY()).mul(Constants.METERSTOINCHES);
+                System.out.println("got offset " + offset);
                 double robotRot = Pigeon.getRotationRad();
                 offset = new Vector2(offset.x * Math.cos(this.pitch), offset.y); // get the offset from the tag (forward dist, horizontal dist)
                 Vector2 relativeCameraPos = offset.rotate(this.yaw + robotRot + (Math.PI / 2.0)); // get the position of the camera relative to the tag
-                Vector2 globalCameraPos = relativeCameraPos.add(Apriltags.get(result.getFiducialId())); // get the global position of the camera on the field
+                Vector2 apriltagPos = Apriltags.get(result.getFiducialId());
+                Vector2 globalCameraPos = relativeCameraPos.add(apriltagPos); // get the global position of the camera on the field
                 Vector2 globalRobotPos = globalCameraPos.add(this.pos.rotate(robotRot + (Math.PI / 2.0))); // get the global position of the robot on the field
+                System.out.println("math has mathed " + globalRobotPos);
                 return globalRobotPos;
             }
         }

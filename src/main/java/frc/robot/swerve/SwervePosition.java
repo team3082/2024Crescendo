@@ -15,7 +15,7 @@ public class SwervePosition {
 
     // Smoothly correct field position based on vision output. VISION_CORRECTION_FACTOR should range from 0.0 to
     // 1.0, representing the speed at which we blend from the odometry output to the output of the vision. 
-    static final double VISION_CORRECTION_FACTOR = 0.3;
+    static final double VISION_CORRECTION_FACTOR = 1.0;
 
     private static Vector2 position;
     private static Vector2 absVelocity;
@@ -59,14 +59,17 @@ public class SwervePosition {
 
         if (correctWithVision) {
             try {
+                System.out.println("correcting with vision");
                 Vector2 visionPos = VisionManager.getPosition();
+                System.out.println("Vision Pos: " + visionPos);
                 Vector2 posError = visionPos.sub(position);
                 position = position.add(posError.mul(VISION_CORRECTION_FACTOR));
+
             } catch(Exception e) { }
         }
     }
 
-    public static final double correctionMultiplier = 0.1;
+    public static final double correctionMultiplier = 1.0;
 
     /**
      * Returns array of the robot's angle and distance in INCHES based of manual calculations
@@ -91,6 +94,7 @@ public class SwervePosition {
     public static void updateAveragePosVision() {
         try {
             Vector2 visionPos = VisionManager.getPosition();
+            System.out.println("Vision Pos: " + visionPos);
             Vector2 adjustment = visionPos.sub(position).mul(correctionMultiplier);
             position = position.add(adjustment);
         } catch(Exception e) { }

@@ -8,28 +8,21 @@ public class VisionManager {
 
     public static void init() {
         cameras = new Camera[] {
-            new Camera("Apriltag1", 3.0 * Math.PI / 2.0, Math.toRadians(23), new Vector2(-2, 5.5))
+            new Camera("ApriltagCamera1", 3.0 * Math.PI / 2.0, Math.toRadians(23), new Vector2(-2, 5.5))
         };
     }
 
     public static Vector2 getPosition() throws Exception {
 
-        Vector2 posSum = new Vector2();
+        Vector2 posSum = new Vector2(0, 0);
         int nTargets = 0;
 
-        for (Camera camera : cameras) {
-            try {
-                Vector2 pos = camera.getPos();
-                posSum.add(pos);
-                nTargets++;
-            } catch (Exception e) {}
+        try {
+            return cameras[0].getPos();
         }
-
-        if (nTargets > 0) {
-            return posSum.div(nTargets);
+        catch (Exception e) {
+            throw new Exception("No targets found!");
         }
-
-        throw new Exception("No targets found!");
     }
 
     public static void setDisabledMode() {
