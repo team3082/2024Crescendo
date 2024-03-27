@@ -42,8 +42,11 @@ public class Camera {
                 Transform3d output = result.getBestCameraToTarget();
                 Vector2 offset = new Vector2(output.getX(), output.getY()).mul(Constants.METERSTOINCHES);
                 double robotRot = Pigeon.getRotationRad();
-                Vector2 robotPos = new Vector2(offset.x * Math.cos(this.pitch), offset.y).rotate(this.yaw + robotRot + Math.PI / 2.0).add(Apriltags.aprilTags[result.getFiducialId()]).add(this.pos.rotate(robotRot + Math.PI/2.0));
-                return robotPos;
+                offset = new Vector2(offset.x * Math.cos(this.pitch), offset.y); // get the offset from the tag (forward dist, horizontal dist)
+                Vector2 relativeCameraPos = offset.rotate(this.yaw + robotRot + (Math.PI / 2.0)); // get the position of the camera relative to the tag
+                Vector2 globalCameraPos = relativeCameraPos.add(Apriltags.aprilTags[result.getFiducialId()]); // get the global position of the camera on the field
+                Vector2 globalRobotPos = globalCameraPos.add(this.pos.rotate(robotRot + (Math.PI / 2.0))); // get the global position of the robot on the field
+                return globalRobotPos;
             }
         }
     }
