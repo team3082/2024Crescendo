@@ -6,7 +6,9 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -24,6 +26,7 @@ public final class Intake {
     private static SparkPIDController topPID;
     public static SparkPIDController bottomPID;
     public static Beambreak beambreak;
+    public static com.ctre.phoenix6.hardware.TalonFX indexMotor;
 
     private static IntakeState state = IntakeState.STOW;
 
@@ -36,13 +39,15 @@ public final class Intake {
         pivotMotor.configNominalOutputReverse(0.01);
         pivotMotor.configNeutralDeadband(0.01);
         pivotMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 30);
+        pivotMotor.setSensorPhase(true); // might need to change
+        pivotMotor.setInverted(TalonFXInvertType.CounterClockwise); // might need to change
         
         pivotMotor.config_kP(0, 0.6, 30);
         pivotMotor.config_kI(0, 0.0, 30);
         pivotMotor.config_kD(0, 0.2, 30);
 
-        pivotMotor.configMotionAcceleration(34000);
-        pivotMotor.configMotionCruiseVelocity(28000);
+        pivotMotor.configMotionAcceleration(30000);
+        pivotMotor.configMotionCruiseVelocity(24000);
         pivotMotor.configMotionSCurveStrength(1);
 
         SupplyCurrentLimitConfiguration pivotCurrentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0 );
@@ -80,6 +85,10 @@ public final class Intake {
         bottomBeltMotor.burnFlash();
 
         beambreak = new Beambreak(LASER_ID, LASER_BREAK_DIST);
+
+        indexMotor = new com.ctre.phoenix6.hardware.TalonFX(0); // placeholder
+        com.ctre.phoenix6.configs.TalonFXConfiguration indexMotorConfig = new com.ctre.phoenix6.configs.TalonFXConfiguration();
+        indexMotor.getConfigurator().apply(indexMotorConfig, 0.100);
 
         try {
             Thread.sleep(2000);
@@ -165,8 +174,9 @@ public final class Intake {
 
         // if it has the piece it can intake if it doesnt it cant
         if (hasPiece) {
-            topPID.setReference(0.0, ControlType.kDutyCycle);
-            bottomPID.setReference(0.0, ControlType.kDutyCycle);
+            topPID.setReference(-0.8, ControlType.kDutyCycle);
+            bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+            indexMotor.set(0);
             if (RTime.now() >= suckTime + 0.07) {
                 if (suckTime != 0.0) {
                     reallyHasPiece = true;
@@ -176,6 +186,7 @@ public final class Intake {
         } else {
             topPID.setReference(-0.8, ControlType.kDutyCycle);
             bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+            indexMotor.set(-0.5);
             Intake.setState(IntakeState.GROUND);
         }
         // System.out.println(suckState.name());
@@ -195,8 +206,9 @@ public final class Intake {
 
         // if it has the piece it can intake if it doesnt it cant
         if (hasPiece) {
-            topPID.setReference(0.0, ControlType.kDutyCycle);
-            bottomPID.setReference(0.0, ControlType.kDutyCycle);
+            topPID.setReference(-0.8, ControlType.kDutyCycle);
+            bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+            indexMotor.set(0.0);
             if (RTime.now() >= suckTime + 0.1) {
                 if (suckTime != 0.0) {
                     reallyHasPiece = true;
@@ -206,6 +218,7 @@ public final class Intake {
         } else {
             topPID.setReference(-0.8, ControlType.kDutyCycle);
             bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+            indexMotor.set(-0.5);
             Intake.setState(IntakeState.GROUND);
         }
         // System.out.println(suckState.name());
@@ -215,8 +228,9 @@ public final class Intake {
      * Runs the handoff
      */
     public static void runHandoff() {
-        topPID.setReference(-0.8, ControlType.kDutyCycle);
-        bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+        topPID.setReference(-1, ControlType.kDutyCycle);
+        bottomPID.setReference(-1, ControlType.kDutyCycle);
+        indexMotor.setControl(new DutyCycleOut(-1));
     }
 
     public static void eject() {
