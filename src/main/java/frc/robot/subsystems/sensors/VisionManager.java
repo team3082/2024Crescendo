@@ -12,6 +12,8 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.configs.Constants;
 import frc.robot.utils.Vector2;
 
@@ -26,7 +28,7 @@ public class VisionManager {
 
         //transform must be in meters
         cameras = new PhotonPoseEstimator[]{
-            new PhotonPoseEstimator(aprilTags, PoseStrategy.AVERAGE_BEST_TARGETS, new PhotonCamera("ApriltagCamera1"), new Transform3d(-5.5,-2,-22, new Rotation3d(0, Math.toRadians(23), 0.0)).div(Constants.METERSTOINCHES))//TODO find cameraposition in meters
+            new PhotonPoseEstimator(aprilTags, PoseStrategy.AVERAGE_BEST_TARGETS, new PhotonCamera("ApriltagCamera1"), new Transform3d(-3.5,-2,-22, new Rotation3d(0, Math.toRadians(23), 0.0)).div(Constants.METERSTOINCHES))//TODO find cameraposition in meters
         };
 
         System.out.println("Num cameras: " + cameras.length);
@@ -54,7 +56,11 @@ public class VisionManager {
                     }
                 }
                 if (goodVal) {
-                    Vector2 robotposefromcamera = new Vector2(-estimate.get().estimatedPose.getX(), -estimate.get().estimatedPose.getY());
+                    Vector2 robotposefromcamera = new Vector2(estimate.get().estimatedPose.getX(), estimate.get().estimatedPose.getY());
+                    if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){
+                        robotposefromcamera = robotposefromcamera.rotate(Math.PI);
+
+                    }
                     robotposefromcamera = robotposefromcamera.mul(Constants.METERSTOINCHES);
                     poseSum = poseSum.add(robotposefromcamera);
                     numUpdates++;

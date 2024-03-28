@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
     ChoreoTrajectoryGenerator.init();
     ChoreoTrajectoryGenerator.parseAll();
     Shooter.init();
-    Intake.init();
+    // Intake.init();
     AutoSelector.setup();
     Telemetry.init();
     BannerLight.init();
@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
     RTime.updateAbsolute();
     RTime.update();
     Telemetry.update(false);
-    Intake.beambreak.update();
+    // Intake.beambreak.update();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();
@@ -86,7 +86,7 @@ public class Robot extends TimedRobot {
     Pigeon.setYaw(90);
 	  CommandScheduler.getInstance().enable();
     AutoSelector.run();
-    SwervePosition.enableVision();
+    SwervePosition.disableVision();
   }
 
   @Override
@@ -137,7 +137,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    Intake.disable();
+    // Intake.disable();
     ShooterPivot.disable();
     Shooter.disable();
   }

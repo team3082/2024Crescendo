@@ -41,8 +41,8 @@ public final class Intake {
         pivotMotor.config_kI(0, 0.0, 30);
         pivotMotor.config_kD(0, 0.2, 30);
 
-        pivotMotor.configMotionAcceleration(30000);
-        pivotMotor.configMotionCruiseVelocity(24000);
+        pivotMotor.configMotionAcceleration(34000);
+        pivotMotor.configMotionCruiseVelocity(28000);
         pivotMotor.configMotionSCurveStrength(1);
 
         SupplyCurrentLimitConfiguration pivotCurrentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0 );
@@ -215,8 +215,8 @@ public final class Intake {
      * Runs the handoff
      */
     public static void runHandoff() {
-        topPID.setReference(-1, ControlType.kDutyCycle);
-        bottomPID.setReference(-1, ControlType.kDutyCycle);
+        topPID.setReference(-0.8, ControlType.kDutyCycle);
+        bottomPID.setReference(-0.8, ControlType.kDutyCycle);
     }
 
     public static void eject() {

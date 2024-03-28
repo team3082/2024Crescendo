@@ -38,13 +38,16 @@ public final class Constants {
         // (Distance of bumper from subwoofer) + (offset for distance from speaker to subwoofer)
         ShooterTables.init(List.of(
             new ShooterSettings().distance(Inches.of(0.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(58.0)),
-            new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(46.0)),
-            new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(43.2)),
-            new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(42.0)),
-            new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.0)),
-            new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.5)),
-            new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(33.5)),
-            new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(32.0))
+            new ShooterSettings().distance(Inches.of(12.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(51.2)),
+            new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(48.5)),
+            new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(45.0)),
+            new ShooterSettings().distance(Inches.of(42.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(41.7)),
+            new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.5)),
+            new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.5)),
+            new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.7)),
+            new ShooterSettings().distance(Inches.of(78.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.5)),
+            new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(34.2)),
+            new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(33.0))
         ));
     }
 
