@@ -71,8 +71,8 @@ public final class Shooter {
         topMotor.configAllSettings(config);
         bottomMotor.configAllSettings(config);
         
-        topMotor.setNeutralMode(NeutralMode.Coast);
-        bottomMotor.setNeutralMode(NeutralMode.Coast);
+        topMotor.setNeutralMode(NeutralMode.Brake);
+        bottomMotor.setNeutralMode(NeutralMode.Brake);
 
         topMotor.config_kP(0, 0.2);
         topMotor.config_kI(0, 0.000);
@@ -142,8 +142,8 @@ public final class Shooter {
             break;
 
             case DISABLED:
-                topMotor.set(TalonFXControlMode.PercentOutput, 0.3);
-                bottomMotor.set(TalonFXControlMode.PercentOutput, 0.3);
+                topMotor.set(TalonFXControlMode.PercentOutput, 0);
+                bottomMotor.set(TalonFXControlMode.PercentOutput, 0);
                 targetVelocity = 0.0;
                 targetTop = 0.0;
                 targetBottom = 0.0;

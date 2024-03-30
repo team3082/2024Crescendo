@@ -28,7 +28,7 @@ public class VisionManager {
 
         //transform must be in meters
         cameras = new PhotonPoseEstimator[]{
-            new PhotonPoseEstimator(aprilTags, PoseStrategy.AVERAGE_BEST_TARGETS, new PhotonCamera("ApriltagCamera1"), new Transform3d(-3.5,-2,-22, new Rotation3d(0, Math.toRadians(23), 0.0)).div(Constants.METERSTOINCHES))//TODO find cameraposition in meters
+            new PhotonPoseEstimator(aprilTags, PoseStrategy.AVERAGE_BEST_TARGETS, new PhotonCamera("ApriltagCamera1"), new Transform3d(3.5,-2,-22, new Rotation3d(0, Math.toRadians(23), 0.0)).div(Constants.METERSTOINCHES))//TODO find cameraposition in meters
         };
 
         System.out.println("Num cameras: " + cameras.length);
@@ -64,7 +64,7 @@ public class VisionManager {
                     robotposefromcamera = robotposefromcamera.mul(Constants.METERSTOINCHES);
                     poseSum = poseSum.add(robotposefromcamera);
                     numUpdates++;
-                    System.out.println("Robot Pose from camera: " + robotposefromcamera);
+                    // System.out.println("Robot Pose from camera: " + robotposefromcamera);
                 } else {
                     continue;
                 }

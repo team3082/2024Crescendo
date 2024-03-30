@@ -35,7 +35,7 @@ public class AutoSelector {
         autoChooser.addOption("3 Piece Amp Far", "3 Piece Amp Far");
         autoChooser.addOption("4 Piece Middle", "4 Piece Middle");
         autoChooser.addOption("amp145", "amp145");
-        autoChooser.addOption("Test", "Test");
+        autoChooser.addOption("3 Piece Citrus Source", "3 Piece Citrus Source");
     }
 
     /**
@@ -112,7 +112,10 @@ public class AutoSelector {
             break;
             case "amp145":
                 CommandAuto.init(CommandAuto.amp145());
-                break;
+            break;
+            case "3 Piece Citrus Source":
+                CommandAuto.init(CommandAuto.threeSourceCitrus());
+            break;
             case "Test":
                 CommandAuto.init(CommandAuto.testCommand());
         }

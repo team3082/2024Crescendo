@@ -19,6 +19,7 @@ import frc.robot.auto.commands.SetIntake;
 import frc.robot.auto.commands.SetIntakeFeedPos;
 import frc.robot.auto.commands.SetShooterAngle;
 import frc.robot.auto.commands.SetShooterVelocity;
+import frc.robot.auto.commands.UseVision;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
@@ -334,21 +335,39 @@ public class CommandAuto {
       ),
       new WaitCommand(0.25),
       new ParallelDeadlineGroup(
-        new FireShooter(), new Aim()),
+        new FireShooter(), new UseVision()),
         
       new ParallelDeadlineGroup(
         new ChoreoFollow("amp145.2", 1.0),
         new SetIntake()),
       new ChoreoFollow("amp145.3", 1.0),
       new ParallelDeadlineGroup(
-        new FireShooter(), new Aim()),
+        new FireShooter(), new UseVision()),
 
       new ParallelDeadlineGroup(
         new ChoreoFollow("amp145.4", 1.0),
         new SetIntake()),
       new ChoreoFollow("amp145.5", 1.0),
       new ParallelDeadlineGroup(
-        new FireShooter(), new Aim())
+        new FireShooter(), new UseVision())
+    );
+  }
+
+  public static Command threeSourceCitrus() {
+    SwervePosition.setPosition(new Vector2(0 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), 0));
+    Pigeon.setYaw(90);
+    return new SequentialCommandGroup(
+      new ParallelDeadlineGroup(new ChoreoFollow("source_citrus.1", 1.0), new SetIntake()),
+      new ChoreoFollow("source_citrus.2", 1.0),
+      new ParallelDeadlineGroup(new FireShooter(), new UseVision()),
+
+      new ParallelDeadlineGroup(new ChoreoFollow("source_citrus.3", 1.0), new SetIntake()),
+      new ChoreoFollow("source_citrus.4", 1.0),
+      new ParallelDeadlineGroup(new FireShooter(), new UseVision()),
+
+      new ParallelDeadlineGroup(new ChoreoFollow("source_citrus.5", 1.0), new SetIntake()),
+      new ChoreoFollow("source_citrus.6", 1.0),
+      new ParallelDeadlineGroup(new FireShooter(), new UseVision())
     );
   }
 

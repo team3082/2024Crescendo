@@ -1,5 +1,7 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.Radians;
 import static frc.robot.configs.Constants.ShooterConstants.speakerPos;
 import static frc.robot.configs.Tuning.OI.*;
 
@@ -9,10 +11,12 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.controllermaps.LogitechF310;
 import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.configs.ShooterSettings;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
+import frc.robot.subsystems.shooter.ShooterTables;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
@@ -80,6 +84,8 @@ public class OI {
     public static double topVector = 250;
     public static double bottomVector = 850;
 
+    public static double shooterDistance = 0.0;
+
     /**
      * Initialize OI with preset joystick ports.
      */
@@ -113,12 +119,14 @@ public class OI {
         // INTAKE
 
         if (driverStick.getRawAxis(intake) > 0.5) {
-            Intake.suck();
+            Intake.autoSuck();
             if (Intake.reallyHasPiece)
                 driverStick.setRumble(RumbleType.kBothRumble, 0.9);
             else 
                 driverStick.setRumble(RumbleType.kBothRumble, 0.0);
         } else {
+            Intake.justStarted = true;
+            Intake.hasPiece = false;
             driverStick.setRumble(RumbleType.kBothRumble, 0.0);
             if (!Shooter.firing())
                 Intake.setState(IntakeState.STOW); 
@@ -155,6 +163,7 @@ public class OI {
 
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
+        shooterDistance = SwervePosition.getPosition().sub(speakerPos).mag();
 
         // checks current shooter mode and sets the angle and velocities accordingly
         if (shooterFire) {

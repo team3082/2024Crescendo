@@ -54,7 +54,7 @@ public class SwervePosition {
             Optional<Vector2> visionPos = VisionManager.getPosition();
 
             if(visionPos.isPresent()){
-                System.out.println("Vision exists");
+               // System.out.println("Vision exists");
                 Vector2 posError = visionPos.get().sub(position);
                 position = position.add(posError.mul(VISION_CORRECTION_FACTOR));
             }
