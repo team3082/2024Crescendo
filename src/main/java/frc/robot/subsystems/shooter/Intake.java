@@ -17,6 +17,7 @@ import com.revrobotics.SparkPIDController;
 
 import frc.robot.utils.Beambreak;
 import frc.robot.utils.RTime;
+import frc.robot.utils.Sensor;
 
 @SuppressWarnings("removal")
 public final class Intake {
@@ -158,79 +159,28 @@ public final class Intake {
 
     public static SuckState suckState = SuckState.CONTINUE_SUCK;
     public static double suckTime = 0.0;
-    public static boolean hasPiece = false;
-    public static boolean reallyHasPiece = false;
+    public static boolean hasPiece;
+    public static boolean reallyHasPiece;
 
-    public static void suck2() {
-        if (motorHasPiece()) {
-            if (hasPiece == false) {
+    public static void suck() {
+        // tracks if beambreak is brokey
+        if (Sensor.isBroken()) {
+            if (hasPiece == false){
                 suckTime = RTime.now();
             }
-            System.out.println("has piece");
+            System.out.println("e");
             hasPiece = true;
-        } else if (!motorHasPiece()) {
+        } else if (!Sensor.isBroken()) {
             hasPiece = false;
             reallyHasPiece = false;
         }
-
-        if (hasPiece) {
-            topPID.setReference(-0.8, ControlType.kDutyCycle);
-            bottomPID.setReference(-0.8, ControlType.kDutyCycle);
-            indexMotor.set(0);
-            if (RTime.now() >= suckTime + 0) {
-                if (suckTime != 0.0) {
-                    reallyHasPiece = true;
-                    Intake.setState(IntakeState.STOW);
-                }
-            }
-        } else {
-            topPID.setReference(-0.8, ControlType.kDutyCycle);
-            bottomPID.setReference(-0.8, ControlType.kDutyCycle);
-            indexMotor.set(0.35);
-            Intake.setState(IntakeState.GROUND);
-        }
-    }
-
-    public static boolean justStarted = true;
-    public static double startTime = 0.0;
-
-    public static void suck() {
-
-        // System.out.println("hasPiece: " + hasPiece);
-        // System.out.println("just started: " + justStarted);
-        // System.out.println("start Time: " + startTime);
-        // System.out.println("started fully ig: " + (RTime.now() >= startTime + 0.05));
-        System.out.println("motor has piece: " + motorHasPiece());
-        // // tracks if beambreak is brokey
-        // if (beambreak.isBroken() || motorHasPiece()) {
-        //     if (hasPiece == false){
-        //         suckTime = RTime.now();
-        //     }
-        //     hasPiece = true;
-        // } else if (!beambreak.isBroken()) {
-        //     hasPiece = false;
-        //     reallyHasPiece = false;
-        // }
-        
-        if (justStarted) {
-            startTime = RTime.now();
-        }
-
-        if (motorHasPiece() && (RTime.now() >= startTime + 0.1) && !justStarted) {
-            hasPiece = true;
-        }
-
-        if (justStarted) {
-            justStarted = false;
-        }
-        
 
         // if it has the piece it can intake if it doesnt it cant
         if (hasPiece) {
             topPID.setReference(-0.8, ControlType.kDutyCycle);
             bottomPID.setReference(-0.8, ControlType.kDutyCycle);
             indexMotor.set(0);
-            if (RTime.now() >= suckTime + 0.15) {
+            if (RTime.now() >= suckTime + 0.07) {
                 if (suckTime != 0.0) {
                     reallyHasPiece = true;
                     Intake.setState(IntakeState.STOW);
@@ -239,16 +189,44 @@ public final class Intake {
         } else {
             topPID.setReference(-0.8, ControlType.kDutyCycle);
             bottomPID.setReference(-0.8, ControlType.kDutyCycle);
-            indexMotor.set(0.35);
+            indexMotor.set(0.5);
             Intake.setState(IntakeState.GROUND);
         }
+        // System.out.println(suckState.name());
     }
 
     public static void autoSuck() {
-        topPID.setReference(-0.8, ControlType.kDutyCycle);
+        // tracks if beambreak is brokey
+        System.out.println(Sensor.isBroken());
+        if (Sensor.isBroken()) {
+            if (hasPiece == false){
+                suckTime = RTime.now();
+            }
+            hasPiece = true;
+            System.out.println("e");
+        } else if (!Sensor.isBroken()) {
+            hasPiece = false;
+            reallyHasPiece = false;
+        }
+
+        // if it has the piece it can intake if it doesnt it cant
+        if (hasPiece) {
+            topPID.setReference(-0.8, ControlType.kDutyCycle);
             bottomPID.setReference(-0.8, ControlType.kDutyCycle);
-            indexMotor.set(0.35);
+            indexMotor.set(0.0);
+            if (RTime.now() >= suckTime + 0.1) {
+                if (suckTime != 0.0) {
+                    reallyHasPiece = true;
+                    Intake.setState(IntakeState.STOW);
+                }
+            }
+        } else {
+            topPID.setReference(-0.8, ControlType.kDutyCycle);
+            bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+            indexMotor.set(0.5);
             Intake.setState(IntakeState.GROUND);
+        }
+        // System.out.println(suckState.name());
     }
 
     /**
@@ -282,7 +260,7 @@ public final class Intake {
     }
 
     public static boolean pieceGrabbed() {
-        return beambreak.isBroken() || motorHasPiece();
+        return Sensor.isBroken();
     }
 
     /** Returns if the intake has a piece based solely off the motors' current draw. */

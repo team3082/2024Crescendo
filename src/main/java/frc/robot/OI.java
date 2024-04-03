@@ -119,14 +119,12 @@ public class OI {
         // INTAKE
 
         if (driverStick.getRawAxis(intake) > 0.5) {
-            Intake.autoSuck();
+            Intake.suck();
             if (Intake.reallyHasPiece)
                 driverStick.setRumble(RumbleType.kBothRumble, 0.9);
             else 
                 driverStick.setRumble(RumbleType.kBothRumble, 0.0);
         } else {
-            Intake.justStarted = true;
-            Intake.hasPiece = false;
             driverStick.setRumble(RumbleType.kBothRumble, 0.0);
             if (!Shooter.firing())
                 Intake.setState(IntakeState.STOW); 
