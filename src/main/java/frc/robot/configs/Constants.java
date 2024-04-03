@@ -210,7 +210,7 @@ public final class Constants {
         public static final double driveTrackwidth = 0.0;
         public static final double driveWheelbase = 0.0;
 
-        public static final double shootWhileMoveSpeed = 0.3;
+        public static final double shootWhileMoveSpeed = 0.24;
     
         // The unadjusted maximum velocity of the robot, in inches per second.
         public static final double maxChassisVelocity = 6380.0 / 60.0 * 6.12 * (4.0 * Math.PI);
