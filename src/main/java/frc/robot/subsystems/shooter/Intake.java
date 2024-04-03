@@ -12,12 +12,14 @@ import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DigitalOutput;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 
 import frc.robot.utils.Beambreak;
 import frc.robot.utils.RTime;
-import frc.robot.utils.Sensor;
 
 @SuppressWarnings("removal")
 public final class Intake {
@@ -27,6 +29,7 @@ public final class Intake {
     private static SparkPIDController topPID;
     public static SparkPIDController bottomPID;
     public static Beambreak beambreak;
+    public static DigitalOutput sensor;
     public static com.ctre.phoenix6.hardware.TalonFX indexMotor;
 
     private static IntakeState state = IntakeState.STOW;
@@ -77,7 +80,6 @@ public final class Intake {
         bottomBeltMotor.setCANTimeout(30);
 
         bottomPID = bottomBeltMotor.getPIDController();
-// 
         bottomPID.setP(0.005);
         bottomPID.setI(0);
         bottomPID.setD(0.001);
@@ -86,6 +88,7 @@ public final class Intake {
         bottomBeltMotor.burnFlash();
 
         beambreak = new Beambreak(LASER_ID, LASER_BREAK_DIST);
+        sensor = new DigitalOutput(3);
 
         indexMotor = new com.ctre.phoenix6.hardware.TalonFX(23, "CANivore"); // placeholder
         com.ctre.phoenix6.configs.TalonFXConfiguration indexMotorConfig = new com.ctre.phoenix6.configs.TalonFXConfiguration();
@@ -164,13 +167,13 @@ public final class Intake {
 
     public static void suck() {
         // tracks if beambreak is brokey
-        if (Sensor.isBroken()) {
+        if (!sensor.get()) {
             if (hasPiece == false){
                 suckTime = RTime.now();
             }
             System.out.println("e");
             hasPiece = true;
-        } else if (!Sensor.isBroken()) {
+        } else if (sensor.get()) {
             hasPiece = false;
             reallyHasPiece = false;
         }
@@ -189,7 +192,7 @@ public final class Intake {
         } else {
             topPID.setReference(-0.8, ControlType.kDutyCycle);
             bottomPID.setReference(-0.8, ControlType.kDutyCycle);
-            indexMotor.set(0.5);
+            indexMotor.set(-0.5);
             Intake.setState(IntakeState.GROUND);
         }
         // System.out.println(suckState.name());
@@ -197,14 +200,13 @@ public final class Intake {
 
     public static void autoSuck() {
         // tracks if beambreak is brokey
-        System.out.println(Sensor.isBroken());
-        if (Sensor.isBroken()) {
+        if (!sensor.get()) {
             if (hasPiece == false){
                 suckTime = RTime.now();
             }
             hasPiece = true;
             System.out.println("e");
-        } else if (!Sensor.isBroken()) {
+        } else if (sensor.get()) {
             hasPiece = false;
             reallyHasPiece = false;
         }
@@ -223,7 +225,7 @@ public final class Intake {
         } else {
             topPID.setReference(-0.8, ControlType.kDutyCycle);
             bottomPID.setReference(-0.8, ControlType.kDutyCycle);
-            indexMotor.set(0.5);
+            indexMotor.set(-0.5);
             Intake.setState(IntakeState.GROUND);
         }
         // System.out.println(suckState.name());
@@ -260,7 +262,7 @@ public final class Intake {
     }
 
     public static boolean pieceGrabbed() {
-        return Sensor.isBroken();
+        return !sensor.get();
     }
 
     /** Returns if the intake has a piece based solely off the motors' current draw. */

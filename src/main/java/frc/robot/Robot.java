@@ -21,7 +21,6 @@ import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
-import frc.robot.utils.Sensor;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
 import frc.robot.auto.CommandAuto;
@@ -57,7 +56,6 @@ public class Robot extends TimedRobot {
     ChoreoTrajectoryGenerator.init();
     ChoreoTrajectoryGenerator.parseAll();
     Shooter.init();
-    Sensor.init();
     Intake.init();
     AutoSelector.setup();
     Telemetry.init();
