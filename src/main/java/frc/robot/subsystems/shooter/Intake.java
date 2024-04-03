@@ -142,6 +142,10 @@ public final class Intake {
         }
     }
 
+    public static IntakeState getState() {
+        return state;
+    }
+
     private static void stow() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);
         topPID.setReference(0, ControlType.kDutyCycle);

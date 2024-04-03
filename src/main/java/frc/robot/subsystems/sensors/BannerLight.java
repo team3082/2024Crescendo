@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.subsystems.shooter.Intake;
+import frc.robot.subsystems.shooter.Intake.IntakeState;
 
 public class BannerLight {
 
@@ -29,15 +31,19 @@ public class BannerLight {
     public static void updateAuto() {}
 
     public static void updateTeleop() {
+        // Color will always be in either amp or speaker mode so the else statement is never seen
         if (DriverStation.isTeleopEnabled()) {
-            if (OI.currentShooterMode == OI.ShooterMode.AMP)
+            if (OI.currentShooterMode == OI.ShooterMode.AMP) // Amp mode
                 setTagInView(true);
             
-            if (OI.currentShooterMode == OI.ShooterMode.SPEAKER)
+            if (OI.currentShooterMode == OI.ShooterMode.SPEAKER) // Speaker mode
                 setSpeaker();
 
-            if (OI.aligning == true)
+            if (OI.aligning == true) // Auto-Aligning
                 setShotComplete();
+
+            if (Intake.getState() == IntakeState.GROUND && Intake.reallyHasPiece == true) // Intake has piece
+                setPieceHad();
         } else {
             setAmpNoPieceGround();
         }
@@ -48,6 +54,10 @@ public class BannerLight {
         gray.set(grayState);
         black.set(blackState);
         white.set(whiteState);
+    }
+
+    public static void setPieceHad() {
+
     }
 
     // Green/Cyan 50-50 or Red/Cyan 50-50
