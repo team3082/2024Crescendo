@@ -31,7 +31,7 @@ public class BannerLight {
     public static void updateTeleop() {
         if (DriverStation.isTeleopEnabled()) {
             if (OI.currentShooterMode == OI.ShooterMode.AMP)
-                setSpeakerNoPieceSource();
+                setTagInView(true);
             
             if (OI.currentShooterMode == OI.ShooterMode.SPEAKER)
                 setSpeaker();
