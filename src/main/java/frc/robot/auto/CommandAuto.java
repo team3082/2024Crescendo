@@ -354,19 +354,21 @@ public class CommandAuto {
   }
 
   public static Command threeSourceCitrus() {
-    SwervePosition.setPosition(new Vector2(0 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), 0));
     Pigeon.setYaw(90);
     return new SequentialCommandGroup(
-      new ParallelDeadlineGroup(new ChoreoFollow("source_citrus.1", 1.0), new SetIntake()),
-      new ChoreoFollow("source_citrus.2", 1.0),
+      new ParallelDeadlineGroup(
+        new ChoreoFollow("source_citrus.1", 1.0).andThen(new ChoreoFollow("source_citrus.2", 1.0)), 
+        new SetIntake()),
       new ParallelDeadlineGroup(new FireShooter(), new UseVision()),
 
-      new ParallelDeadlineGroup(new ChoreoFollow("source_citrus.3", 1.0), new SetIntake()),
-      new ChoreoFollow("source_citrus.4", 1.0),
+      new ParallelDeadlineGroup(
+        new ChoreoFollow("source_citrus.3", 1.0).andThen(new ChoreoFollow("source_citrus.4", 1.0)), 
+        new SetIntake()),
       new ParallelDeadlineGroup(new FireShooter(), new UseVision()),
 
-      new ParallelDeadlineGroup(new ChoreoFollow("source_citrus.5", 1.0), new SetIntake()),
-      new ChoreoFollow("source_citrus.6", 1.0),
+      new ParallelDeadlineGroup(
+        new ChoreoFollow("source_citrus.5", 1.0).andThen(new ChoreoFollow("source_citrus.6", 1.0)),
+        new SetIntake()),
       new ParallelDeadlineGroup(new FireShooter(), new UseVision())
     );
   }

@@ -23,7 +23,7 @@ public class SetIntake extends Autoframe {
         if (Intake.reallyHasPiece) {
             Intake.reallyHasPiece = false;
             Intake.suckTime = 0;
-            Intake.setState(IntakeState.STOW);
+            // Intake.setState(IntakeState.STOW);
             Intake.no();
             this.done = true;
         }

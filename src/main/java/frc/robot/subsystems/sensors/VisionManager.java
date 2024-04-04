@@ -28,7 +28,7 @@ public class VisionManager {
 
         //transform must be in meters
         cameras = new PhotonPoseEstimator[]{
-            new PhotonPoseEstimator(aprilTags, PoseStrategy.AVERAGE_BEST_TARGETS, new PhotonCamera("ApriltagCamera1"), new Transform3d(3.5,-2,-22, new Rotation3d(0, Math.toRadians(23), 0.0)).div(Constants.METERSTOINCHES))//TODO find cameraposition in meters
+            new PhotonPoseEstimator(aprilTags, PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("ApriltagCamera1"), new Transform3d(-13,-2,-23.5, new Rotation3d(0, Math.toRadians(29.0), 0.0)).div(Constants.METERSTOINCHES))//TODO find cameraposition in meters
         };
 
         System.out.println("Num cameras: " + cameras.length);
@@ -56,6 +56,7 @@ public class VisionManager {
                     }
                 }
                 if (goodVal) {
+                    System.out.println(estimate.get().estimatedPose.getZ());
                     Vector2 robotposefromcamera = new Vector2(estimate.get().estimatedPose.getX(), estimate.get().estimatedPose.getY());
                     if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){
                         robotposefromcamera = robotposefromcamera.rotate(Math.PI);

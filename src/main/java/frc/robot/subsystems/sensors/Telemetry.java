@@ -227,7 +227,8 @@ public class Telemetry {
         TOPVECTOR.setDouble(OI.topVector);
         BOTTOMVECTOR.setDouble(OI.bottomVector);
 
-        pivotAngle.setDouble(Math.toDegrees(ShooterPivot.actualPos));
+        pivotAngle.setDouble(Math.toDegrees(ShooterPivot.getPosition()));
+        // pivotAngle.setDouble(Math.toDegrees(ShooterPivot.actualPos));
         pivotTargetAngle.setDouble(Math.toDegrees(ShooterPivot.targetPos));
        // FLYWHEELATVEL.setBoolean(Shooter.canShoot());
 

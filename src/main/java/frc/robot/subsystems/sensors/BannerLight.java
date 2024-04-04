@@ -16,10 +16,10 @@ public class BannerLight {
 
     public static void init() {
         if(Robot.isReal()){
-            brown = new DigitalOutput(7);
-            gray = new DigitalOutput(4);
-            black = new DigitalOutput(5);
-            white = new DigitalOutput(6);
+            brown = new DigitalOutput(9);
+            gray = new DigitalOutput(6);
+            black = new DigitalOutput(8);
+            white = new DigitalOutput(7);
             
             setNominal();
         }
@@ -54,7 +54,7 @@ public class BannerLight {
     }
 
     public static void setPieceHad() {
-        setState(false, false, false, false);
+        setState(true, true, true, true);
     }
 
     public static void setAlign() {
@@ -109,15 +109,15 @@ public class BannerLight {
 
     // 50/50 Blue/White
     public static void setAmp() {
-        brown.set(false);
-        gray.set(false);
-        white.set(true);
-        black.set(true);
+        brown.set(true);
+        gray.set(true);
+        white.set(false);
+        black.set(false);
     }
 
     // Steady Blue
     public static void setSpeaker() {
-        setState(false, true, true, true);
+        setState(true, false, false, false);
     }
 
     // Magenta/Orange Chase

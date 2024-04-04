@@ -30,6 +30,6 @@ public class SetIntake extends Command {
     @Override
     public void end(boolean interrupted){
         Intake.no();
-        Intake.setState(IntakeState.FEED);
+        // Intake.setState(IntakeState.FEED);
     }
 }

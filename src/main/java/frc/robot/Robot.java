@@ -125,11 +125,12 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     CommandScheduler.getInstance().cancelAll();
     CommandScheduler.getInstance().disable();
+    SwervePosition.enableVision();
   }
 
   @Override
   public void disabledPeriodic() {
-    // SwervePosition.updateAveragePosVision();
+    SwervePosition.update();
     // System.out.println(SwervePosition.getPosition().toString());
     // if(Robot.isReal())
     //   BannerLight.setTagInView(VisionManager.hasTarget());
