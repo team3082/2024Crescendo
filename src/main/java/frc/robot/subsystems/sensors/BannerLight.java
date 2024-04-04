@@ -20,11 +20,8 @@ public class BannerLight {
             gray = new DigitalOutput(4);
             black = new DigitalOutput(5);
             white = new DigitalOutput(6);
-
-            brown.set(false);
-            gray.set(false);
-            black.set(true);
-            white.set(false);
+            
+            setNominal();
         }
     }
 
@@ -34,18 +31,18 @@ public class BannerLight {
         // Color will always be in either amp or speaker mode so the else statement is never seen
         if (DriverStation.isTeleopEnabled()) {
             if (OI.currentShooterMode == OI.ShooterMode.AMP) // Amp mode
-                setTagInView(true);
+                setAmp();
             
             if (OI.currentShooterMode == OI.ShooterMode.SPEAKER) // Speaker mode
                 setSpeaker();
 
             if (OI.aligning == true) // Auto-Aligning
-                setShotComplete();
+                setAlign();
 
             if (Intake.getState() == IntakeState.GROUND && Intake.reallyHasPiece == true) // Intake has piece
                 setPieceHad();
         } else {
-            setAmpNoPieceGround();
+            setNominal();
         }
     }
 
@@ -57,14 +54,25 @@ public class BannerLight {
     }
 
     public static void setPieceHad() {
+        setState(false, false, false, false);
+    }
 
+    public static void setAlign() {
+        setState(true, true, true, false);
+    }
+
+    public static void setNominal() {
+        brown.set(false);
+        gray.set(true);
+        black.set(true);
+        white.set(false);
     }
 
     // Green/Cyan 50-50 or Red/Cyan 50-50
     public static void setTagInView(boolean tagInView) {
-        if(tagInView) {
+        if (tagInView) {
             setState(false, false, false, true);
-        }else {
+        } else {
             setState(false, false, true, false);
         }
     }
@@ -99,12 +107,15 @@ public class BannerLight {
         setState(false, true, false, true);
     }
 
-    // Magenta/Red Chase
+    // 50/50 Blue/White
     public static void setAmp() {
-        setState(false, true, true, false);
+        brown.set(false);
+        gray.set(false);
+        white.set(true);
+        black.set(true);
     }
 
-    // Magenta/Cyan Chase
+    // Steady Blue
     public static void setSpeaker() {
         setState(false, true, true, true);
     }
