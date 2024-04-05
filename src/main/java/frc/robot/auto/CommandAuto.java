@@ -354,6 +354,7 @@ public class CommandAuto {
   }
 
   public static Command threeSourceCitrus() {
+    SwervePosition.setPosition(new Vector2(-100 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -267));
     Pigeon.setYaw(90);
     return new SequentialCommandGroup(
       new ParallelDeadlineGroup(
