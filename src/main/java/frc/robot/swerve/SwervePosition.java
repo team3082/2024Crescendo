@@ -91,6 +91,7 @@ public class SwervePosition {
                 Vector2 posError = visionPos.get().sub(position);
                 position = position.add(posError.mul(correctionMultiplier));
             }
+            
         } catch(Exception e) { }
     }
 

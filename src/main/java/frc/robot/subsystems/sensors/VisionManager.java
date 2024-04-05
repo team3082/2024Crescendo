@@ -79,6 +79,10 @@ public class VisionManager {
 
         Vector2 robotPos = cameraPos.sub(robotToCamera);
 
+        if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red){
+            robotPos = robotPos.rotate(Math.PI);
+        }
+
         
         return Optional.of(robotPos);
     }
