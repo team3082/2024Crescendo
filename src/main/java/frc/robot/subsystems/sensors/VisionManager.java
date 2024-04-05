@@ -16,68 +16,71 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.configs.Constants;
 import frc.robot.utils.Vector2;
+import frc.robot.utils.Vector3;
+
+import static frc.robot.configs.Constants.METERSTOINCHES;
 
 public class VisionManager {
-    private static PhotonPoseEstimator[] cameras;
+    private static PhotonCamera camera;
+    private static double cameraAngle = Math.toRadians(29.0);
+    private static Vector2 robotToCamera = new Vector2();//TODO add offset
+    private static Vector2[] apriltagPositions = new Vector2[]{
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(15, -143),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+        new Vector2(),
+    };
 
     private static double maxDetectionDist = 5.0; // Meters
 
     public static void init(){
-        AprilTagFieldLayout aprilTags = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-        aprilTags.setOrigin(new Pose3d(8.267700, 4.078, 0, new Rotation3d(0,0,Math.PI/2)));//TODO this rotation might throw everything off, but idk
-
-        //transform must be in meters
-        cameras = new PhotonPoseEstimator[]{
-            new PhotonPoseEstimator(aprilTags, PoseStrategy.LOWEST_AMBIGUITY, new PhotonCamera("ApriltagCamera1"), new Transform3d(-13,-2,-23.5, new Rotation3d(0, Math.toRadians(29.0), 0.0)).div(Constants.METERSTOINCHES))//TODO find cameraposition in meters
-        };
-
-        System.out.println("Num cameras: " + cameras.length);
+        camera = new PhotonCamera("ApriltagCamera1");
     }
 
 
 
-    public static Optional<Vector2> getPosition(){
-        Vector2 poseSum = new Vector2();
-        int numUpdates = 0;
-
-        for(PhotonPoseEstimator pe : cameras){
-            var estimate = pe.update();
-            if(estimate.isEmpty()){
-                // System.out.println("Empty Measurement");
-                continue;
-            }else{
-                //converting from wpilib coordinates to ours for red alliance
-                estimate.get().targetsUsed.get(0).getBestCameraToTarget().getX();
-                boolean goodVal = true;
-                for (PhotonTrackedTarget target : estimate.get().targetsUsed) {
-                    Transform3d transform = target.getBestCameraToTarget();
-                    if (new Vector2(transform.getX(), transform.getY()).mag() > maxDetectionDist) {
-                        goodVal = false;
-                    }
-                }
-                if (goodVal) {
-                    System.out.println(estimate.get().estimatedPose.getZ());
-                    Vector2 robotposefromcamera = new Vector2(estimate.get().estimatedPose.getX(), estimate.get().estimatedPose.getY());
-                    if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){
-                        robotposefromcamera = robotposefromcamera.rotate(Math.PI);
-
-                    }
-                    robotposefromcamera = robotposefromcamera.mul(Constants.METERSTOINCHES);
-                    poseSum = poseSum.add(robotposefromcamera);
-                    numUpdates++;
-                    // System.out.println("Robot Pose from camera: " + robotposefromcamera);
-                } else {
-                    continue;
-                }
-            }
-        }
-
-        if(numUpdates == 0){
+    public static Optional<Vector2> getPosition(double pigeonAngle){
+        PhotonTrackedTarget target = camera.getLatestResult().getBestTarget();
+        if(target == null){
             return Optional.empty();
         }
 
-        //return average position
-        return Optional.of(poseSum.div(numUpdates));
+        Transform3d transform = target.getBestCameraToTarget();
+        int id = target.getFiducialId();
+        //distance that the apriltag is relative to the robot
+        double xdistRobot = transform.getX() * Math.cos(cameraAngle) - transform.getZ() * Math.sin(cameraAngle);
+        double ydistRobot = transform.getY();
+        double zdistRobot = transform.getZ() * Math.cos(cameraAngle) + transform.getX() * Math.sin(cameraAngle);
+
+        double xdistField = Math.cos(pigeonAngle) * xdistRobot - Math.sin(pigeonAngle) * ydistRobot * METERSTOINCHES;
+        double ydistField = Math.cos(pigeonAngle) * ydistRobot + Math.sin(pigeonAngle) * xdistRobot * METERSTOINCHES;
+
+        Vector2 cameraToTag = new Vector2(xdistField, ydistField).rotate(Math.PI);
+
+        Vector2 cameraPos = apriltagPositions[id - 1].sub(cameraToTag);
+
+        Vector2 robotPos = cameraPos.sub(robotToCamera);
+
+        
+        return Optional.of(robotPos);
     }
 
     public static double getRotation(){

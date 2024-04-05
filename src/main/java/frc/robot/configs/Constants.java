@@ -22,22 +22,22 @@ public final class Constants {
 
     public static void init() {
         // PLAYING FIELD (Until 13 feet)
-        // ShooterTables.init(List.of(
-        //     new ShooterSettings().distance(Inches.of(0.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(62.08 + -5.0)),
-        //     new ShooterSettings().distance(Inches.of(12.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(57.55 + -7.0)),
-        //     new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(52.98 + -7.5)),
-        //     new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(49.43 + -7.5)),
-        //     new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(46.48 + -7.5)),
-        //     new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(44.48 + -8.0)),
-        //     new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(42.47 + -8.0)),
-        //     new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.67 + -8.0)),
-        //     new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.45 + -8.5)),
-        //     new ShooterSettings().distance(Inches.of(108.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(38.50 + -8.5)),
-        //     new ShooterSettings().distance(Inches.of(120.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(37.48 + -8.5)),
-        //     new ShooterSettings().distance(Inches.of(132.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.61 + -9.0)),
-        //     new ShooterSettings().distance(Inches.of(144.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.95 + -9.0)),
-        //     new ShooterSettings().distance(Inches.of(156.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.24 + -9.0))
-        // ));
+        /*ShooterTables.init(List.of(
+            new ShooterSettings().distance(Inches.of(0.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(62.08 + -5.0)),
+            new ShooterSettings().distance(Inches.of(12.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(57.55 + -7.0)),
+            new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(52.98 + -7.5)),
+            new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(49.43 + -7.5)),
+            new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(46.48 + -7.5)),
+            new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(44.48 + -8.0)),
+            new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(42.47 + -8.0)),
+            new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.67 + -8.0)),
+            new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.45 + -8.5)),
+            new ShooterSettings().distance(Inches.of(108.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(38.50 + -8.5)),
+            new ShooterSettings().distance(Inches.of(120.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(37.48 + -8.5)),
+            new ShooterSettings().distance(Inches.of(132.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.61 + -9.0)),
+            new ShooterSettings().distance(Inches.of(144.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.95 + -9.0)),
+            new ShooterSettings().distance(Inches.of(156.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.24 + -9.0))
+        ));*/
 
         // MURA FIELD
         ShooterTables.init(List.of(
@@ -52,38 +52,38 @@ public final class Constants {
         ));
 
         // COMMONS FIELD
-        // ShooterTables.init(List.of(
-        //     new ShooterSettings().distance(Inches.of(0.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(58.0)),
-        //     new ShooterSettings().distance(Inches.of(12.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(51.2)),
-        //     new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(48.5)),
-        //     new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(45.0)),
-        //     new ShooterSettings().distance(Inches.of(42.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(41.7)),
-        //     new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.5)),
-        //     new ShooterSettings().distance(Inches.of(54.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.0)),
-        //     new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.5)),
-        //     new ShooterSettings().distance(Inches.of(65.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(37.5)),
-        //     new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.7)),
-        //     new ShooterSettings().distance(Inches.of(78.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.5)),
-        //     new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(34.2)),
-        //     new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(33.0))
-        // ));
+        /* ShooterTables.init(List.of(
+            new ShooterSettings().distance(Inches.of(0.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(58.0)),
+            new ShooterSettings().distance(Inches.of(12.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(51.2)),
+            new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(48.5)),
+            new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(45.0)),
+            new ShooterSettings().distance(Inches.of(42.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(41.7)),
+            new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.5)),
+            new ShooterSettings().distance(Inches.of(54.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.0)),
+            new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.5)),
+            new ShooterSettings().distance(Inches.of(65.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(37.5)),
+            new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.7)),
+            new ShooterSettings().distance(Inches.of(78.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.5)),
+            new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(34.2)),
+            new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(33.0))
+        )); */
 
         // TEST
-        // ShooterTables.init(List.of(
-        //     new ShooterSettings().distance(Inches.of(kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(58.0)),
-        //     new ShooterSettings().distance(Inches.of(12.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(51.2)),
-        //     new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(48.5)),
-        //     new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(45.0)),
-        //     new ShooterSettings().distance(Inches.of(42.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(41.7)),
-        //     new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.5)),
-        //     new ShooterSettings().distance(Inches.of(54.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.0)),
-        //     new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.5)),
-        //     new ShooterSettings().distance(Inches.of(65.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(37.5)),
-        //     new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.7)),
-        //     new ShooterSettings().distance(Inches.of(78.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.5)),
-        //     new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(34.2)),
-        //     new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(33.0))
-        // ));
+        /* ShooterTables.init(List.of(
+            new ShooterSettings().distance(Inches.of(kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(58.0)),
+            new ShooterSettings().distance(Inches.of(12.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(51.2)),
+            new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(48.5)),
+            new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(45.0)),
+            new ShooterSettings().distance(Inches.of(42.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(41.7)),
+            new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.5)),
+            new ShooterSettings().distance(Inches.of(54.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.0)),
+            new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.5)),
+            new ShooterSettings().distance(Inches.of(65.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(37.5)),
+            new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.7)),
+            new ShooterSettings().distance(Inches.of(78.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.5)),
+            new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(34.2)),
+            new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(33.0))
+        ));*/
     }
 
     public static final class Climber {

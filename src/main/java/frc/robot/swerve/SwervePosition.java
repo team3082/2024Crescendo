@@ -51,7 +51,7 @@ public class SwervePosition {
         absVelocity = odometryInnovation.div(RTime.deltaTime());
 
         if (correctWithVision) {
-            Optional<Vector2> visionPos = VisionManager.getPosition();
+            Optional<Vector2> visionPos = VisionManager.getPosition(Pigeon.getRotationRad());
 
             if(visionPos.isPresent()){
                // System.out.println("Vision exists");
@@ -85,7 +85,7 @@ public class SwervePosition {
 
     public static void updateAveragePosVision() {
         try {
-            Optional<Vector2> visionPos = VisionManager.getPosition();
+            Optional<Vector2> visionPos = VisionManager.getPosition(Pigeon.getRotationRad());
 
             if(visionPos.isPresent()){
                 Vector2 posError = visionPos.get().sub(position);

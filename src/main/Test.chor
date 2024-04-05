@@ -17644,15 +17644,6 @@
                     "translationConstrained": true,
                     "headingConstrained": true,
                     "controlIntervalCount": 40
-                },
-                {
-                    "x": 4.054391384124756,
-                    "y": -0.395246297121048,
-                    "heading": 0,
-                    "isInitialGuess": false,
-                    "translationConstrained": true,
-                    "headingConstrained": true,
-                    "controlIntervalCount": 40
                 }
             ],
             "trajectory": [
