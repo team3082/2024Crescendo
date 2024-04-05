@@ -23,7 +23,7 @@ import static frc.robot.configs.Constants.METERSTOINCHES;
 public class VisionManager {
     private static PhotonCamera camera;
     private static double cameraAngle = Math.toRadians(29.0);
-    private static Vector2 robotToCamera = new Vector2();//TODO add offset
+    private static Vector2 robotToCamera = new Vector2(-3.5, 2);//TODO add offset
     private static Vector2[] apriltagPositions = new Vector2[]{
         new Vector2(-152, -268),
         new Vector2(-126.9, -311.6),
@@ -52,6 +52,10 @@ public class VisionManager {
 
 
     public static Optional<Vector2> getPosition(double pigeonAngle){
+        if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){
+            pigeonAngle = pigeonAngle + Math.PI;
+        }
+
         PhotonTrackedTarget target = camera.getLatestResult().getBestTarget();
         if(target == null){
             return Optional.empty();
@@ -59,13 +63,17 @@ public class VisionManager {
 
         Transform3d transform = target.getBestCameraToTarget();
         int id = target.getFiducialId();
+
         //distance that the apriltag is relative to the robot
         double xdistRobot = transform.getX() * Math.cos(cameraAngle) - transform.getZ() * Math.sin(cameraAngle);
         double ydistRobot = transform.getY();
         double zdistRobot = transform.getZ() * Math.cos(cameraAngle) + transform.getX() * Math.sin(cameraAngle);
 
-        double xdistField = Math.cos(pigeonAngle) * xdistRobot - Math.sin(pigeonAngle) * ydistRobot * METERSTOINCHES;
-        double ydistField = Math.cos(pigeonAngle) * ydistRobot + Math.sin(pigeonAngle) * xdistRobot * METERSTOINCHES;
+        System.out.println("x: " + xdistRobot);
+        System.out.println("y: " + ydistRobot);
+
+        double xdistField = (Math.cos(pigeonAngle) * xdistRobot - Math.sin(pigeonAngle) * ydistRobot) * METERSTOINCHES;
+        double ydistField = (Math.cos(pigeonAngle) * ydistRobot + Math.sin(pigeonAngle) * xdistRobot) * METERSTOINCHES;
 
         Vector2 cameraToTag = new Vector2(xdistField, ydistField).rotate(Math.PI);
 
@@ -73,7 +81,7 @@ public class VisionManager {
 
         Vector2 robotPos = cameraPos.sub(robotToCamera);
 
-        if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red){
+        if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){
             robotPos = robotPos.rotate(Math.PI);
         }
 
