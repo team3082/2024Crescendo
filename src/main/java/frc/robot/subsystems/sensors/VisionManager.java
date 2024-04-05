@@ -23,7 +23,7 @@ import static frc.robot.configs.Constants.METERSTOINCHES;
 public class VisionManager {
     private static PhotonCamera camera;
     private static double cameraAngle = Math.toRadians(29.0);
-    private static Vector2 robotToCamera = new Vector2(-3.5, 2);//TODO add offset
+    private static Vector2 robotToCamera = new Vector2(3.5, 2);//TODO add offset
     private static Vector2[] apriltagPositions = new Vector2[]{
         new Vector2(-152, -268),
         new Vector2(-126.9, -311.6),
@@ -79,13 +79,14 @@ public class VisionManager {
 
         Vector2 cameraPos = apriltagPositions[id - 1].sub(cameraToTag);
 
+        System.out.println("robot pos before" + cameraPos);
         Vector2 robotPos = cameraPos.sub(robotToCamera);
+        System.out.println("robot pos after" + robotPos);
 
         if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){
             robotPos = robotPos.rotate(Math.PI);
         }
 
-        
         return Optional.of(robotPos);
     }
 

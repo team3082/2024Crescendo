@@ -11,7 +11,7 @@ import frc.robot.utils.Vector2;
 
 public class FireShooter extends Autoframe {
     double startTime;
-    double exitTime = 0.7;
+    double exitTime = 0.6;
 
     public FireShooter() {
         blocking = false;

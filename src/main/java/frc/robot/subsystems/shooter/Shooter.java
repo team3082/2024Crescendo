@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
+import frc.robot.OI.ShooterMode;
 import frc.robot.configs.ShooterSettings;
 import frc.robot.subsystems.sensors.Telemetry;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
@@ -311,5 +312,6 @@ public final class Shooter {
     public static void disable() {
         topMotor.neutralOutput();
         bottomMotor.neutralOutput();
+        shooterMode = ShooterStatus.DISABLED;
     }
 }

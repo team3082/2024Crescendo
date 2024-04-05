@@ -81,8 +81,8 @@ public class OI {
 
     static boolean isGround = false;
 
-    public static double topVector = 250;
-    public static double bottomVector = 850;
+    public static double topVector = 260;
+    public static double bottomVector = 925;
 
     public static double shooterDistance = 0.0;
 

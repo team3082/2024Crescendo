@@ -92,9 +92,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     try {
+    Shooter.update();
     SwervePosition.update();
     CommandAuto.update();
-    Shooter.update();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();

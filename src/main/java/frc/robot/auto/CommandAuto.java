@@ -49,6 +49,14 @@ public class CommandAuto {
     return 0.0;
   }
 
+  public static Command visionTest() {
+    SwervePosition.setPosition(new Vector2(0,0));
+    return new SequentialCommandGroup(
+      new ParallelDeadlineGroup(new WaitCommand(5), new UseVision()),
+      new WaitCommand(5)
+    );
+  }
+
   // starts in middle, shoots preload
   public static Command onePieceMiddle() {
     SwervePosition.setPosition(
@@ -363,7 +371,9 @@ public class CommandAuto {
       new ParallelDeadlineGroup(new FireShooter(), new UseVision()),
 
       new ParallelDeadlineGroup(
-        new ChoreoFollow("source_citrus.3", 1.0).andThen(new ChoreoFollow("source_citrus.4", 1.0)), 
+        new SequentialCommandGroup(
+         new ChoreoFollow("source_citrus.3", 1.0), new ChoreoFollow("source_citrus.4", 1.0)
+        ),
         new SetIntake()),
       new ParallelDeadlineGroup(new FireShooter(), new UseVision()),
 
@@ -605,6 +615,75 @@ public class CommandAuto {
         new WaitCommand(0.1),
         new SetShooterAngle(Math.toRadians(54)),
         new FireShooter()
+    );
+  }
+
+  public static Command middle03215(){
+    SwervePosition.setPosition(
+        new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
+    Pigeon.setYaw(90);
+    return new SequentialCommandGroup(
+      new SetIntakeFeedPos(),
+      new ParallelCommandGroup(
+        new SetShooterAngle(Math.toRadians(54)),
+        new SetShooterVelocity(4200)
+        ),
+        new WaitCommand(0.2),
+        new FireShooter(),
+
+     new ParallelDeadlineGroup(
+        new SequentialCommandGroup(
+          new ChoreoFollow("4Middle.1", 1.0),
+          new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
+        ),
+        new SetIntake(),
+        new SetShooterVelocity(4200)
+      ),
+        new ChoreoFollow("4Middle.2", 1.0),
+        new WaitCommand(0.1),
+        new SetShooterAngle(Math.toRadians(54)),
+        new FireShooter(),
+
+      new ParallelDeadlineGroup(
+        new SequentialCommandGroup(
+          new ChoreoFollow("4Middle.3", 1.0),
+          new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
+        ),
+        new SetIntake(),
+        new SetShooterVelocity(4200)
+      ),
+        new ChoreoFollow("4Middle.4", 1.0),
+        new WaitCommand(0.1),
+        new SetShooterAngle(Math.toRadians(57.5)),
+        new FireShooter(),
+
+      new ParallelDeadlineGroup(
+        new SequentialCommandGroup(
+          new ChoreoFollow("4Middle.5", 1.0),
+          new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
+        ),
+        new SetIntake(),
+        new SetShooterVelocity(4200)
+      ),
+      new ChoreoFollow("4Middle.6", 1.0),
+        new WaitCommand(0.1),
+        new SetShooterAngle(Math.toRadians(54)),
+        new FireShooter(),
+
+      new ParallelDeadlineGroup(
+        new SequentialCommandGroup(
+          new ChoreoFollow("4Middle.7", 1.0),
+          new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
+        ),
+        new SetIntake(),
+        new SetShooterVelocity(4200)
+      ),
+
+      new ChoreoFollow("4Middle.8",1.0),
+      new ParallelDeadlineGroup(
+        new WaitCommand(0.1).andThen(new FireShooter()),
+        new UseVision()
+      )
     );
   }
 

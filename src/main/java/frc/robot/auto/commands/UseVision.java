@@ -13,4 +13,9 @@ public class UseVision extends Command{
     public void end(boolean interrupted){
         SwervePosition.disableVision();
     }
+
+    @Override
+    public boolean isFinished(){
+        return false;
+    }
 }

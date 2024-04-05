@@ -25,7 +25,7 @@ public final class Tuning {
      public static final double SWERVE_TRJ_DROT = 0.01;
 
      public static final double SWERVE_KSPOS = 0.00;
-     public static final double SWERVE_KVPOS = 0.8/160;
+     public static final double SWERVE_KVPOS = 0.85/160;
      public static final double SWERVE_KAPOS = 0.0007;
 
      public static final double SWERVE_KSROT = 0.00;//0.005;

@@ -219,6 +219,8 @@ public final class Intake {
     }
 
     public static void autoSuck() {
+        System.out.println("auto sucking"); // TODO DELETE THIS
+        // tracks if beambreak is brokey
         if (!sensor.get()) {
             if (hasPiece == false){
                 suckTime = RTime.now();
@@ -238,15 +240,17 @@ public final class Intake {
             if (RTime.now() >= suckTime + 0.07) {
                 if (suckTime != 0.0) {
                     reallyHasPiece = true;
+                    // Intake.setState(IntakeState.STOW);
                 }
             }
         } else {
             intaking = true;
             topPID.setReference(-0.8, ControlType.kDutyCycle);
             bottomPID.setReference(-0.8, ControlType.kDutyCycle);
-            indexMotor.set(0.5);
+            indexMotor.set(0.3);
             Intake.setState(IntakeState.GROUND);
         }
+        // System.out.println(suckState.name());
     }
 
     /**
@@ -256,7 +260,9 @@ public final class Intake {
         topPID.setReference(0, ControlType.kDutyCycle);
         bottomPID.setReference(0, ControlType.kDutyCycle);
         indexMotor.setControl(new DutyCycleOut(0.3));
+        System.out.println("running handoff"); //TODO DELETE THIS
     }
+
 
     public static void eject() {
         topPID.setReference(1, ControlType.kDutyCycle);
@@ -267,6 +273,7 @@ public final class Intake {
         topPID.setReference(0, ControlType.kDutyCycle);
         bottomPID.setReference(0, ControlType.kDutyCycle);
         indexMotor.setControl(new DutyCycleOut(0.0));
+        System.out.println("no"); // TODO DELETE THIS
     }
 
     private static void source() {

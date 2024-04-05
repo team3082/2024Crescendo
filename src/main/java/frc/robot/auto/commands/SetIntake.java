@@ -15,6 +15,7 @@ public class SetIntake extends Command {
     @Override
     public void initialize() {
         setIntake.start();
+        Intake.reallyHasPiece = false;
     }
 
     @Override
@@ -30,6 +31,6 @@ public class SetIntake extends Command {
     @Override
     public void end(boolean interrupted){
         Intake.no();
-        // Intake.setState(IntakeState.FEED);
+        Intake.reallyHasPiece = false;
     }
 }

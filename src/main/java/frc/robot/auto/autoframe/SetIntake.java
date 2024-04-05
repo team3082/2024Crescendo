@@ -15,6 +15,7 @@ public class SetIntake extends Autoframe {
     @Override
     public void start() {
         Intake.autoSuck();
+        Intake.reallyHasPiece = false;
     }
 
     @Override
