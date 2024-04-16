@@ -6,10 +6,19 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 
@@ -24,6 +33,8 @@ public final class Intake {
     private static SparkPIDController topPID;
     public static SparkPIDController bottomPID;
     public static Beambreak beambreak;
+    public static DigitalInput sensor;
+    public static com.ctre.phoenix6.hardware.TalonFX indexMotor;
 
     private static IntakeState state = IntakeState.STOW;
 
@@ -36,13 +47,15 @@ public final class Intake {
         pivotMotor.configNominalOutputReverse(0.01);
         pivotMotor.configNeutralDeadband(0.01);
         pivotMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 30);
+        pivotMotor.setSensorPhase(true); // might need to change
+        pivotMotor.setInverted(TalonFXInvertType.CounterClockwise); // might need to change
         
         pivotMotor.config_kP(0, 0.6, 30);
         pivotMotor.config_kI(0, 0.0, 30);
         pivotMotor.config_kD(0, 0.2, 30);
 
-        pivotMotor.configMotionAcceleration(34000);
-        pivotMotor.configMotionCruiseVelocity(28000);
+        pivotMotor.configMotionAcceleration(42000);
+        pivotMotor.configMotionCruiseVelocity(25000);
         pivotMotor.configMotionSCurveStrength(1);
 
         SupplyCurrentLimitConfiguration pivotCurrentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0 );
@@ -50,10 +63,10 @@ public final class Intake {
         pivotMotor.configVoltageCompSaturation(11.6);
         pivotMotor.enableVoltageCompensation(true);
         
-        topBeltMotor = new CANSparkMax(31, MotorType.kBrushless);
+        topBeltMotor = new CANSparkMax(1, MotorType.kBrushless);
         topBeltMotor.restoreFactoryDefaults();
         topBeltMotor.setIdleMode(IdleMode.kCoast);
-        topBeltMotor.enableVoltageCompensation(10);
+        topBeltMotor.enableVoltageCompensation(9);
         topBeltMotor.setSmartCurrentLimit(35);
         topBeltMotor.setCANTimeout(30);
 
@@ -63,15 +76,14 @@ public final class Intake {
         topPID.setI(0);
         topPID.setD(0.003);
 
-        bottomBeltMotor = new CANSparkMax(30, MotorType.kBrushless);
+        bottomBeltMotor = new CANSparkMax(25, MotorType.kBrushless);
         bottomBeltMotor.restoreFactoryDefaults();
         bottomBeltMotor.setIdleMode(IdleMode.kCoast);
-        bottomBeltMotor.enableVoltageCompensation(10);
+        bottomBeltMotor.enableVoltageCompensation(9);
         bottomBeltMotor.setSmartCurrentLimit(35); // works harder than the top motor
         bottomBeltMotor.setCANTimeout(30);
 
         bottomPID = bottomBeltMotor.getPIDController();
-// 
         bottomPID.setP(0.005);
         bottomPID.setI(0);
         bottomPID.setD(0.001);
@@ -80,6 +92,11 @@ public final class Intake {
         bottomBeltMotor.burnFlash();
 
         beambreak = new Beambreak(LASER_ID, LASER_BREAK_DIST);
+        sensor = new DigitalInput(2);
+
+        indexMotor = new com.ctre.phoenix6.hardware.TalonFX(23, "CANivore"); // placeholder
+        com.ctre.phoenix6.configs.TalonFXConfiguration indexMotorConfig = new com.ctre.phoenix6.configs.TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
+        indexMotor.getConfigurator().apply(indexMotorConfig, 0.100);
 
         try {
             Thread.sleep(2000);
@@ -90,11 +107,11 @@ public final class Intake {
         topBeltMotor.burnFlash();
         bottomBeltMotor.burnFlash();
 
-       beambreak = new Beambreak(LASER_ID, 300);
+        beambreak = new Beambreak(LASER_ID, 300);
 
-       // Zero the Falcon's relative encoder LAST
-       // 0 points up
-       pivotMotor.setSelectedSensorPosition(0);
+        // Zero the Falcon's relative encoder LAST
+        // 0 points up
+        pivotMotor.setSelectedSensorPosition(0);
     }
 
     public static void killHandoff() {
@@ -129,10 +146,25 @@ public final class Intake {
         }
     }
 
+    public static IntakeState getState() {
+        return state;
+    }
+
+    public static double intakeEndTime = 0.0;
+
     private static void stow() {
         pivotMotor.set(TalonFXControlMode.MotionMagic, INROBOT_INTAKE_ANGLE);
         topPID.setReference(0, ControlType.kDutyCycle);
         bottomPID.setReference(0, ControlType.kDutyCycle);
+        indexMotor.setControl(new DutyCycleOut(0));
+        if (intaking) {
+            intakeEndTime = RTime.now();
+            intaking = false;
+        }
+        if (RTime.now() < intakeEndTime + 1.0) {
+            topPID.setReference(0.8, ControlType.kDutyCycle);
+            bottomPID.setReference(0.8, ControlType.kDutyCycle);
+        }
     }
 
     private static void ground() {
@@ -150,23 +182,26 @@ public final class Intake {
     public static double suckTime = 0.0;
     public static boolean hasPiece;
     public static boolean reallyHasPiece;
+    public static boolean intaking = false;
 
     public static void suck() {
         // tracks if beambreak is brokey
-        if (beambreak.isBroken() || motorHasPiece()) {
+        if (!sensor.get()) {
             if (hasPiece == false){
                 suckTime = RTime.now();
             }
             hasPiece = true;
-        } else if (!beambreak.isBroken()) {
+        } else if (sensor.get()) {
             hasPiece = false;
             reallyHasPiece = false;
         }
 
         // if it has the piece it can intake if it doesnt it cant
         if (hasPiece) {
-            topPID.setReference(0.0, ControlType.kDutyCycle);
-            bottomPID.setReference(0.0, ControlType.kDutyCycle);
+            topPID.setReference(-0.8, ControlType.kDutyCycle);
+            bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+            indexMotor.set(0);
+            indexMotor.setControl(new NeutralOut());
             if (RTime.now() >= suckTime + 0.07) {
                 if (suckTime != 0.0) {
                     reallyHasPiece = true;
@@ -174,38 +209,45 @@ public final class Intake {
                 }
             }
         } else {
+            intaking = true;
             topPID.setReference(-0.8, ControlType.kDutyCycle);
             bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+            indexMotor.set(0.4);
             Intake.setState(IntakeState.GROUND);
         }
         // System.out.println(suckState.name());
     }
 
     public static void autoSuck() {
+        System.out.println("auto sucking"); // TODO DELETE THIS
         // tracks if beambreak is brokey
-        if (beambreak.isBroken() || motorHasPiece()) {
+        if (!sensor.get()) {
             if (hasPiece == false){
                 suckTime = RTime.now();
             }
             hasPiece = true;
-        } else if (!beambreak.isBroken()) {
+        } else if (sensor.get()) {
             hasPiece = false;
             reallyHasPiece = false;
         }
 
         // if it has the piece it can intake if it doesnt it cant
         if (hasPiece) {
-            topPID.setReference(0.0, ControlType.kDutyCycle);
-            bottomPID.setReference(0.0, ControlType.kDutyCycle);
-            if (RTime.now() >= suckTime + 0.1) {
+            topPID.setReference(-0.8, ControlType.kDutyCycle);
+            bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+            indexMotor.set(0);
+            indexMotor.setControl(new NeutralOut());
+            if (RTime.now() >= suckTime + 0.07) {
                 if (suckTime != 0.0) {
                     reallyHasPiece = true;
-                    Intake.setState(IntakeState.STOW);
+                    // Intake.setState(IntakeState.STOW);
                 }
             }
         } else {
+            intaking = true;
             topPID.setReference(-0.8, ControlType.kDutyCycle);
             bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+            indexMotor.set(0.3);
             Intake.setState(IntakeState.GROUND);
         }
         // System.out.println(suckState.name());
@@ -215,18 +257,24 @@ public final class Intake {
      * Runs the handoff
      */
     public static void runHandoff() {
-        topPID.setReference(-0.8, ControlType.kDutyCycle);
-        bottomPID.setReference(-0.8, ControlType.kDutyCycle);
+        topPID.setReference(0, ControlType.kDutyCycle);
+        bottomPID.setReference(0, ControlType.kDutyCycle);
+        indexMotor.setControl(new DutyCycleOut(0.5));
+        System.out.println("running handoff"); //TODO DELETE THIS
     }
+
 
     public static void eject() {
         topPID.setReference(1, ControlType.kDutyCycle);
         bottomPID.setReference(1, ControlType.kDutyCycle);
+        indexMotor.setControl(new DutyCycleOut(-1));
     }
 
     public static void no() {
         topPID.setReference(0, ControlType.kDutyCycle);
         bottomPID.setReference(0, ControlType.kDutyCycle);
+        indexMotor.setControl(new DutyCycleOut(0.0));
+        System.out.println("no"); // TODO DELETE THIS
     }
 
     private static void source() {
@@ -240,14 +288,14 @@ public final class Intake {
     }
 
     public static boolean pieceGrabbed() {
-        return beambreak.isBroken();
+        return !sensor.get();
     }
 
     /** Returns if the intake has a piece based solely off the motors' current draw. */
     public static boolean motorHasPiece() {
-        // Want to be active ONLY in ground,
-        // otherwise it would go off when we are stowed lol
-        return (state == IntakeState.GROUND && topBeltMotor.getOutputCurrent() >= 0.0 && bottomBeltMotor.getOutputCurrent() >= 0.0);
+       double val = indexMotor.getVelocity().refresh().getValueAsDouble();
+       System.out.println("velocity: " + val);
+       return (val <= 31.0);
     }
 
     public static void setState(IntakeState newState) {

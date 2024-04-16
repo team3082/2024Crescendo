@@ -13,7 +13,8 @@
       "/Shuffleboard/SmartDashboard/Custom Field": "Mechanism2d",
       "/Shuffleboard/SmartDashboard/Field View": "Field2d",
       "/Shuffleboard/SmartDashboard/Subsystems": "Mechanism2d",
-      "/Shuffleboard/SmartDashboard/Swerve": "Mechanism2d"
+      "/Shuffleboard/SmartDashboard/Swerve": "Mechanism2d",
+      "/Shuffleboard/SmartDashboard/Trajectory State": "Field2d"
     },
     "windows": {
       "/FMSInfo": {

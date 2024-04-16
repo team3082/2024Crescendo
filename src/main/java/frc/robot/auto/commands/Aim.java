@@ -15,6 +15,4 @@ public class Aim extends Command {
 
         SwerveManager.moveAndRotateTo(new Vector2(), speakerPos.sub(SwervePosition.getPosition()).norm().mul(-1.0).atan2());
     }
-
-
 }

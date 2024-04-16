@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.subsystems.shooter.Intake;
+import frc.robot.subsystems.shooter.Intake.IntakeState;
 
 public class BannerLight {
 
@@ -14,32 +16,33 @@ public class BannerLight {
 
     public static void init() {
         if(Robot.isReal()){
-            brown = new DigitalOutput(7);
-            gray = new DigitalOutput(4);
-            black = new DigitalOutput(5);
-            white = new DigitalOutput(6);
-
-            brown.set(false);
-            gray.set(false);
-            black.set(true);
-            white.set(false);
+            brown = new DigitalOutput(9);
+            gray = new DigitalOutput(6);
+            black = new DigitalOutput(8);
+            white = new DigitalOutput(7);
+            
+            setNominal();
         }
     }
 
     public static void updateAuto() {}
 
     public static void updateTeleop() {
+        // Color will always be in either amp or speaker mode so the else statement is never seen
         if (DriverStation.isTeleopEnabled()) {
-            if (OI.currentShooterMode == OI.ShooterMode.AMP)
-                setSpeakerNoPieceSource();
+            if (OI.currentShooterMode == OI.ShooterMode.AMP) // Amp mode
+                setAmp();
             
-            if (OI.currentShooterMode == OI.ShooterMode.SPEAKER)
+            if (OI.currentShooterMode == OI.ShooterMode.SPEAKER) // Speaker mode
                 setSpeaker();
 
-            if (OI.aligning == true)
-                setShotComplete();
+            if (OI.aligning == true) // Auto-Aligning
+                setAlign();
+
+            if (Intake.getState() == IntakeState.GROUND && Intake.reallyHasPiece == true) // Intake has piece
+                setPieceHad();
         } else {
-            setAmpNoPieceGround();
+            setNominal();
         }
     }
 
@@ -50,11 +53,26 @@ public class BannerLight {
         white.set(whiteState);
     }
 
+    public static void setPieceHad() {
+        setState(true, true, true, true);
+    }
+
+    public static void setAlign() {
+        setState(true, true, true, false);
+    }
+
+    public static void setNominal() {
+        brown.set(false);
+        gray.set(true);
+        black.set(true);
+        white.set(false);
+    }
+
     // Green/Cyan 50-50 or Red/Cyan 50-50
     public static void setTagInView(boolean tagInView) {
-        if(tagInView) {
+        if (tagInView) {
             setState(false, false, false, true);
-        }else {
+        } else {
             setState(false, false, true, false);
         }
     }
@@ -89,14 +107,17 @@ public class BannerLight {
         setState(false, true, false, true);
     }
 
-    // Magenta/Red Chase
+    // 50/50 Blue/White
     public static void setAmp() {
-        setState(false, true, true, false);
+        brown.set(true);
+        gray.set(true);
+        white.set(false);
+        black.set(false);
     }
 
-    // Magenta/Cyan Chase
+    // Steady Blue
     public static void setSpeaker() {
-        setState(false, true, true, true);
+        setState(true, false, false, false);
     }
 
     // Magenta/Orange Chase

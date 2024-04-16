@@ -56,12 +56,11 @@ public class Robot extends TimedRobot {
     ChoreoTrajectoryGenerator.init();
     ChoreoTrajectoryGenerator.parseAll();
     Shooter.init();
-    // Intake.init();
+    Intake.init();
     AutoSelector.setup();
     Telemetry.init();
     BannerLight.init();
     SwervePosition.enableVision();
-
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
   }
@@ -73,7 +72,7 @@ public class Robot extends TimedRobot {
     RTime.updateAbsolute();
     RTime.update();
     Telemetry.update(false);
-    // Intake.beambreak.update();
+    Intake.beambreak.update();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();
@@ -92,9 +91,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     try {
+    Shooter.update();
     SwervePosition.update();
     CommandAuto.update();
-    Shooter.update();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();
@@ -125,11 +124,12 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     CommandScheduler.getInstance().cancelAll();
     CommandScheduler.getInstance().disable();
+    SwervePosition.enableVision();
   }
 
   @Override
   public void disabledPeriodic() {
-    // SwervePosition.updateAveragePosVision();
+    SwervePosition.update();
     // System.out.println(SwervePosition.getPosition().toString());
     // if(Robot.isReal())
     //   BannerLight.setTagInView(VisionManager.hasTarget());
@@ -137,7 +137,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    // Intake.disable();
+    Intake.disable();
     ShooterPivot.disable();
     Shooter.disable();
   }

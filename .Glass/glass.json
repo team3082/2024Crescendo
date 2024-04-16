@@ -1,5 +1,8 @@
 {
   "NetworkTables": {
+    "Retained Values": {
+      "open": false
+    },
     "retained": {
       "Shuffleboard": {
         "SmartDashboard": {
@@ -50,11 +53,6 @@
       "/SmartDashboard/Odometry Pose Field": "Field2d"
     },
     "windows": {
-      "/FMSInfo": {
-        "window": {
-          "visible": true
-        }
-      },
       "/Shuffleboard/SmartDashboard/Auto Selector": {
         "window": {
           "visible": true
@@ -67,9 +65,15 @@
         "left": 46,
         "right": 1088,
         "top": 36,
-        "width": 16.541748046875
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
       }
     }
+  },
+  "NetworkTables Info": {
+    "visible": true
   },
   "NetworkTables Settings": {
     "mode": "Client (NT4)",
