@@ -47,7 +47,7 @@ public class Beambreak {
                 this.isBroken = measurement.distance_mm < distThreshold;
             }
             } catch (Exception e){
-                System.out.println("Beambreak Null");
+                // System.out.println("Beambreak Null");
             }
         }
     }

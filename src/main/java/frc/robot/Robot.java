@@ -12,6 +12,7 @@ import frc.robot.auto.AutoSelector;
 import frc.robot.subsystems.sensors.BannerLight;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.sensors.Telemetry;
+import frc.robot.subsystems.sensors.VisionManager;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
@@ -50,7 +51,7 @@ public class Robot extends TimedRobot {
     SwervePosition.init();
     SwervePID.init();
     Pigeon.setYaw(90);
-    // VisionManager.init();
+    VisionManager.init();
     ClimberManager.init();
     ChoreoTrajectoryGenerator.init();
     ChoreoTrajectoryGenerator.parseAll();
@@ -59,8 +60,7 @@ public class Robot extends TimedRobot {
     AutoSelector.setup();
     Telemetry.init();
     BannerLight.init();
-    // SwervePosition.enableVision();
-
+    SwervePosition.enableVision();
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
   }
@@ -85,15 +85,15 @@ public class Robot extends TimedRobot {
     Pigeon.setYaw(90);
 	  CommandScheduler.getInstance().enable();
     AutoSelector.run();
-    // SwervePosition.enableVision();
+    SwervePosition.disableVision();
   }
 
   @Override
   public void autonomousPeriodic() {
     try {
+    Shooter.update();
     SwervePosition.update();
     CommandAuto.update();
-    Shooter.update();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();
@@ -124,11 +124,12 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     CommandScheduler.getInstance().cancelAll();
     CommandScheduler.getInstance().disable();
+    SwervePosition.enableVision();
   }
 
   @Override
   public void disabledPeriodic() {
-    // SwervePosition.updateAveragePosVision();
+    SwervePosition.update();
     // System.out.println(SwervePosition.getPosition().toString());
     // if(Robot.isReal())
     //   BannerLight.setTagInView(VisionManager.hasTarget());

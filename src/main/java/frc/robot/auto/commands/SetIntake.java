@@ -15,11 +15,13 @@ public class SetIntake extends Command {
     @Override
     public void initialize() {
         setIntake.start();
+        Intake.reallyHasPiece = false;
     }
 
     @Override
     public void execute() {        
         setIntake.update();
+        System.out.println("set intake updating");
     }
 
     @Override
@@ -29,7 +31,8 @@ public class SetIntake extends Command {
 
     @Override
     public void end(boolean interrupted){
+        System.out.println("set intake done");
         Intake.no();
-        Intake.setState(IntakeState.FEED);
+        Intake.reallyHasPiece = false;
     }
 }

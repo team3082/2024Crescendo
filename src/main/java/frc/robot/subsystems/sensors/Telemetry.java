@@ -4,10 +4,7 @@ import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -75,7 +72,7 @@ public class Telemetry {
     private static final ShuffleboardTab pos = Shuffleboard.getTab("Positions");
     private static final ShuffleboardTab shooter = Shuffleboard.getTab("Shooter");
     private static final ShuffleboardTab climber = Shuffleboard.getTab("Climber");
-    private static final ShuffleboardTab trajState = Shuffleboard.getTab("Trajectory State");
+    // private static final ShuffleboardTab trajState = Shuffleboard.getTab("Trajectory State");
     // private static final ShuffleboardTab intake = Shuffleboard.getTab("Intake");
 
     // NetworkTable entries
@@ -144,6 +141,7 @@ public class Telemetry {
     private static final GenericEntry FLYWHEELTARGETRPM = shooter.add("Flywheel Targeted RPM", Shooter.targetVelocity * ShooterConstants.VelToRPM).getEntry();
     private static final GenericEntry TOPVECTOR = shooter.add("Top Flywheel Vector", OI.topVector).getEntry();
     private static final GenericEntry BOTTOMVECTOR = shooter.add("Bottom Flywheel Vector", OI.bottomVector).getEntry();
+    private static final GenericEntry SHOOTERDISTANCE = shooter.add("Shooter Distance", OI.shooterDistance).getEntry();
     // private static final GenericEntry FLYWHEELATVEL = shooter.add("Flywheel At Velocity", Shooter.canShoot()).getEntry();
 
     // Climber
@@ -224,11 +222,13 @@ public class Telemetry {
         TOPFLYWHEELRPM.setDouble(Shooter.topRPM);
         BOTTOMFLYWHEELRPM.setDouble(Shooter.bottomRPM);
         FLYWHEELTARGETRPM.setDouble(Shooter.targetVelocity * ShooterConstants.VelToRPM);
+        SHOOTERDISTANCE.setDouble(OI.shooterDistance);
 
         TOPVECTOR.setDouble(OI.topVector);
         BOTTOMVECTOR.setDouble(OI.bottomVector);
 
-        pivotAngle.setDouble(Math.toDegrees(ShooterPivot.actualPos));
+        pivotAngle.setDouble(Math.toDegrees(ShooterPivot.getPosition()));
+        // pivotAngle.setDouble(Math.toDegrees(ShooterPivot.actualPos));
         pivotTargetAngle.setDouble(Math.toDegrees(ShooterPivot.targetPos));
        // FLYWHEELATVEL.setBoolean(Shooter.canShoot());
 

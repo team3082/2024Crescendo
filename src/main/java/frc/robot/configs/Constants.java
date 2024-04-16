@@ -17,35 +17,74 @@ import frc.robot.utils.Vector2;
 public final class Constants {
 
     // The distance from the speaker's backing wall to the front of the subwoofer.
-    // I expect this to be different for each field setup, especially the real one.
-    public static final double kSpeakerOffset = 52.0;
+    public static final double kSpeakerOffset = 36.0 + 13.0;
+    public static final double offset = -10.0;
 
     public static void init() {
-        // MURA FIELD
+        // PLAYING FIELD (Until 13 feet)
+        /*ShooterTables.init(List.of(
+            new ShooterSettings().distance(Inches.of(0.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(62.08 + -5.0)),
+            new ShooterSettings().distance(Inches.of(12.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(57.55 + -7.0)),
+            new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(52.98 + -7.5)),
+            new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(49.43 + -7.5)),
+            new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(46.48 + -7.5)),
+            new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(44.48 + -8.0)),
+            new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(42.47 + -8.0)),
+            new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.67 + -8.0)),
+            new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.45 + -8.5)),
+            new ShooterSettings().distance(Inches.of(108.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(38.50 + -8.5)),
+            new ShooterSettings().distance(Inches.of(120.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(37.48 + -8.5)),
+            new ShooterSettings().distance(Inches.of(132.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.61 + -9.0)),
+            new ShooterSettings().distance(Inches.of(144.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.95 + -9.0)),
+            new ShooterSettings().distance(Inches.of(156.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.24 + -9.0))
+        ));*/
 
-        // ShooterTables.init(List.of(
-        //     new ShooterSettings().distance(Inches.of(0.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(56.0)),
-        //     new ShooterSettings().distance(Inches.of(24.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(42.0)),
-        //     new ShooterSettings().distance(Inches.of(36.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.2)),
-        //     new ShooterSettings().distance(Inches.of(48.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.0)),
-        //     new ShooterSettings().distance(Inches.of(60.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.0)),
-        //     new ShooterSettings().distance(Inches.of(72.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(32.5)),
-        //     new ShooterSettings().distance(Inches.of(84.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(30.5)),
-        //     new ShooterSettings().distance(Inches.of(96.0 + 36.0)).velocity(RPM.of(4000.0)).angle(Degrees.of(29.0))
-        // ));
+        // MURA FIELD
+        ShooterTables.init(List.of(
+            new ShooterSettings().distance(Inches.of(0.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(56.0)),
+            new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.0)),
+            new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(38.2)),
+            new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(37.0)),
+            // vv this is where the deadzone is
+            new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(34.0)),
+            new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(30.5)),
+            new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(28.5)),
+            new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(27.0))
+        ));
 
         // COMMONS FIELD
-        // (Distance of bumper from subwoofer) + (offset for distance from speaker to subwoofer)
-        ShooterTables.init(List.of(
+        /* ShooterTables.init(List.of(
             new ShooterSettings().distance(Inches.of(0.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(58.0)),
-            new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(46.0)),
-            new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(43.2)),
-            new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(42.0)),
-            new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.0)),
-            new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.5)),
-            new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(33.5)),
-            new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(32.0))
-        ));
+            new ShooterSettings().distance(Inches.of(12.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(51.2)),
+            new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(48.5)),
+            new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(45.0)),
+            new ShooterSettings().distance(Inches.of(42.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(41.7)),
+            new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.5)),
+            new ShooterSettings().distance(Inches.of(54.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.0)),
+            new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.5)),
+            new ShooterSettings().distance(Inches.of(65.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(37.5)),
+            new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.7)),
+            new ShooterSettings().distance(Inches.of(78.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.5)),
+            new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(34.2)),
+            new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(33.0))
+        )); */
+
+        // TEST
+        /* ShooterTables.init(List.of(
+            new ShooterSettings().distance(Inches.of(kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(58.0)),
+            new ShooterSettings().distance(Inches.of(12.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(51.2)),
+            new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(48.5)),
+            new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(45.0)),
+            new ShooterSettings().distance(Inches.of(42.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(41.7)),
+            new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.5)),
+            new ShooterSettings().distance(Inches.of(54.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.0)),
+            new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(39.5)),
+            new ShooterSettings().distance(Inches.of(65.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(37.5)),
+            new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(36.7)),
+            new ShooterSettings().distance(Inches.of(78.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(35.5)),
+            new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(34.2)),
+            new ShooterSettings().distance(Inches.of(96.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(33.0))
+        ));*/
     }
 
     public static final class Climber {
@@ -74,7 +113,7 @@ public final class Constants {
         public static final int FLYWHEELPIVOT_ID = 9;
 
         // CANCoder offset
-        public static final double PIVOT_OFFSET = 45.615 - 17.0;
+        public static final double PIVOT_OFFSET = 345.674 - 17.0;
 
         public static final double TARGET_OFFSET = 0.0; // safety factor, if needed
         
@@ -98,6 +137,7 @@ public final class Constants {
 
         // Not the exact pos of the speaker. Rather, the position of the robot's
         // center of rotation when pressed up against the subwoofer.
+        // Y was previously -327.0.
         public static final Vector2 speakerPos = new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -327.0);
 
         public static final double SHOOTERPOSZ = 0.0;//the height the the end of the shooter lies on average. I don't feel like calculating this as a function of shooter angle
@@ -131,10 +171,10 @@ public final class Constants {
         public static final int INTAKE_WIDTH_mm = 635;
         public static final int NOTE_WIDTH_mm = 355;
 
-        public static final double INROBOT_INTAKE_ANGLE = 300;//in ticks
-        public static final double SOURCE_INTAKE_ANGLE = 0;
-        public static final double GROUND_INTAKE_ANGLE = 31500;
-        public static final double FEED_INTAKE_ANGLE = 7500;
+        public static final double INROBOT_INTAKE_ANGLE = -1200;//in ticks
+        public static final double SOURCE_INTAKE_ANGLE = -1200;
+        public static final double GROUND_INTAKE_ANGLE = -63000;
+        public static final double FEED_INTAKE_ANGLE = -1200;
 
         public static final double FLIPUP_TIME = 0.1;
     }
@@ -173,7 +213,7 @@ public final class Constants {
         public static final double driveTrackwidth = 0.0;
         public static final double driveWheelbase = 0.0;
 
-        public static final double shootWhileMoveSpeed = 0.3;
+        public static final double shootWhileMoveSpeed = 0.24;
     
         // The unadjusted maximum velocity of the robot, in inches per second.
         public static final double maxChassisVelocity = 6380.0 / 60.0 * 6.12 * (4.0 * Math.PI);

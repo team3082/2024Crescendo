@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
+import frc.robot.OI.ShooterMode;
 import frc.robot.configs.ShooterSettings;
 import frc.robot.subsystems.sensors.Telemetry;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
@@ -71,8 +72,8 @@ public final class Shooter {
         topMotor.configAllSettings(config);
         bottomMotor.configAllSettings(config);
         
-        topMotor.setNeutralMode(NeutralMode.Coast);
-        bottomMotor.setNeutralMode(NeutralMode.Coast);
+        topMotor.setNeutralMode(NeutralMode.Brake);
+        bottomMotor.setNeutralMode(NeutralMode.Brake);
 
         topMotor.config_kP(0, 0.2);
         topMotor.config_kI(0, 0.000);
@@ -110,6 +111,7 @@ public final class Shooter {
         // Update our pivot & intake
         ShooterPivot.update();
         Intake.update();
+        // System.out.println(shooterMode);
 
         // Get our vars
         topRPM = topMotor.getSelectedSensorVelocity() * VelToRPM;
@@ -121,7 +123,6 @@ public final class Shooter {
 
         switch (shooterMode) {
             case FIRING:
-                Intake.setState(IntakeState.FEED);
                 if (atVelocity && ShooterPivot.atPos()) {
                     Intake.runHandoff();
                 }
@@ -129,7 +130,6 @@ public final class Shooter {
             break;
 
             case REVVING:
-                Intake.setState(IntakeState.FEED);
                 // Rev the flywheel up to our set velocity
                 setVelocity(targetTop, targetBottom);
             break;
@@ -142,8 +142,8 @@ public final class Shooter {
             break;
 
             case DISABLED:
-                topMotor.set(TalonFXControlMode.PercentOutput, 0.3);
-                bottomMotor.set(TalonFXControlMode.PercentOutput, 0.3);
+                topMotor.set(TalonFXControlMode.PercentOutput, 0);
+                bottomMotor.set(TalonFXControlMode.PercentOutput, 0);
                 targetVelocity = 0.0;
                 targetTop = 0.0;
                 targetBottom = 0.0;
@@ -199,7 +199,7 @@ public final class Shooter {
         double angle = settings.getAngle().in(Radians);
 
         // If the angle is impossible to reach, negative, or infinite, just ignore the calculations
-        if (Double.isInfinite(angle) || Double.isNaN(angle) || angle >= Math.toRadians(63.0) || angle <= Math.toRadians(17.0)) {
+        if (Double.isInfinite(angle) || Double.isNaN(angle) || angle >= Math.toRadians(65.0) || angle <= Math.toRadians(17.0)) {
             Telemetry.log(Telemetry.Severity.WARNING, "Auto-fire calculations impossible, shooter disabled.");
             neutral();
         } else {
@@ -313,5 +313,6 @@ public final class Shooter {
     public static void disable() {
         topMotor.neutralOutput();
         bottomMotor.neutralOutput();
+        shooterMode = ShooterStatus.DISABLED;
     }
 }

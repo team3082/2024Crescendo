@@ -1,6 +1,5 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Radians;
 import static frc.robot.configs.Constants.ShooterConstants.speakerPos;
@@ -12,7 +11,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.controllermaps.LogitechF310;
 import frc.robot.subsystems.sensors.Pigeon;
-import frc.robot.subsystems.sensors.Telemetry;
 import frc.robot.configs.ShooterSettings;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
@@ -21,8 +19,6 @@ import frc.robot.subsystems.shooter.ShooterPivot;
 import frc.robot.subsystems.shooter.ShooterTables;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
-import frc.robot.swerve.SwerveModule;
-import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.RMath;
@@ -72,6 +68,7 @@ public class OI {
     static public enum ShooterMode {
         SPEAKER,
         SPEAKER_MANUAL,
+        PASSING,
         AMP
     }
 
@@ -85,8 +82,11 @@ public class OI {
 
     static boolean isGround = false;
 
-    public static double topVector = 250;
-    public static double bottomVector = 850;
+    public static double topVector = 260;
+    public static double bottomVector = 900;
+
+    public static double shooterDistance = 0.0;
+    public static boolean shooterPassing = false;
 
     /**
      * Initialize OI with preset joystick ports.
@@ -130,6 +130,9 @@ public class OI {
             driverStick.setRumble(RumbleType.kBothRumble, 0.0);
             if (!Shooter.firing())
                 Intake.setState(IntakeState.STOW); 
+
+            // if (shooterPassing)
+            //     Intake.setState(IntakeState.GROUND);
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
@@ -139,7 +142,7 @@ public class OI {
         double rotate;
         if (currentShooterMode == ShooterMode.SPEAKER && driverStick.getRawButton(fireShooter)) {
             // Face AWAY from speaker (Pigeon's POV) due to shooter being behind the robot
-            rotate = speakerPos.sub(SwervePosition.getPosition()).norm().mul(-1.0).atan2();
+            rotate = speakerPos.add(new Vector2(0,5)).sub(SwervePosition.getPosition()).norm().mul(-1.0).atan2();
         } else {
             rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
         }
@@ -163,11 +166,13 @@ public class OI {
 
         // Auto-rev and fire
         boolean shooterFire = driverStick.getRawButton(fireShooter);
+        shooterDistance = SwervePosition.getPosition().sub(speakerPos).mag();
 
         // checks current shooter mode and sets the angle and velocities accordingly
         if (shooterFire) {
             switch (currentShooterMode) {
                 case AMP:
+                    // shooterPassing = false;
                     ShooterPivot.setPosition(Math.toRadians(56.0));
                     Shooter.revTo(topVector, bottomVector);
                     Shooter.shoot();
@@ -182,16 +187,25 @@ public class OI {
 
                 // For shooting while moving
                 case SPEAKER:
+                    // shooterPassing = false;
                     aligning = true;
                     Shooter.fireWhileMoving();
                     Shooter.shoot();
                 break;
 
                 case SPEAKER_MANUAL:
+                    // shooterPassing = false;
                     ShooterPivot.setPosition(Math.toRadians(manualAngle));
                     Shooter.revTo(manualRPM, manualRPM);
                     Shooter.shoot();
                 break;
+
+                // case PASSING:
+                //     shooterPassing = true;
+                //     ShooterPivot.setPosition(Math.toRadians(31.0));
+                //     Shooter.revTo(2800);
+                //     Shooter.shoot();
+                // break;
             
                 default:
                 break;
@@ -268,21 +282,20 @@ public class OI {
                 case SPEAKER:
                     currentShooterMode = ShooterMode.AMP;
                 break;
+
+                case SPEAKER_MANUAL:
+                    currentShooterMode = ShooterMode.AMP;
+                break;
             }
         }
 
         // RIGHT BUMPER
-        // if (operatorStick.getRawButtonPressed(switchShooterMode)) {
-        //     switch (currentShooterMode) {
-        //         case SPEAKER:
-        //             currentShooterMode = ShooterMode.SPEAKER_MANUAL;
-        //         break;
-                
-        //         case SPEAKER_MANUAL:
-        //             currentShooterMode = ShooterMode.SPEAKER;
-        //         break;
-        //     }
-        // }
+        if (operatorStick.getRawButtonPressed(switchShooterMode)) {
+            currentShooterMode = ShooterMode.SPEAKER_MANUAL;
+        }
+
+        // if (operatorStick.getRawButtonPressed(pass))
+        //     currentShooterMode = ShooterMode.PASSING;
 
         lastPOV = operatorStick.getPOV();
     }
