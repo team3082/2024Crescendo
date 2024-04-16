@@ -61,7 +61,6 @@ public class Robot extends TimedRobot {
     Telemetry.init();
     BannerLight.init();
     SwervePosition.enableVision();
-
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
   }

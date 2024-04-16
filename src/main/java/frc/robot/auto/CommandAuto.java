@@ -366,7 +366,7 @@ public class CommandAuto {
     Pigeon.setYaw(90);
     return new SequentialCommandGroup(
       new ParallelDeadlineGroup(
-        new ChoreoFollow("source_citrus.1", 1.0).andThen(new ChoreoFollow("source_citrus.2", 1.0)), 
+        new ChoreoFollow("source_citrus.1", 1.0).alongWith(new SetShooterAngle(Math.toRadians(30.0))).alongWith(new SetShooterVelocity(4000.0)).andThen(new ChoreoFollow("source_citrus.2", 1.0)), 
         new SetIntake()),
       new ParallelDeadlineGroup(new FireShooter(), new UseVision()),
 

@@ -22,8 +22,8 @@ import static frc.robot.configs.Constants.METERSTOINCHES;
 
 public class VisionManager {
     private static PhotonCamera camera;
-    private static double cameraAngle = Math.toRadians(29.0);
-    private static Vector2 robotToCamera = new Vector2(3.5, 2);//TODO add offset
+    private static double cameraAngle = Math.toRadians(31.0);
+    private static Vector2 robotToCamera = new Vector2(3.2, 2);//TODO add offset
     private static Vector2[] apriltagPositions = new Vector2[]{
         new Vector2(-152, -268),
         new Vector2(-126.9, -311.6),

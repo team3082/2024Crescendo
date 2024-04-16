@@ -212,7 +212,7 @@ public final class Intake {
             intaking = true;
             topPID.setReference(-0.8, ControlType.kDutyCycle);
             bottomPID.setReference(-0.8, ControlType.kDutyCycle);
-            indexMotor.set(0.5);
+            indexMotor.set(0.4);
             Intake.setState(IntakeState.GROUND);
         }
         // System.out.println(suckState.name());
@@ -259,7 +259,7 @@ public final class Intake {
     public static void runHandoff() {
         topPID.setReference(0, ControlType.kDutyCycle);
         bottomPID.setReference(0, ControlType.kDutyCycle);
-        indexMotor.setControl(new DutyCycleOut(0.3));
+        indexMotor.setControl(new DutyCycleOut(0.5));
         System.out.println("running handoff"); //TODO DELETE THIS
     }
 
@@ -267,6 +267,7 @@ public final class Intake {
     public static void eject() {
         topPID.setReference(1, ControlType.kDutyCycle);
         bottomPID.setReference(1, ControlType.kDutyCycle);
+        indexMotor.setControl(new DutyCycleOut(-1));
     }
 
     public static void no() {

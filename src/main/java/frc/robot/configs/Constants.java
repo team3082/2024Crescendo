@@ -45,6 +45,7 @@ public final class Constants {
             new ShooterSettings().distance(Inches.of(24.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(40.0)),
             new ShooterSettings().distance(Inches.of(36.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(38.2)),
             new ShooterSettings().distance(Inches.of(48.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(37.0)),
+            // vv this is where the deadzone is
             new ShooterSettings().distance(Inches.of(60.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(34.0)),
             new ShooterSettings().distance(Inches.of(72.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(30.5)),
             new ShooterSettings().distance(Inches.of(84.0 + kSpeakerOffset)).velocity(RPM.of(4000.0)).angle(Degrees.of(28.5)),
@@ -136,6 +137,7 @@ public final class Constants {
 
         // Not the exact pos of the speaker. Rather, the position of the robot's
         // center of rotation when pressed up against the subwoofer.
+        // Y was previously -327.0.
         public static final Vector2 speakerPos = new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -327.0);
 
         public static final double SHOOTERPOSZ = 0.0;//the height the the end of the shooter lies on average. I don't feel like calculating this as a function of shooter angle
