@@ -1,8 +1,9 @@
 package frc.robot.auto.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
 
-public class StowShooter extends Command{
+public class StowShooter extends ChickenCommand{
     frc.robot.auto.autoframe.SetShooterAngle setShooterAngle;
 
     public StowShooter() {
@@ -10,12 +11,14 @@ public class StowShooter extends Command{
     }
 
     @Override
-    public void initialize() {
+    public void init() {
+        isFinished=false;
+        setShooterAngle.done=false;
         setShooterAngle.start();
     }
 
     @Override
-    public void execute(){
+    public void update(){
         setShooterAngle.update();
     }
 

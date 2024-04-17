@@ -1,11 +1,12 @@
 package frc.robot.auto.commands;
 
+import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.trajectories.BezierCurve;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class FollowBezierCurve extends Command {
+public class FollowBezierCurve extends ChickenCommand {
     public BezierCurve trajectory;
     PIDController trajectoryPID;
     double maxSpeed;
@@ -18,7 +19,9 @@ public class FollowBezierCurve extends Command {
     }
 
     @Override
-    public void initialize() {
+    public void init() {
+        isFinished=false;
+        follow.done=false;
         follow.start();
         //this.trajectoryPID = new PIDController(Tuning.MOVEP, Tuning.MOVEI, Tuning.MOVED, 0.0, 0.0, this.maxSpeed);
         //this.trajectoryPID.setDest(1.0);
@@ -26,7 +29,7 @@ public class FollowBezierCurve extends Command {
     }   
 
     @Override
-    public void execute() {
+    public void update() {
         follow.update();
         /*
         // get odometry position data

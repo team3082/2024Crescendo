@@ -1,16 +1,18 @@
 package frc.robot.auto.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
 import frc.robot.swerve.SwervePosition;
 
-public class UseVision extends Command{
+public class UseVision extends ChickenCommand{
     @Override
-    public void initialize(){
+    public void init(){
+        isFinished=false;
         SwervePosition.enableVision();
     }
 
     @Override
-    public void end(boolean interrupted){
+    public void whenFinished(boolean interrupted){
         SwervePosition.disableVision();
     }
 

@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.OI;
-import frc.robot.auto.AutoSelector;
+import frc.robot.auto.ChikenCommands.CommandRunner;
 import frc.robot.configs.Constants;
 import frc.robot.configs.Constants.ShooterConstants;
 import frc.robot.subsystems.climber.ClimberManager;
@@ -161,7 +161,7 @@ public class Telemetry {
         robotTab.add("Custom Field", customField);
         robotTab.add("Swerve", swerveMods);
         robotTab.add("Subsystems", subsystems);
-        robotTab.add("Auto Selector", AutoSelector.autoChooser);
+        robotTab.add("Auto Selector", CommandRunner.getSelector());
         robotTab.add("Trajectory State", trajField);
     }
 

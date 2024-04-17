@@ -1,8 +1,9 @@
 package frc.robot.auto.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
 
-public class ChoreoFollow extends Command{
+public class ChoreoFollow extends ChickenCommand{
     frc.robot.auto.autoframe.ChoreoFollow choreoFollow;
 
     public ChoreoFollow(String name, double speed){
@@ -10,12 +11,14 @@ public class ChoreoFollow extends Command{
     }
 
     @Override
-    public void initialize() {
+    public void init() {
+        isFinished=false;
+        choreoFollow.done=false;
         choreoFollow.start();
     }
 
     @Override 
-    public void execute(){
+    public void update(){
         choreoFollow.update();
     }
 

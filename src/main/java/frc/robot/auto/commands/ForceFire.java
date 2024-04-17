@@ -2,12 +2,13 @@ package frc.robot.auto.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
 import frc.robot.subsystems.shooter.Shooter;
 
 /**
  * Attempts to fire the shooter, but if the shooter does not reach an acceptable position within the deadband, it automatically ejects the note
  */
-public class ForceFire extends Command{
+public class ForceFire extends ChickenCommand{
     double timeout;
     double startTime;
     double startFireTime;
@@ -17,13 +18,14 @@ public class ForceFire extends Command{
     }
 
     @Override
-    public void initialize(){
+    public void init(){
+        isFinished=false;
         this.startTime = Timer.getFPGATimestamp();
         this.startFireTime = Double.MAX_VALUE;
     }
 
     @Override
-    public void execute(){
+    public void update(){
         double time = Timer.getFPGATimestamp();
         if(time - startTime > timeout || Shooter.canShoot()){
             Shooter.shoot();

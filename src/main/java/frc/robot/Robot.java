@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.auto.AutoSelector;
 import frc.robot.subsystems.sensors.BannerLight;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.sensors.Telemetry;
@@ -25,7 +24,6 @@ import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
 import frc.robot.auto.CommandAuto;
 import frc.robot.configs.Constants;
-
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -57,7 +55,7 @@ public class Robot extends TimedRobot {
     ChoreoTrajectoryGenerator.parseAll();
     Shooter.init();
     Intake.init();
-    AutoSelector.setup();
+    CommandAuto.init();
     Telemetry.init();
     BannerLight.init();
     SwervePosition.enableVision();
@@ -83,8 +81,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     RTime.init();
     Pigeon.setYaw(90);
-	  CommandScheduler.getInstance().enable();
-    AutoSelector.run();
+	  CommandAuto.routineInit();
     SwervePosition.disableVision();
   }
 

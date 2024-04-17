@@ -1,10 +1,11 @@
 package frc.robot.auto.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 
-public class SetIntake extends Command {
+public class SetIntake extends ChickenCommand {
     double simDelay;
     frc.robot.auto.autoframe.SetIntake setIntake;
 
@@ -13,13 +14,15 @@ public class SetIntake extends Command {
     }
 
     @Override
-    public void initialize() {
+    public void init() {
+        isFinished=false;
+        setIntake.done=false;
         setIntake.start();
         Intake.reallyHasPiece = false;
     }
 
     @Override
-    public void execute() {        
+    public void update() {        
         setIntake.update();
         System.out.println("set intake updating");
     }
@@ -30,7 +33,7 @@ public class SetIntake extends Command {
     }
 
     @Override
-    public void end(boolean interrupted){
+    public void whenFinished(boolean interrupted){
         System.out.println("set intake done");
         Intake.no();
         Intake.reallyHasPiece = false;
