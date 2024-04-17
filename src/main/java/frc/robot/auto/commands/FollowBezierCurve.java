@@ -4,8 +4,6 @@ import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.trajectories.BezierCurve;
 
-import edu.wpi.first.wpilibj2.command.Command;
-
 public class FollowBezierCurve extends ChickenCommand {
     public BezierCurve trajectory;
     PIDController trajectoryPID;

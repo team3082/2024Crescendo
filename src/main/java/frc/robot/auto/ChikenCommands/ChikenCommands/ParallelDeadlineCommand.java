@@ -15,7 +15,7 @@ public class ParallelDeadlineCommand extends ChickenCommand{
      * @param commands The commands to run parallel to eachother
      */
     public ParallelDeadlineCommand(ChickenCommand deadline, ChickenCommand... commands){
-        this.deadline=deadline;
+        this.deadline = deadline;
         this.commands = commands;
     }
 
@@ -34,7 +34,6 @@ public class ParallelDeadlineCommand extends ChickenCommand{
      */
     @Override
     public void update(){
-        isFinished = false;
         if(deadline.isFinished()){
             deadline.whenFinished(false);
             isFinished=true;
@@ -44,6 +43,7 @@ public class ParallelDeadlineCommand extends ChickenCommand{
                 }
             }
         } else {
+            deadline.update();
             for(ChickenCommand command : commands){
                 if(!command.isFinished()){
                     command.update();

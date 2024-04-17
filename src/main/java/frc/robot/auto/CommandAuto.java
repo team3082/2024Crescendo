@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto.ChikenCommands.CommandRunner;
 import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
+import frc.robot.auto.ChikenCommands.ChikenCommands.DebugCommand;
 import frc.robot.auto.ChikenCommands.ChikenCommands.ParallelCommand;
 import frc.robot.auto.ChikenCommands.ChikenCommands.ParallelDeadlineCommand;
 import frc.robot.auto.ChikenCommands.ChikenCommands.SequentialCommand;
@@ -29,98 +30,45 @@ public class CommandAuto {
 
   // Starts on source side, shoots preload, grabs far, shoots, grabs far, shoots
   public static ChickenCommand[] threePieceSourceFar = new ChickenCommand[]{
-      // new SetIntakeFeedPos(),
-      // new WaitCommand(0.2),
+      new SetIntakeFeedPos(),
+      new WaitCommand(0.2),
       // // shoot preload
-      // new ParallelCommand(
-      //   new SetShooterAngle(Math.toRadians(57)),
-      //   new SetShooterVelocity(3500)
-      // ),
+      new ParallelCommand(
+        new SetShooterAngle(Math.toRadians(57)),
+        new SetShooterVelocity(3500)
+      ),
       // new FireShooter(),
 
-      // // grab piece
-      // new ParallelDeadlineCommand(
-      //   new SequentialCommand(
+      // grab piece
+      new ParallelDeadlineCommand(
+        new SequentialCommand(
           new ChoreoFollow("3 Piece Far Source.1", 1.0),
-      //     new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
-      //   ),
-      //   new SetIntake(),
-      //   new SetShooterVelocity(3500)
-      // ),
+          new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
+        ),
+        new SetIntake(),
+        new SetShooterVelocity(3500)
+      ),
       new ChoreoFollow("3 Piece Far Source.2", 1.0),
 
       // // shoot
-      // new WaitCommand(0.1),
-      // new SetShooterAngle(Math.toRadians(57)),
-      // new FireShooter(),
+      new WaitCommand(0.1),
+      new SetShooterAngle(Math.toRadians(57)),
+      new FireShooter(),
 
-      // new ParallelDeadlineCommand(
-      //   new SequentialCommand(
+      new ParallelDeadlineCommand(
+        new SequentialCommand(
           new ChoreoFollow("3 Piece Far Source.3", 1.0),
-      //     new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
-      //   ),
-      //   new SetIntake(),
-      //   new SetShooterVelocity(3500)
-      // ),
+          new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
+        ),
+        new SetIntake(),
+        new SetShooterVelocity(3500)
+      ),
       new ChoreoFollow("3 Piece Far Source.4", 1.0),
-      // // shoot
-      // new WaitCommand(0.1),
-      // new SetShooterAngle(Math.toRadians(57)),
-      // new FireShooter()
+      // shoot
+      new WaitCommand(0.1),
+      new SetShooterAngle(Math.toRadians(57)),
+      new FireShooter()
   };
-
-  // public static Command fourPieceMiddle() {
-  //   SwervePosition.setPosition(
-  //       new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
-  //   Pigeon.setYaw(90);
-  //   return new SequentialCommandGroup(
-  //     new SetIntakeFeedPos(),
-  //     new ParallelCommandGroup(
-  //       new SetShooterAngle(Math.toRadians(54)),
-  //       new SetShooterVelocity(4200)
-  //       ),
-  //       new WaitCommand(0.2),
-  //       new FireShooter(),
-
-  //    new ParallelDeadlineGroup(
-  //       new SequentialCommandGroup(
-  //         new ChoreoFollow("4Middle.1", 1.0),
-  //         new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
-  //       ),
-  //       new SetIntake(),
-  //       new SetShooterVelocity(4200)
-  //     ),
-  //       new ChoreoFollow("4Middle.2", 1.0),
-  //       new WaitCommand(0.1),
-  //       new SetShooterAngle(Math.toRadians(54)),
-  //       new FireShooter(),
-
-  //     new ParallelDeadlineGroup(
-  //       new SequentialCommandGroup(
-  //         new ChoreoFollow("4Middle.3", 1.0),
-  //         new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
-  //       ),
-  //       new SetIntake(),
-  //       new SetShooterVelocity(4200)
-  //     ),
-  //       new ChoreoFollow("4Middle.4", 1.0),
-  //       new WaitCommand(0.1),
-  //       new SetShooterAngle(Math.toRadians(57.5)),
-  //       new FireShooter(),
-  //     new ParallelDeadlineGroup(
-  //       new SequentialCommandGroup(
-  //         new ChoreoFollow("4Middle.5", 1.0),
-  //         new WaitCommand(.5).onlyIf(() -> !Intake.reallyHasPiece)
-  //       ),
-  //       new SetIntake(),
-  //       new SetShooterVelocity(4200)
-  //     ),
-  //     new ChoreoFollow("4Middle.6", 1.0),
-  //       new WaitCommand(0.1),
-  //       new SetShooterAngle(Math.toRadians(54)),
-  //       new FireShooter()
-  //   );
-  // }
 
   public static void init(){
     CommandRunner.Init();
