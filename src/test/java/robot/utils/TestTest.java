@@ -1,6 +1,7 @@
 package robot.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 
@@ -9,6 +10,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.configs.Constants;
 import frc.robot.utils.swerve.DiscreteSwerveState;
 import frc.robot.utils.swerve.SecondOrderSwerveState;
@@ -55,5 +57,20 @@ public class TestTest {
         SecondOrderSwerveState expected = new SecondOrderSwerveState(0.5, -0.5, -0.5, 0.5, -1.5, 1, 1,-3,2);
         System.out.println(result);
         assertEquals(expected.toString(), result.toString());
+    }
+
+    @Test
+    public void transform3dTest(){
+        Pose3d initial = new Pose3d(1,0,0, new Rotation3d(0,0,Math.PI));
+        Pose3d end = new Pose3d(0,0,0, new Rotation3d(0,0,0));
+        Transform3d transform = new Transform3d(initial, end);
+
+        // System.out.println("x: " + transform.getX());
+        // System.out.println("y: " + transform.getY());
+        // System.out.println("z: " + transform.getZ());
+        System.out.println(transform);
+        
+
+        assertTrue(initial.transformBy(transform).equals(end));
     }
 }

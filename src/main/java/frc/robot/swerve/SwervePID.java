@@ -34,7 +34,7 @@ public class SwervePID {
     public static void init() {
         xPID = new PIDController(moveP, moveI, moveD, moveDead, moveVelDead, moveSpeedMax);
         yPID = new PIDController(moveP, moveI, moveD, moveDead, moveVelDead, moveSpeedMax);
-        rotPID = new PIDController(rotP, rotI, rotD, rotDead, rotVelDead, rotSpeedMax);
+        rotPID = new RotationalPIDController(rotP, rotI, rotD, rotDead, rotVelDead, rotSpeedMax);
     }
 
     public static void setDestState(Vector2 dest, double destRot) {
