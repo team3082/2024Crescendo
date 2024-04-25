@@ -105,6 +105,9 @@ public final class Constants {
 
     public static final class ShooterConstants {
 
+        // Diameter of the flywheels
+        public static final double flywheelDiameter = 4.000;
+
         // Talon IDs: Flywheel
         public static final int TOPFLYWHEEL_ID = 10;
         public static final int BOTTOMFLYWHEEL_ID = 11;
@@ -139,8 +142,11 @@ public final class Constants {
         // center of rotation when pressed up against the subwoofer.
         // Y was previously -327.0.
         public static final Vector2 speakerPos = new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -327.0);
+        public static final Vector2 passTargetPos = new Vector2(143.36 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -253.1);
 
         public static final double SHOOTERPOSZ = 0.0;//the height the the end of the shooter lies on average. I don't feel like calculating this as a function of shooter angle
+
+        public static final double passingRPM = 2000.0;
     }
 
     public static final class Intake {

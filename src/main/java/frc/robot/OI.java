@@ -2,6 +2,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Radians;
+import static frc.robot.configs.Constants.ShooterConstants.passTargetPos;
 import static frc.robot.configs.Constants.ShooterConstants.speakerPos;
 import static frc.robot.configs.Tuning.OI.*;
 
@@ -143,6 +144,8 @@ public class OI {
         if (currentShooterMode == ShooterMode.SPEAKER && driverStick.getRawButton(fireShooter)) {
             // Face AWAY from speaker (Pigeon's POV) due to shooter being behind the robot
             rotate = speakerPos.add(new Vector2(0,5)).sub(SwervePosition.getPosition()).norm().mul(-1.0).atan2();
+        }else if (currentShooterMode == ShooterMode.PASSING && driverStick.getRawButton(fireShooter)){
+            rotate = passTargetPos.sub(SwervePosition.getPosition()).norm().mul(-1.0).atan2();
         } else {
             rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
         }
@@ -200,18 +203,20 @@ public class OI {
                     Shooter.shoot();
                 break;
 
-                // case PASSING:
-                //     shooterPassing = true;
-                //     ShooterPivot.setPosition(Math.toRadians(31.0));
-                //     Shooter.revTo(2800);
-                //     Shooter.shoot();
-                // break;
+                case PASSING:
+                    ShooterPivot.setPosition(Math.toRadians(31.0));
+
+                    
+                    Shooter.revTo(2000.0);
+                    Shooter.shoot();
+                break;
             
                 default:
                 break;
             }
         } else {
-            Shooter.neutral();
+            //Shooter.neutral();
+            Shooter.idling();
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
@@ -223,7 +228,7 @@ public class OI {
         //     }
         // }
 
-        if (currentShooterMode == ShooterMode.SPEAKER && driverStick.getRawButton(fireShooter)) {
+        if ((currentShooterMode == ShooterMode.SPEAKER || currentShooterMode == ShooterMode.PASSING) && driverStick.getRawButton(fireShooter)) {
             aligning = true;
             SwerveManager.moveAndRotateTo(drive, rotate);
         } else {

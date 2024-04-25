@@ -1,6 +1,7 @@
 package frc.robot.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.configs.Constants.METERSTOINCHES;
 import static frc.robot.configs.Constants.ShooterConstants.*;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -23,6 +24,7 @@ public final class Shooter {
     // Status of the shooter
     public static enum ShooterStatus {
         DISABLED, // aka a dead shooter
+        IDLE, // aka idling
         REVVING, // actively revving up to our target velocity
         FIRING, // handoff pumping note into the shooter
         EJECT,  // force-ejecting piece, regardless of our current status
@@ -157,6 +159,15 @@ public final class Shooter {
                 neutral();
                 ShooterPivot.neutral();
             break;
+
+            case IDLE: 
+                targetVelocity = 1000.0;
+                targetTop = 1000.0;
+                targetBottom = 1000.0;
+                idling();
+                ShooterPivot.neutral();
+                setVelocity(targetTop, targetBottom);
+            break;
         }
     }
 
@@ -207,6 +218,16 @@ public final class Shooter {
             ShooterPivot.setPosition(angle);
             revTo(settings.getVelocity().in(RPM));
         }
+    }
+
+    public static void passFire() {
+        Vector2 robotPos = SwervePosition.getPosition(); // Current position of the robot
+
+        // Get our distance between the robot & the passing target zone
+        double distance = robotPos.sub(passTargetPos).mag() / METERSTOINCHES;
+
+        // Converts velocity to m/s
+        double vel = passingRPM / 60.0 * flywheelDiameter * Math.PI / METERSTOINCHES;
     }
 
     /**
@@ -273,6 +294,15 @@ public final class Shooter {
     public static void setNeutral() {
         shooterMode = ShooterStatus.NEUTRAL;
         handoffMode = HandoffStatus.DISABLED;
+    }
+
+
+    /**
+     * Set shooter to idle speed
+     */
+    public static void idling() {
+        ShooterPivot.neutral();
+        shooterMode = ShooterStatus.IDLE;
     }
 
     /**
