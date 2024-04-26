@@ -727,56 +727,17 @@ public class CommandAuto {
 
   public static void init(){
     CommandRunner.Init();
-    CommandRunner.addRoutine(
-      "onePieceMiddle", 
-      onePieceMiddleCommands, 
-      CommandAuto::onePieceMiddle
-    );
-    CommandRunner.addRoutine(
-      "onePieceSource", 
-      onePieceSourceCommands, 
-      CommandAuto::onePieceSource
-    );
-    CommandRunner.addRoutine(
-      "onePieceAmp", 
-      onePieceAmpCommands, 
-      CommandAuto::onePieceAmp
-    );
-    CommandRunner.addRoutine(
-      "twoPieceMiddle", 
-      twoPieceMiddleCommands, 
-      CommandAuto::twoPieceMiddle
-    );
-    CommandRunner.addRoutine(
-      "twoPieceSource", 
-      twoPieceSourceCommands, 
-      CommandAuto::twoPieceSource
-    );
-    CommandRunner.addRoutine(
-      "twoPieceSourceFar", 
-      twoPieceSourceFarCommands, 
-      CommandAuto::twoPieceSourceFar
-    );
-    CommandRunner.addRoutine(
-      "twoPieceAmpFar", 
-      twoPieceAmpFarCommands, 
-      CommandAuto::twoPieceAmpFar
-    );
-    CommandRunner.addRoutine(
-      "threePieceSourceFar", 
-      threePieceSourceFarCommands, 
-      CommandAuto::threePieceSourceFar
-    );
-    CommandRunner.addRoutine(
-      "amp145", 
-      amp145Commands, 
-      CommandAuto::amp145
-    );
-    CommandRunner.addRoutine(
-      "fourPieceMiddle", 
-      fourPieceMiddleCommands, 
-      CommandAuto::fourPieceMiddle
-    );
+    CommandRunner.addRoutine("onePieceMiddle", onePieceMiddleCommands, CommandAuto::onePieceMiddle);
+    CommandRunner.addRoutine("onePieceSource", onePieceSourceCommands, CommandAuto::onePieceSource);
+    CommandRunner.addRoutine("onePieceAmp", onePieceAmpCommands, CommandAuto::onePieceAmp);
+    CommandRunner.addRoutine("twoPieceMiddle", twoPieceMiddleCommands, CommandAuto::twoPieceMiddle);
+    CommandRunner.addRoutine("twoPieceSource", twoPieceSourceCommands, CommandAuto::twoPieceSource);
+    CommandRunner.addRoutine("twoPieceAmp", twoPieceAmpCommands, CommandAuto::twoPieceAmp);
+    CommandRunner.addRoutine("twoPieceSourceFar", twoPieceSourceFarCommands, CommandAuto::twoPieceSourceFar);
+    CommandRunner.addRoutine("twoPieceAmpFar", twoPieceAmpFarCommands, CommandAuto::twoPieceAmpFar);
+    CommandRunner.addRoutine("threePieceSourceFar", threePieceSourceFarCommands, CommandAuto::threePieceSourceFar);
+    CommandRunner.addRoutine("amp145", amp145Commands, CommandAuto::amp145);
+    CommandRunner.addRoutine("fourPieceMiddle", fourPieceMiddleCommands, CommandAuto::fourPieceMiddle);
   }
 
   public static void routineInit() {
