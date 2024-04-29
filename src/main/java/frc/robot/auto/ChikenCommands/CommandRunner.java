@@ -34,7 +34,7 @@ public abstract class CommandRunner{
     private static class AutoRoutine {
         private String sendableName;
         private ChickenCommand[] commands;
-        private Runnable initMethod;
+        private ChikenCommandSupplier initMethod;
 
         /**
          * Constructor for a Sea Wrapper
@@ -43,9 +43,8 @@ public abstract class CommandRunner{
          * @param initMethod The method used to innit the auto rountine, 
          * this is meant to handel stuff such as reseting odometry
          */
-        public AutoRoutine(String sendableName, ChickenCommand[] commands, Runnable initMethod){
+        public AutoRoutine(String sendableName, ChikenCommandSupplier initMethod){
             this.sendableName=sendableName;
-            this.commands=commands;
             this.initMethod=initMethod;
         }
 
@@ -59,8 +58,7 @@ public abstract class CommandRunner{
         public void initRoutine(){
             if(this.sendableName=="No Auto") 
                 return;
-            initMethod.run();
-            commands[0].init();
+            this.commands = initMethod.getCommands();
         }
 
         /**
@@ -90,8 +88,8 @@ public abstract class CommandRunner{
     /**
      * Inits the CommandRunner class
      */
-    public static void addRoutine(String sendableName, ChickenCommand[] commands, Runnable initMethod){
-        allRoutines.add(new AutoRoutine(sendableName, commands, initMethod));
+    public static void addRoutine(String sendableName, ChikenCommandSupplier initMethod){
+        allRoutines.add(new AutoRoutine(sendableName, initMethod));
         updateSelector();
     }
 
