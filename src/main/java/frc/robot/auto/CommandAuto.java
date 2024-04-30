@@ -3,12 +3,14 @@ package frc.robot.auto;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.auto.ChikenCommands.CommandRunner;
+import frc.robot.auto.ChikenCommands.Routine;
 import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
 import frc.robot.auto.ChikenCommands.ChikenCommands.DebugCommand;
 import frc.robot.auto.ChikenCommands.ChikenCommands.ParallelCommand;
 import frc.robot.auto.ChikenCommands.ChikenCommands.ParallelDeadlineCommand;
 import frc.robot.auto.ChikenCommands.ChikenCommands.SequentialCommand;
 import frc.robot.auto.ChikenCommands.ChikenCommands.WaitCommand;
+import frc.robot.auto.commands.Aim;
 import frc.robot.auto.commands.ChoreoFollow;
 import frc.robot.auto.commands.FireShooter;
 import frc.robot.auto.commands.SetIntake;
@@ -22,9 +24,10 @@ import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 
-public class CommandAuto {
+public class CommandAuto{
   // starts in middle, shoots preload
-  private static ChickenCommand[] onePieceMiddle(){
+  @Routine
+  public ChickenCommand[] onePieceMiddle(){
     SwervePosition.setPosition(
     new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
     Pigeon.setYaw(90);
@@ -43,7 +46,8 @@ public class CommandAuto {
   } 
 
   // starts on source side, shoots preload
-  private static ChickenCommand[] onePieceSource() {
+  @Routine
+  public ChickenCommand[] onePieceSource() {
     SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new ChickenCommand[]{
@@ -62,7 +66,8 @@ public class CommandAuto {
   }
 
   // starts on amp side, shoots preload
-  private static ChickenCommand[] onePieceAmp() {
+  @Routine
+  public ChickenCommand[] onePieceAmp() {
     SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new ChickenCommand[]{
@@ -80,7 +85,8 @@ public class CommandAuto {
   }
 
   // starts in middle, shoots preload, grabs the middle close piece, shoots
-  public static ChickenCommand[] twoPieceMiddle() {
+  @Routine
+  public ChickenCommand[] twoPieceMiddle() {
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
     Pigeon.setYaw(90);
@@ -113,7 +119,8 @@ public class CommandAuto {
   }
 
   // starts on source side, shoots preload, grabs the source close piece, shoots
-  private static ChickenCommand[] twoPieceSource() {
+  @Routine
+  public ChickenCommand[] twoPieceSource() {
     SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new ChickenCommand[]{
@@ -145,7 +152,8 @@ public class CommandAuto {
   }
 
   // starts on amp side, shoots preload, grabs the amp close piece, shoots
-  private static ChickenCommand[] twoPieceAmp() {
+  @Routine
+  public ChickenCommand[] twoPieceAmp() {
     SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new ChickenCommand[]{
@@ -177,10 +185,11 @@ public class CommandAuto {
  }
 
   // starts on source side, shoots preload, grabs far piece on source side, shoots
-  private static ChickenCommand[] twoPieceSourceFar() {
+  @Routine
+  public ChickenCommand[] twoPieceSourceFar() {
     SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
-  return new ChickenCommand[]{
+    return new ChickenCommand[]{
     new SetIntakeFeedPos(),
     new WaitCommand(0.2),
     // shoot preload
@@ -209,7 +218,8 @@ public class CommandAuto {
  }
 
   // starts on amp side, shoots preload, grabs far piece on amp side, shoots
-  private static ChickenCommand[] twoPieceAmpFar() {
+  @Routine
+  public ChickenCommand[] twoPieceAmpFar() {
     SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new ChickenCommand[]{
@@ -241,7 +251,8 @@ public class CommandAuto {
   }
 
   // starts on source side, shoots preload, grabs far, shoots, grabs far, shoots
-  private static ChickenCommand[] threePieceSourceFar() {
+  @Routine
+  public ChickenCommand[] threePieceSourceFar() {
     SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
     return new ChickenCommand[]{
@@ -286,7 +297,8 @@ public class CommandAuto {
   };
   }
 
-  private static ChickenCommand[] amp145(){
+  @Routine
+  public ChickenCommand[] amp145(){
     SwervePosition.setPosition(new Vector2(96 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
     return new ChickenCommand[]{
@@ -319,7 +331,7 @@ public class CommandAuto {
   };
   }
 
-  // public static Command threeSourceCitrus() {
+  // public Command threeSourceCitrus() {
   //   SwervePosition.setPosition(new Vector2(-100 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -267));
   //   Pigeon.setYaw(90);
   //   return new SequentialCommand(
@@ -343,7 +355,7 @@ public class CommandAuto {
   // }
 
   // // starts on source side, shoots preload, grabs source close piece, shoots, grabs far piece, shoots
-  // public static Command threePieceSourceHalfFar() {
+  // public Command threePieceSourceHalfFar() {
   //   SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
   //   Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
   //   return new SequentialCommand(
@@ -388,7 +400,7 @@ public class CommandAuto {
   // }
 
   // // starts on amp side, shoots preload, grabs amp side close piece, shoots, grabs far piece, shoots
-  // public static Command threePieceAmpHalfFar() {
+  // public Command threePieceAmpHalfFar() {
   //   SwervePosition.setPosition(new Vector2(100 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
   //   Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
   //   return new SequentialCommand(
@@ -433,7 +445,7 @@ public class CommandAuto {
   // }
 
   // // starts on source side, shoots preload, grabs source close piece, shoots, grabs middle close piece, shoots
-  // public static Command threePieceSource() {
+  // public Command threePieceSource() {
   //   SwervePosition.setPosition(new Vector2(16 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
   //   Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 30 : 150);
   //   return new SequentialCommand(
@@ -479,7 +491,7 @@ public class CommandAuto {
   // }
 
   // // starts on amp side, shoots preload, grabs amp close piece, shoots, grabs far piece, shoots
-  // public static Command threePieceAmp() {
+  // public Command threePieceAmp() {
   //   SwervePosition.setPosition(new Vector2(100 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
   //   Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
   //   return new SequentialCommand(
@@ -523,7 +535,8 @@ public class CommandAuto {
   //     new FireShooter());
   // }
 
-  private static ChickenCommand[] fourPieceMiddle() {
+  @Routine
+  public ChickenCommand[] fourPieceMiddle() {
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
     Pigeon.setYaw(90);
@@ -576,7 +589,7 @@ public class CommandAuto {
   };
   }
 
-  // public static Command middle03215(){
+  // public Command middle03215(){
   //   SwervePosition.setPosition(
   //       new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
   //   Pigeon.setYaw(90);
@@ -645,7 +658,7 @@ public class CommandAuto {
   //   );
   // }
 
-  // public static Command fourPieceMiddle2(){
+  // public Command fourPieceMiddle2(){
   //   SwervePosition.setPosition(
   //       new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
   //   Pigeon.setYaw(90);
@@ -679,56 +692,47 @@ public class CommandAuto {
   //   );
   // }
 
-  // public static Command fourMiddleFast(){
-  //   SwervePosition.setPosition(
-  //       new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
-  //   Pigeon.setYaw(90);
-  //   return new SequentialCommand(
-  //     new SetIntakeFeedPos(),
-  //     new ParallelCommand(
-  //       new SetShooterAngle(Math.toRadians(54)),
-  //       new SetShooterVelocity(4200)
-  //       ),
-  //       new WaitCommand(0.2),
-  //       new FireShooter(), // Shoot first piece
+  @Routine
+  public ChickenCommand[] fourMiddleFast(){
+    SwervePosition.setPosition(
+        new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
+    Pigeon.setYaw(90);
+    return new ChickenCommand[]{
+      new SetIntakeFeedPos(),
+      new ParallelCommand(
+        new SetShooterAngle(Math.toRadians(54)),
+        new SetShooterVelocity(4200)
+        ),
+        new WaitCommand(0.2),
+        new FireShooter(), // Shoot first piece
 
-  //       new SetIntakeFeedPos(),
-  //       new ChoreoFollow("4MidFast.1", 1.0),
-  //       new ParallelCommand(
-  //         new ChoreoFollow("4MidFast.2", 0.5),
-  //         new Aim().onlyIf(() -> Intake.reallyHasPiece) // Shoot second piece
-  //       ),
-  //       new WaitCommand(.5),
+        new SetIntakeFeedPos(),
+        new ChoreoFollow("4MidFast.1", 1.0),
+        new ParallelCommand(
+          new ChoreoFollow("4MidFast.2", 0.5),
+          new Aim().onlyIf(() -> Intake.reallyHasPiece) // Shoot second piece
+        ),
+        new WaitCommand(.5),
 
-  //       new SetIntakeFeedPos(),
-  //       new ChoreoFollow("4MidFast.3", 1.0),
-  //       new ParallelCommand(
-  //         new ChoreoFollow("4MidFast.4", 0.5),
-  //         new Aim().onlyIf(() -> Intake.reallyHasPiece) // Shoot third piece
-  //     )
-  //   );
-  // }
+        new SetIntakeFeedPos(),
+        new ChoreoFollow("4MidFast.3", 1.0),
+        new ParallelCommand(
+          new ChoreoFollow("4MidFast.4", 0.5),
+          new Aim().onlyIf(() -> Intake.reallyHasPiece)
+        ) // Shoot third piece
+    };
+  }
 
   public static void init(){
     CommandRunner.Init();
-    CommandRunner.addRoutine("onePieceMiddle",CommandAuto::onePieceMiddle);
-    CommandRunner.addRoutine("onePieceSource", CommandAuto::onePieceSource);
-    CommandRunner.addRoutine("onePieceAmp", CommandAuto::onePieceAmp);
-    CommandRunner.addRoutine("twoPieceMiddle", CommandAuto::twoPieceMiddle);
-    CommandRunner.addRoutine("twoPieceSource", CommandAuto::twoPieceSource);
-    CommandRunner.addRoutine("twoPieceAmp", CommandAuto::twoPieceAmp);
-    CommandRunner.addRoutine("twoPieceSourceFar", CommandAuto::twoPieceSourceFar);
-    CommandRunner.addRoutine("twoPieceAmpFar", CommandAuto::twoPieceAmpFar);
-    CommandRunner.addRoutine("threePieceSourceFar", CommandAuto::threePieceSourceFar);
-    CommandRunner.addRoutine("amp145", CommandAuto::amp145);
-    CommandRunner.addRoutine("fourPieceMiddle", CommandAuto::fourPieceMiddle);
+    CommandRunner.addRoutine(new CommandAuto());
   }
 
   public static void routineInit() {
     CommandRunner.RoutineInit();
   }
 
-public static void update() {
+  public static void update() {
     CommandRunner.update();
-}
+  }
 }

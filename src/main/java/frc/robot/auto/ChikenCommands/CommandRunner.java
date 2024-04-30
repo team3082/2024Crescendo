@@ -1,5 +1,7 @@
 package frc.robot.auto.ChikenCommands;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -30,7 +32,7 @@ public abstract class CommandRunner{
      * This is a wrapper class for a WaterCommand array, 
      * it is meant to simplify selecting autos in telemetry, 
      * and initing command sequences
-     */
+    */
     private static class AutoRoutine {
         private String sendableName;
         private ChickenCommand[] commands;
@@ -83,24 +85,50 @@ public abstract class CommandRunner{
      */
     public static void Init(){
         allRoutines.add(new AutoRoutine());
+        autoSelector.setDefaultOption(allRoutines.get(0).getName(), allRoutines.get(0).getName());
     }
 
     /**
-     * Inits the CommandRunner class
+     * This methods adds all Auto Routine Methods(@Routine) in the class to the CommandRunner
+     * Note that if there is a Routine that 
+     *  A. Needs Paramters 
+     *  B. Dose not return ChikenCommand[] 
+     *  C. Fails to run this method will throw a runtime error
+     * A RuntimeException will be thrown
+     * @param AutoBundle A generic for the class that has the Auto Routines in it
+     * @param commandClass The class with the Auto Routines in it
+     */
+    public static <AutoBundle> void addRoutine(AutoBundle commandClass){
+        //Loops through all the methods in the commandClass
+        for(Method method : commandClass.getClass().getDeclaredMethods()){
+            //If a method has an annotation of Routine, it will add it
+            if(method.isAnnotationPresent(Routine.class)){
+                addRoutine(method.getName(), ()->{
+                    //This code turns the method into a ChikenCommandSupplier
+                    try {
+                        //Gets the result of the method
+                        Object result = method.invoke(commandClass);
+                        
+                        //If the result is a ChickenCommand[] it will return it
+                        if (result instanceof ChickenCommand[]) {
+                          return (ChickenCommand[]) result;
+                        } else {
+                          throw new RuntimeException("Method doesn't return a ChikenCommand[]");
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error invoking method", e);
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * Adds a Routine to the commandRunner class
      */
     public static void addRoutine(String sendableName, ChikenCommandSupplier initMethod){
         allRoutines.add(new AutoRoutine(sendableName, initMethod));
-        updateSelector();
-    }
-
-    /**
-     * Updates the auto selector and adds the routines sendable names as options
-     */
-    private static void updateSelector(){
-        autoSelector.setDefaultOption(allRoutines.get(0).getName(), allRoutines.get(0).getName());
-        for(int index = 1; index<allRoutines.size(); index++){
-            autoSelector.addOption(allRoutines.get(index).getName(), allRoutines.get(index).getName());
-        }
+        autoSelector.addOption(allRoutines.get(allRoutines.size()-1).getName(), allRoutines.get(allRoutines.size()-1).getName());
     }
 
     /**
