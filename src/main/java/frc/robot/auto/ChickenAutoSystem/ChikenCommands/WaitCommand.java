@@ -1,4 +1,4 @@
-package frc.robot.auto.ChikenCommands.ChikenCommands;
+package frc.robot.auto.ChickenAutoSystem.ChikenCommands;
 
 import edu.wpi.first.wpilibj.Timer;
 

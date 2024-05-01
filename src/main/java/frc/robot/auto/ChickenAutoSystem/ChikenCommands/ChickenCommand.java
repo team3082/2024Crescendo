@@ -1,4 +1,4 @@
-package frc.robot.auto.ChikenCommands.ChikenCommands;
+package frc.robot.auto.ChickenAutoSystem.ChikenCommands;
 
 import java.util.function.BooleanSupplier;
 
@@ -41,7 +41,7 @@ public abstract class ChickenCommand {
      * @param Condition A BooleanSupplier that will make the command only run if it is true
      * @return Returns a 1 path GateCommand
      */
-    public ChickenCommand onlyIf(BooleanSupplier Condition){
+    public GateCommand onlyIf(BooleanSupplier Condition){
         return new GateCommand(this, Condition);
     }
 
@@ -50,7 +50,7 @@ public abstract class ChickenCommand {
      * @param commands The commands to run after
      * @return Returns a SequentialCommand of all the commands given
      */
-    public ChickenCommand andThen(ChickenCommand... commands){
+    public SequentialCommand andThen(ChickenCommand... commands){
         ChickenCommand[] allCommands = new ChickenCommand[commands.length+1];
         allCommands[0] = this;
         for(int index = 1; index<allCommands.length; index++){
@@ -64,13 +64,22 @@ public abstract class ChickenCommand {
      * @param text The commands to run with
      * @return Returns a ParallelCommand of the command and all commands given
      */
-    public ChickenCommand alongWith(ChickenCommand... commands){
+    public ParallelCommand alongWith(ChickenCommand... commands){
         ChickenCommand[] allCommands = new ChickenCommand[commands.length+1];
         allCommands[0] = this;
         for(int index = 1; index<allCommands.length; index++){
             allCommands[index] = commands[index-1];
         }
         return new ParallelCommand(allCommands);
+    }
+
+    public ParallelDeadlineCommand deadlineWith(ChickenCommand... commands){
+        ChickenCommand[] allCommands = new ChickenCommand[commands.length+1];
+        allCommands[0] = this;
+        for(int index = 1; index<allCommands.length; index++){
+            allCommands[index] = commands[index-1];
+        }
+        return new ParallelDeadlineCommand(this, allCommands);
     }
 
     /**

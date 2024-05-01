@@ -1,6 +1,6 @@
 package frc.robot.auto.commands;
 
-import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
+import frc.robot.auto.ChickenAutoSystem.ChikenCommands.ChickenCommand;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.trajectories.BezierCurve;
 

@@ -1,4 +1,4 @@
-package frc.robot.auto.ChikenCommands;
+package frc.robot.auto.ChickenAutoSystem;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -6,37 +6,41 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
+import frc.robot.auto.ChickenAutoSystem.ChikenCommands.ChickenCommand;
 
+/**
+ * 
+ */
 public abstract class CommandRunner{
-    //Auto Selector
+    /** Auto Selector */
     private static SendableChooser<String> autoSelector = new SendableChooser<String>();
 
-    /**
-     * Index of the the current command
-     */
+    /** Index of the the current command */
     private static int currentCommandIndex;
 
-    /**
-     * Index of the AutoRoutine chosen
-     */
+    /** Index of the AutoRoutine chosen */
     private static int currentRoutineIndex;
 
     /**
      * All of the auto commands stored in a Sea objects 
      * so they can be selected over network tables
      */
-    private static ArrayList<AutoRoutine> allRoutines = new ArrayList<AutoRoutine>();
+    private static ArrayList<AutoShell> allRoutines = new ArrayList<AutoShell>();
 
     /**
-     * This is a wrapper class for a WaterCommand array, 
+     * This is a wrapper class for a ChickenCommand[] array, 
      * it is meant to simplify selecting autos in telemetry, 
      * and initing command sequences
     */
-    private static class AutoRoutine {
+    private static class AutoShell {
+        /**The name that will be sent to the end user */
         private String sendableName;
+
+        /**An array of all the ChickenCommands */
         private ChickenCommand[] commands;
-        private ChikenCommandSupplier initMethod;
+        
+        /**A method that inits the routine and supplies the commands */
+        private ChickenCommandSupplier initMethod;
 
         /**
          * Constructor for a Sea Wrapper
@@ -45,12 +49,12 @@ public abstract class CommandRunner{
          * @param initMethod The method used to innit the auto rountine, 
          * this is meant to handel stuff such as reseting odometry
          */
-        public AutoRoutine(String sendableName, ChikenCommandSupplier initMethod){
+        public AutoShell(String sendableName, ChickenCommandSupplier initMethod){
             this.sendableName=sendableName;
             this.initMethod=initMethod;
         }
 
-        public AutoRoutine(){
+        public AutoShell(){
             this.sendableName="No Auto";
         }
         
@@ -84,7 +88,7 @@ public abstract class CommandRunner{
      * Inits the CommandRunner class
      */
     public static void Init(){
-        allRoutines.add(new AutoRoutine());
+        allRoutines.add(new AutoShell());
         autoSelector.setDefaultOption(allRoutines.get(0).getName(), allRoutines.get(0).getName());
     }
 
@@ -98,13 +102,13 @@ public abstract class CommandRunner{
      * @param AutoBundle A generic for the class that has the Auto Routines in it
      * @param commandClass The class with the Auto Routines in it
      */
-    public static <AutoBundle> void addRoutine(AutoBundle commandClass){
+    public static <AutoBundle> void addBundle(AutoBundle commandClass){
         //Loops through all the methods in the commandClass
         for(Method method : commandClass.getClass().getDeclaredMethods()){
             //If a method has an annotation of Routine, it will add it
-            if(method.isAnnotationPresent(Routine.class)){
+            if(method.isAnnotationPresent(AutoRoutine.class)){
                 addRoutine(method.getName(), ()->{
-                    //This code turns the method into a ChikenCommandSupplier
+                    //This code turns the method into a ChickenCommandSupplier
                     try {
                         //Gets the result of the method
                         Object result = method.invoke(commandClass);
@@ -126,8 +130,8 @@ public abstract class CommandRunner{
     /**
      * Adds a Routine to the commandRunner class
      */
-    public static void addRoutine(String sendableName, ChikenCommandSupplier initMethod){
-        allRoutines.add(new AutoRoutine(sendableName, initMethod));
+    public static void addRoutine(String sendableName, ChickenCommandSupplier initMethod){
+        allRoutines.add(new AutoShell(sendableName, initMethod));
         autoSelector.addOption(allRoutines.get(allRoutines.size()-1).getName(), allRoutines.get(allRoutines.size()-1).getName());
     }
 

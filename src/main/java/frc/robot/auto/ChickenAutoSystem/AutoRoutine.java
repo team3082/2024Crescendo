@@ -1,4 +1,4 @@
-package frc.robot.auto.ChikenCommands;
+package frc.robot.auto.ChickenAutoSystem;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,4 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface Routine {}
+public @interface AutoRoutine {}
+

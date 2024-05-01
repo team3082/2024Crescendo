@@ -1,4 +1,6 @@
-package frc.robot.auto.ChikenCommands.ChikenCommands;
+package frc.robot.auto.ChickenAutoSystem.ChikenCommands;
+
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 
 /**
  * A command that runs other commands parallel until a deadline command finishes

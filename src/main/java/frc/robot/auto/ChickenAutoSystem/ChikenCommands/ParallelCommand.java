@@ -1,4 +1,4 @@
-package frc.robot.auto.ChikenCommands.ChikenCommands;
+package frc.robot.auto.ChickenAutoSystem.ChikenCommands;
 
 /**
  * An Water Command that allows two commands to run parallel

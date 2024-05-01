@@ -1,7 +1,7 @@
 package frc.robot.auto.commands;
 
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
+import frc.robot.auto.ChickenAutoSystem.ChikenCommands.ChickenCommand;
 import frc.robot.subsystems.shooter.Shooter;
 
 /**

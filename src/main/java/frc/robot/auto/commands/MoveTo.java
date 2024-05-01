@@ -1,6 +1,6 @@
 package frc.robot.auto.commands;
 
-import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
+import frc.robot.auto.ChickenAutoSystem.ChikenCommands.ChickenCommand;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.utils.Vector2;

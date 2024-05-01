@@ -1,6 +1,6 @@
 package frc.robot.auto.commands;
 
-import frc.robot.auto.ChikenCommands.ChikenCommands.ChickenCommand;
+import frc.robot.auto.ChickenAutoSystem.ChikenCommands.ChickenCommand;
 
 public class ChoreoFollow extends ChickenCommand{
     frc.robot.auto.autoframe.ChoreoFollow choreoFollow;
