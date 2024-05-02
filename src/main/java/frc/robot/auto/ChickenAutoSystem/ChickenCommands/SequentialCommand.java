@@ -49,7 +49,7 @@ public class SequentialCommand extends ChickenCommand{
     /**
      * Runs when the command is finished
      */
-    public void whenFinished(boolean interuppted) {
-       if(interuppted) commands[currentCommandIndex].whenFinished(true);
+    public void whenFinished(boolean interrupted) {
+       if(interrupted) commands[currentCommandIndex].whenFinished(true);
     }
 }
