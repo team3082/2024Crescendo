@@ -1,6 +1,6 @@
 package frc.robot.auto.commands;
 
-import frc.robot.auto.ChickenAutoSystem.ChikenCommands.ChickenCommand;
+import frc.robot.auto.ChickenAutoSystem.ChickenCommands.ChickenCommand;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 

@@ -1,6 +1,6 @@
 package frc.robot.auto.commands;
 
-import frc.robot.auto.ChickenAutoSystem.ChikenCommands.ChickenCommand;
+import frc.robot.auto.ChickenAutoSystem.ChickenCommands.ChickenCommand;
 
 public class RotateTo extends ChickenCommand{
       private frc.robot.auto.autoframe.RotateTo rotateTo;

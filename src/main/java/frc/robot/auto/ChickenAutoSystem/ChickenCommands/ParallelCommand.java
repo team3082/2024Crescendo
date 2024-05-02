@@ -1,15 +1,15 @@
-package frc.robot.auto.ChickenAutoSystem.ChikenCommands;
+package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
 
 /**
  * An Water Command that allows two commands to run parallel
  */
 public class ParallelCommand extends ChickenCommand{
-    /**An array of the commands to run parallel to eachother */
+    /**An array of the commands to run parallel to each other */
     private ChickenCommand[] commands;
 
     /**
      * Constructor for a ParallelCommand
-     * @param commands The commands to run parallel to eachother
+     * @param commands The commands to run parallel to each other
      */
     public ParallelCommand(ChickenCommand... commands){
         this.commands = commands;
@@ -39,11 +39,11 @@ public class ParallelCommand extends ChickenCommand{
     }
 
     /**
-     * Finishs the ParallelCommand
+     * Finishes the ParallelCommand
      */
     @Override
-    public void whenFinished(boolean interuppted) {
-        if(!interuppted) return;
+    public void whenFinished(boolean interrupted) {
+        if(!interrupted) return;
         for(ChickenCommand command : commands){
             if(!command.isFinished()){
                 command.whenFinished(true);

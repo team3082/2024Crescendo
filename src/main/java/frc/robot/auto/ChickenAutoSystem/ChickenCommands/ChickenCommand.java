@@ -1,15 +1,15 @@
-package frc.robot.auto.ChickenAutoSystem.ChikenCommands;
+package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
 
 import java.util.function.BooleanSupplier;
 
 /**
- * Super class of all ChikenCommands
+ * Super class of all ChickenCommands
  */
 public abstract class ChickenCommand {
     protected boolean isFinished;
     
     /**
-     * Constructor for the ChikenCommand
+     * Constructor for the ChickenCommand
      */
     public ChickenCommand(){}
 
@@ -24,7 +24,7 @@ public abstract class ChickenCommand {
 
     /**
      * Sees if the command is finished
-     * @return A boolean that is true if the command is finsihed
+     * @return A boolean that is true if the command is finished
      */
     public boolean isFinished(){ 
         return isFinished; 
@@ -32,12 +32,14 @@ public abstract class ChickenCommand {
 
     /**
      * Final code to run when the command is finished
-     * @param interuppted If the command was ending without finishing
+     * @param interrupted If the command was ending without finishing
      */
-    public void whenFinished(boolean interuppted){};
+    public void whenFinished(boolean interrupted){};
+
+    //Decorator methods
 
     /**
-     * Decorator that makes the command run only if a conditon is met
+     * Decorator that makes the command run only if a condition is met
      * @param Condition A BooleanSupplier that will make the command only run if it is true
      * @return Returns a 1 path GateCommand
      */
@@ -46,7 +48,7 @@ public abstract class ChickenCommand {
     }
 
     /**
-     * Decorator that makes a sequential commands with the current command and others you specifiy
+     * Decorator that makes a sequential commands with the current command and others you specify
      * @param commands The commands to run after
      * @return Returns a SequentialCommand of all the commands given
      */
@@ -61,7 +63,7 @@ public abstract class ChickenCommand {
 
     /**
      * Decorator that makes the command run with other commands
-     * @param text The commands to run with
+     * @param commands The commands to run with
      * @return Returns a ParallelCommand of the command and all commands given
      */
     public ParallelCommand alongWith(ChickenCommand... commands){
@@ -73,6 +75,11 @@ public abstract class ChickenCommand {
         return new ParallelCommand(allCommands);
     }
 
+    /**
+     * Decorator that makes the command run with other commands as a deadline
+     * @param commands The commands to run with
+     * @return Returns a ParallelDeadlineCommand of the command as a deadline and the other commands given
+     */
     public ParallelDeadlineCommand deadlineWith(ChickenCommand... commands){
         ChickenCommand[] allCommands = new ChickenCommand[commands.length+1];
         allCommands[0] = this;

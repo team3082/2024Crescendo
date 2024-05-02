@@ -1,12 +1,10 @@
-package frc.robot.auto.ChickenAutoSystem.ChikenCommands;
-
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
 
 /**
  * A command that runs other commands parallel until a deadline command finishes
  */
 public class ParallelDeadlineCommand extends ChickenCommand{
-    /**An array of the commands to run parallel to eachother */
+    /**An array of the commands to run parallel to each other */
     private ChickenCommand[] commands;
 
     /**The deadline command */
@@ -14,7 +12,7 @@ public class ParallelDeadlineCommand extends ChickenCommand{
 
     /**
      * Constructor for a ParallelDeadlineCommand
-     * @param commands The commands to run parallel to eachother
+     * @param commands The commands to run parallel to each other
      */
     public ParallelDeadlineCommand(ChickenCommand deadline, ChickenCommand... commands){
         this.deadline = deadline;
@@ -59,13 +57,14 @@ public class ParallelDeadlineCommand extends ChickenCommand{
     }
 
     /**
-     * Finishs the ParallelDeadlineCommand
+     * Finishes the ParallelDeadlineCommand
      */
     @Override
-    public void whenFinished(boolean interuppted) {
-        if(!interuppted) return;
+    public void whenFinished(boolean interrupted) {
+        if(!interrupted) return;
+        if(!deadline.isFinished) deadline.whenFinished(true);
+        
         for(ChickenCommand command : commands){
-            if(!deadline.isFinished) deadline.whenFinished(true);
             if(!command.isFinished){
                 command.whenFinished(true);
             }

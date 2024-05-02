@@ -6,10 +6,12 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.auto.ChickenAutoSystem.ChikenCommands.ChickenCommand;
+import frc.robot.auto.ChickenAutoSystem.ChickenCommands.ChickenCommand;
 
 /**
- * 
+ * Command Runner is the schedular for the CAS, it inits, 
+ * updates, and finishes the commands. It also handles the 
+ * selection of AutoRoutines.
  */
 public abstract class CommandRunner{
     /** Auto Selector */
@@ -22,7 +24,7 @@ public abstract class CommandRunner{
     private static int currentRoutineIndex;
 
     /**
-     * All of the auto commands stored in a Sea objects 
+     * All of the auto routines stored in AutoShell
      * so they can be selected over network tables
      */
     private static ArrayList<AutoShell> allRoutines = new ArrayList<AutoShell>();
@@ -30,7 +32,7 @@ public abstract class CommandRunner{
     /**
      * This is a wrapper class for a ChickenCommand[] array, 
      * it is meant to simplify selecting autos in telemetry, 
-     * and initing command sequences
+     * and starting command sequences
     */
     private static class AutoShell {
         /**The name that will be sent to the end user */
@@ -43,17 +45,19 @@ public abstract class CommandRunner{
         private ChickenCommandSupplier initMethod;
 
         /**
-         * Constructor for a Sea Wrapper
+         * Constructor for a AutoShell
          * @param sendableName The Name that represents the commands
          * @param commands The commands that should be run, when this is run
-         * @param initMethod The method used to innit the auto rountine, 
-         * this is meant to handel stuff such as reseting odometry
+         * @param initMethod The method used to innit the auto routine
          */
         public AutoShell(String sendableName, ChickenCommandSupplier initMethod){
             this.sendableName=sendableName;
             this.initMethod=initMethod;
         }
 
+        /**
+         * Constructor for a AutoShell set to No Auto
+         */
         public AutoShell(){
             this.sendableName="No Auto";
         }
@@ -95,8 +99,8 @@ public abstract class CommandRunner{
     /**
      * This methods adds all Auto Routine Methods(@Routine) in the class to the CommandRunner
      * Note that if there is a Routine that 
-     *  A. Needs Paramters 
-     *  B. Dose not return ChikenCommand[] 
+     *  A. Needs Parameters 
+     *  B. Dose not return ChickenCommand[] 
      *  C. Fails to run this method will throw a runtime error
      * A RuntimeException will be thrown
      * @param AutoBundle A generic for the class that has the Auto Routines in it
@@ -117,7 +121,7 @@ public abstract class CommandRunner{
                         if (result instanceof ChickenCommand[]) {
                           return (ChickenCommand[]) result;
                         } else {
-                          throw new RuntimeException("Method doesn't return a ChikenCommand[]");
+                          throw new RuntimeException("Method doesn't return a ChickenCommand[]");
                         }
                     } catch (Exception e) {
                         throw new RuntimeException("Error invoking method", e);
@@ -131,8 +135,15 @@ public abstract class CommandRunner{
      * Adds a Routine to the commandRunner class
      */
     public static void addRoutine(String sendableName, ChickenCommandSupplier initMethod){
+        //Checks to see if the Routine dose not share a name with any other routine
+        for(AutoShell shell:allRoutines){
+            if(shell.getName().equals(sendableName))
+                throw new RuntimeException(sendableName+" is already a routine");
+        }
+
+        //Adds the routine
         allRoutines.add(new AutoShell(sendableName, initMethod));
-        autoSelector.addOption(allRoutines.get(allRoutines.size()-1).getName(), allRoutines.get(allRoutines.size()-1).getName());
+        autoSelector.addOption(sendableName, sendableName);
     }
 
     /**
@@ -166,21 +177,32 @@ public abstract class CommandRunner{
 
     /**
      * Updates and runs through all the commands sequentially. It firsts update the command that the robot is on, 
-     * then it checks if that command has been finshed, if it is finished it moves to the next command. 
+     * then it checks if that command has been finished, if it is finished it moves to the next command. 
      * If there is no more commands it sets the robot speed to zero, and prints that the auto is finished
      */
     public static void update(){
+        //If there is No Auto, end the method
         if(allRoutines.get(currentRoutineIndex).getName().equals("No Auto"))
             return;
+
+        //Get the commands from the current routine
         ChickenCommand[] commands = allRoutines.get(currentRoutineIndex).getCommands();
+
+        //Checks to see if the currentCommandIndex is valid
         if(currentCommandIndex<commands.length){
+            //Updates the current command
             commands[currentCommandIndex].update();
+
+            //Checks to see if the current command is finished
             if(commands[currentCommandIndex].isFinished()){
                 commands[currentCommandIndex].whenFinished(false);
                 currentCommandIndex++;
+
+                //Sees if the next command index is valid
                 if(currentCommandIndex == commands.length){
                     System.out.println(allRoutines.get(currentRoutineIndex).getName()+" is finished");
                 } else {
+                    //Inits the next command
                     commands[currentCommandIndex].init();
                 }
             }

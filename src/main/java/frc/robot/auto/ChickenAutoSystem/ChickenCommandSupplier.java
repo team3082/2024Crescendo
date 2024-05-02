@@ -1,9 +1,9 @@
 package frc.robot.auto.ChickenAutoSystem;
 
-import frc.robot.auto.ChickenAutoSystem.ChikenCommands.ChickenCommand;
+import frc.robot.auto.ChickenAutoSystem.ChickenCommands.ChickenCommand;
 
 /**
- * Supplies a ChikenCommand[] array
+ * Supplies a ChickenCommand[] array
  */
 @FunctionalInterface
 public interface ChickenCommandSupplier {

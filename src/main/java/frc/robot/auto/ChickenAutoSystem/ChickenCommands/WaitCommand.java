@@ -1,4 +1,4 @@
-package frc.robot.auto.ChickenAutoSystem.ChikenCommands;
+package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
 
 import edu.wpi.first.wpilibj.Timer;
 
@@ -10,7 +10,7 @@ public class WaitCommand extends ChickenCommand{
     private double duration;
 
     /**The time when the command will be over */
-    private double timeToWaitFor;
+    private double endTime;
 
     /**
      * Creates a new WaitCommand
@@ -26,7 +26,7 @@ public class WaitCommand extends ChickenCommand{
     @Override
     public void init(){
         isFinished=false;
-        timeToWaitFor = Timer.getFPGATimestamp()+duration;
+        endTime = Timer.getFPGATimestamp()+duration;
     }
 
     /**
@@ -34,6 +34,6 @@ public class WaitCommand extends ChickenCommand{
      */
     @Override
     public void update(){
-        if(Timer.getFPGATimestamp()>=timeToWaitFor) isFinished=true;
+        if(Timer.getFPGATimestamp()>=endTime) isFinished=true;
     }
 }

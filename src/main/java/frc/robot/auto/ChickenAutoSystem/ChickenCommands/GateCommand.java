@@ -1,4 +1,4 @@
-package frc.robot.auto.ChickenAutoSystem.ChikenCommands;
+package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
 
 import java.util.function.BooleanSupplier;
 

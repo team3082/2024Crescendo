@@ -1,4 +1,4 @@
-package frc.robot.auto.ChickenAutoSystem.ChikenCommands;
+package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
 
 /**
  * DebugCommand prints out to the console, this is used for debugging
