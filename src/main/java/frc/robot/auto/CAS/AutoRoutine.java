@@ -1,4 +1,4 @@
-package frc.robot.auto.ChickenAutoSystem;
+package frc.robot.auto.CAS;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

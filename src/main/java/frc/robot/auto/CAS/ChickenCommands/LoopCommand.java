@@ -1,4 +1,4 @@
-package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
+package frc.robot.auto.CAS.ChickenCommands;
 import java.util.function.BooleanSupplier;
 
 /** 
@@ -108,6 +108,9 @@ public class LoopCommand extends ChickenCommand{
         }
     }
     
+    /**
+     * Finishes the loopCommand
+     */
     @Override
     public void whenFinished(boolean interrupted) {
         if(interrupted) commands[currentCommandIndex].whenFinished(interrupted);

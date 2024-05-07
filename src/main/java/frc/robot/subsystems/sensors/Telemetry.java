@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.OI;
-import frc.robot.auto.ChickenAutoSystem.CommandRunner;
+import frc.robot.auto.CAS.CommandRunner;
 import frc.robot.configs.Constants;
 import frc.robot.configs.Constants.ShooterConstants;
 import frc.robot.subsystems.climber.ClimberManager;

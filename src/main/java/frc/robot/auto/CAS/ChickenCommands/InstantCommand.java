@@ -1,4 +1,4 @@
-package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
+package frc.robot.auto.CAS.ChickenCommands;
 
 public class InstantCommand extends ChickenCommand{
     Runnable command;

@@ -1,10 +1,10 @@
-package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
+package frc.robot.auto.CAS.ChickenCommands;
 
 import java.util.function.BooleanSupplier;
 
 /**
  * An if command that runs a true command if a condition is true 
- * and a false command of a condtion is not true. It can also only run
+ * and a false command of a condition is not true. It can also only run
  * code if it is true and move on to the next command if the condition is not met
  */
 public class GateCommand extends ChickenCommand {
@@ -47,12 +47,11 @@ public class GateCommand extends ChickenCommand {
      */
     @Override
     public void init(){
-        //IsFinshed is set to false
+        //IsFinished is set to false
         isFinished=false;
         
         //Sees if the condition is true
         if(condition.getAsBoolean()){
-            //
             gate=true;
             trueCommand.init();
         } else {
@@ -79,7 +78,7 @@ public class GateCommand extends ChickenCommand {
 
     /**
      * Sees if the command is finished
-     * @return A boolean that is true if the command is finsihed
+     * @return A boolean that is true if the command is finished
      */
     public boolean isFinished(){ 
         if(isFinished) return true;
@@ -90,12 +89,12 @@ public class GateCommand extends ChickenCommand {
     /**
      * Final code to run when the command is finished
      */
-    public void whenFinished(boolean interuppted){
+    public void whenFinished(boolean interrupted){
         if(gate){
-            trueCommand.whenFinished(interuppted);
+            trueCommand.whenFinished(interrupted);
         } else {
             if(falseCommand != null){
-                falseCommand.whenFinished(interuppted);
+                falseCommand.whenFinished(interrupted);
             }
         }
     }

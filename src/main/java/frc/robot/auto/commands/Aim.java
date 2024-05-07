@@ -2,7 +2,7 @@ package frc.robot.auto.commands;
 
 import static frc.robot.configs.Constants.ShooterConstants.speakerPos;
 
-import frc.robot.auto.ChickenAutoSystem.ChickenCommands.ChickenCommand;
+import frc.robot.auto.CAS.ChickenCommands.ChickenCommand;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;

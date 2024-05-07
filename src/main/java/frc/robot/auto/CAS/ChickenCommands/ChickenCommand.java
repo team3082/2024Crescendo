@@ -1,4 +1,4 @@
-package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
+package frc.robot.auto.CAS.ChickenCommands;
 
 import java.util.function.BooleanSupplier;
 
@@ -16,7 +16,7 @@ public abstract class ChickenCommand {
     /**
      * Inits the command 
      */
-    public void init(){};
+    public abstract void init();
     /**
      * Updates the command
      */

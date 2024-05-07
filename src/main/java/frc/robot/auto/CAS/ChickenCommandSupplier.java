@@ -1,6 +1,6 @@
-package frc.robot.auto.ChickenAutoSystem;
+package frc.robot.auto.CAS;
 
-import frc.robot.auto.ChickenAutoSystem.ChickenCommands.ChickenCommand;
+import frc.robot.auto.CAS.ChickenCommands.ChickenCommand;
 
 /**
  * Supplies a ChickenCommand[] array

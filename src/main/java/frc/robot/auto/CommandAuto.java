@@ -2,18 +2,20 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.auto.ChickenAutoSystem.AutoRoutine;
-import frc.robot.auto.ChickenAutoSystem.CommandRunner;
-import frc.robot.auto.ChickenAutoSystem.ChickenCommands.ChickenCommand;
-import frc.robot.auto.ChickenAutoSystem.ChickenCommands.InstantCommand;
-import frc.robot.auto.ChickenAutoSystem.ChickenCommands.ParallelCommand;
-import frc.robot.auto.ChickenAutoSystem.ChickenCommands.ParallelDeadlineCommand;
-import frc.robot.auto.ChickenAutoSystem.ChickenCommands.SequentialCommand;
-import frc.robot.auto.ChickenAutoSystem.ChickenCommands.WaitCommand;
+import frc.robot.auto.CAS.AutoRoutine;
+import frc.robot.auto.CAS.CommandRunner;
+import frc.robot.auto.CAS.ChickenCommands.ChickenCommand;
+import frc.robot.auto.CAS.ChickenCommands.DebugCommand;
+import frc.robot.auto.CAS.ChickenCommands.InstantCommand;
+import frc.robot.auto.CAS.ChickenCommands.ParallelCommand;
+import frc.robot.auto.CAS.ChickenCommands.ParallelDeadlineCommand;
+import frc.robot.auto.CAS.ChickenCommands.SequentialCommand;
+import frc.robot.auto.CAS.ChickenCommands.WaitCommand;
 import frc.robot.auto.commands.Aim;
 import frc.robot.auto.commands.ChoreoFollow;
 import frc.robot.auto.commands.FireShooter;
 import frc.robot.auto.commands.ForceFire;
+import frc.robot.auto.commands.MoveTo;
 import frc.robot.auto.commands.SetIntake;
 import frc.robot.auto.commands.SetIntakeFeedPos;
 import frc.robot.auto.commands.SetShooterAngle;
@@ -499,7 +501,7 @@ public class CommandAuto{
   }
 
   // starts on amp side, shoots preload, grabs amp close piece, shoots, grabs far piece, shoots
-  @AutoRoutine
+  @AutoRoutine()
   public ChickenCommand[] threePieceAmp() {
     SwervePosition.setPosition(new Vector2(100 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -300));
     Pigeon.setYaw(DriverStation.getAlliance().get() == Alliance.Blue ? 150 : 30);
@@ -545,7 +547,7 @@ public class CommandAuto{
     };
   }
 
-  @AutoRoutine
+  @AutoRoutine()
   public ChickenCommand[] fourPieceMiddle() {
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
@@ -605,7 +607,7 @@ public class CommandAuto{
         new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
     Pigeon.setYaw(90);
     return new ChickenCommand[]{
-      new SetIntakeFeedPos(),
+      new SetIntakeFeedPos().printWhenRun("Set Intake"),
       new ParallelCommand(
         new SetShooterAngle(Math.toRadians(54)),
         new SetShooterVelocity(4200)
@@ -669,7 +671,18 @@ public class CommandAuto{
     };
   }
 
-  @AutoRoutine()
+  @AutoRoutine
+  public ChickenCommand[] moveAround(){
+    SwervePosition.setPosition(
+        new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
+    Pigeon.setYaw(90);
+    return new ChickenCommand[]{
+      new MoveTo(new Vector2(5, 6)),
+      new MoveTo(new Vector2(2, 2)).printWhenRun("Hello")
+    };
+  }
+  
+  @AutoRoutine
   public ChickenCommand[] fourPieceMiddle2(){
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
@@ -736,12 +749,12 @@ public class CommandAuto{
   }
 
   public static void init(){
-    CommandRunner.Init();
     CommandRunner.addBundle(new CommandAuto());
   }
 
+
   public static void routineInit() {
-    CommandRunner.RoutineInit();
+    CommandRunner.routineInit();
   }
 
   public static void update() {

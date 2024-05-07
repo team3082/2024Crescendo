@@ -1,6 +1,6 @@
 package frc.robot.auto.commands;
 
-import frc.robot.auto.ChickenAutoSystem.ChickenCommands.ChickenCommand;
+import frc.robot.auto.CAS.ChickenCommands.ChickenCommand;
 import frc.robot.utils.Vector2;
 
 public class SetShooterAngle extends ChickenCommand {

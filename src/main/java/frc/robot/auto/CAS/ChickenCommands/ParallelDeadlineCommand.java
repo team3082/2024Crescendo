@@ -1,4 +1,4 @@
-package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
+package frc.robot.auto.CAS.ChickenCommands;
 
 /**
  * A command that runs other commands parallel until a deadline command finishes

@@ -1,6 +1,6 @@
 package frc.robot.auto.commands;
 
-import frc.robot.auto.ChickenAutoSystem.ChickenCommands.ChickenCommand;
+import frc.robot.auto.CAS.ChickenCommands.ChickenCommand;
 
 public class StowShooter extends ChickenCommand{
     frc.robot.auto.autoframe.SetShooterAngle setShooterAngle;

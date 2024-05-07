@@ -1,4 +1,4 @@
-package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
+package frc.robot.auto.CAS.ChickenCommands;
 
 /**
  * DebugCommand prints out to the console, this is used for debugging
@@ -84,10 +84,10 @@ public class DebugCommand extends ChickenCommand{
     }
 
     /**
-     * Finishs the DebugCommand by printing finishedText
+     * Finishes the DebugCommand by printing finishedText
      */
     @Override
-    public void whenFinished(boolean interuppted){
+    public void whenFinished(boolean interrupted){
         if(finishedText!=null)
             System.out.println(finishedText);
     }

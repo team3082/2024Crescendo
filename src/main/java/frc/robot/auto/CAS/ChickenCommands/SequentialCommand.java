@@ -1,7 +1,7 @@
-package frc.robot.auto.ChickenAutoSystem.ChickenCommands;
+package frc.robot.auto.CAS.ChickenCommands;
 
 /**
- * A ChickenCommand that has commands run sequentialy, 
+ * A ChickenCommand that has commands run sequentially
  * useful for more complicated logic
  */
 public class SequentialCommand extends ChickenCommand{
@@ -13,7 +13,7 @@ public class SequentialCommand extends ChickenCommand{
 
     /**
      * Constructor for a SequentialCommand
-     * @param commands The commands to run sequentialy
+     * @param commands The commands to run sequentially
      */
     public SequentialCommand(ChickenCommand... commands){
         this.commands=commands;
