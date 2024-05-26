@@ -753,8 +753,8 @@ public class CommandAuto{
   }
 
 
-  public static void routineInit() {
-    CommandRunner.routineInit();
+  public static void initRoutine() {
+    CommandRunner.initRoutine();
   }
 
   public static void update() {

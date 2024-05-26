@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     RTime.init();
     Pigeon.setYaw(90);
-	  CommandAuto.routineInit();
+	  CommandAuto.initRoutine();
     SwervePosition.disableVision();
   }
 
