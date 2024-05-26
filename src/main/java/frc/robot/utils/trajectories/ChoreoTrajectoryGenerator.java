@@ -29,57 +29,57 @@ public class ChoreoTrajectoryGenerator{
     }
 
 
-    /**
-     * fills the supplied queue with the trajectory segments
-     * @param fileName name of the parent trajectory
-     * @param queue a queue to be filled with the trajectory segments
-     * @return the number of segments in the trajectory
-     */
-    public static int generateTrajectory(final String fileName, final BlockingQueue<DiscreteTraj> queue){
-        int i = 0;
-        //searching for the number of segments in the deploy trajectory
-        while(true){
-            i++;
-            if(new File(Filesystem.getDeployDirectory(), "/choreo/" + fileName + "." + i + ".traj").isFile()){
-                continue;
-            }
-            break;
-        }
-        final int numSegments = i - 1;
+    // /**
+    //  * fills the supplied queue with the trajectory segments
+    //  * @param fileName name of the parent trajectory
+    //  * @param queue a queue to be filled with the trajectory segments
+    //  * @return the number of segments in the trajectory
+    //  */
+    // public static int generateTrajectory(final String fileName, final BlockingQueue<DiscreteTraj> queue){
+    //     int i = 0;
+    //     //searching for the number of segments in the deploy trajectory
+    //     while(true){
+    //         i++;
+    //         if(new File(Filesystem.getDeployDirectory(), "/choreo/" + fileName + "." + i + ".traj").isFile()){
+    //             continue;
+    //         }
+    //         break;
+    //     }
+    //     final int numSegments = i - 1;
 
 
-        Thread generator = new Thread(){
-            @Override
-            public void run(){
-                long start = System.currentTimeMillis();
-                for(int j = 1; j < numSegments + 1; j++){
-                    DiscreteTraj traj = parseTrajectory(fileName + "." + j);
-                    queue.add(traj);
-                }
-            }
-        };
+    //     Thread generator = new Thread(){
+    //         @Override
+    //         public void run(){
+    //             long start = System.currentTimeMillis();
+    //             for(int j = 1; j < numSegments + 1; j++){
+    //                 DiscreteTraj traj = parseTrajectory(fileName + "." + j);
+    //                 queue.add(traj);
+    //             }
+    //         }
+    //     };
 
-        generator.setDaemon(true);
-        generator.setPriority(Thread.MIN_PRIORITY);
-        generator.setName("Choreo Parser " + fileName);
-        generator.start();
-        return numSegments;
-    }
+    //     generator.setDaemon(true);
+    //     generator.setPriority(Thread.MIN_PRIORITY);
+    //     generator.setName("Choreo Parser " + fileName);
+    //     generator.start();
+    //     return numSegments;
+    // }
 
 
-    private synchronized static DiscreteTraj parseTrajectory(String fileName){
-        File f = new File(Filesystem.getDeployDirectory(), "/choreo/" + fileName + ".traj");
-        List<ChoreoState> choreoStates = null;
+    // private synchronized static DiscreteTraj parseTrajectory(String fileName){
+    //     File f = new File(Filesystem.getDeployDirectory(), "/choreo/" + fileName + ".traj");
+    //     List<ChoreoState> choreoStates = null;
 
-        try{
-            JsonNode node = om.readTree(f).get("samples");
-            choreoStates = om.convertValue(node, new TypeReference<List<ChoreoState>>(){});
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+    //     try{
+    //         JsonNode node = om.readTree(f).get("samples");
+    //         choreoStates = om.convertValue(node, new TypeReference<List<ChoreoState>>(){});
+    //     }catch(Exception e){
+    //         e.printStackTrace();
+    //     }
 
-        return new DiscreteTraj(new ArrayList<DiscreteSwerveState>(choreoStates.stream().map((s) -> toSwerveState(s)).toList()));
-    }
+    //     return new DiscreteTraj(new ArrayList<DiscreteSwerveState>(choreoStates.stream().map((s) -> toSwerveState(s)).toList()));
+    // }
     
     private static HashMap<String,DiscreteTraj> choreoTrajectories;
 
