@@ -1,11 +1,17 @@
 package frc.robot.subsystems.sensors;
 
+import java.sql.Driver;
+import java.util.List;
 import java.util.Optional;
+
+import javax.swing.text.html.Option;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo.None;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -49,7 +55,58 @@ public class VisionManager {
         camera = new PhotonCamera("ApriltagCamera1");
     }
 
+    private static int getApriltagIDForAlliance() {
+        return (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) ? 1 : 2; // TODO set correct ids
+    }
 
+    public static Optional<Double> getShooterAngle() {
+        // use apriltag 2d y value(px) to get shooter angle from
+        // interpolation table, will require tuning for many positions
+        List<PhotonTrackedTarget> targets = camera.getLatestResult().getTargets();
+        for (PhotonTrackedTarget target : targets) {
+            if (target.getFiducialId() == getApriltagIDForAlliance()) {
+                double y = target.getBestCameraToTarget().getY();
+                return Optional.of(y);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<Double> getApriltagX() {
+        // get x value(px) of the apriltag of the specific ID for your alliance 
+        List<PhotonTrackedTarget> targets = camera.getLatestResult().getTargets();
+        for (PhotonTrackedTarget target : targets) {
+            if (target.getFiducialId() == getApriltagIDForAlliance()) {
+                double x = target.getBestCameraToTarget().getX();
+                return Optional.of(x);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static boolean rotateToTarget2D() {
+        // uses x value(px) to rotate to the target apriltag using PID
+        // if apriltag is not in view rotate to it using Odometry Data
+        // until the tag is in view
+        Optional<Double> x = getApriltagX(); // pixels
+        double deadband = 25.0; // +/-pixels
+        if (!x.isEmpty()) {
+            // start rotating towards target to have x in center
+            /* TODO: Code Here */
+
+            // check if rotated close enough
+            if (x.get() < (x.get() + deadband) && x.get() > (x.get() - deadband)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            // start rotating towards target with Odometry Data
+            /* TODO: Code Here */
+
+            return false;
+        }
+    }
 
     public static Optional<Vector2> getPosition(double pigeonAngle){
         if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){

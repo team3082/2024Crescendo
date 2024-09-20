@@ -3,6 +3,8 @@ package frc.robot.subsystems.shooter;
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.configs.Constants.ShooterConstants.*;
 
+import java.util.Optional;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -12,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import frc.robot.OI.ShooterMode;
 import frc.robot.configs.ShooterSettings;
 import frc.robot.subsystems.sensors.Telemetry;
+import frc.robot.subsystems.sensors.VisionManager;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
@@ -168,6 +171,12 @@ public final class Shooter {
      * OI will slow down the translation & rotation of the robot
      * when this function is active (i.e, when we are moving and shooting at the same time).
      */
+
+    public static void fireWithApriltag2D() {
+        Optional<Double> targetAngle = VisionManager.getShooterAngle();
+        boolean aimed = VisionManager.rotateToTarget2D();
+    }
+
     public static void fireWhileMoving() {
         Vector2 robotPos = SwervePosition.getPosition(); // Current position of the robot
         Vector2 robotVel = SwerveManager.getRobotDriveVelocity(); // Current velocity of the robot's drivetrain
