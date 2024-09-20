@@ -5,7 +5,7 @@ public final class Tuning {
   public static final double MOVEP = 2;
   public static final double MOVEI = 0.3;
   public static final double MOVED = 0.2;
-  public static final double MOVEDEAD = 1.0;
+  public static final double MOVEDEAD = 3.0;
   public static final double MOVEVELDEAD = 0.0;
   public static final double MOVEMAXSPEED = 0.0;
   public static final double ROTP = 0.225;
