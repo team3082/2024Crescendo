@@ -12,11 +12,6 @@ public class SetIntakeFeedPos extends Command {
     }
 
     @Override
-    public void execute() {
-        Intake.setState(IntakeState.FEED);
-    }
-
-    @Override
     public boolean isFinished(){
         return true;
     }

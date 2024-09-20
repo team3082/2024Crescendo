@@ -9,11 +9,13 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.AutoSelector;
+import frc.robot.auto.CommandAuto;
+import frc.robot.configs.Constants;
+import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.sensors.BannerLight;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.sensors.Telemetry;
 import frc.robot.subsystems.sensors.VisionManager;
-import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterPivot;
@@ -22,9 +24,6 @@ import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
-import frc.robot.utils.trajectories.ChoreoTrajectoryGenerator;
-import frc.robot.auto.CommandAuto;
-import frc.robot.configs.Constants;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -53,8 +52,6 @@ public class Robot extends TimedRobot {
     Pigeon.setYaw(90);
     VisionManager.init();
     ClimberManager.init();
-    ChoreoTrajectoryGenerator.init();
-    ChoreoTrajectoryGenerator.parseAll();
     Shooter.init();
     Intake.init();
     AutoSelector.setup();
@@ -62,17 +59,23 @@ public class Robot extends TimedRobot {
     BannerLight.init();
     SwervePosition.enableVision();
     SwervePosition.setPosition(
-        new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
+        new Vector2(
+            56.78
+                * (DriverStation.getAlliance().isPresent()
+                        && DriverStation.getAlliance().get() == Alliance.Red
+                    ? 1
+                    : -1),
+            -275));
   }
 
   @Override
   public void robotPeriodic() {
     try {
-    Pigeon.update();
-    RTime.updateAbsolute();
-    RTime.update();
-    Telemetry.update(false);
-    Intake.beambreak.update();
+      Pigeon.update();
+      RTime.updateAbsolute();
+      RTime.update();
+      Telemetry.update(false);
+      Intake.beambreak.update();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();
@@ -83,7 +86,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     RTime.init();
     Pigeon.setYaw(90);
-	  CommandScheduler.getInstance().enable();
+    CommandScheduler.getInstance().enable();
     AutoSelector.run();
     SwervePosition.disableVision();
   }
@@ -91,9 +94,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     try {
-    Shooter.update();
-    SwervePosition.update();
-    CommandAuto.update();
+      SwervePosition.update();
+      CommandAuto.update();
+      Shooter.update();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();
@@ -104,7 +107,13 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     OI.init();
     SwervePosition.setPosition(
-        new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
+        new Vector2(
+            56.78
+                * (DriverStation.getAlliance().isPresent()
+                        && DriverStation.getAlliance().get() == Alliance.Red
+                    ? 1
+                    : -1),
+            -275));
   }
 
   @Override
@@ -143,9 +152,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void testPeriodic() {
-
-  }
+  public void testPeriodic() {}
 
   @Override
   public void simulationInit() {}

@@ -5,34 +5,29 @@ import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 
 public class SetIntake extends Command {
-    double simDelay;
-    frc.robot.auto.autoframe.SetIntake setIntake;
 
-    public SetIntake(){
-        setIntake = new frc.robot.auto.autoframe.SetIntake();
-    }
+  public SetIntake() {}
 
-    @Override
-    public void initialize() {
-        setIntake.start();
-        Intake.reallyHasPiece = false;
-    }
+  @Override
+  public void initialize() {
+    Intake.autoSuck();
+  }
 
-    @Override
-    public void execute() {        
-        setIntake.update();
-        System.out.println("set intake updating");
-    }
+  @Override
+  public void execute() {
+    Intake.autoSuck();
+  }
 
-    @Override
-    public boolean isFinished(){
-        return setIntake.done;
-    }
+  @Override
+  public boolean isFinished() {
+    return Intake.reallyHasPiece;
+  }
 
-    @Override
-    public void end(boolean interrupted){
-        System.out.println("set intake done");
-        Intake.no();
-        Intake.reallyHasPiece = false;
-    }
+  @Override
+  public void end(boolean interrupted) {
+    Intake.reallyHasPiece = false;
+    Intake.suckTime = 0;
+    Intake.setState(IntakeState.STOW);
+    Intake.no();
+  }
 }

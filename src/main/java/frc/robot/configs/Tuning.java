@@ -38,21 +38,22 @@ public final class Tuning {
 
     //Vision
 
-    public static final class OI {
-        //driver
-        public static final double KDYAW = 0.00;
-        /**0 for never on, 1 for only on with no rotation input, 2 for always on */
-        public static final int YAWRATEFEEDBACKSTATUS = 0;
+  public static final class OI {
+    // driver
+    public static final double KDYAW = 0.00;
 
-        public static final double NORMALSPEED = 0.4;
+    /** 0 for never on, 1 for only on with no rotation input, 2 for always on */
+    public static final int YAWRATEFEEDBACKSTATUS = 0;
 
-        public static final double ROTSPEED = 0.3;
-    }
+    public static final double NORMALSPEED = 0.4;
 
-    //NOTE CONTROL
-    public static final class ShooterTuning {
-        public static double FLYWHEELKD = 0.0;
-        public static double FLYWHEELKF = 0.0;
+    public static final double ROTSPEED = 0.3;
+  }
+
+  // NOTE CONTROL
+  public static final class ShooterTuning {
+    public static double FLYWHEELKD = 0.0;
+    public static double FLYWHEELKF = 0.0;
 
         public static final double PIVOTKP = 0.15;
         public static final double PIVOTKI = 0.0;
@@ -63,63 +64,59 @@ public final class Tuning {
         public static final double PIVOT_MAX_ACCEL = 15000.0; // In ticks per 100ms per second
         public static final int PIVOT_JERK_STRENGTH = 1; // [0,8], higher number means lower jerk 
 
-        public static final double PIVOT_DEADBAND_POS = 0.0; // In motorticks
-        public static final double PIVOT_DEADBAND_VEL = 0.0; // In motor ticks per 100ms
+    public static final double PIVOT_DEADBAND_POS = 0.0; // In motorticks
+    public static final double PIVOT_DEADBAND_VEL = 0.0; // In motor ticks per 100ms
 
-        public static double PIVOT_AFF_GRAVITY = 0.0;
-        public static double PIVOT_AFF_SPRING = 0.0;
- 
-        public static final double SPEAKER_SPEED_TOP = 0.0; //in motorticks per 100ms
-        public static final double SPEAKER_SPEED_BOTTOM = 0.0;
+    public static double PIVOT_AFF_GRAVITY = 0.0;
+    public static double PIVOT_AFF_SPRING = 0.0;
 
-        public static final double AMP_SPEED_TOP = 0.0;
-        public static final double AMP_SPEED_BOTTOM = 0.0;
+    public static final double SPEAKER_SPEED_TOP = 0.0; // in motorticks per 100ms
+    public static final double SPEAKER_SPEED_BOTTOM = 0.0;
 
-        public static final double AMP_WHEEL_SPEED_DEADBAND = 0.0;
-        public static final double SPEAKER_WHEEL_SPEED_DEADBAND = 0.0;
-        public static final double VELOCITY_WHEEL_SPEED_DEADBAND = 0.0;
+    public static final double AMP_SPEED_TOP = 0.0;
+    public static final double AMP_SPEED_BOTTOM = 0.0;
 
-        // public static final double SHOOTER_STOW_ANGLE = 0.0;
-    }
+    public static final double AMP_WHEEL_SPEED_DEADBAND = 0.0;
+    public static final double SPEAKER_WHEEL_SPEED_DEADBAND = 0.0;
+    public static final double VELOCITY_WHEEL_SPEED_DEADBAND = 0.0;
 
-    public static final class Climbers {
-        public static final double CLIMBER_KP = 0.0;
-        public static final double CLIMBER_KI = 0.0;
-        public static final double CLIMBER_KD = 0.0;
-        public static final double CLIMBER_KF = 0.0;
+    // public static final double SHOOTER_STOW_ANGLE = 0.0;
+  }
 
-        public static final double CLIMBER_CRUISE_VEL = 0.0;
-        public static final double CLIMBER_MAX_ACCEL = 0.0;
-        public static final int CLIMBER_JERK_STRENGTH = 1;
+  public static final class Climbers {
+    public static final double CLIMBER_KP = 0.0;
+    public static final double CLIMBER_KI = 0.0;
+    public static final double CLIMBER_KD = 0.0;
+    public static final double CLIMBER_KF = 0.0;
 
-        public static final double CLIMBER_AFF_LOADED = 0.0;//aff for when holding the robot
-        public static final double CLIMBER_AFF_UNLOADED = 0.0;//aff when not holding the robot
+    public static final double CLIMBER_CRUISE_VEL = 0.0;
+    public static final double CLIMBER_MAX_ACCEL = 0.0;
+    public static final int CLIMBER_JERK_STRENGTH = 1;
 
-        
+    public static final double CLIMBER_AFF_LOADED = 0.0; // aff for when holding the robot
+    public static final double CLIMBER_AFF_UNLOADED = 0.0; // aff when not holding the robot
+  }
 
-    }
+  public static final class Intake {
+    public static final double INTAKEPIVOTKP = 0.0;
+    public static final double INTAKEPIVOTKI = 0.0;
+    public static final double INTAKEPIVOTKD = 0.0;
 
-    public static final class Intake {
-        public static final double INTAKEPIVOTKP = 0.0;
-        public static final double INTAKEPIVOTKI = 0.0;
-        public static final double INTAKEPIVOTKD = 0.0;
+    public static final double INTAKEGROUNDPOS = 18714 + 112911;
 
-        public static final double INTAKEGROUNDPOS = 18714 + 112911;
+    public static final double INTAKEPIVOTMAXVEL = 0.0;
+    public static final double INTAKEPIVOTMAXACCEL = 0.0;
+    public static final int INTAKEPIVOTJERKSTRENGTH = 0;
 
-        public static final double INTAKEPIVOTMAXVEL = 0.0;
-        public static final double INTAKEPIVOTMAXACCEL = 0.0;
-        public static final int INTAKEPIVOTJERKSTRENGTH = 0;
+    public static final double INTAKEBELTKP = 0.0;
+    public static final double INTAKEBELTKI = 0.0;
+    public static final double INTAKEBELTKD = 0.0;
 
-        public static final double INTAKEBELTKP = 0.0;
-        public static final double INTAKEBELTKI = 0.0;
-        public static final double INTAKEBELTKD = 0.0;
+    public static final double CONVEYORKP = 0.0;
+    public static final double CONVEYORKI = 0.0;
+    public static final double CONVEYORKD = 0.0;
 
-        public static final double CONVEYORKP = 0.0;
-        public static final double CONVEYORKI = 0.0;
-        public static final double CONVEYORKD = 0.0;
-
-        public static final double INTAKESTRENGTH = -0.8;
-        public static final double FEEDSTRENGTH = -0.8;
-
-    }
+    public static final double INTAKESTRENGTH = -0.8;
+    public static final double FEEDSTRENGTH = -0.8;
+  }
 }

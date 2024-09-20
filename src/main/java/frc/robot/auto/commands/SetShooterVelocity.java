@@ -1,27 +1,23 @@
 package frc.robot.auto.commands;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.shooter.Shooter;
 
 public class SetShooterVelocity extends Command {
-
-    frc.robot.auto.autoframe.SetShooterVelocity setShooterVelocity;
+    double velocity; 
 
     public SetShooterVelocity(double velocity) {
-        setShooterVelocity = new frc.robot.auto.autoframe.SetShooterVelocity(velocity);
+        this.velocity = velocity;
     }
 
     @Override
     public void initialize() {
-        setShooterVelocity.start();
-    }
-
-    @Override
-    public void execute(){
-        setShooterVelocity.update();
+        Shooter.revTo(velocity);
     }
 
     @Override
     public boolean isFinished() {
-        return setShooterVelocity.done;
+        return (Shooter.canShoot() || RobotBase.isSimulation());
     }
 }
