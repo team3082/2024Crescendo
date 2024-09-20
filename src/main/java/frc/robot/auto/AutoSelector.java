@@ -17,22 +17,6 @@ public class AutoSelector {
    */
   public static void setup() {
     autoChooser.setDefaultOption("No Auto", "No Auto");
-    autoChooser.addOption("1 Piece Middle", "1 Piece Middle");
-    autoChooser.addOption("1 Piece Source", "1 Piece Source");
-    autoChooser.addOption("1 Piece Amp", "1 Piece Amp");
-    autoChooser.addOption("2 Piece Middle", "2 Piece Middle");
-    autoChooser.addOption("2 Piece Source", "2 Piece Source");
-    autoChooser.addOption("2 Piece Amp", "2 Piece Amp");
-    autoChooser.addOption("2 Piece Source Far", "2 Piece Source Far");
-    autoChooser.addOption("2 Piece Amp Far", "2 Piece Amp Far");
-    autoChooser.addOption("3 Piece Source", "3 Piece Source");
-    autoChooser.addOption("3 Piece Amp", "3 Piece Amp");
-    autoChooser.addOption("3 Piece Source Half Far", "3 Piece Source Half Far");
-    autoChooser.addOption("3 Piece Amp Half Far", "3 Piece Amp Half Far");
-    autoChooser.addOption("3 Piece Source Far", "3 Piece Source Far");
-    // TODO
-    autoChooser.addOption("3 Piece Amp Far", "3 Piece Amp Far");
-    autoChooser.addOption("4 Piece Middle", "4 Piece Middle");
     autoChooser.addOption("Test", "Test");
   }
 

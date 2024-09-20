@@ -2,8 +2,8 @@ package frc.robot.subsystems.sensors;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -53,18 +53,18 @@ public class Telemetry {
     CRITICAL
   }
 
-    // The Shuffleboard tabs that we use for monitoring data.
-    // Each tab is isolated from one another.
-    // This allows us to filter through only the ones we want to see,
-    // and avoids any potential screwups.
-    private static final ShuffleboardTab robotTab = Shuffleboard.getTab("SmartDashboard");
-    private static final ShuffleboardTab moveTab = Shuffleboard.getTab("Move PID");
-    private static final ShuffleboardTab rotTab = Shuffleboard.getTab("Rot PID");
-    private static final ShuffleboardTab pos = Shuffleboard.getTab("Positions");
-    private static final ShuffleboardTab shooter = Shuffleboard.getTab("Shooter");
-    private static final ShuffleboardTab climber = Shuffleboard.getTab("Climber");
-    // private static final ShuffleboardTab trajState = Shuffleboard.getTab("Trajectory State");
-    // private static final ShuffleboardTab intake = Shuffleboard.getTab("Intake");
+  // The Shuffleboard tabs that we use for monitoring data.
+  // Each tab is isolated from one another.
+  // This allows us to filter through only the ones we want to see,
+  // and avoids any potential screwups.
+  private static final ShuffleboardTab robotTab = Shuffleboard.getTab("SmartDashboard");
+  private static final ShuffleboardTab moveTab = Shuffleboard.getTab("Move PID");
+  private static final ShuffleboardTab rotTab = Shuffleboard.getTab("Rot PID");
+  private static final ShuffleboardTab pos = Shuffleboard.getTab("Positions");
+  private static final ShuffleboardTab shooter = Shuffleboard.getTab("Shooter");
+  private static final ShuffleboardTab climber = Shuffleboard.getTab("Climber");
+  // private static final ShuffleboardTab trajState = Shuffleboard.getTab("Trajectory State");
+  // private static final ShuffleboardTab intake = Shuffleboard.getTab("Intake");
 
   // NetworkTable entries
   // If we want granular control over our values via Glass (e.g, tuning PID),

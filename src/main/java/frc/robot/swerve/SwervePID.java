@@ -9,7 +9,6 @@ import frc.robot.Robot;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.RMath;
-import frc.robot.utils.RotationalPIDController;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveInstruction;
 

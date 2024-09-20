@@ -180,28 +180,32 @@ public class SwerveModule {
     return ret;
   }
 
-    /**
-     * returns the current velocity of the drive motor in inches per second
-     * @return
-     */
-    public double getDriveVelocity() {
-        if (RobotBase.isSimulation()) {
-            return simDriveVel * 10 / ticksPerRotationDrive * (4 * Math.PI);
-        }
-        //the 10 is there to convert from units per 100ms to units per second
-        return drive.getSelectedSensorVelocity() * 10 / ticksPerRotationDrive * (4 * Math.PI);
+  /**
+   * returns the current velocity of the drive motor in inches per second
+   *
+   * @return
+   */
+  public double getDriveVelocity() {
+    if (RobotBase.isSimulation()) {
+      return simDriveVel * 10 / ticksPerRotationDrive * (4 * Math.PI);
     }
+    // the 10 is there to convert from units per 100ms to units per second
+    return drive.getSelectedSensorVelocity() * 10 / ticksPerRotationDrive * (4 * Math.PI);
+  }
 
-    private double simDrivePosition;
+  private double simDrivePosition;
 
-    public double getDrivePosition(){
-        if(RobotBase.isReal()){
-            return drive.getSelectedSensorPosition() / ticksPerRotationDrive * (4 * Math.PI);
-        }
-        //IF in sim
-
-        //TODO this will only ever work with a 7 ms loop
-        simDrivePosition += getDriveVelocity() * 0.07 /10;//added fudge factor so it is somewhat accurate to real life
-        return simDrivePosition;
+  public double getDrivePosition() {
+    if (RobotBase.isReal()) {
+      return drive.getSelectedSensorPosition() / ticksPerRotationDrive * (4 * Math.PI);
     }
+    // IF in sim
+
+    // TODO this will only ever work with a 7 ms loop
+    simDrivePosition +=
+        getDriveVelocity()
+            * 0.07
+            / 10; // added fudge factor so it is somewhat accurate to real life
+    return simDrivePosition;
+  }
 }
