@@ -6,11 +6,33 @@ import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 
 public class AutoBuilder {
-
-  /** A command that does something */
-  public static Command myCommand() {
+  /** A command that moves the robot in a simple triangle shape */
+  public static Command exampleAuto() {
     SwervePosition.setPosition(new Vector2());
     return new SequentialCommandGroup(
-        new Rotate(42), new MoveForward(100), new Rotate(-183), new MoveForward(150));
+        new MoveForward(36),
+        new TurnRight(120),
+        new MoveForward(72),
+        new TurnRight(120),
+        new MoveForward(72),
+        new TurnRight(120),
+        new MoveForward(36));
+  }
+
+  /*
+   * List of usable commands:
+   * MoveForward(double inches)
+   * TurnRight(double degrees)
+   * TurnLeft(double degrees)
+   */
+
+  /** (Add a description of your command here) */
+  public static Command customAuto() {
+    SwervePosition.setPosition(new Vector2());
+    return new SequentialCommandGroup(
+        // (Add your commands in here)
+        // Format as: new MoveForward(double inches),
+
+        );
   }
 }

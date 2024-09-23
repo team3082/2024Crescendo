@@ -6,23 +6,27 @@ import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.utils.Vector2;
 
-public class Rotate extends Command {
+public class TurnRight extends Command {
   private double rotateBy;
 
-  /** A command that rotates the robot a specified number of degrees! */
-  public Rotate(double degrees) {
+  /**
+   * A command that rotates the robot right by a specified number of degrees
+   *
+   * @param degrees
+   */
+  public TurnRight(double degrees) {
     rotateBy = Math.toRadians(degrees);
   }
 
   @Override
   public void initialize() {
-    SwervePID.setDestRot(Pigeon.getRotationRad() + rotateBy);
+    SwervePID.setDestRot(Pigeon.getRotationRad() - rotateBy);
   }
 
   @Override
   public void execute() {
     double rotSpeed = SwervePID.updateOutputRot();
-    SwerveManager.rotateAndDrive(rotSpeed, SwerveManager.movement);
+    SwerveManager.rotateAndDrive(rotSpeed, new Vector2());
   }
 
   @Override

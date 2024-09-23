@@ -17,7 +17,8 @@ public class AutoSelector {
    */
   public static void setup() {
     autoChooser.setDefaultOption("No Auto", "No Auto");
-    autoChooser.addOption("Test", "Test");
+    autoChooser.addOption("Example Auto", "Example Auto");
+    autoChooser.addOption("New Auto", "New Auto");
   }
 
   /**
@@ -32,8 +33,12 @@ public class AutoSelector {
       case "No Auto":
         CommandAuto.init(Commands.none());
         break;
-      case "Test":
-        CommandAuto.init(AutoBuilder.myCommand());
+      case "Example Auto":
+        CommandAuto.init(AutoBuilder.exampleAuto());
+        break;
+      case "New Auto":
+        CommandAuto.init(AutoBuilder.customAuto());
+        break;
     }
   }
 }
