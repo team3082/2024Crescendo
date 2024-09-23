@@ -84,7 +84,7 @@ public class VisionManager {
         return Optional.empty();
     }
 
-    public static boolean rotateToTarget2D() {
+    public static double getSwerveRotation() {
         // uses x value(px) to rotate to the target apriltag using PID
         // if apriltag is not in view rotate to it using Odometry Data
         // until the tag is in view
@@ -96,15 +96,15 @@ public class VisionManager {
 
             // check if rotated close enough
             if (x.get() < (x.get() + deadband) && x.get() > (x.get() - deadband)) {
-                return true;
+                return 0.0;
             } else {
-                return false;
+                return 0.0;
             }
         } else {
             // start rotating towards target with Odometry Data
             /* TODO: Code Here */
 
-            return false;
+            return 0.0;
         }
     }
 

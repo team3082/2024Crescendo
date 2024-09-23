@@ -174,7 +174,15 @@ public final class Shooter {
 
     public static void fireWithApriltag2D() {
         Optional<Double> targetAngle = VisionManager.getShooterAngle();
-        boolean aimed = VisionManager.rotateToTarget2D();
+
+        if (targetAngle.isPresent() == true && !(Double.isInfinite(targetAngle.get()) || Double.isNaN(targetAngle.get()) || targetAngle.get() >= Math.toRadians(65.0) || targetAngle.get() <= Math.toRadians(17.0))) {
+            // sees tag is rotating to it and revving/setting pivot
+            ShooterPivot.setPosition(targetAngle.get());
+            revTo(4000.0);
+        } else {
+            // doesnt see tag
+            neutral();
+        }
     }
 
     public static void fireWhileMoving() {

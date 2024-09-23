@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.controllermaps.LogitechF310;
 import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.subsystems.sensors.VisionManager;
 import frc.robot.configs.ShooterSettings;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
@@ -142,7 +143,8 @@ public class OI {
         double rotate;
         if (currentShooterMode == ShooterMode.SPEAKER && driverStick.getRawButton(fireShooter)) {
             // Face AWAY from speaker (Pigeon's POV) due to shooter being behind the robot
-            rotate = speakerPos.add(new Vector2(0,5)).sub(SwervePosition.getPosition()).norm().mul(-1.0).atan2();
+            // rotate = speakerPos.add(new Vector2(0,5)).sub(SwervePosition.getPosition()).norm().mul(-1.0).atan2();
+            rotate = VisionManager.getSwerveRotation();
         } else {
             rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
         }
@@ -189,7 +191,7 @@ public class OI {
                 case SPEAKER:
                     // shooterPassing = false;
                     aligning = true;
-                    Shooter.fireWhileMoving();
+                    Shooter.fireWithApriltag2D();
                     Shooter.shoot();
                 break;
 
