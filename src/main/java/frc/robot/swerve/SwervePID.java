@@ -98,15 +98,18 @@ public class SwervePID {
   }
 
   public static boolean atDest() {
-    System.out.println("Dest X: " + getDest().x);
-    System.out.println("Dest Y: " + getDest().y);
+    // Calculate if simulated robot is within deadband
+    if (RobotBase.isSimulation()) {
+      boolean simXRange =
+          (SwervePosition.getPosition().x > getDest().x - moveDead)
+              && (SwervePosition.getPosition().x < getDest().x + moveDead);
+      boolean simYRange =
+          (SwervePosition.getPosition().y > getDest().y - moveDead)
+              && (SwervePosition.getPosition().y < getDest().y + moveDead);
+      return simXRange && simYRange;
+    }
 
-    return (Robot.isSimulation()
-            && SwervePosition.getPosition()
-                .isGreater(new Vector2(getDest().x - moveDead, getDest().y - moveDead))
-            && !SwervePosition.getPosition()
-                .isGreater(new Vector2(getDest().x + moveDead, getDest().y + moveDead)))
-        || (xPID.atSetpoint() && yPID.atSetpoint());
+    return (xPID.atSetpoint() && yPID.atSetpoint());
   }
 
   public static boolean atRot() {

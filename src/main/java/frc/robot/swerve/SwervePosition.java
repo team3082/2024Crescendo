@@ -3,6 +3,7 @@ package frc.robot.swerve;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.sensors.VisionManager;
@@ -47,14 +48,22 @@ public class SwervePosition {
     Vector2 odometryPos = Odometry.getPosition();
     Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
 
-    position = position.add(odometryInnovation);
+    if (RobotBase.isReal()) {
+      position = position.add(odometryInnovation); // Do not use in simulation
+    } else if (Robot.isSimulation()) {
+      double theta = Pigeon.getRotationRad() - (Math.PI / 2);
 
-    if (Robot.isSimulation()) {
-      Vector2 addition =
-          new Vector2(
-                  -SwerveManager.getRobotDriveVelocity().y, SwerveManager.getRobotDriveVelocity().x)
-              .mul(.02);
-      position = position.add(addition);
+      // Rotate the robotDriveVelocity vector to account for pigeon direction
+      double rotatedDriveVelX =
+          SwerveManager.getRobotDriveVelocity().x * Math.cos(theta)
+              - SwerveManager.getRobotDriveVelocity().y * Math.sin(theta);
+      double rotatedDriveVelY =
+          SwerveManager.getRobotDriveVelocity().x * Math.sin(theta)
+              + SwerveManager.getRobotDriveVelocity().y * Math.cos(theta);
+
+      // Create finalized sim velocity and add to robot position
+      Vector2 simVel = new Vector2(rotatedDriveVelX, rotatedDriveVelY).mul(.02);
+      position = position.add(simVel);
     }
 
     lastOdomPos = odometryPos;
