@@ -22,32 +22,44 @@ import frc.robot.utils.Vector2;
 
 @SuppressWarnings("removal")
 public final class Shooter {
-
-    // Status of the shooter
+    // Tracks current status of the shooter for telemetry
     public static enum ShooterStatus {
-        DISABLED, // aka a dead shooter
-        REVVING, // actively revving up to our target velocity
-        FIRING, // handoff pumping note into the shooter
-        EJECT,  // force-ejecting piece, regardless of our current status
-        NEUTRAL
+        FIRING,
+        REVVING,
+        IDLE
     }
 
-    // Status of the handoff
-    public static enum HandoffStatus {
-        DISABLED, // lying in wait until at velocity
-        FEED,    // actively feeding piece to shooter
-        EJECT,  // rejecting piece through intake
-        STOP   // aka a dead handoff  
+    // Tracks the current status of shooter aiming to the target
+    public static enum AimStatus {
+        AIMED,
+        AIMING_APRILTAG_2D,
+        AIMING_PIGEON,
+        NO_AIMING
     }
 
-    public static ShooterStatus shooterMode;
-    public static HandoffStatus handoffMode;
+    // Tracks current state of the shooter for telemetry
+    public static enum ShooterState {
+        FIRE_APRILTAG_2D,
+        FIRE_SUBWOOFER,
+        FIRE_AMP,
+        FIRE_TUNING,
+        IDLE,
+        DISABLED
+    }
 
+    public static ShooterStatus shooterStatus;
+    public static AimStatus aimStatus;
+    public static ShooterState shooterState;
+
+    // Motors
     public static TalonFX topMotor, bottomMotor;
 
     // Target RPM
     public static double targetVelocity, simVel;
     public static double targetTop, targetBottom;
+
+    // Target Radians
+    public static double targetAngle;
 
     // Motors' measured RPMs
     public static double topRPM, bottomRPM;
@@ -56,6 +68,7 @@ public final class Shooter {
 
     public static double handoffLiveTime = 0.0;
 
+    // Shooter velocity deadband RPM
     public static final double deadband = 50.0;
     
     public static void init() {
@@ -106,125 +119,125 @@ public final class Shooter {
         handoffLiveTime = 0.0;
 
         temp = topMotor.getTemperature();
-        shooterMode = ShooterStatus.DISABLED;
-        handoffMode = HandoffStatus.DISABLED;
     }
 
     public static void update() {
-        // Update our pivot & intake
+        // log statuses/state
+        /* code here */
+
+        // set shooter pivot
+        ShooterPivot.setPosition(targetAngle);
+
+        // set shooter velocities
+        topMotor.set(TalonFXControlMode.Velocity, targetTop);
+        bottomMotor.set(TalonFXControlMode.Velocity, targetBottom);
+
+        // update shooter pivot
         ShooterPivot.update();
-        Intake.update();
-        // System.out.println(shooterMode);
-
-        // Get our vars
-        topRPM = topMotor.getSelectedSensorVelocity() * VelToRPM;
-        bottomRPM = bottomMotor.getSelectedSensorVelocity() * VelToRPM;
-
-        temp = topMotor.getTemperature();
-
-        boolean atVelocity = canShoot();
-
-        switch (shooterMode) {
-            case FIRING:
-                if (atVelocity && ShooterPivot.atPos()) {
-                    Intake.runHandoff();
-                }
-                setVelocity(targetTop, targetBottom);
-            break;
-
-            case REVVING:
-                // Rev the flywheel up to our set velocity
-                setVelocity(targetTop, targetBottom);
-            break;
-
-            case EJECT:
-                // Run the shooter forward, and the handoff/intake backwards.
-                topMotor.set(TalonFXControlMode.PercentOutput, 0.8);
-                bottomMotor.set(TalonFXControlMode.Follower, topMotor.getDeviceID());
-                Intake.eject();
-            break;
-
-            case DISABLED:
-                topMotor.set(TalonFXControlMode.PercentOutput, 0);
-                bottomMotor.set(TalonFXControlMode.PercentOutput, 0);
-                targetVelocity = 0.0;
-                targetTop = 0.0;
-                targetBottom = 0.0;
-                ShooterPivot.disable();
-            break;
-
-            case NEUTRAL:
-                targetVelocity = 0.0;
-                targetTop = 0.0;
-                targetBottom = 0.0;
-                neutral();
-                ShooterPivot.neutral();
-            break;
-        }
     }
 
-    /**
-     * Rev the shooter & angle the pivot to a calculated
-     * ShooterSettings table representing our desired
-     * conditions when the drivetrain is actively moving.
-     * 
-     * OI will slow down the translation & rotation of the robot
-     * when this function is active (i.e, when we are moving and shooting at the same time).
+    /** 
+     * point towards the apriltag with 2d Data 
+     * set shooter angle based on interpolating table result
+     * rev to 4000 rpm
+     * fire piece
      */
-
-    public static void fireWithApriltag2D() {
-        Optional<Double> targetAngle = VisionManager.getShooterAngle();
+    public static void fireApriltag2D() {
+        final double rpm = 4000.0; // if neccessary change this to use a table as well
+        Optional<Double> shooterAngle = VisionManager.getShooterAngle();
         boolean aimed = VisionManager.rotateToTarget2D();
-    }
 
-    public static void fireWhileMoving() {
-        Vector2 robotPos = SwervePosition.getPosition(); // Current position of the robot
-        Vector2 robotVel = SwerveManager.getRobotDriveVelocity(); // Current velocity of the robot's drivetrain
+        // sets shooter state
+        shooterState = ShooterState.FIRE_APRILTAG_2D;
 
-        // Get our distance between the robot & the speaker
-        double distance = robotPos.sub(speakerPos).mag();
-
-        // Calculate our shooter settings based off that distance
-        ShooterSettings settings = ShooterTables.calculate(distance);
-
-        // We treat both the shooter and the speaker as moving masses
-        // This math was done on a napkin at work
-        double timeToImpact = 0.0005 * distance / settings.getVelocity().in(RPM);
-
-        // Calculate the predicted offset of the speaker relative to our moving mass
-        // This was also scribbled on a napkin at work
-        Vector2 predictedOffset = new Vector2(robotVel.x * timeToImpact, robotVel.y * timeToImpact);
-
-        // Using the predicted offset, calculate the predicted location of the speaker
-        Vector2 predictedPos = speakerPos.sub(predictedOffset);
-
-        // Calculate the FINAL distance between both moving masses
-        double predictedDistance = robotPos.sub(predictedPos).mag();
-
-        // Mutate the settings based off the final predicted distance
-        settings = ShooterTables.calculate(predictedDistance);
-
-        // The desired angle of the shooter's pivot
-        double angle = settings.getAngle().in(Radians);
-
-        // If the angle is impossible to reach, negative, or infinite, just ignore the calculations
-        if (Double.isInfinite(angle) || Double.isNaN(angle) || angle >= Math.toRadians(65.0) || angle <= Math.toRadians(17.0)) {
-            Telemetry.log(Telemetry.Severity.WARNING, "Auto-fire calculations impossible, shooter disabled.");
-            neutral();
+        // set aim status
+        if (aimed) {
+            aimStatus = AimStatus.AIMED;
         } else {
-            // Aim & rev to the desired velocity! Bazinga!
-            ShooterPivot.setPosition(angle);
-            revTo(settings.getVelocity().in(RPM));
+            aimStatus= AimStatus.AIMING_APRILTAG_2D;
+        }
+
+        // set targetAngle
+        if (shooterAngle.isPresent()) {
+            targetAngle = shooterAngle.get();
+        }
+
+        // set shooter velocitied
+        revTo(rpm);
+        // set shooter status
+        shooterStatus = ShooterStatus.REVVING;
+
+        // if it is aimed fully the shooter angle has been met, and the 
+        // wheel velocities have been met then fire
+        if (aimed && ShooterPivot.atPos() && canShoot()) {
+            shooterStatus = ShooterStatus.FIRING;
+            Intake.runHandoff(); // handoff piece to shooter
+        } else {
+            Intake.no();
         }
     }
 
     /**
-     * Set the desired velocity for our shooter to maintain.
-     * @param newVelocity Velocity in RPM
+     * turn to and fire at Amp using constant values from Tuning.java
      */
-    private static void setVelocity(double topSpeed, double bottomSpeed) {
-        topMotor.set(TalonFXControlMode.Velocity, topSpeed);
-        bottomMotor.set(TalonFXControlMode.Velocity, bottomSpeed);
+    public static void fireAmp() {
+        // aim to amp
+        // set velocities
+        // set angle
+        // check then shoot
+        /* code here */
+    }
+
+
+    /**
+     * fire at Subwoofer using constant values from Tuning.java
+     */
+    public static void fireSubwoofer() {
+        // set velocities
+        // set angle
+        // check then shoot
+        /* code here */
+    }
+
+    /**
+     * fire using manual values from dashboard for tuning
+     * enabled this mode in dashboard
+     */
+    public static void fireTuning() {
+        // get values from dashboard
+        // set velocities
+        // set angle
+        // check then shoot
+        /* code here */
+    }
+
+    public static void forceFire() {
+        Intake.runHandoff();
+    }
+
+    /**
+     * set velocities from Tuning.java
+     * set down pivot then disable
+     */
+    public static void idle() {
+
+    }
+
+    /**
+     * set velocities to 0
+     * set down pivot then disable
+     */
+    public static void disable() {
+
+    }
+
+    /**
+     * run on disabled init
+     * turn off flywheel motors
+     * turn off pivot motors
+     */
+    public static void off() {
+
     }
 
     /**
@@ -233,62 +246,14 @@ public final class Shooter {
     public static void revTo(double rpm) {
         targetTop = rpm * RPMToVel;
         targetBottom = rpm * RPMToVel;
-        targetVelocity = rpm * RPMToVel;
-        shooterMode = ShooterStatus.REVVING;
-    }
-
-    public static void setIntakeMode(HandoffStatus status) {
-        handoffMode = status;
     }
 
     /**
-     * Rev the shooter to a specified RPM.
+     * Rev the shooter to 2 specified RPMs.
      */
     public static void revTo(double top, double bottom) {
         targetTop = top * RPMToVel;
         targetBottom = bottom * RPMToVel;
-        shooterMode = ShooterStatus.REVVING;
-    }
-
-    /**
-     * Ejects the gamepiece if the drivetrain, arm 
-     * and wheels are at the proper position & velocity.
-     * This method should be called after the revTo() method.
-     */
-    public static void shoot() { 
-        shooterMode = ShooterStatus.FIRING;
-    }
-
-    /**
-     * Shoots the gamepiece regardless of whether 
-     * or not the arm and wheels are ready.
-     */
-    public static void forceShoot() { 
-        shooterMode = ShooterStatus.EJECT;
-    }
-
-    /**
-     * Sets the shooter & pivot to neutral output.
-     */
-    public static void neutral() {
-        ShooterPivot.neutral();
-        shooterMode = ShooterStatus.DISABLED;
-        // revTo(1000, 1000);
-    }
-
-    /**
-     * Disable the shooter & handoff.
-     */
-    public static void setNeutral() {
-        shooterMode = ShooterStatus.NEUTRAL;
-        handoffMode = HandoffStatus.DISABLED;
-    }
-
-    /**
-     * Eject the shooter.
-     */
-    public static void eject() {
-        shooterMode = ShooterStatus.EJECT;
     }
 
     /**
@@ -303,25 +268,5 @@ public final class Shooter {
         double err2 = Math.abs(bottom - targetBottom * VelToRPM);
 
         return err <= deadband && err2 <= deadband;
-    }
-
-    /**
-     * Is the shooter currently revving up?
-     */
-    public static boolean revving() {
-        return shooterMode == ShooterStatus.REVVING;
-    }
-
-    /**
-     * Is the shooter currently trying to fire?
-     */
-    public static boolean firing() {
-        return shooterMode == ShooterStatus.FIRING;
-    }
-
-    public static void disable() {
-        topMotor.neutralOutput();
-        bottomMotor.neutralOutput();
-        shooterMode = ShooterStatus.DISABLED;
     }
 }

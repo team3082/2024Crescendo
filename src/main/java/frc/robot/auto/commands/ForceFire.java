@@ -26,7 +26,7 @@ public class ForceFire extends Command{
     public void execute(){
         double time = Timer.getFPGATimestamp();
         if(time - startTime > timeout || Shooter.canShoot()){
-            Shooter.shoot();
+            Shooter.forceFire();
             //setting start fire time if it hasn't been set already
             if(startFireTime == Double.MAX_VALUE){
                 startFireTime = time;

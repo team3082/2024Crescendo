@@ -80,6 +80,8 @@ public class Telemetry {
     // We must use the NetworkTableEntry type, 
     // Since this enables live updates between Glass and our code. 
 
+    // Shooter Angle Test
+
     // Field position
     private static final Field2d field = new Field2d();
     private static frc.robot.utils.Vector2 prevSimPos = new Vector2();

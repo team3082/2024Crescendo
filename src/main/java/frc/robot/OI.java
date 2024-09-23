@@ -11,13 +11,11 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.controllermaps.LogitechF310;
 import frc.robot.subsystems.sensors.Pigeon;
-import frc.robot.configs.ShooterSettings;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.shooter.Intake;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterPivot;
-import frc.robot.subsystems.shooter.ShooterTables;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
+import frc.robot.subsystems.shooter.Shooter.ShooterStatus;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
@@ -69,7 +67,8 @@ public class OI {
         SPEAKER,
         SPEAKER_MANUAL,
         PASSING,
-        AMP
+        AMP,
+        TUNING
     }
 
     public static ShooterMode currentShooterMode = ShooterMode.SPEAKER;
@@ -128,7 +127,7 @@ public class OI {
                 driverStick.setRumble(RumbleType.kBothRumble, 0.0);
         } else {
             driverStick.setRumble(RumbleType.kBothRumble, 0.0);
-            if (!Shooter.firing())
+            if (!(Shooter.shooterStatus == ShooterStatus.FIRING))
                 Intake.setState(IntakeState.STOW); 
 
             // if (shooterPassing)
@@ -172,46 +171,30 @@ public class OI {
         if (shooterFire) {
             switch (currentShooterMode) {
                 case AMP:
-                    // shooterPassing = false;
-                    ShooterPivot.setPosition(Math.toRadians(56.0));
-                    Shooter.revTo(topVector, bottomVector);
-                    Shooter.shoot();
-                break;
-
-                // case SPEAKER:
-                //     ShooterSettings shooterSettings = ShooterTables.calculate(SwervePosition.getPosition().sub(speakerPos).mag());
-                //     ShooterPivot.setPosition(shooterSettings.getAngle().in(Radians));
-                //     Shooter.revTo(shooterSettings.getVelocity().in(RPM));
-                //     Shooter.shoot();
-                // break;
-
-                // For shooting while moving
+                    Shooter.fireAmp();
+                    break;
+                
                 case SPEAKER:
-                    // shooterPassing = false;
-                    aligning = true;
-                    Shooter.fireWhileMoving();
-                    Shooter.shoot();
-                break;
+                    Shooter.fireApriltag2D();
+                    break;
 
                 case SPEAKER_MANUAL:
-                    // shooterPassing = false;
-                    ShooterPivot.setPosition(Math.toRadians(manualAngle));
-                    Shooter.revTo(manualRPM, manualRPM);
-                    Shooter.shoot();
-                break;
+                    Shooter.fireSubwoofer();
+                    break;
 
-                // case PASSING:
-                //     shooterPassing = true;
-                //     ShooterPivot.setPosition(Math.toRadians(31.0));
-                //     Shooter.revTo(2800);
-                //     Shooter.shoot();
-                // break;
-            
-                default:
-                break;
+                case TUNING:
+                    Shooter.fireTuning();
+                    break;
+
+                case PASSING:
+                    // shooterPassing = true;
+                    // ShooterPivot.setPosition(Math.toRadians(31.0));
+                    // Shooter.revTo(2800);
+                    // Shooter.shoot();
+                    break;
             }
         } else {
-            Shooter.neutral();
+            Shooter.idle();
         }
 
         /*--------------------------------------------------------------------------------------------------------*/
@@ -277,15 +260,18 @@ public class OI {
             switch (currentShooterMode) {
                 case AMP:
                     currentShooterMode = ShooterMode.SPEAKER;
-                break;
+                    break;
                 
                 case SPEAKER:
                     currentShooterMode = ShooterMode.AMP;
-                break;
+                    break;
 
                 case SPEAKER_MANUAL:
                     currentShooterMode = ShooterMode.AMP;
-                break;
+                    break;
+
+                default:
+                    break;
             }
         }
 
