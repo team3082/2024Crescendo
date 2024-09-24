@@ -14,7 +14,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import frc.robot.OI.ShooterMode;
 import frc.robot.configs.ShooterSettings;
 import frc.robot.subsystems.sensors.Telemetry;
+import frc.robot.subsystems.sensors.Vision;
 import frc.robot.subsystems.sensors.VisionManager;
+import frc.robot.subsystems.sensors.VisionTable;
 import frc.robot.subsystems.shooter.Intake.IntakeState;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
@@ -164,16 +166,21 @@ public final class Shooter {
     }
 
     public static void fireWithApriltag2D() {
-        Optional<Double> targetAngle = VisionManager.getShooterAngle();
-        
-        revTo(4000.0);
+        // get y value and obtain angle from table
+        Optional<Double> y = VisionManager.getApriltagY();
+        Optional<Double> targetAngle = VisionTable.getAngle(y);
+
+        System.out.println("rpm set (Shooter.java 173)");
+        revTo(4000.0, 4000.0);
 
         if (targetAngle.isPresent() == true && !(Double.isInfinite(targetAngle.get()) || Double.isNaN(targetAngle.get()) || targetAngle.get() >= Math.toRadians(65.0) || targetAngle.get() <= Math.toRadians(17.0))) {
             // sees tag is rotating to it and revving/setting pivot
             ShooterPivot.setPosition(targetAngle.get());
+            System.out.println("angle set from tables (Shooter.java 179)");
         } else {
             // doesnt see tag
-            neutral();
+            System.out.println("doesnt see tag, neutral pivot (Shooter.java 182)");
+            ShooterPivot.neutral();
         }
     }
 
@@ -239,6 +246,7 @@ public final class Shooter {
      * Rev the shooter to a specified RPM.
      */
     public static void revTo(double rpm) {
+        System.out.println(rpm);
         targetTop = rpm * RPMToVel;
         targetBottom = rpm * RPMToVel;
         targetVelocity = rpm * RPMToVel;
@@ -253,6 +261,7 @@ public final class Shooter {
      * Rev the shooter to a specified RPM.
      */
     public static void revTo(double top, double bottom) {
+        System.out.println(top + " " + bottom);
         targetTop = top * RPMToVel;
         targetBottom = bottom * RPMToVel;
         shooterMode = ShooterStatus.REVVING;

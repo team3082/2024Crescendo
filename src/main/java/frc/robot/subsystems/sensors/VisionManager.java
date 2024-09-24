@@ -2,6 +2,9 @@ package frc.robot.subsystems.sensors;
 
 import java.util.List;
 import java.util.Optional;
+
+import javax.swing.text.html.Option;
+
 import static frc.robot.configs.Constants.ShooterConstants.speakerPos;
 
 import org.photonvision.PhotonCamera;
@@ -53,23 +56,30 @@ public class VisionManager {
     }
 
     private static int getApriltagIDForAlliance() {
-        return (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) ? 7 : 4; // might need flipped
+        return (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) ? 1 : 1; // might need flipped
     }
 
-    public static Optional<Double> getShooterAngle() {
-        // use apriltag 2d y value(px) to get shooter angle from
-        // interpolation table, will require tuning for many positions
+    public static Optional<Double> getApriltagY() {
+        // get x value(px) of the apriltag of the specific ID for your alliance color
+        if (targets == null) {return Optional.empty();}
         for (PhotonTrackedTarget target : targets) {
             if (target.getFiducialId() == getApriltagIDForAlliance()) {
-                double y = target.getBestCameraToTarget().getY();   
+                // store the values of the top left and bottom right corners (px) then 
+                // find the point inbetween(aprox tag center) and return the x value
+                List<TargetCorner> corners = target.getDetectedCorners();
+                Vector2 tlCorner = new Vector2(corners.get(3).x, corners.get(3).y);
+                Vector2 brCorner = new Vector2(corners.get(1).x, corners.get(1).y);
+                double y = tlCorner.add(brCorner).div(2).y;
                 return Optional.of(y);
             }
         }
+        // returns empty if the apriltag is not found in view
         return Optional.empty();
     }
 
     public static Optional<Double> getApriltagX() {
         // get x value(px) of the apriltag of the specific ID for your alliance color
+        if (targets == null) {return Optional.empty();}
         for (PhotonTrackedTarget target : targets) {
             if (target.getFiducialId() == getApriltagIDForAlliance()) {
                 // store the values of the top left and bottom right corners (px) then 
@@ -88,7 +98,7 @@ public class VisionManager {
     static final double kP = 0.5;
     static final double kI = 0.0;
     static final double kD = 0.0;
-    static final double deadband = 10.0;
+    static final double deadband = 0.01;
     static final double maxOutput = 0.5;
     public static PIDController pid = new PIDController(kP, kI, kD, deadband, 0.01, maxOutput);
 
@@ -99,9 +109,9 @@ public class VisionManager {
         Optional<Double> x = getApriltagX(); // pixels
         if (!x.isEmpty()) {
             // start rotating towards target to have x in center
-            pid.setDest(1280.0/2.0);
-            double rot = pid.updateOutput(x.get());
-            return rot;
+            pid.setDest(1.0);
+            double rot = pid.updateOutput(x.get() / (1280.0/2.0));
+            return -rot;
         } else {
             // check for direction to turn to get apriltag in view
             double robotRot = Pigeon.getRotationRad();
@@ -118,7 +128,8 @@ public class VisionManager {
         // uses x value(px) to check if the robot is aligned with the target
         // if apriltag is not in view return false
         Optional<Double> x = getApriltagX(); // pixels
-        if (!x.isEmpty()) {
+        if (x.isPresent()) {
+            System.out.println(Math.abs(x.get() - 1280.0/2.0) < deadband ? "aligned" : "not aligned (VisionManager.java: 129)");
             return Math.abs(x.get() - 1280.0/2.0) < deadband;
         } else {
             return false;

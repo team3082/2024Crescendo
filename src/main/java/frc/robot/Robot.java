@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -51,7 +53,7 @@ public class Robot extends TimedRobot {
     SwervePosition.init();
     SwervePID.init();
     Pigeon.setYaw(90);
-    // VisionManager.init();
+    VisionManager.init();
     ClimberManager.init();
     ChoreoTrajectoryGenerator.init();
     ChoreoTrajectoryGenerator.parseAll();
@@ -60,7 +62,7 @@ public class Robot extends TimedRobot {
     AutoSelector.setup();
     Telemetry.init();
     BannerLight.init();
-    // SwervePosition.enableVision();
+    SwervePosition.enableVision();
     SwervePosition.setPosition(
         new Vector2(56.78 * (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? 1 : -1), -275));
   }
@@ -125,11 +127,19 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     CommandScheduler.getInstance().cancelAll();
     CommandScheduler.getInstance().disable();
-    // SwervePosition.enableVision();
+    SwervePosition.enableVision();
   }
 
   @Override
   public void disabledPeriodic() {
+    // Optional<Double> x = VisionManager.getApriltagX();
+    // double rot = VisionManager.rotateToTag2D();
+    // if (!x.isEmpty()) {
+    //   System.out.println("x: " + x.get() + " rot: " + rot);
+      
+    // } else {
+    //   System.out.println("nada");
+    // }
     SwervePosition.update();
     // System.out.println(SwervePosition.getPosition().toString());
     // if(Robot.isReal())

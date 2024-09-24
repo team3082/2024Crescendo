@@ -111,6 +111,7 @@ public final class ShooterPivot {
      * @param pos
      */
     public static void setPosition(double pos) {
+        System.out.println("pos: " + pos);
         targetPos = pos;
         simAng = pos;
         isDisabled = false;

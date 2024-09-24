@@ -144,7 +144,7 @@ public class OI {
         if (currentShooterMode == ShooterMode.SPEAKER && driverStick.getRawButton(fireShooter)) {
             // Face AWAY from speaker (Pigeon's POV) due to shooter being behind the robot
             // rotate = speakerPos.add(new Vector2(0,5)).sub(SwervePosition.getPosition()).norm().mul(-1.0).atan2();
-            rotate = VisionManager.getRotation();
+            rotate = VisionManager.getRotation(); System.out.println("rotation input: " + rotate + " (OI.java 147)");
         } else {
             rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
         }
@@ -190,9 +190,11 @@ public class OI {
                 // For shooting while moving
                 case SPEAKER:
                     // shooterPassing = false;
+                    System.out.println("shooting speaker apriltag 2d (OI.java 193)");
                     aligning = true;
                     Shooter.fireWithApriltag2D();
                     if (VisionManager.aligned2D()) {
+                        System.out.println("firing piece (OI.java 197)");
                         Shooter.shoot();
                     }
                 break;
