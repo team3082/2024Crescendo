@@ -57,8 +57,8 @@ public class Robot extends TimedRobot {
     Pigeon.setYaw(90);
     VisionManager.init();
     ClimberManager.init();
-    Shooter.init();
-    Intake.init();
+    // Shooter.init();
+    // Intake.init();
     AutoSelector.setup();
     Telemetry.init();
     BannerLight.init();
@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
       RTime.updateAbsolute();
       RTime.update();
       Telemetry.update(false);
-      Intake.beambreak.update();
+      // Intake.beambreak.update();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();
@@ -101,7 +101,7 @@ public class Robot extends TimedRobot {
     try {
       SwervePosition.update();
       CommandAuto.update();
-      Shooter.update();
+      //Shooter.update();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();
