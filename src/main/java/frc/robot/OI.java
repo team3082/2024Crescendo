@@ -144,7 +144,7 @@ public class OI {
         if (currentShooterMode == ShooterMode.SPEAKER && driverStick.getRawButton(fireShooter)) {
             // Face AWAY from speaker (Pigeon's POV) due to shooter being behind the robot
             // rotate = speakerPos.add(new Vector2(0,5)).sub(SwervePosition.getPosition()).norm().mul(-1.0).atan2();
-            rotate = VisionManager.getSwerveRotation();
+            rotate = VisionManager.getRotation();
         } else {
             rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
         }
@@ -192,7 +192,9 @@ public class OI {
                     // shooterPassing = false;
                     aligning = true;
                     Shooter.fireWithApriltag2D();
-                    Shooter.shoot();
+                    if (VisionManager.aligned2D()) {
+                        Shooter.shoot();
+                    }
                 break;
 
                 case SPEAKER_MANUAL:
@@ -227,7 +229,7 @@ public class OI {
 
         if (currentShooterMode == ShooterMode.SPEAKER && driverStick.getRawButton(fireShooter)) {
             aligning = true;
-            SwerveManager.moveAndRotateTo(drive, rotate);
+            SwerveManager.rotateAndDrive(rotate, drive);
         } else {
             // Swervin' and a steerin! Zoom!
             SwerveManager.rotateAndDrive(rotate, drive);

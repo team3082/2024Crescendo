@@ -73,6 +73,7 @@ public class Robot extends TimedRobot {
     RTime.update();
     Telemetry.update(false);
     Intake.beambreak.update();
+    VisionManager.update();
     } catch (Exception e) {
       System.out.println("oopsies" + e.toString());
       e.printStackTrace();

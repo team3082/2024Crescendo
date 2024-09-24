@@ -73,11 +73,6 @@
         "window": {
           "visible": true
         }
-      },
-      "/Shuffleboard/SmartDashboard/Swerve": {
-        "window": {
-          "visible": true
-        }
       }
     }
   },
@@ -86,7 +81,6 @@
   },
   "NetworkTables Settings": {
     "mode": "Client (NT4)",
-    "serverTeam": "3082",
-    "visible": false
+    "serverTeam": "3082"
   }
 }

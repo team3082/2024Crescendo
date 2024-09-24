@@ -13,6 +13,8 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import frc.robot.configs.Constants;
+import frc.robot.utils.PIDController;
+import frc.robot.utils.RTime;
 import frc.robot.utils.swerve.DiscreteSwerveState;
 import frc.robot.utils.swerve.SecondOrderSwerveState;
 import frc.robot.utils.trajectories.DiscreteTraj;
@@ -30,6 +32,21 @@ public class TestTest {
         double output2 = map.get(1.5);
         System.out.println(output1 + " " + output2);
         assertTrue(output1 == 15.0 && output2 == 22.5);
+    }
+
+    @Test
+    public void pidControllerTest() {
+        PIDController pid = new PIDController(0.1, 0, 0.01, 0.1, 0.01, 0.5);
+        double vel = 0.0;
+        double pos = 0.0;
+        pid.setDest(-100.0);
+        vel = pid.updateOutput(pos);
+        while (!pid.atSetpoint()) {
+            System.out.println("pos: " + pos + "vel: " + vel);
+            pos += vel * RTime.deltaTime();
+            vel = pid.updateOutput(pos);
+        }
+        assertTrue(true);
     }
     
     // @Test
