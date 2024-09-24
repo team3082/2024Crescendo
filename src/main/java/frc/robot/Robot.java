@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.AutoSelector;
 import frc.robot.auto.CommandAuto;
 import frc.robot.configs.Constants;
+import frc.robot.openhouse.robot;
 import frc.robot.subsystems.climber.ClimberManager;
 import frc.robot.subsystems.sensors.BannerLight;
 import frc.robot.subsystems.sensors.Pigeon;
@@ -43,6 +44,10 @@ public class Robot extends TimedRobot {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+    //Openhouse stuff
+    robot.init();
+
+
     Constants.init();
     Pigeon.init();
     Pigeon.zero();
