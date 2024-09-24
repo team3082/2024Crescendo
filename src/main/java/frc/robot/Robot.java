@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
     SwervePosition.init();
     SwervePID.init();
     Pigeon.setYaw(90);
-    VisionManager.init();
+    // VisionManager.init();
     ClimberManager.init();
     // Shooter.init();
     // Intake.init();

@@ -71,15 +71,15 @@ public class SwervePosition {
 
     absVelocity = odometryInnovation.div(RTime.deltaTime());
 
-    if (correctWithVision) {
-      Optional<Vector2> visionPos = VisionManager.getPosition(Pigeon.getRotationRad());
+    // if (correctWithVision) {
+      // Optional<Vector2> visionPos = VisionManager.getPosition(Pigeon.getRotationRad());
 
-      if (visionPos.isPresent()) {
-        // System.out.println("Vision exists");
-        Vector2 posError = visionPos.get().sub(position);
-        position = position.add(posError.mul(VISION_CORRECTION_FACTOR));
-      }
-    }
+      // if (visionPos.isPresent()) {
+      //   // System.out.println("Vision exists");
+      //   Vector2 posError = visionPos.get().sub(position);
+      //   position = position.add(posError.mul(VISION_CORRECTION_FACTOR));
+      // }
+    // }
   }
 
   public static final double correctionMultiplier = 0.1;

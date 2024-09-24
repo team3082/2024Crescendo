@@ -4,27 +4,16 @@ public class OpenHouse {
 
     //An example auto
     public void exampleAuto(){
-        robot.moveForward(36);
-        robot.moveForward(36);
-        robot.turnRight(120);
-        robot.moveForward(72);
-        robot.turnRight(120);
-        robot.moveForward(72);
-        robot.turnRight(120);
-        robot.moveForward(36);
-    }
-
-    
-    //Another example auto
-    public void doASquare(){
-        robot.moveForward(90);
         robot.turnRight(90);
-        robot.moveForward(90);
-        robot.turnRight(90);
-        robot.moveForward(90);
-        robot.turnRight(90);
-        robot.moveForward(90);
-        robot.turnRight(90);
+        robot.moveForward(160);
+        robot.turnLeft(180);
+        robot.moveForward(400);
+        robot.turnRight(135);
+        robot.moveForward(100);
+        robot.turnRight(45);
+        robot.moveForward(200);
+        robot.turnRight(45);
+        robot.moveForward(100);
     }
 
     //Make your own Auto Routine by naming it and coding it

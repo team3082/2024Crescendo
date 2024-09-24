@@ -2,17 +2,17 @@ package frc.robot.configs;
 
 public final class Tuning {
   // Swerve
-  public static final double MOVEP = 2;
+  public static final double MOVEP = 0.9;
   public static final double MOVEI = 0.3;
-  public static final double MOVED = 0.2;
-  public static final double MOVEDEAD = 3.0;
-  public static final double MOVEVELDEAD = 0.1;
-  public static final double MOVEMAXSPEED = 0.1;
-  public static final double ROTP = 0.225;
-  public static final double ROTI = 0.0;
-  public static final double ROTD = 0.7;
-  public static final double ROTDEAD = 0.005;
-  public static final double ROTVELDEAD = 0.01;
+  public static final double MOVED = 0.08;
+  public static final double MOVEDEAD = 5.0;
+  public static final double MOVEVELDEAD = 0.6;
+  public static final double MOVEMAXSPEED = 0.4;
+  public static final double ROTP = 0.6;
+  public static final double ROTI = 0.025;
+  public static final double ROTD = 0.05;
+  public static final double ROTDEAD = 0.25;
+  public static final double ROTVELDEAD = 0.5;
   public static final double ROTMAXSPEED = 0.5;
 
   // TODO Tune
