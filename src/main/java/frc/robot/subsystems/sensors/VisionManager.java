@@ -2,11 +2,13 @@ package frc.robot.subsystems.sensors;
 
 import java.util.List;
 import java.util.Optional;
+import static frc.robot.configs.Constants.ShooterConstants.speakerPos;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
 
+import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.PIDController;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -102,7 +104,13 @@ public class VisionManager {
             return rot;
         } else {
             // check for direction to turn to get apriltag in view
-            return maxOutput;
+            double robotRot = Pigeon.getRotationRad();
+            double speakerRot = speakerPos.add(new Vector2(0,5)).sub(SwervePosition.getPosition()).norm().mul(-1.0).atan2();
+            if (Math.abs(robotRot - speakerRot) > Math.PI) { // might need to be changed i might be dumb
+                return -maxOutput; // might need to be flipped
+            } else {
+                return maxOutput; // might need to be flipped
+            }
         }
     }
 
