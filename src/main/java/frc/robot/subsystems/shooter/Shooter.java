@@ -163,15 +163,6 @@ public final class Shooter {
         }
     }
 
-    /**
-     * Rev the shooter & angle the pivot to a calculated
-     * ShooterSettings table representing our desired
-     * conditions when the drivetrain is actively moving.
-     * 
-     * OI will slow down the translation & rotation of the robot
-     * when this function is active (i.e, when we are moving and shooting at the same time).
-     */
-
     public static void fireWithApriltag2D() {
         Optional<Double> targetAngle = VisionManager.getShooterAngle();
 
@@ -185,6 +176,14 @@ public final class Shooter {
         }
     }
 
+    /**
+     * Rev the shooter & angle the pivot to a calculated
+     * ShooterSettings table representing our desired
+     * conditions when the drivetrain is actively moving.
+     * 
+     * OI will slow down the translation & rotation of the robot
+     * when this function is active (i.e, when we are moving and shooting at the same time).
+     */
     public static void fireWhileMoving() {
         Vector2 robotPos = SwervePosition.getPosition(); // Current position of the robot
         Vector2 robotVel = SwerveManager.getRobotDriveVelocity(); // Current velocity of the robot's drivetrain
