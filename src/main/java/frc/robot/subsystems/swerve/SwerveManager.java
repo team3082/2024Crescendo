@@ -28,4 +28,9 @@ public class SwerveManager {
     public static void rotateToAndDrive(double drive, double rotPos) {
 
     }
+
+    public static void disable() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'disable'");
+    }
 }

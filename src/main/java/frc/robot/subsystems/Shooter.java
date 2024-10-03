@@ -63,4 +63,9 @@ public class Shooter {
     public static void setState(ShooterState state) {
 
     }
+
+    public static void disable() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'disable'");
+    }
 }

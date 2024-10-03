@@ -6,6 +6,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 
+import frc.robot.auto.Auto;
+import frc.robot.auto.AutoSelector;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.swerve.SwerveManager;
+import frc.robot.utils.sim.SimDevices;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -21,25 +29,50 @@ public class Robot extends TimedRobot {
   public boolean isReal;
   @Override
   public void robotInit() {
+    // initialize all subsystems
+    SwerveManager.init();
+    Shooter.init();
+    Intake.init();
+    Climber.init();
+
+    // initialize auto routines
   }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    SimDevices.update();
+    SwerveManager.update();
+    Shooter.update();
+    Intake.update();
+    Climber.update();
+  }
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    AutoSelector.select();
+    Auto.init();
+  }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    Auto.update();
+  }
 
   @Override
   public void teleopInit() {}
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    OI.update();
+  }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    SwerveManager.disable();
+    Shooter.disable();
+    Intake.disable();
+    Climber.disable();
+  }
 
   @Override
   public void disabledPeriodic() {}
