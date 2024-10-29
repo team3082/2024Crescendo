@@ -1,14 +1,24 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.Robot;
+import frc.robot.tuning.Constants;
+import frc.robot.tuning.Tuning;
 import frc.robot.utils.sim.SimEncoder;
 import frc.robot.utils.sim.SimMotor;
 
 public class Shooter {
-    private enum ShooterStatus {
+    private enum ShooterMode {
         DISABLED,
         IDLE,
         REVVING,
@@ -19,6 +29,7 @@ public class Shooter {
         OFF, // not shooting
         SPEAKER_MANUAL, // robot shoots into speaker
         SPEAKER_AUTO, // robot auto aligns, sets angle, and shoots into speaker
+        PASSING, // robot aligns to area in front of amp and shoots there
         AMP_MANUAL, // robot shoots into amp
         AMP_AUTO // robot auto aligns to and shoots into amp
     }
@@ -28,40 +39,130 @@ public class Shooter {
     private static TalonFX topFlywheel;
     private static TalonFX bottomFlywheel;
 
-    private static SimMotor simPivot;
-    private static SimEncoder simEncoder;
-    private static SimMotor simTopFlywheel;
-    private static SimMotor simBottomFlywheel;
-
-    private static double targetPos;
+    private static double targetPivotPos;
     private static double targetVelTop; 
     private static double targetVelBottom;
 
+    public static ShooterMode shooterMode;
+    public static ShooterState shooterState;
+
+    /**
+     * initialize the shooter
+     */
     public static void init() {
-        // setup motors
-        // zero encoder
-    }
 
-    public static void update() {
+        pivot = new TalonFX(Constants.Shooter.PIVOT_ID);
+        topFlywheel = new TalonFX(Constants.Shooter.FLYWHEEL_TOP_ID);
+        bottomFlywheel = new TalonFX(Constants.Shooter.FLYWHEEL_BOTTOM_ID);
+
+        pivot.getConfigurator().apply(new TalonFXConfiguration());
+        topFlywheel.getConfigurator().apply(new TalonFXConfiguration());
+        bottomFlywheel.getConfigurator().apply(new TalonFXConfiguration());
         
+        TalonFXConfiguration pivotConfiguration = new TalonFXConfiguration();
+        TalonFXConfiguration topFlywheelConfiguration = new TalonFXConfiguration();
+        TalonFXConfiguration bottomFlywheelConfiguration = new TalonFXConfiguration();
+
+        pivotConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        pivotConfiguration.Slot0.kP = Tuning.Shooter.PIVOT_P;
+        pivotConfiguration.Slot0.kI = Tuning.Shooter.PIVOT_I;
+        pivotConfiguration.Slot0.kD = Tuning.Shooter.PIVOT_D;
+
+        topFlywheelConfiguration.Slot0.kP = Tuning.Shooter.FLYWHEEL_P;
+        topFlywheelConfiguration.Slot0.kI = Tuning.Shooter.FLYWHEEL_I;
+        topFlywheelConfiguration.Slot0.kD = Tuning.Shooter.FLYWHEEL_D;
+
+        bottomFlywheelConfiguration.Slot0.kP = Tuning.Shooter.FLYWHEEL_P;
+        bottomFlywheelConfiguration.Slot0.kI = Tuning.Shooter.FLYWHEEL_I;
+        bottomFlywheelConfiguration.Slot0.kD = Tuning.Shooter.FLYWHEEL_D;
+
+        pivot.getConfigurator().apply(pivotConfiguration);
+        bottomFlywheel.getConfigurator().apply(bottomFlywheelConfiguration);
+        topFlywheel.getConfigurator().apply(topFlywheelConfiguration);
+
+        encoder = new CANcoder(Constants.Shooter.ENCODER_ID);
+        encoder.getConfigurator().apply(new CANcoderConfiguration());
+
+        CANcoderConfiguration encoderConfiguration = new CANcoderConfiguration();
+        encoderConfiguration.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
+        // initialization for initialization strategy probably doesn't exist but something may need to go here
+        encoder.getConfigurator().apply(encoderConfiguration);
+
+        targetPivotPos = 0.0;
+        targetVelTop = 0.0;
+        targetVelBottom = 0.0;
+
+        shooterMode = ShooterMode.DISABLED;
+        shooterState = ShooterState.OFF;
     }
 
-    private static void setPos(double pos) {
+    /**
+     * updates the shooter
+     */
+    public static void update() {
+        switch (shooterMode) {
 
+            case DISABLED:
+                setVel(0);
+                setPivotAngle(Constants.Shooter.PIVOT_DOWN);
+                break;
+
+            case REVVING:
+                
+                // revs to target velocity
+                break;
+
+            case FIRING:
+                // shoots, already at target velocity
+                break;
+
+            case IDLE:
+                // revs to idle speed
+                break;
+        
+            default:
+                break;
+        }
     }
 
+    // flywheel functions
+
+    /**
+     * Sets the target velocity
+     * @param vel target velocity
+     */
     private static void setVel(double vel) {
-
+        setVel(vel, vel);
     }
 
+    /**
+     * Sets the target velocity and sets the motors to that velocity
+     * @param topVel target velocity of top motor
+     * @param bottomVel target velocity of bottom motor
+     */
     private static void setVel(double topVel, double bottomVel) {
+        targetVelTop = topVel;
+        targetVelBottom = bottomVel;
 
+        topFlywheel.setControl(new VelocityDutyCycle(topVel));
+        bottomFlywheel.setControl(new VelocityDutyCycle(bottomVel));
+    }
+
+    // pivot functions
+
+    /**
+     * sets target angle of pivot motor
+     * @param angle target angle
+     */
+    private static void setPivotAngle(double angle) {
+        targetPivotPos = angle;
+        pivot.setControl(new PositionDutyCycle(angle));
     }
 
     // user functions
 
-    public static void setState(ShooterState state) {
-
+    private static void setState(ShooterState state) {
+        shooterState = state;
     }
 
     public static void disable() {
