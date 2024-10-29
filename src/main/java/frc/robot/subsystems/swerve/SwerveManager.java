@@ -6,8 +6,6 @@ public class SwerveManager {
     private static SwerveModule bl;
     private static SwerveModule br;
 
-    private static SwerveInstruction instruction;
-
     public static void init() {
         fl = new SwerveModule(0, 0, 0, null, 0.0);
         fr = new SwerveModule(0, 0, 0, null, 0.0);
