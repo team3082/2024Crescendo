@@ -12,8 +12,11 @@ import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.Robot;
+import frc.robot.subsystems.Intake.HandoffState;
+import frc.robot.subsystems.swerve.SwerveOdometry;
 import frc.robot.tuning.Constants;
 import frc.robot.tuning.Tuning;
+import frc.robot.utils.Vector2;
 import frc.robot.utils.sim.SimEncoder;
 import frc.robot.utils.sim.SimMotor;
 
@@ -21,7 +24,6 @@ public class Shooter {
     private enum ShooterMode {
         DISABLED,
         IDLE,
-        REVVING,
         FIRING
     }
 
@@ -30,8 +32,7 @@ public class Shooter {
         SPEAKER_MANUAL, // robot shoots into speaker
         SPEAKER_AUTO, // robot auto aligns, sets angle, and shoots into speaker
         PASSING, // robot aligns to area in front of amp and shoots there
-        AMP_MANUAL, // robot shoots into amp
-        AMP_AUTO // robot auto aligns to and shoots into amp
+        AMP, // robot shoots into amp
     }
 
     private static TalonFX pivot;
@@ -100,6 +101,7 @@ public class Shooter {
      * updates the shooter
      */
     public static void update() {
+        // TODO add intake state changes
         switch (shooterMode) {
 
             case DISABLED:
@@ -107,23 +109,77 @@ public class Shooter {
                 setPivotAngle(Constants.Shooter.PIVOT_DOWN);
                 break;
 
-            case REVVING:
-                
-                // revs to target velocity
-                break;
-
             case FIRING:
                 // shoots, already at target velocity
+
+                // set target velocity and position
+                switch (shooterState) {
+                    case OFF:
+                        // TODO why is this here
+                    break;
+                    
+                    case SPEAKER_MANUAL:
+                        setPivotAngle(Tuning.Shooter.SPEAKER_MANUAL_ANGLE);
+                        setVel(Tuning.Shooter.SPEAKER_MANUAL_VEL);
+                    break;
+                    
+                    case SPEAKER_AUTO:
+                        // TODO implement shooter tables or something better
+                        // fix for now is to change the state
+                        shooterState = ShooterState.SPEAKER_MANUAL;
+                    break;
+                    
+                    case PASSING:
+                        setPassing();
+                    break;
+                    
+                    case AMP:
+                        setPivotAngle(Tuning.Shooter.AMP_MANUAL_ANGLE);
+                        setVel(Tuning.Shooter.AMP_MANUAL_VEL);
+                    break;
+
+                    default:
+                    break;
+                }
+
+                setVel(targetVelTop, targetVelBottom);
+
+                if (topFlywheel.getVelocity().getValueAsDouble() >= targetVelTop && bottomFlywheel.getVelocity().getValueAsDouble() >= targetVelBottom) {
+                    Intake.setHandoffState(HandoffState.RUNNING);
+                }
+
                 break;
 
             case IDLE:
                 // revs to idle speed
+                setVel(1000);
+                setPivotAngle(Constants.Shooter.PIVOT_DOWN);
                 break;
         
             default:
                 break;
         }
     }
+
+    /**
+     * Sets the right pivot angle and flywheel velocity for passing from current location
+     * IT PROBABLY DOESN'T WORK and so be careful running this
+     */
+    public static void setPassing() {
+        Vector2 currentPos = SwerveOdometry.getPosition();
+        Vector2 passingDest = Constants.Shooter.PASSING_DEST;
+
+        double distance = currentPos.dist(passingDest);
+
+        double targetAngle = Math.atan((4 * Constants.Shooter.PASSING_HEIGHT) / distance);
+        
+        double targetVelocity = Math.sqrt((2 * Constants.GRAVITY_INCHES * Constants.Shooter.PASSING_HEIGHT) / (Math.pow(Math.sin(targetAngle), 2))) / Constants.Shooter.FLYWHEEL_INCHES_TO_ROTATIONS; // TODO make sure this works
+
+        setVel(targetVelocity);
+        setPivotAngle(targetAngle);
+    }
+
+    // TODO create a function that can shoot at a 3D point
 
     // flywheel functions
 

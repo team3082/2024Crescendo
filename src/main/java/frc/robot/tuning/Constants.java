@@ -1,5 +1,7 @@
 package frc.robot.tuning;
 
+import frc.robot.utils.Vector2;
+
 public class Constants {
     // SWERVE
     public class Swerve {
@@ -31,7 +33,13 @@ public class Constants {
         public static final int FLYWHEEL_TOP_ID = 0;
         public static final int FLYWHEEL_BOTTOM_ID = 0;
 
+        public static final double FLYWHEEL_DIAMETER = 4.000;
+        public static final double FLYWHEEL_INCHES_TO_ROTATIONS = FLYWHEEL_DIAMETER * Math.PI;
+
         public static final double PIVOT_DOWN = 0.0;
+
+        public static final Vector2 PASSING_DEST = new Vector2(0.0, 0.0);
+        public static final double PASSING_HEIGHT = 240.0;
     } 
  
     // INTAKE
@@ -48,4 +56,6 @@ public class Constants {
         public static final int WINCH_RIGHT_ID = 0;
         public static final int HALL_RIGHT_ID = 0;
     } 
+
+    public static final double GRAVITY_INCHES = 385.827;
 }

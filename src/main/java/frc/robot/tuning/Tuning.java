@@ -3,7 +3,7 @@ package frc.robot.tuning;
 public class Tuning {
     // SWERVE
     public class Swerve {
-        public static final  double MOVE_P = 0.0;
+        public static final double MOVE_P = 0.0;
         public static final double MOVE_I = 0.0;
         public static final double MOVE_D = 0.0;
 
@@ -25,6 +25,12 @@ public class Tuning {
         public static final double FLYWHEEL_P = 0.0;
         public static final double FLYWHEEL_I = 0.0;
         public static final double FLYWHEEL_D = 0.0;
+
+        public static final double SPEAKER_MANUAL_ANGLE = 0.0;
+        public static final double AMP_MANUAL_ANGLE = 0.0;
+        
+        public static final double SPEAKER_MANUAL_VEL = 0.0;
+        public static final double AMP_MANUAL_VEL = 0.0;
     }
 
     // INTAKE
