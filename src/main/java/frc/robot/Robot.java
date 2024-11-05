@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 
 import frc.robot.auto.Auto;
 import frc.robot.auto.AutoSelector;
+import frc.robot.input.OI;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -30,32 +31,33 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // initialize all subsystems
-    SwerveManager.init();
-    Shooter.init();
-    Intake.init();
-    Climber.init();
+    // SwerveManager.init();
+    // Shooter.init();
+    // Intake.init();
+    // Climber.init();
 
     // initialize auto routines
+    OI.init();
   }
 
   @Override
   public void robotPeriodic() {
-    SimDevices.update();
-    SwerveManager.update();
-    Shooter.update();
-    Intake.update();
-    Climber.update();
+    // SimDevices.update();
+    // SwerveManager.update();
+    // Shooter.update();
+    // Intake.update();
+    // Climber.update();
   }
 
   @Override
   public void autonomousInit() {
-    AutoSelector.select();
-    Auto.init();
+    // AutoSelector.select();
+    // Auto.init();
   }
 
   @Override
   public void autonomousPeriodic() {
-    Auto.update();
+    // Auto.update();
   }
 
   @Override
