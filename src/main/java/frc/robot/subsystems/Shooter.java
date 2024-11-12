@@ -12,7 +12,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.Robot;
-import frc.robot.subsystems.Intake.HandoffState;
+import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.swerve.SwerveOdometry;
 import frc.robot.tuning.Constants;
 import frc.robot.tuning.Tuning;
@@ -145,7 +145,7 @@ public class Shooter {
                 setVel(targetVelTop, targetVelBottom);
 
                 if (topFlywheel.getVelocity().getValueAsDouble() >= targetVelTop && bottomFlywheel.getVelocity().getValueAsDouble() >= targetVelBottom) {
-                    Intake.setHandoffState(HandoffState.RUNNING);
+                    Intake.setHandoffState(IntakeState.INTAKE);
                 }
 
                 break;

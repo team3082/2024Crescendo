@@ -38,6 +38,12 @@ public class Tuning {
         public static final double PIVOT_P = 0.0;
         public static final double PIVOT_I = 0.0;
         public static final double PIVOT_D = 0.0;
+
+        public static final double PIVOT_UP_ANGLE = 0.0;
+        public static final double PIVOT_DOWN_ANGLE = 0.0;
+
+        public static final double HANDOFF_SPEED = 0.0; // in rotations per second
+        public static final double INTAKE_SPEED = 0.0;
     }
 
     // CLIMBER

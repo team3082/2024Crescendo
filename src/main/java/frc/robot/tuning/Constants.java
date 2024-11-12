@@ -47,6 +47,11 @@ public class Constants {
         public static final int PIVOT_ID = 0;
         public static final int BELT_TOP_ID = 0;
         public static final int BELT_BOTTOM_ID = 0;
+        public static final int INDEX_ID = 0;
+        public static final int BEAMBREAK_ID = 0;
+
+        public static final double INTAKE_WIDTH_mm = 635.0;
+        public static final double NOTE_WIDTH_mm = 355.0;
     } 
  
     // CLIMBER
