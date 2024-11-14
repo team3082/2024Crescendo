@@ -204,6 +204,22 @@ public class Shooter {
         bottomFlywheel.setControl(new VelocityDutyCycle(bottomVel));
     }
 
+    /**
+     * Gets the velocity of the top flywheel
+     * @return Velocity of the top flywheel
+     */
+    public static double getTopVel() {
+        return topFlywheel.getVelocity().getValueAsDouble();
+    }
+
+    /**
+     * Gets the velocity of the bottom flywheel
+     * @return Velocity of the bottom flywheel
+     */
+    public static double getBottomVel() {
+        return bottomFlywheel.getVelocity().getValueAsDouble();
+    }
+
     // pivot functions
 
     /**
