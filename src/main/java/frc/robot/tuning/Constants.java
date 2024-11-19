@@ -44,11 +44,11 @@ public class Constants {
  
     // INTAKE
     public class Intake {
-        public static final int PIVOT_ID = 0;
-        public static final int BELT_TOP_ID = 0;
-        public static final int BELT_BOTTOM_ID = 0;
-        public static final int INDEX_ID = 0;
-        public static final int BEAMBREAK_ID = 0;
+        public static final int PIVOT_ID = 22;
+        public static final int BELT_TOP_ID = 3;
+        public static final int BELT_BOTTOM_ID = 25;
+        public static final int INDEX_ID = 23;
+        public static final int BEAMBREAK_ID = 2;
 
         public static final double INTAKE_WIDTH_mm = 635.0;
         public static final double NOTE_WIDTH_mm = 355.0;

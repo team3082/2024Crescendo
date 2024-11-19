@@ -1,17 +1,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import au.grapplerobotics.ConfigurationFailedException;
-import au.grapplerobotics.LaserCan;
-import au.grapplerobotics.LaserCan.Measurement;
-import au.grapplerobotics.LaserCan.RangingMode;
-import au.grapplerobotics.LaserCan.TimingBudget;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.tuning.Constants;
 import frc.robot.tuning.Tuning;
@@ -44,8 +41,8 @@ public class Intake {
      */
     public static void init() {
 
-        pivotMotor = new TalonFX(Constants.Intake.PIVOT_ID);
-        indexMotor = new TalonFX(Constants.Intake.INDEX_ID);
+        pivotMotor = new TalonFX(Constants.Intake.PIVOT_ID, "CANivore");
+        indexMotor = new TalonFX(Constants.Intake.INDEX_ID, "CANivore");
 
         pivotMotor.getConfigurator().apply(new TalonFXConfiguration());
         indexMotor.getConfigurator().apply(new TalonFXConfiguration());
@@ -56,6 +53,7 @@ public class Intake {
         pivotConfiguration.Slot0.kD = Tuning.Intake.PIVOT_D;
 
         pivotMotor.getConfigurator().apply(pivotConfiguration);
+        pivotMotor.setControl(new StaticBrake());
 
         topBeltMotor = new CANSparkMax(Constants.Intake.BELT_TOP_ID, MotorType.kBrushless);
         bottomBeltMotor = new CANSparkMax(Constants.Intake.BELT_BOTTOM_ID, MotorType.kBrushless);
@@ -117,7 +115,7 @@ public class Intake {
 
     public static void disable() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'disable'");
+        pivotMotor.setControl(new CoastOut());
     }
 
     /**
@@ -149,7 +147,7 @@ public class Intake {
      * @param velocity Target velocity for index motor
      */
     private static void setIndexMotor(double velocity) {
-        indexMotor.setControl(new VelocityDutyCycle(velocity));
+        indexMotor.set(velocity);
     }
 
     /**
@@ -157,8 +155,8 @@ public class Intake {
      * @param velocity Target velocity
      */
     private static void setIntakeMotors(double velocity) { //TODO something may need to be inverted here
-        topBeltMotor.set(velocity);
-        bottomBeltMotor.set(velocity);
+        topBeltMotor.set(-velocity);
+        bottomBeltMotor.set(-velocity);
     }
 
     /**
@@ -167,8 +165,11 @@ public class Intake {
     private static void intakeUntilBroken() {
         if(beambreakBroken()) {
             setIntakeMotors(0);
+            setIndexMotor(0);
         } else {
             setIntakeMotors(Tuning.Intake.INTAKE_SPEED);
+            setIndexMotor(Tuning.Intake.HANDOFF_SPEED);
+            
         }
     }
 
@@ -179,6 +180,7 @@ public class Intake {
      * @return If a note is in the intake or not
      */
     public static boolean beambreakBroken() {
+        System.out.println(!beambreak.get());
         return !beambreak.get();
     }
     

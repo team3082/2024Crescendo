@@ -30,32 +30,34 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // initialize all subsystems
-    SwerveManager.init();
-    Shooter.init();
+    // SwerveManager.init();
+    // Shooter.init();
     Intake.init();
-    Climber.init();
+    // Climber.init();
+
+    OI.init();
 
     // initialize auto routines
   }
 
   @Override
   public void robotPeriodic() {
-    SimDevices.update();
-    SwerveManager.update();
-    Shooter.update();
+    // SimDevices.update();
+    // SwerveManager.update();
+    // Shooter.update();
     Intake.update();
-    Climber.update();
+    // Climber.update();
   }
 
   @Override
   public void autonomousInit() {
-    AutoSelector.select();
-    Auto.init();
+    // AutoSelector.select();
+    // Auto.init();
   }
 
   @Override
   public void autonomousPeriodic() {
-    Auto.update();
+    // Auto.update();
   }
 
   @Override
@@ -68,10 +70,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    SwerveManager.disable();
-    Shooter.disable();
+    // SwerveManager.disable();
+    // Shooter.disable();
     Intake.disable();
-    Climber.disable();
+    // Climber.disable();
   }
 
   @Override
