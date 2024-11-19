@@ -18,19 +18,19 @@ public class Tuning {
 
     // SHOOTER
     public class Shooter {
-        public static final double PIVOT_P = 0.0;
+        public static final double PIVOT_P = 0.05;
         public static final double PIVOT_I = 0.0;
         public static final double PIVOT_D = 0.0;
 
-        public static final double FLYWHEEL_P = 0.0;
+        public static final double FLYWHEEL_P = 0.05;
         public static final double FLYWHEEL_I = 0.0;
-        public static final double FLYWHEEL_D = 0.0;
+        public static final double FLYWHEEL_D = 0.015;
 
-        public static final double SPEAKER_MANUAL_ANGLE = 0.0;
-        public static final double AMP_MANUAL_ANGLE = 0.0;
+        public static final double SPEAKER_MANUAL_ANGLE = 60.0;
+        public static final double AMP_MANUAL_ANGLE = 55.0;
         
-        public static final double SPEAKER_MANUAL_VEL = 0.0;
-        public static final double AMP_MANUAL_VEL = 0.0;
+        public static final double SPEAKER_MANUAL_VEL = 4000.0;
+        public static final double AMP_MANUAL_VEL = 500.0;
     }
 
     // INTAKE

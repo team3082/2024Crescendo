@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
@@ -10,24 +9,20 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 
-import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.Robot;
 import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.swerve.SwerveOdometry;
 import frc.robot.tuning.Constants;
 import frc.robot.tuning.Tuning;
 import frc.robot.utils.Vector2;
-import frc.robot.utils.sim.SimEncoder;
-import frc.robot.utils.sim.SimMotor;
 
 public class Shooter {
-    private enum ShooterMode {
+    public enum ShooterMode {
         DISABLED,
         IDLE,
         FIRING
     }
 
-    private enum ShooterState {
+    public enum ShooterState {
         OFF, // not shooting
         SPEAKER_MANUAL, // robot shoots into speaker
         SPEAKER_AUTO, // robot auto aligns, sets angle, and shoots into speaker
@@ -115,12 +110,14 @@ public class Shooter {
                 // set target velocity and position
                 switch (shooterState) {
                     case OFF:
-                        // TODO why is this here
+                        setPivotAngle(Constants.Shooter.PIVOT_DOWN);
+                        setVel(0);
                     break;
                     
                     case SPEAKER_MANUAL:
-                        setPivotAngle(Tuning.Shooter.SPEAKER_MANUAL_ANGLE);
-                        setVel(Tuning.Shooter.SPEAKER_MANUAL_VEL);
+                        setPivotAngle(Tuning.Shooter.SPEAKER_MANUAL_ANGLE / 360 * Constants.Shooter.SHOOTER_GEAR_RATIO);
+                        setVel(Tuning.Shooter.SPEAKER_MANUAL_VEL / 60);
+                        Intake.setHandoffState(IntakeState.FEED);
                     break;
                     
                     case SPEAKER_AUTO:
@@ -134,8 +131,9 @@ public class Shooter {
                     break;
                     
                     case AMP:
-                        setPivotAngle(Tuning.Shooter.AMP_MANUAL_ANGLE);
-                        setVel(Tuning.Shooter.AMP_MANUAL_VEL);
+                        setPivotAngle(Tuning.Shooter.AMP_MANUAL_ANGLE / 360.0 * Constants.Shooter.SHOOTER_GEAR_RATIO);
+                        setVel(Tuning.Shooter.AMP_MANUAL_VEL / 60);
+                        Intake.setHandoffState(IntakeState.FEED);
                     break;
 
                     default:
@@ -159,6 +157,10 @@ public class Shooter {
             default:
                 break;
         }
+
+        pivot.setControl(new PositionDutyCycle(targetPivotPos));
+        topFlywheel.setControl(new VelocityDutyCycle(targetVelTop));
+        bottomFlywheel.setControl(new VelocityDutyCycle(targetVelBottom));
     }
 
     /**
@@ -199,9 +201,6 @@ public class Shooter {
     private static void setVel(double topVel, double bottomVel) {
         targetVelTop = topVel;
         targetVelBottom = bottomVel;
-
-        topFlywheel.setControl(new VelocityDutyCycle(topVel));
-        bottomFlywheel.setControl(new VelocityDutyCycle(bottomVel));
     }
 
     /**
@@ -228,13 +227,16 @@ public class Shooter {
      */
     private static void setPivotAngle(double angle) {
         targetPivotPos = angle;
-        pivot.setControl(new PositionDutyCycle(angle));
     }
 
     // user functions
 
-    private static void setState(ShooterState state) {
+    public static void setState(ShooterState state) {
         shooterState = state;
+    }
+
+    public static void setShooterMode(ShooterMode mode) {
+        shooterMode = mode;
     }
 
     public static void disable() {

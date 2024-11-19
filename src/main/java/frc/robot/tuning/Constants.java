@@ -28,15 +28,17 @@ public class Constants {
 
     // SHOOTER
     public class Shooter {
-        public static final int PIVOT_ID = 0;
-        public static final int ENCODER_ID = 0;
-        public static final int FLYWHEEL_TOP_ID = 0;
-        public static final int FLYWHEEL_BOTTOM_ID = 0;
+        public static final int PIVOT_ID = 9;
+        public static final int ENCODER_ID = 12;
+        public static final int FLYWHEEL_TOP_ID = 10;
+        public static final int FLYWHEEL_BOTTOM_ID = 11;
 
         public static final double FLYWHEEL_DIAMETER = 4.000;
         public static final double FLYWHEEL_INCHES_TO_ROTATIONS = FLYWHEEL_DIAMETER * Math.PI;
 
-        public static final double PIVOT_DOWN = 0.0;
+        public static final double PIVOT_DOWN = 20.0;
+
+        public static final double SHOOTER_GEAR_RATIO = 50;
 
         public static final Vector2 PASSING_DEST = new Vector2(0.0, 0.0);
         public static final double PASSING_HEIGHT = 240.0;
