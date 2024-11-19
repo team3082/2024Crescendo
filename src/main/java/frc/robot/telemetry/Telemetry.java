@@ -199,10 +199,33 @@ public class Telemetry {
         // SwervePID.rotPID.kD = rotD.getDouble(0);
         // SwervePID.rotPID.deadband = rotDeadBand.getDouble(0);
 
-        // If we really feel like it, we can add Kade's cool swerve visualization here
+        // If we really feel like it, we can add Kade's cool swerve visualization
+        // Insert visualization here
 
         // swerveMovementRoot.setPosition(20, 20);
         // swerveMovement.setAngle(Math.toDegrees(SwerveManager.getRobotDriveVelocity()));
-        
+        // swerveMovement.setAngle(SwerveManager.getRobotDriveVelocity().mag() / 60);
+        // swerveMovement.setColor(new Color8Bit(255, 0, 0));
+    }
+
+    /**
+     * Log a message to the console with more information
+     * about the error (timestamp and name of class that called it)
+     * @param severity The severity of the message as a string. This changes the color of the message
+     * @param message Message to send to the console
+     */
+    public static void log(Severity severity, String message) {
+        String caller = Thread.currentThread().getStackTrace()[2].getClassName();
+        log(severity, caller, message);
+    }
+
+    /**
+     * Updates telemetry. Should be called each frame
+     */
+    public static void update() {
+        updateField();
+        updateSwerve();
+        updateClimber();
+        updateShooter();
     }
 }
