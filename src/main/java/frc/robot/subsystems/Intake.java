@@ -145,7 +145,7 @@ public class Intake {
      * Sets the index motor to a given velocity
      * @param velocity Target velocity for index motor
      */
-    private static void setIndexMotor(double velocity) {
+private static void setIndexMotor(double velocity) {
         indexMotor.set(velocity);
     }
 
@@ -172,6 +172,10 @@ public class Intake {
         }
     }
 
+    public static IntakeState getIntakeState() {
+        return handoffState;
+    }
+
     // Lasercan functions
 
     /**
@@ -179,7 +183,6 @@ public class Intake {
      * @return If a note is in the intake or not
      */
     public static boolean beambreakBroken() {
-        System.out.println(!beambreak.get());
         return !beambreak.get();
     }
     

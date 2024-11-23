@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import frc.robot.auto.Auto;
@@ -12,6 +15,8 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.SwerveManager;
+import frc.robot.tuning.Constants;
+import frc.robot.tuning.Tuning;
 import frc.robot.utils.sim.SimDevices;
 
 /**
@@ -31,7 +36,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // initialize all subsystems
     // SwerveManager.init();
-    // Shooter.init();
+    Shooter.init();
     Intake.init();
     // Climber.init();
 
@@ -45,7 +50,6 @@ public class Robot extends TimedRobot {
     // SimDevices.update();
     // SwerveManager.update();
     // Shooter.update();
-    Intake.update();
     // Climber.update();
   }
 
@@ -66,6 +70,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     OI.update();
+    Shooter.update();
+    Intake.update();
   }
 
   @Override

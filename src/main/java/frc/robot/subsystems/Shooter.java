@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -47,9 +48,9 @@ public class Shooter {
      */
     public static void init() {
 
-        pivot = new TalonFX(Constants.Shooter.PIVOT_ID);
-        topFlywheel = new TalonFX(Constants.Shooter.FLYWHEEL_TOP_ID);
-        bottomFlywheel = new TalonFX(Constants.Shooter.FLYWHEEL_BOTTOM_ID);
+        pivot = new TalonFX(Constants.Shooter.PIVOT_ID, "CANivore");
+        topFlywheel = new TalonFX(Constants.Shooter.FLYWHEEL_TOP_ID, "CANivore");
+        bottomFlywheel = new TalonFX(Constants.Shooter.FLYWHEEL_BOTTOM_ID, "CANivore");
 
         pivot.getConfigurator().apply(new TalonFXConfiguration());
         topFlywheel.getConfigurator().apply(new TalonFXConfiguration());
@@ -59,18 +60,23 @@ public class Shooter {
         TalonFXConfiguration topFlywheelConfiguration = new TalonFXConfiguration();
         TalonFXConfiguration bottomFlywheelConfiguration = new TalonFXConfiguration();
 
-        pivotConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        pivotConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         pivotConfiguration.Slot0.kP = Tuning.Shooter.PIVOT_P;
         pivotConfiguration.Slot0.kI = Tuning.Shooter.PIVOT_I;
         pivotConfiguration.Slot0.kD = Tuning.Shooter.PIVOT_D;
+        pivotConfiguration.MotorOutput.DutyCycleNeutralDeadband = Tuning.Shooter.PIVOT_DEADBAND;
 
         topFlywheelConfiguration.Slot0.kP = Tuning.Shooter.FLYWHEEL_P;
         topFlywheelConfiguration.Slot0.kI = Tuning.Shooter.FLYWHEEL_I;
         topFlywheelConfiguration.Slot0.kD = Tuning.Shooter.FLYWHEEL_D;
+        topFlywheelConfiguration.Slot0.kV = Tuning.Shooter.FLYWHEEL_V;
+        topFlywheelConfiguration.MotorOutput.DutyCycleNeutralDeadband = Tuning.Shooter.FLYWHEEL_DEADBAND;
 
         bottomFlywheelConfiguration.Slot0.kP = Tuning.Shooter.FLYWHEEL_P;
         bottomFlywheelConfiguration.Slot0.kI = Tuning.Shooter.FLYWHEEL_I;
         bottomFlywheelConfiguration.Slot0.kD = Tuning.Shooter.FLYWHEEL_D;
+        bottomFlywheelConfiguration.Slot0.kV = Tuning.Shooter.FLYWHEEL_V;
+        bottomFlywheelConfiguration.MotorOutput.DutyCycleNeutralDeadband = Tuning.Shooter.FLYWHEEL_DEADBAND;
 
         pivot.getConfigurator().apply(pivotConfiguration);
         bottomFlywheel.getConfigurator().apply(bottomFlywheelConfiguration);
@@ -78,6 +84,7 @@ public class Shooter {
 
         encoder = new CANcoder(Constants.Shooter.ENCODER_ID);
         encoder.getConfigurator().apply(new CANcoderConfiguration());
+        pivot.setPosition(17.0 / 360.0 * Constants.Shooter.SHOOTER_GEAR_RATIO);
 
         CANcoderConfiguration encoderConfiguration = new CANcoderConfiguration();
         encoderConfiguration.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
@@ -89,7 +96,7 @@ public class Shooter {
         targetVelBottom = 0.0;
 
         shooterMode = ShooterMode.DISABLED;
-        shooterState = ShooterState.OFF;
+        shooterState = ShooterState.SPEAKER_MANUAL;
     }
 
     /**
@@ -101,7 +108,7 @@ public class Shooter {
 
             case DISABLED:
                 setVel(0);
-                setPivotAngle(Constants.Shooter.PIVOT_DOWN);
+                setPivotAngle(Constants.Shooter.PIVOT_DOWN / 360 * Constants.Shooter.SHOOTER_GEAR_RATIO);
                 break;
 
             case FIRING:
@@ -110,14 +117,13 @@ public class Shooter {
                 // set target velocity and position
                 switch (shooterState) {
                     case OFF:
-                        setPivotAngle(Constants.Shooter.PIVOT_DOWN);
+                        setPivotAngle(Constants.Shooter.PIVOT_DOWN / 360 * Constants.Shooter.SHOOTER_GEAR_RATIO);
                         setVel(0);
                     break;
                     
                     case SPEAKER_MANUAL:
                         setPivotAngle(Tuning.Shooter.SPEAKER_MANUAL_ANGLE / 360 * Constants.Shooter.SHOOTER_GEAR_RATIO);
-                        setVel(Tuning.Shooter.SPEAKER_MANUAL_VEL / 60);
-                        Intake.setHandoffState(IntakeState.FEED);
+                        setVel(Tuning.Shooter.SPEAKER_MANUAL_VEL);
                     break;
                     
                     case SPEAKER_AUTO:
@@ -132,8 +138,7 @@ public class Shooter {
                     
                     case AMP:
                         setPivotAngle(Tuning.Shooter.AMP_MANUAL_ANGLE / 360.0 * Constants.Shooter.SHOOTER_GEAR_RATIO);
-                        setVel(Tuning.Shooter.AMP_MANUAL_VEL / 60);
-                        Intake.setHandoffState(IntakeState.FEED);
+                        setVel(Tuning.Shooter.AMP_MANUAL_VEL);
                     break;
 
                     default:
@@ -142,16 +147,22 @@ public class Shooter {
 
                 setVel(targetVelTop, targetVelBottom);
 
-                if (topFlywheel.getVelocity().getValueAsDouble() >= targetVelTop && bottomFlywheel.getVelocity().getValueAsDouble() >= targetVelBottom) {
-                    Intake.setHandoffState(IntakeState.INTAKE);
+                System.out.println("Target velocity: " + targetVelTop);
+                System.out.println("Real velocity:" + topFlywheel.getVelocity().getValueAsDouble());
+
+                if (atVelocity()) {
+                    System.out.println("FEEDING");
+                    Intake.setHandoffState(IntakeState.FEED);
+                } else {
+                    Intake.setHandoffState(IntakeState.OFF);
                 }
 
-                break;
+            break;
 
             case IDLE:
-                // revs to idle speed
-                setVel(1000);
-                setPivotAngle(Constants.Shooter.PIVOT_DOWN);
+                topFlywheel.setControl(new CoastOut());
+                bottomFlywheel.setControl(new CoastOut());
+                setPivotAngle(Constants.Shooter.PIVOT_DOWN / 360 * Constants.Shooter.SHOOTER_GEAR_RATIO);
                 break;
         
             default:
@@ -159,8 +170,6 @@ public class Shooter {
         }
 
         pivot.setControl(new PositionDutyCycle(targetPivotPos));
-        topFlywheel.setControl(new VelocityDutyCycle(targetVelTop));
-        bottomFlywheel.setControl(new VelocityDutyCycle(targetVelBottom));
     }
 
     /**
@@ -201,6 +210,9 @@ public class Shooter {
     private static void setVel(double topVel, double bottomVel) {
         targetVelTop = topVel;
         targetVelBottom = bottomVel;
+        
+        topFlywheel.setControl(new VelocityDutyCycle(targetVelTop));
+        bottomFlywheel.setControl(new VelocityDutyCycle(targetVelBottom));
     }
 
     /**
@@ -237,6 +249,12 @@ public class Shooter {
 
     public static void setShooterMode(ShooterMode mode) {
         shooterMode = mode;
+    }
+
+    public static boolean atVelocity() {
+        // return Math.abs(topFlywheel.getVelocity().getValueAsDouble() - targetVelTop) <= Tuning.Shooter.FLYWHEEL_DEADBAND && 
+        //     Math.abs(bottomFlywheel.getVelocity().getValueAsDouble() - targetVelBottom) <= Tuning.Shooter.FLYWHEEL_DEADBAND;
+        return topFlywheel.getVelocity().getValueAsDouble() >= targetVelTop && bottomFlywheel.getVelocity().getValueAsDouble() >= targetVelBottom;
     }
 
     public static void disable() {
