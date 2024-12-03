@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 
 import frc.robot.auto.Auto;
 import frc.robot.auto.AutoSelector;
+import frc.robot.input.OI;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -43,6 +44,7 @@ public class Robot extends TimedRobot {
     OI.init();
 
     // initialize auto routines
+    OI.init();
   }
 
   @Override
